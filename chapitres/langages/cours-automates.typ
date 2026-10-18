@@ -1,4 +1,6 @@
-#import "/load.typ": article-only, automate, colonnes-cours, cours-et-presentation, pause, pointilles, sep, slides-only, solution, theoremes
+#import "/load.typ": (
+  article-only, automate, colonnes-cours, cours-et-presentation, pause, completer, sep, slides-only, solution, theoremes,
+)
 #import theoremes: algorithm, definition, exercise, lemma, theorem
 #import automate: cetz, dessiner-automate, finite, style-automates, unite-automates
 #import "@preview/touying:0.8.0": touying-reducer
@@ -11,7 +13,7 @@
     ("0", "0", "a", (:)),
     ("0", "1", "b", (curve: 0.4)),
     ("1", "0", "a", (curve: 0.4)),
-    ("1", "2", "a", (:)),
+    ("1", "2", "a", (curve: 0)),
     ("2", "2", "b", (:)),
   ),
 )
@@ -30,7 +32,13 @@
 )
 #let facteur = dessiner-automate(
   (("0", (0, 0), true, false), ("1", (3, 0), false, false), ("2", (6, 0), false, false), ("3", (9, 0), false, true)),
-  (("0", "0", "a, b", (:)), ("0", "1", "a", (:)), ("1", "2", "b", (:)), ("2", "3", "b", (:)), ("3", "3", "a, b", (:))),
+  (
+    ("0", "0", "a, b", (:)),
+    ("0", "1", "a", (curve: 0)),
+    ("1", "2", "b", (curve: 0)),
+    ("2", "3", "b", (curve: 0)),
+    ("3", "3", "a, b", (:)),
+  ),
 )
 
 = Automate non déterministe
@@ -55,6 +63,10 @@
   exemple-automate,
 )
 
+// #exercise[
+//   En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ?
+// ]
+
 == Fonction de transition
 #let definition-transition = [
   #definition(marge-haute: false)[
@@ -65,14 +77,13 @@
 ]
 #let exercice-transition = align(center, figure(
   table(
-    columns: (auto, 2.5em, 2.5em, 2.5em),
-    rows: 2em,
+    columns: (auto, 3em, 3em, 3em),
+    rows: 1.75em,
     align: center + horizon,
     table.header([$q$], [$0$], [$1$], [$2$]),
-    [$δ(q, a)$], [], [], [],
-    [$δ(q, b)$], [], [], [],
+    [$δ(q, a)$], [#completer()], [#completer()], [#completer()],
+    [$δ(q, b)$], [#completer()], [#completer()], [#completer()],
   ),
-  numbering: none,
   caption: none,
 ))
 
@@ -85,8 +96,9 @@
 == Implémentation
 
 #exercise[
-  1. Proposer et comparer plusieurs structures de données pour représenter un automate.
-  2. En implémenter une.
+  1. Rappeler la définition des structures de données abstraites de dictionnaire et d'ensemble.
+  2. Comment s'en servir pour représenter un automate ?
+  3. Proposer deux implémentations de ces structures de données.
 ]
 
 = Langage reconnaissable
@@ -98,16 +110,18 @@
   L'étiquette de $C$ est le mot $a_1 … a_n$.
   On dit que $C$ est acceptant si $q_0 ∈ I$ et $q_n ∈ F$.
 ]
+
+#underline[Remarque] : il suffit d'un chemin acceptant pour que $m in cal(L)(A)$, même si un autre chemin d'étiquette $m$ n'est pas acceptant.
+
 #slides-only[== Langage reconnu]
 #definition[
   Un mot est accepté par $A$ s'il est l'étiquette d'un chemin acceptant.
   Le langage $cal(L)(A)$ reconnu par $A$ est l'ensemble des mots acceptés.
   Un langage est reconnaissable s'il est reconnu par un automate.
 ]
-Le chemin de longueur nulle permet d'accepter $ε$ exactement lorsque $I ∩ F ≠ ∅$.
 
 #slides-only[== Lecture d'un automate]
-#exercise[Déterminer le langage reconnu par chacun des deux automates suivants.]
+#exercise[Déterminer les langages reconnus par les automates suivants.]
 #grid(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
@@ -145,43 +159,17 @@ Le chemin de longueur nulle permet d'accepter $ε$ exactement lorsque $I ∩ F �
 = Test d'appartenance
 
 #slides-only[== Ensemble des états atteints]
-Pour lire $m = m_1 … m_n$, calculer :
+Pour déterminer si $m = m_1 … m_n in cal(L)(A)$, on peut calculer l'ensemble des états atteignables après lecture de $m[:k]$ :
 $ Q_0 = I, quad Q_k = union.big_(q ∈ Q_(k - 1)) δ(q, m_k). $
 Alors $m ∈ cal(L)(A)$ si et seulement si $Q_n ∩ F ≠ ∅$.
-Cette méthode traite aussi le mot vide.
 
 #slides-only[== Programmation de la reconnaissance]
 #exercise[
-  + Écrire ```ocaml etape a etats lettre``` renvoyant les états atteints après une lettre.
-  + Écrire ```ocaml accepte (a : automate) (m : string)```.
-  + Déterminer la complexité.
+  + Quelle est la complexité de cette méthode, en temps et mémoire ?
+  + Proposer une autre méthode par mémoïsation. Comparer les deux méthodes.
 ]
 #solution[
-  == Une étape de lecture
-  ```ocaml
-  let rec etape a etats lettre = match etats with
-    | [] -> []
-    | e :: q ->
-      let suivants = match Hashtbl.find_opt a.delta (e, lettre) with
-        | None -> []
-        | Some l -> l
-      in
-      suivants @ etape a q lettre
-  ```
-  Cette version peut produire des doublons. Utiliser un ensemble pour les supprimer.
-
-  == Lecture du mot
-  ```ocaml
-  let accepte a mot =
-    let etats = ref a.initiaux in
-    for i = 0 to String.length mot - 1 do
-      etats := etape a !etats mot.[i]
-    done;
-    List.exists (fun e -> List.mem e a.finaux) !etats
-  ```
-  Avec des ensembles représentés par tableaux booléens et des listes d'adjacence, chaque étape coûte $O(abs(Q) + abs(E))$. Le coût total est $O((abs(m) + 1)(abs(Q) + abs(E)))$.
 ]
-On peut aussi essayer les chemins par retour sur trace, mais leur nombre peut être exponentiel en la taille du mot.
 
 = Automate complet
 
@@ -194,51 +182,49 @@ On peut aussi essayer les chemins par retour sur trace, mais leur nombre peut ê
 Un automate complet n'a pas de blocage.
 #slides-only[== Compléter un automate]
 #theorem[Tout automate est équivalent à un automate complet.]
-#article-only[*Preuve* :]
-#slides-only[
-  #pause
-  Ajouter un état puits $q_∞$ non final, bouclant sur chaque lettre.
-  Pour chaque transition manquante, ajouter une transition vers $q_∞$.
-  Aucun nouveau chemin acceptant n'est créé.
-]
 
-= Automate déterministe
+= Automate déterministe (AD)
 
 #grid(
   columns: (1.6fr, 1fr),
   column-gutter: 1.5em,
   align: horizon,
   definition(coeur: true, marge-haute: false)[
-    Un automate $A$ est déterministe si :
+    Un automate est déterministe si :
     + Il possède un unique état initial
     + $(q, a, q_1) ∈ E ∧ (q, a, q_2) ∈ E ==> q_1 = q_2$
   ],
-  dessiner-automate(
-    (("q", (0, 0), true, false), ("q_1", (2.5, 1), false, true), ("q_2", (2.5, -1), false, false)),
-    (("q", "q_1", "a", (curve: 0)), ("q", "q_2", "b", (curve: 0))),
+  figure(
+    dessiner-automate(
+      (("q", (0, 0), false, false), ("q_1", (2.5, 1), false, false), ("q_2", (2.5, -1), false, false)),
+      (("q", "q_1", "a", (curve: 0)), ("q", "q_2", "a", (curve: 0))),
+    ),
+    numbering: none,
+    caption: [Automate non déterministe],
   ),
 )
 
 Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonction de transition de la forme $δ : Q × Σ → Q$.
 
-#slides-only[== Chemins dans un automate déterministe complet]
 #exercise[
-  Soient $A = (Q, Σ, q_0, F, E)$ un ADC, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?
-  + Il existe un unique chemin d'étiquette $m$ partant de $q$.
-  + Il existe un unique chemin de $q_0$ à $q$.
+  Soient $A = (Q, Σ, q_0, F, E)$ un AD, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?
   + $(q_1, a, q) ∈ E ∧ (q_2, a, q) ∈ E ==> q_1 = q_2.$
+  + $A$ contient au plus un chemin d'étiquette $m$ partant de $q$.
+  + $A$ contient au plus un chemin de $q_0$ à $q$.
+  + $A$ est non ambigu : un mot de $cal(L)(A)$ a un unique chemin acceptant.
+  + Si $A'$ est non ambigu alors $A'$ est déterministe.
 ]
-== Fonction de transition étendue
+
+#slides-only[== Fonction de transition étendue]
 #definition[
-  Pour un automate déterministe complet, la fonction $δ^* : Q × Σ^* → Q$ est définie par :
+  Pour un automate déterministe complet, on définit $δ^* : Q × Σ^* → Q$ récursivement, pour $q ∈ Q$ :
   - $δ^*(q, ε) = q$
-  - $δ^*(q, a v) = δ^*(δ(q, a), v)$
+  - $∀ a ∈ Σ, m ∈ Σ^* : #sep δ^*(q, a m) = δ^*(δ(q, a), m)$
 ]
-On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
+$δ^*(q, u)$ est l'état atteint après lecture de $u$ depuis $q$.
+On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
 #slides-only[== Lecture d'une concaténation]
-#theorem[$δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-transition-concatenation>
-#article-only[*Preuve* :]
-#slides-only[#pause Démontrer le résultat par récurrence sur $abs(u)$.]
+#theorem[$∀q ∈ Q, u, v ∈ Σ^* : #sep δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-delta-etoile>
 
 #slides-only[== Un test fini d'universalité]
 #exercise[
@@ -248,33 +234,34 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 ]
 #solution[
   #slides-only[== Correction : supprimer une boucle]
-  Supposons $cal(L)(A) ≠ Σ^*$ et soit $m$ un mot refusé de taille minimale.
+  Supposons $cal(L)(A) ≠ Σ^*$ et soit $m ∈ Σ^* \\ cal(L)(A)$ de taille minimale.
   Par hypothèse, $abs(m) ≥ n$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
   $ δ^*(q_0, x) = δ^*(q_0, x y). $
-  Le @thm-transition-concatenation sur la lecture d'une concaténation donne
-  $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
-  Le mot $x z$ est donc refusé et strictement plus court que $m$, ce qui contredit sa minimalité.
+  @thm-delta-etoile donne $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
+  Donc $x z ∉ cal(L)(A)$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
 
   #slides-only[== Correction : optimalité de la borne]
   La borne est optimale sur $Σ = {a}$.
-  Prenons $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
+  En effet, soit $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
   $ δ(i, a) = min(i + 1, n - 1). $
-  Cet automate accepte tous les mots de taille strictement inférieure à $n - 1$, mais refuse $a^(n - 1)$.
+  Cet automate accepte tous les mots de taille strictement inférieure à $n - 1$, mais pas $a^(n - 1)$.
 ]
 
-== Implémentation déterministe
+== Implémentation déterministe complet
+
+En codant chaque lettre par un entier :
 #grid(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
   align: top,
   [
 ```ocaml
-type afdc = {
+type adc = {
   initial : int;
   finaux : int list;
-  delta : (int * char, int) Hashtbl.t
+  delta : int array array; (* delta.(q).(a) = q' *)
 }
 ```
   ],
@@ -283,13 +270,13 @@ type afdc = {
 let accepte a m =
   let etat = ref a.initial in
   for i = 0 to String.length m - 1 do
-    etat := Hashtbl.find a.delta (!etat, m.[i])
+    etat := a.delta.(!etat).(m.[i])
   done;
   List.mem !etat a.finaux
 ```
   ],
 )
-Complexité : #pointilles()
+#underline[Complexité] : #completer()
 
 == Déterminisation
 #theorem(coeur: true)[Tout automate est équivalent à un automate déterministe complet.]
@@ -297,21 +284,13 @@ L'automate des parties est $A' = (Σ, cal(P)(Q), {I}, F', δ')$, où :
 $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q, a). $
 
 #slides-only[== Correction de la déterminisation]
-*Invariant* : après lecture d'un mot $u$, l'état atteint dans $A'$ est exactement l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
-
-#article-only[*Preuve* :]
-#solution[
-  #pause
-  - Pour $ε$, cet ensemble est $I$.
-  - Pour $u a$, prendre l'union des $δ(q, a)$ pour tous les états atteints après $u$.
-  - Le mot est accepté si cet ensemble rencontre $F$.
-]
+#underline[Invariant] : après lecture d'un mot $u$, l'état atteint dans $A'$ est exactement l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
 
 #slides-only[== Construire seulement les états accessibles]
 #algorithm(coeur: true)[
-  + Initialiser les états découverts et la liste d'attente à ${I}$.
+  + Initialiser la liste d'attente à ${I}$.
   + Tant que la liste n'est pas vide, extraire un ensemble $X$.
-  + Pour chaque $a ∈ Σ$, calculer $X' = union.big_(q ∈ X) δ(q, a)$, enregistrer la transition et ajouter $X'$ s'il est nouveau.
+  + Pour chaque $a ∈ Σ$, calculer $X' = union.big_(q ∈ X) δ(q, a)$, mettre $X'$ dans $δ(q, X)$ et ajouter $X'$ s'il est nouveau.
   + Marquer finaux les ensembles rencontrant $F$.
 ]
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire que les états accessibles. L'ensemble vide joue le rôle d'un puits.
@@ -451,9 +430,8 @@ Parmi ses $n + 1$ premiers états, deux sont égaux : $q_i = q_j$, avec $0 ≤ i
 Décomposer le mot en $x$, avant $q_i$, $y$, entre $q_i$ et $q_j$, et $z$, après $q_j$.
 
 #dessiner-automate(
-  (("q_0", (0, 0), true, false), ("q_i=q_j", (4, 0), false, false), ("q_p", (8, 0), false, true)),
-  (("q_0", "q_i=q_j", "x", (:)), ("q_i=q_j", "q_i=q_j", "y", (:)), ("q_i=q_j", "q_p", "z", (:))),
-  rayon: nom => if nom == "q_i=q_j" { 1 } else { 0.6 },
+  (("q_0", (0, 0), true, false), ("q_i", (4, 0), false, false), ("q_p", (8, 0), false, true)),
+  (("q_0", "q_i", "x", (curve: 0)), ("q_i", "q_i", "y", (:)), ("q_i", "q_p", "z", (curve: 0))),
 )
 #slides-only[== Preuve : répéter le cycle]
 On a $abs(x y) = j ≤ n$ et $abs(y) = j - i > 0$.
