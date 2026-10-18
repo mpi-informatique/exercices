@@ -1,18 +1,17 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { Download, FileCode, CodeXml, RotateCcw, CircleAlert, CircleDot, GitPullRequest, GitCommitHorizontal, X } from 'lucide-react';
-import { availableVariants, variantLabels, duration, pdfFilename, type Resource, type Variant } from '@mpi-informatique/exercices-core';
+import { Download, FileCode, RotateCcw, CircleAlert, CircleDot, GitPullRequest, GitCommitHorizontal, X } from 'lucide-react';
+import { availableVariants, variantLabels, pdfFilename, type Resource, type Variant } from '@mpi-informatique/exercices-core';
 import SearchSidebar from './SearchSidebar';
 import { ResizeHandle } from './ResizeHandle';
 import { useCompiler } from '../hooks/useCompiler';
 import { useSource } from '../hooks/useSource';
 import { useCodeFiles } from '../hooks/useCodeFiles';
-import { Navbar } from './Navbar';
+import { SidebarActions } from './SidebarActions';
 import { GitHubIcon } from './GitHubIcon';
 import { VariantTabs } from './VariantTabs';
 import CommandPalette, { type Command } from './CommandPalette';
 import type { SearchFilters } from '../lib/filters';
 import { createSearch } from '../lib/search';
-import { resourceTypeLabel } from '../lib/labels';
 import { exerciseUrl, routeId, routeVariant } from '../lib/urls';
 import { stored, store } from '../lib/storage';
 import { githubEditUrl, githubFileUrl, githubIssueUrl, repositoryUrl } from '../lib/github';
@@ -148,7 +147,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
   }
   function closeSidebar() {
     setSidebarOpen(false);
-    app.current?.querySelector<HTMLButtonElement>('[aria-controls="search-sidebar"]')?.focus();
+    app.current?.querySelector<HTMLButtonElement>('[aria-controls="search-panel"]')?.focus();
   }
   function focusPending() {
     const selector = { search: 'input[type="search"]', editor: '.cm-content', pdf: '.pdf-scroll' };
@@ -221,33 +220,35 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
     { id: 'source-reset', label: 'Réinitialiser le code Typst', keywords: 'brouillon annuler', disabled: !modified, run: reset },
   ];
   const status = loadError || compilation.message;
-  const details = resource && [resource.titre, privateResource ? 'Privé' : '', resourceTypeLabel(resource), ...resource.chapitres.map(chapter => chapter.replaceAll('-', ' ')), duration(resource)].filter(Boolean).join(' · ');
 
   return <div ref={app} className={`workbench ${sidebarOpen ? 'sidebar-open' : ''} ${editorOpen ? 'editor-open' : ''}`} style={{ '--sidebar-width': `${sidebarWidth}px`, '--editor-width': `${editorWidth}px` } as CSSProperties}>
-    <Navbar title={resource?.titre ?? 'Ressource introuvable'} details={details} dark={dark} sidebarOpen={sidebarOpen} editorOpen={editorOpen} onThemeChange={toggleTheme} onSidebarToggle={() => sidebarOpen ? closeSidebar() : focusPanel('search')} onEditorToggle={toggleEditor} onCommands={() => setPaletteOpen(true)} onPrivateBank={() => setPrivatePanelOpen(true)} connected={!!library.account} privateResource={privateResource} />
     <div className="app-body">
       {sidebarOpen && <button className="sidebar-backdrop" aria-label="Fermer la recherche" tabIndex={-1} onClick={closeSidebar} />}
-      {sidebarOpen && <SearchSidebar resources={resources} search={search} selected={selected} query={query} filters={filters} onQuery={setQuery} onFilters={setFilters} onSelect={navigate} />}
+      <aside className="search-sidebar" id="search-sidebar" aria-label="Rechercher dans la banque">
+        <SidebarActions dark={dark} sidebarOpen={sidebarOpen} editorOpen={editorOpen} onThemeChange={toggleTheme} onSidebarToggle={() => sidebarOpen ? closeSidebar() : focusPanel('search')} onEditorToggle={toggleEditor} onCommands={() => setPaletteOpen(true)} onPrivateBank={() => setPrivatePanelOpen(true)} connected={!!library.account} />
+        {sidebarOpen && <SearchSidebar resources={resources} search={search} selected={selected} query={query} filters={filters} onQuery={setQuery} onFilters={setFilters} onSelect={navigate} />}
+      </aside>
       {sidebarOpen && <ResizeHandle label="Largeur de la recherche" value={sidebarWidth} min={240} max={520} onChange={value => { setSidebarWidth(value); store('sidebar-width', String(value)); }} />}
       <main className="main-panel" id="main" tabIndex={-1}>
+        <h1 className="sr-only">{resource?.titre ?? 'Ressource introuvable'}</h1>
         <div className="document-workspace">
           {editorOpen && <section className="editor-panel" id="editor-panel" aria-label={codePath ? 'Code associé' : 'Éditeur Typst'}>
             <div className="pane-toolbar">
-              <span className="source-filename" title={editorPath}><FileCode size={14} />{associatedFiles.length ? <select aria-label="Fichier affiché dans l’éditeur" value={editorPath} onChange={event => event.target.value === resource?.fichier ? showTypst() : openCode(event.target.value)}>
+              <span className="source-filename" title={editorPath}><FileCode size={17} />{associatedFiles.length ? <select aria-label="Fichier affiché dans l’éditeur" value={editorPath} onChange={event => event.target.value === resource?.fichier ? showTypst() : openCode(event.target.value)}>
                 <option value={resource?.fichier}>{resource?.fichier.split('/').at(-1)}</option>
                 {associatedFiles.map(path => <option key={path} value={path}>{path.slice(0, path.lastIndexOf('/')) === resource?.fichier.slice(0, resource.fichier.lastIndexOf('/')) ? path.split('/').at(-1) : path}</option>)}
               </select> : <span>{editorPath?.split('/').at(-1)}</span>}{privateResource && <span className="private-badge">Privé</span>}{!codePath && modified && <span className="modified-dot" role="img" aria-label="Brouillon modifié" title={privateResource ? 'Brouillon privé, conservé dans cet onglet' : 'Brouillon modifié, enregistré localement'} />}</span>
               <div>
                 {editorPath && resource && <>
-                  <a className="btn btn-ghost btn-xs btn-square" aria-label="Voir le fichier sur GitHub" title="Voir le fichier sur GitHub" href={githubFileUrl(editorPath, editorRepository, editorBranch)} target="_blank" rel="noreferrer"><GitHubIcon size={14} /></a>
-                  <a className="btn btn-ghost btn-xs btn-square" aria-label="Signaler un problème sur GitHub" title="Créer une issue pour le fichier affiché" href={githubIssueUrl(editorPath, resource.titre, editorRepository, editorBranch)} target="_blank" rel="noreferrer"><CircleDot size={14} /></a>
+                  <a className="btn btn-ghost btn-sm btn-square" aria-label="Voir le fichier sur GitHub" title="Voir le fichier sur GitHub" href={githubFileUrl(editorPath, editorRepository, editorBranch)} target="_blank" rel="noreferrer"><GitHubIcon size={17} /></a>
+                  <a className="btn btn-ghost btn-sm btn-square" aria-label="Signaler un problème sur GitHub" title="Créer une issue pour le fichier affiché" href={githubIssueUrl(editorPath, resource.titre, editorRepository, editorBranch)} target="_blank" rel="noreferrer"><CircleDot size={17} /></a>
                 </>}
-                {!codePath && privateResource && library.account && <button className="btn btn-ghost btn-xs btn-square" aria-label="Créer un commit sur GitHub" title={`Enregistrer les modifications dans ${library.bank?.repository}, branche ${library.bank?.branch}`} disabled={!modified || library.commitPending || library.busy} onClick={commitPrivate}>{library.commitPending ? <span className="loading loading-spinner loading-xs" /> : <GitCommitHorizontal size={14} />}</button>}
+                {!codePath && privateResource && library.account && <button className="btn btn-ghost btn-sm btn-square" aria-label="Créer un commit sur GitHub" title={`Enregistrer les modifications dans ${library.bank?.repository}, branche ${library.bank?.branch}`} disabled={!modified || library.commitPending || library.busy} onClick={commitPrivate}>{library.commitPending ? <span className="loading loading-spinner loading-xs" /> : <GitCommitHorizontal size={17} />}</button>}
                 {!codePath && resource && !privateResource && (authUrl && modified
-                  ? <button className="btn btn-ghost btn-xs btn-square" aria-label="Ouvrir une pull request sur GitHub" title="Se connecter à GitHub et proposer le brouillon modifié" disabled={contributionPending} onClick={proposeContribution}>{contributionPending ? <span className="loading loading-spinner loading-xs" /> : <GitPullRequest size={14} />}</button>
-                  : <a className="btn btn-ghost btn-xs btn-square" aria-label="Ouvrir une pull request sur GitHub" title={modified ? 'Copier le brouillon et ouvrir GitHub pour proposer une pull request' : 'Modifier le fichier sur GitHub pour proposer une pull request'} href={githubEditUrl(resource.fichier)} target="_blank" rel="noreferrer" onClick={copyContribution}><GitPullRequest size={14} /></a>)}
-                <button className="btn btn-ghost btn-xs btn-square" aria-label={codePath ? 'Télécharger le fichier de code' : 'Télécharger le fichier Typst'} title={codePath ? 'Télécharger le fichier de code' : 'Télécharger le fichier Typst'} disabled={editorSource === undefined} onClick={downloadEditor}><Download size={14} /></button>
-                {codePath ? <button className="btn btn-ghost btn-xs btn-square" aria-label="Revenir au fichier Typst" title="Revenir au fichier Typst" onClick={showTypst}><X size={14} /></button> : <button className="btn btn-ghost btn-xs btn-square" aria-label="Réinitialiser le code" title="Réinitialiser le code (annulable dans l’éditeur)" disabled={!modified} onClick={reset}><RotateCcw size={14} /></button>}
+                  ? <button className="btn btn-ghost btn-sm btn-square" aria-label="Ouvrir une pull request sur GitHub" title="Se connecter à GitHub et proposer le brouillon modifié" disabled={contributionPending} onClick={proposeContribution}>{contributionPending ? <span className="loading loading-spinner loading-xs" /> : <GitPullRequest size={17} />}</button>
+                  : <a className="btn btn-ghost btn-sm btn-square" aria-label="Ouvrir une pull request sur GitHub" title={modified ? 'Copier le brouillon et ouvrir GitHub pour proposer une pull request' : 'Modifier le fichier sur GitHub pour proposer une pull request'} href={githubEditUrl(resource.fichier)} target="_blank" rel="noreferrer" onClick={copyContribution}><GitPullRequest size={17} /></a>)}
+                <button className="btn btn-ghost btn-sm btn-square" aria-label={codePath ? 'Télécharger le fichier de code' : 'Télécharger le fichier Typst'} title={codePath ? 'Télécharger le fichier de code' : 'Télécharger le fichier Typst'} disabled={editorSource === undefined} onClick={downloadEditor}><Download size={17} /></button>
+                {codePath ? <button className="btn btn-ghost btn-sm btn-square" aria-label="Revenir au fichier Typst" title="Revenir au fichier Typst" onClick={showTypst}><X size={17} /></button> : <button className="btn btn-ghost btn-sm btn-square" aria-label="Réinitialiser le code" title="Réinitialiser le code (annulable dans l’éditeur)" disabled={!modified} onClick={reset}><RotateCcw size={17} /></button>}
               </div>
             </div>
             {contributionNotice && <div className="draft-notice" role="status"><span>{contributionNotice}</span><button className="btn btn-ghost btn-xs btn-square" aria-label="Fermer le message GitHub" title="Fermer" onClick={() => setContributionNotice('')}><X size={13} /></button></div>}
@@ -260,8 +261,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
               <VariantTabs documentType={resource?.type} variant={variant} onChange={value => resource && navigate(resource, value)} />
               <span className={`compilation-status ${compilation.error || loadError ? 'has-error' : ''}`} title={status} role="status">{compilation.pending ? <span className="loading loading-spinner loading-xs" /> : compilation.error || loadError ? <CircleAlert size={13} /> : <span className="status-dot" />}<span className="sr-only">{status}</span></span>
             </>} actions={<>
-              {!!codeFiles.associated.length && <button className="btn btn-ghost btn-xs" aria-label="Voir les codes associés" title="Voir les codes associés dans CodeMirror" onClick={() => openCode(codeFiles.associated[0]!)}><CodeXml size={14} />Codes associés{codeFiles.associated.length > 1 ? ` (${codeFiles.associated.length})` : ''}</button>}
-              <button className="btn btn-ghost btn-xs btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" disabled={!canDownloadPdf} onClick={downloadPdf}><Download size={14} /></button>
+              <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" disabled={!canDownloadPdf} onClick={downloadPdf}><Download size={17} /></button>
             </>} /></Suspense>
           </section>
         </div>

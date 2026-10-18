@@ -42,7 +42,7 @@ export default function SearchSidebar({ resources, search, selected, query, filt
   }
   const select = (key: FilterField) => <MultiSelect key={key} label={filterLabels[key]} placeholder={key === 'type' ? 'Types' : key === 'chapitres' ? 'Chapitres' : undefined} options={options[key]!} groups={key === 'chapitres' ? chapterGroups : undefined} values={filters[key] ?? []} onChange={values => changeFilter(key, values)} selectionHint={key === 'type' && filters.concoursAnnees ? filters.concoursAnnees.join('–') : undefined} optionDetails={key === 'type' ? value => value === 'concours' && <ContestYearRange bounds={yearBounds} value={filters.concoursAnnees} onChange={concoursAnnees => onFilters({ ...filters, concoursAnnees })} /> : undefined} />;
 
-  return <aside className="search-sidebar" id="search-sidebar" aria-label="Rechercher dans la banque">
+  return <div className="search-panel" id="search-panel">
     <div className="sidebar-top">
       <label className="search-input input"><Search size={15} /><input type="search" placeholder="Recherche, concours:CCINP…" title='Critères : concours:CCINP année:2022 type:td chapitre:"automates finis" difficulté:2,4. Plusieurs valeurs : concours:CCINP,ENS.' aria-label="Rechercher un exercice" aria-keyshortcuts="/" value={query} onChange={event => onQuery(event.target.value)} onKeyDown={event => {
         if (event.nativeEvent.isComposing) return;
@@ -72,5 +72,5 @@ export default function SearchSidebar({ resources, search, selected, query, filt
       </a>)}
       {!results.length && <p className="empty-results">Aucun résultat</p>}
     </nav>
-  </aside>;
+  </div>;
 }
