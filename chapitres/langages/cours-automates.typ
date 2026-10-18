@@ -289,7 +289,7 @@ let accepte a m =
 ```
   ],
 )
-Le coût moyen est $O(abs(m) + abs(F))$ si les accès à la table coûtent $O(1)$ en moyenne. Le test final dans la liste coûte $O(abs(F))$.
+Complexité : #box(width: 1fr, repeat[.])
 
 == Déterminisation
 #theorem(coeur: true)[Tout automate est équivalent à un automate déterministe complet.]
