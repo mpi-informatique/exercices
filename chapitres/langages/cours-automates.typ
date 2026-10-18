@@ -248,7 +248,7 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 ]
 #solution[
   #slides-only[== Correction : supprimer une boucle]
-  Supposer qu'un mot est refusé et choisir un tel mot $m$ de longueur minimale.
+  Supposons qu'un mot soit refusé et soit $m$ un tel mot de longueur minimale.
   Par hypothèse, $abs(m) ≥ n$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
@@ -259,7 +259,7 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 
   #slides-only[== Correction : optimalité de la borne]
   La borne est optimale sur $Σ = {a}$.
-  Prendre $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
+  Prenons $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
   $ δ(i, a) = min(i + 1, n - 1). $
   Cet automate accepte tous les mots de longueur strictement inférieure à $n - 1$, mais refuse $a^(n - 1)$.
 ]

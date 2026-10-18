@@ -76,6 +76,7 @@ Consulter le [résumé du programme](programme.md) pour choisir les étiquettes 
 
 - Rédiger les énoncés, corrigés et commentaires dans un français naturel, direct et concis. Éviter les tournures stéréotypées et les points-virgules dans la prose : préférer des phrases courtes ou des deux-points.
 - Préférer l'infinitif à l'impératif dans les consignes et commentaires : « Donner… » plutôt que « Donnez… ». Préférer « On considère… » à « Considérer… », et « Pour… : $…$ » à « Pour…, $…$ ».
+- Dans les preuves et corrigés, rédiger le raisonnement avec des verbes conjugués : « Supposons… et soit $m$… », « Prenons… », « Montrons… », plutôt qu'avec des infinitifs de consigne (« Supposer… et choisir… », « Prendre… », « Montrer… »).
 - Distinguer clairement les objets, les hypothèses et la conclusion à établir. Pour une implication, préférer « Montrer que si … alors … » ou « Soit … On suppose que … Montrer que … ». Éviter de présenter une hypothèse comme une affirmation générale dont le rôle n'est pas explicite.
 - Respecter le [programme](programme.md) ; de nouvelles notions peuvent être introduites dans le sujet.
 - Corriger les erreurs importantes : hypothèse indispensable, énoncé faux, preuve invalide, code incorrect ou faute d'orthographe manifeste.
