@@ -265,6 +265,11 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 ]
 
 == Implémentation déterministe
+#grid(
+  columns: (1fr, 1fr),
+  column-gutter: 1.5em,
+  align: top,
+  [
 ```ocaml
 type afdc = {
   initial : int;
@@ -272,7 +277,8 @@ type afdc = {
   delta : (int * char, int) Hashtbl.t
 }
 ```
-#slides-only[== Reconnaissance déterministe]
+  ],
+  [
 ```ocaml
 let accepte a m =
   let etat = ref a.initial in
@@ -281,6 +287,8 @@ let accepte a m =
   done;
   List.mem !etat a.finaux
 ```
+  ],
+)
 Le coût moyen est $O(abs(m) + abs(F))$ si les accès à la table coûtent $O(1)$ en moyenne. Le test final dans la liste coûte $O(abs(F))$.
 
 == Déterminisation
