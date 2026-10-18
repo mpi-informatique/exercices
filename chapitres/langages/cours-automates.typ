@@ -248,7 +248,7 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 ]
 #solution[
   #slides-only[== Correction : supprimer une boucle]
-  Supposons qu'un mot soit refusé et soit $m$ un tel mot de longueur minimale.
+  Supposons $cal(L)(A) ≠ Σ^*$ et soit $m$ un mot refusé de longueur minimale.
   Par hypothèse, $abs(m) ≥ n$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
