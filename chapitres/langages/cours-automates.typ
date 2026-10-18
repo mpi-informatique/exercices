@@ -253,7 +253,7 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
   $ δ^*(q_0, x) = δ^*(q_0, x y). $
-  Le #link(<thm-transition-concatenation>)[théorème sur la lecture d'une concaténation] donne
+  Le @thm-transition-concatenation sur la lecture d'une concaténation donne
   $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
   Le mot $x z$ est donc refusé et strictement plus court que $m$, ce qui contredit sa minimalité.
 

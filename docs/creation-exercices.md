@@ -71,6 +71,7 @@ Consulter le [résumé du programme](programme.md) pour choisir les étiquettes 
 - Rédiger le corrigé en même temps que les questions pour vérifier les hypothèses, les cas limites et la difficulté. Distinguer les deux sens d'une équivalence et préciser celui qui relève d'une récurrence ou d'une induction structurelle. Pour un algorithme, distinguer les opérations d'initialisation des itérations des boucles.
 - Utiliser des exemples et contre-exemples pour éclairer les limites des résultats, notamment les réciproques fausses. Lors d'une relecture, proposer séparément les questions supplémentaires avant de les intégrer.
 - Après un ajout ou un déplacement de question, vérifier les renvois dans tout le sujet, corrigé et champ `corrections` compris. Attribuer un barème aux nouvelles questions d'un devoir noté et réévaluer l'adéquation de la longueur à la durée annoncée.
+- Pour les renvois internes, utiliser des étiquettes stables et `@etiquette`, plutôt qu'un numéro ou un texte de lien écrit à la main. Voir les [renvois aux blocs et aux questions](utilisation.md#renvois-aux-blocs-et-aux-questions).
 
 ### Principes de rédaction
 

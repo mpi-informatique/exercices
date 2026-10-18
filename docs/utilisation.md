@@ -102,6 +102,24 @@ Placer les réponses et preuves dans `solution[...]`, importé depuis `/load.typ
 
 Ce contenu est masqué dans le cours normal, affiché après l'énoncé dans le cours corrigé avec le même environnement que les solutions des feuilles (`bloc-solution`), et conservé dans la présentation. Les pauses et titres propres à la projection peuvent rester dans `slides-only[...]` à l'intérieur de la solution. Les cours ne renseignent pas automatiquement les solutions manquantes.
 
+## Renvois aux blocs et aux questions
+
+Utiliser une étiquette stable et la référence native `@etiquette`. Le type de bloc et son numéro sont calculés automatiquement, avec un lien vers l'énoncé, dans le cours, le corrigé et la présentation :
+
+```typst
+#theorem[Énoncé du théorème.] <thm-concatenation>
+D'après le @thm-concatenation, on obtient…
+```
+
+Pour une question construite avec l'API de la banque, fournir l'étiquette au paramètre `label` :
+
+```typst
+question([Décrire l'algorithme.], label: <q-algorithme>, solution: [Solution.]),
+question([Justifier l'algorithme de la @q-algorithme.], solution: [Justification.]),
+```
+
+Le renvoi suit la numérotation après déplacement de la question, y compris dans une partie ou une feuille en colonnes. Chaque étiquette doit être unique dans le document, et sa cible doit être présente dans la variante compilée. Pour un texte de lien personnalisé, conserver `#link(<q-algorithme>)[cet algorithme]`.
+
 ## Aide de l'API
 
 [Tinymist](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist) est recommandé, mais facultatif : survoler les fonctions importées pour consulter leurs commentaires et signatures. Le code et les modèles fonctionnent sans Tinymist.

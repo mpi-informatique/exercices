@@ -15,15 +15,29 @@
 /// - solution (content, none): Solution ; `none` affiche « Corrigé à compléter ».
 /// - bareme (float, int, none): Barème de la question, affiché en marge du corrigé ; `none` masque les points.
 /// - notation (content, none): Consignes concises de notation (pourcentages, pénalités, tolérances), jamais affichées.
+/// - label (label, none): Étiquette stable pour un renvoi natif `@etiquette`, avec numéro automatique.
 /// -> dictionary
-#let question(enonce, jury: none, solution: none, bareme: none, notation: none) = {
+#let question(enonce, jury: none, solution: none, bareme: none, notation: none, label: none) = {
+  assert(label == none or type(label) == std.label, message: "label doit être une étiquette Typst ou none")
   assert(jury == none or type(jury) == content, message: "jury doit être un contenu Typst ou none")
   assert(notation == none or type(notation) == content, message: "notation doit être un contenu Typst ou none")
   assert(
     bareme == none or bareme in (0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4),
     message: "Points autorisés : 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ou none",
   )
-  (type: "question", enonce: enonce, jury: jury, solution: solution, bareme: bareme, notation: notation)
+  (type: "question", enonce: enonce, jury: jury, solution: solution, bareme: bareme, notation: notation, label: label)
+}
+
+/// Associe une question à son numéro courant sans changer sa mise en page.
+/// - q (dictionary): Question construite avec `question`.
+/// - numero (int): Numéro affiché dans le document.
+/// - body (content): Énoncé mis en forme par le document ou la copie.
+/// -> content
+#let cible-question(q, numero, body) = {
+  let etiquette = q.at("label", default: none)
+  if etiquette == none { return body }
+  show figure.where(kind: "question"): it => it.body
+  [#figure(kind: "question", supplement: [Question], numbering: _ => str(numero), outlined: false, body)#etiquette]
 }
 
 #let texte-concours(concours) = (
@@ -303,7 +317,7 @@
       continue
     }
     // Chaque énoncé est un paragraphe distinct ; les longues questions restent sécables.
-    let enonce = block(width: 100%, above: espacement, below: espacement, {
+    let enonce = cible-question(q, i, block(width: 100%, above: espacement, below: espacement, {
       let points = if bareme == none { q.at("bareme", default: none) } else { bareme.at(i - 1) }
       if corrige and points != none {
         // Placement hors du corps : la note suit le début de la question sans réserver de hauteur.
@@ -315,7 +329,7 @@
       if nombre == 1 { q.enonce } else {
         enum(start: i, numbering: "1.", indent: 0pt, body-indent: 0.5em, q.enonce)
       }
-    })
+    }))
     if colonnes == 1 { enonce } else { questions.push(enonce) }
     if corrige {
       if q.jury != none {

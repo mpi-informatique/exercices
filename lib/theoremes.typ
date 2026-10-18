@@ -6,44 +6,6 @@
 #let espacement-cadres = state("exercices-espacement-cadres", none)
 #let style-cadres = state("exercices-style-cadres", none)
 
-// Fancy lie par défaut le fond du titre à la couleur de la bordure.
-// Désactiver marge-haute pour un cadre placé en tête de cellule.
-#let titre-blanc(environnement, coeur: false, marge-haute: true, ..args) = context {
-  let cadre = environnement(
-    ..args,
-    coeur: coeur,
-    frame: (
-      thickness: epaisseur-trait,
-      radius: get-fancy-radius(here()),
-      inset: (x: 1em, top: if args.named().at("full-title", default: auto) != "" { 0.5em } else { 1em }, bottom: 1em),
-      border-color: black,
-      title-color: white,
-      body-color: white,
-      title-inset: (x: 1em, y: .5em),
-    ),
-    title-style: (boxed-style: (anchor: (x: start, y: horizon), radius: 0em), color: black, weight: "semibold"),
-  )
-  let espacement = espacement-cadres.get()
-  if espacement != none {
-    v(espacement, weak: true)
-  } else if style-cadres.get() == none and marge-haute {
-    // Garder une marge même au début d'un bloc de contenu de Touying en mode article.
-    v(0.5em)
-  }
-  if coeur and style-cadres.get() == none {
-    grid(
-      columns: (0pt, 1fr),
-      column-gutter: 0pt,
-      align: (left + horizon, left + top),
-      // Compenser le titre qui dépasse au-dessus de la bordure du cadre.
-      box(width: 0pt, move(dx: -1.5em, dy: 0.4em, box[♡])), cadre,
-    )
-  } else {
-    cadre
-  }
-  if espacement != none { v(espacement, weak: true) }
-}
-
 // Compter une seule fois les cadres répétés par les animations de Touying.
 // Sans marqueurs Touying (cours et feuilles), les étapes sont simplement cumulées.
 #let compteur-cadres(nom) = {
@@ -102,9 +64,18 @@
 }
 
 // Conserver les mêmes environnements, références et compteurs dans les deux formats.
-#let rendre-cadre(nom, body, prefix: none, title: "", full-title: auto, coeur: false, ..args) = context {
+#let rendre-cadre(
+  nom,
+  body,
+  prefix: none,
+  title: "",
+  full-title: auto,
+  coeur: false,
+  marge-haute: true,
+  ..args,
+) = context {
   let palette = style-cadres.get()
-  if palette == none {
+  let cadre = if palette == none {
     let rendre = if nom in ("exercise", "problem") { rendre-exercice } else { fancy-box }
     rendre(
       get-symbol: loc => none,
@@ -113,6 +84,16 @@
       prefix: prefix,
       title: title,
       full-title: full-title,
+      frame: (
+        thickness: epaisseur-trait,
+        radius: get-fancy-radius(here()),
+        inset: (x: 1em, top: if full-title != "" { 0.5em } else { 1em }, bottom: 1em),
+        border-color: black,
+        title-color: white,
+        body-color: white,
+        title-inset: (x: 1em, y: .5em),
+      ),
+      title-style: (boxed-style: (anchor: (x: start, y: horizon), radius: 0em), color: black, weight: "semibold"),
       ..args,
       body,
     )
@@ -141,6 +122,24 @@
       )
     })
   }
+  let espacement = espacement-cadres.get()
+  if espacement != none {
+    v(espacement, weak: true)
+  } else if palette == none and marge-haute {
+    // Garder une marge en tête des fragments produits par Touying en mode article.
+    v(0.5em)
+  }
+  if coeur and palette == none {
+    grid(
+      columns: (0pt, 1fr),
+      column-gutter: 0pt,
+      align: (left + horizon, left + top),
+      box(width: 0pt, move(dx: -1.5em, dy: 0.4em, box[♡])), cadre,
+    )
+  } else {
+    cadre
+  }
+  if espacement != none { v(espacement, weak: true) }
 }
 
 // Chaque type possède un compteur indépendant, sans héritage des sections.
@@ -152,7 +151,7 @@
     numbering: "1",
     render: rendre-cadre.with(nom),
   )
-  (compteur, titre-blanc.with(numerote), titre-blanc.with(sans-numero), afficher)
+  (compteur, numerote, sans-numero, afficher)
 }
 
 #let (theorem-counter, theorem, theorem-box, show-theorem) = creer-environnement("theorem")

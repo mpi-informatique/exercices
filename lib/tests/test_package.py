@@ -26,7 +26,7 @@ with TemporaryDirectory() as dossier:
     assert not (package / 'lib/tests').exists()
     assert not (package / 'ressources').exists()
     source = racine / 'document.typ'
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, meta, theoremes, bloc-solution, sep, widetilde
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, meta, theoremes, bloc-solution, sep, widetilde, exercice, question, partie, afficher-exercice
 #let sujet = public("devoirs/concours/19/mines-ponts-2019-mp-informatique/mines-ponts-2019-mp-informatique.typ").sujet
 #let td = public("chapitres/langages/td-grammaire.typ")
 #assert(td.sujet.exercices.len() > 0)
@@ -42,6 +42,21 @@ $widetilde(a b), #sep widetilde(L)$
 #theoremes.remark[Une remarque compatible.]
 #theoremes.note[Une note compatible.]
 #theoremes.example[Un exemple compatible.]
+#let cible = question([Une question à déplacer.], label: <question-mobile>, solution: [Voir @question-mobile.])
+#let autre = question([Une autre question.])
+#let inverse = sys.inputs.at("corrige", default: "false") == "true"
+#let questions = if inverse { (cible, autre) } else { (autre, cible) }
+Voir @question-mobile avant son énoncé.
+#afficher-exercice(exercice(
+  meta: (titre: "Renvois", chapitres: (), difficulte: 1),
+  contenu: (partie("I", "Questions", contenu: questions),),
+  colonnes: 2,
+), corrige: inverse)
+#context {
+  let cible = query(<question-mobile>).first()
+  assert(cible.func() == figure and cible.supplement == [Question])
+  assert((cible.numbering)(0) == if inverse { "1" } else { "2" })
+}
 ''', encoding='utf-8')
     for variante in ('false', 'true'):
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
@@ -51,16 +66,22 @@ $widetilde(a b), #sep widetilde(L)$
 #show: cours-et-presentation.with(titre: "Cours externe", niveau: "MPI")
 = Section
 == Notion
-#theoremes.definition[Un contenu commun.]
+#theoremes.definition[Un contenu commun.] <definition-commune>
 #pause
 #theoremes.algorithm[Un algorithme commun.]
 == Application
 #theoremes.exercise[Un exercice.]
-#theoremes.theorem[Un théorème.]
+#theoremes.theorem[Un théorème.] <theoreme-commun>
 #article-only[#theoremes.definition-box[Une définition sans numéro.]]
 == Autre notion
 #theoremes.definition[Une deuxième définition.]
-#theoremes.theorem[Un deuxième théorème.]
+#theoremes.theorem[Un deuxième théorème.] <theoreme-suivant>
+Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
+#context {
+  for cible in (<definition-commune>, <theoreme-commun>, <theoreme-suivant>) {
+    assert(query(cible).len() == 1 and query(cible).first().func() == figure)
+  }
+}
 #article-only[
   #context {
     let cadres = query(<theorion-frame-metadata>).filter(it => it.value.numbering != none)
