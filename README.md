@@ -45,7 +45,7 @@ Just est facultatif pour compiler : `nix develop . -c python3 scripts/build.py c
 ## Cours et présentations
 
 Partir des modèles [cours A4](templates/cours.typ), [présentation Touying](templates/presentation.typ) ou [source commune](templates/cours-presentation.typ).
-Le cours sur les [langages réguliers](chapitres/langages/cours-langages-reguliers.typ) génère les deux formats sans recopier les énoncés :
+Le cours sur les [langages réguliers](chapitres/langages/cours-langages-reguliers.typ) génère le cours, son corrigé et la présentation sans recopier les énoncés :
 
 ```sh
 nix develop . -c just c chapitres/langages/cours-langages-reguliers.typ

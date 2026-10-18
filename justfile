@@ -23,7 +23,7 @@ documents:
 catalogue:
     {{python}} scripts/build.py catalogue
 
-# Compiler les variantes d'une source : énoncé/corrigé ou cours/présentation.
+# Compiler les variantes d'une source : énoncé/corrigé ou cours/cours corrigé/présentation.
 c source:
     {{python}} scripts/build.py c "$1"
 

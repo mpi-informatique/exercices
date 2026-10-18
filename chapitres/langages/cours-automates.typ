@@ -1,4 +1,4 @@
-#import "/load.typ": article-only, automate, colonnes-cours, cours-et-presentation, pause, sep, slides-only, theoremes
+#import "/load.typ": article-only, automate, colonnes-cours, cours-et-presentation, pause, sep, slides-only, solution, theoremes
 #import theoremes: algorithm, definition, exercise, lemma, theorem
 #import automate: cetz, dessiner-automate, finite, style-automates, unite-automates
 #import "@preview/touying:0.8.0": touying-reducer
@@ -156,7 +156,7 @@ Cette méthode traite aussi le mot vide.
   + Écrire ```ocaml accepte (a : automate) (m : string)```.
   + Déterminer la complexité.
 ]
-#slides-only[
+#solution[
   == Une étape de lecture
   ```ocaml
   let rec etape a etats lettre = match etats with
@@ -240,6 +240,29 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 #article-only[*Preuve* :]
 #slides-only[#pause Démontrer le résultat par récurrence sur $abs(u)$.]
 
+#slides-only[== Un test fini d'universalité]
+#exercise[
+  Un automate déterministe complet à $n$ états accepte tous les mots de longueur strictement inférieure à $n$.
+  Montrer qu'il accepte tous les mots. La borne est-elle optimale ?
+]
+#solution[
+  #slides-only[== Correction : supprimer une boucle]
+  Supposer qu'un mot est refusé et choisir un tel mot $m$ de longueur minimale.
+  Par hypothèse, $abs(m) ≥ n$.
+  Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
+  On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
+  $ δ^*(q_0, x) = δ^*(q_0, x y). $
+  L'identité de concaténation donne
+  $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
+  Le mot $x z$ est donc refusé et strictement plus court que $m$, ce qui contredit sa minimalité.
+
+  #slides-only[== Correction : optimalité de la borne]
+  La borne est optimale sur $Σ = {a}$.
+  Prendre $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
+  $ δ(i, a) = min(i + 1, n - 1). $
+  Cet automate accepte tous les mots de longueur strictement inférieure à $n - 1$, mais refuse $a^(n - 1)$.
+]
+
 == Implémentation déterministe
 ```ocaml
 type afdc = {
@@ -268,7 +291,7 @@ $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q,
 *Invariant* : après lecture d'un mot $u$, l'état atteint dans $A'$ est exactement l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
 
 #article-only[*Preuve* :]
-#slides-only[
+#solution[
   #pause
   - Pour $ε$, cet ensemble est $I$.
   - Pour $u a$, prendre l'union des $δ(q, a)$ pour tous les états atteints après $u$.
@@ -287,7 +310,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 #slides-only[== Exemple de déterminisation]
 #exercise(coeur: true)[Déterminiser l'automate suivant.]
 #facteur
-#slides-only[
+#solution[
   == Automate déterminisé
   // Les éléments masqués gardent leurs dimensions et leurs ancres entre les étapes.
   #text(size: 0.6em)[
@@ -348,7 +371,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 == Complémentaire
 #theorem(coeur: true)[Si $L ⊂ Σ^*$ est reconnaissable, $Σ^* ∖ L$ est reconnaissable.]
 #article-only[*Preuve* :]
-#slides-only[
+#solution[
   #pause
   Prendre un automate déterministe complet reconnaissant $L$ et remplacer $F$ par $Q ∖ F$.
   Chaque mot possède un unique chemin, qui aboutit dans un état final exactement lorsque le mot n'appartient pas à $L$.
@@ -368,7 +391,7 @@ $ δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)). $
 
 #slides-only[== Choix des états finaux du produit]
 Le produit simule les deux lectures en parallèle. Compléter l'ensemble des états finaux :
-#slides-only[
+#solution[
   - Pour $L_1 ∩ L_2$ : $F_1 × F_2$.
   - Pour $L_1 ∪ L_2$ : $(F_1 × Q_2) ∪ (Q_1 × F_2)$.
   - Pour $L_1 ∖ L_2$ : $F_1 × (Q_2 ∖ F_2)$.
@@ -400,7 +423,7 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
 ]
 #slides-only[== Calcul de l'accessibilité]
 #exercise[Décrire un algorithme de coût $O(abs(Q) + abs(E))$ déterminant ces deux ensembles.]
-#slides-only[#pause Parcourir le graphe depuis $I$, puis le graphe transposé depuis $F$.]
+#solution[#pause Parcourir le graphe depuis $I$, puis le graphe transposé depuis $F$.]
 #slides-only[== Émondage]
 #theorem[Tout automate est équivalent à un automate émondé.]
 Supprimer les états inaccessibles et les états non co-accessibles : aucun chemin acceptant ne les utilise.
@@ -441,7 +464,7 @@ Pour montrer que $L$ n'est pas reconnaissable :
   + $L_1 = {a^n b^n ∣ n ∈ ℕ}$
   + $L_2 = {a^n b^p ∣ n, p ∈ ℕ, #sep n ≠ p}$
 ]
-#slides-only[
+#solution[
   == Correction : autant de a que de b
   Supposer que $L_1$ est reconnu par un automate à $n ≥ 1$ états.
   Prendre $u = a^n b^n$. Comme $abs(x y) ≤ n$, on a $y = a^j$ avec $j > 0$.

@@ -1,4 +1,4 @@
-#import "/load.typ": article-only, cours-et-presentation, only, pause, slides-only
+#import "/load.typ": article-only, cours-et-presentation, only, pause, slides-only, solution
 #import "/load.typ": theoremes
 #import theoremes: corollary, definition, exercise, lemma, problem, property, theorem
 #import "/load.typ": sep, widetilde
@@ -397,7 +397,7 @@ Sur $Σ = {a, b}$ :
 
   Alors $cal(P)(L)$ est vraie pour tout langage régulier $L$.
 ]
-#slides-only[
+#solution[
   #pause
   L'ensemble ${L ∣ cal(P)(L)}$ contient les langages finis et est stable par union, concaténation et étoile de Kleene.
   Il contient donc tous les langages réguliers, par définition.

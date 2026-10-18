@@ -47,7 +47,7 @@ $widetilde(a b), #sep widetilde(L)$
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'corrige=' + variante,
                         str(source), str(racine / (variante + '.pdf'))], check=True)
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, pause, article-only, slides-only, theoremes
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, pause, article-only, slides-only, solution, theoremes
 #show: cours-et-presentation.with(titre: "Cours externe", niveau: "MPI")
 = Section
 == Notion
@@ -69,6 +69,14 @@ $widetilde(a b), #sep widetilde(L)$
   }
   Un détail du polycopié.
 ]
+#solution[
+  #slides-only[== Solution projetée]
+  #metadata("solution") <solution-cours-test> Une solution réservée au corrigé et aux diapositives.
+]
+#context {
+  let visible = sys.inputs.at("corrige", default: "false") == "true" or sys.inputs.at("format") == "presentation"
+  assert(query(<solution-cours-test>).len() == if visible { 1 } else { 0 })
+}
 #slides-only[
   Un complément projeté.
   #context {
@@ -96,10 +104,10 @@ $widetilde(a b), #sep widetilde(L)$
   }
 }
 ''', encoding='utf-8')
-    for variante in ('cours', 'presentation'):
-        output = racine / (variante + '.pdf')
+    for variante, corrige in (('cours', 'false'), ('cours', 'true'), ('presentation', 'false')):
+        output = racine / (variante + '-' + corrige + '.pdf')
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
-                        '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
+                        '--package-path', str(racine / 'packages'), '--input', 'format=' + variante, '--input', 'corrige=' + corrige,
                         str(source), str(output)], check=True)
         assert output.stat().st_size > 0
 print('Package local : imports, ressources, énoncé, corrigé, cours et présentation vérifiés.')

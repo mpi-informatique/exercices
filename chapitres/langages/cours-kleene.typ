@@ -1,4 +1,4 @@
-#import "/load.typ": article-only, automate, cours-et-presentation, pause, sep, slides-only, theoremes
+#import "/load.typ": article-only, automate, cours-et-presentation, pause, sep, slides-only, solution, theoremes
 #import theoremes: algorithm, definition, exercise, lemma, theorem
 #import automate: dessiner-automate
 
@@ -67,7 +67,7 @@ avec $π(a_0) = a$ et $π(b_i) = b$.
 ]
 #slides-only[== Calcul des ensembles locaux]
 #exercise[Donner $P(L)$, $S(L)$ et $F(L)$ pour $L = a^* b (a b)^* c$.]
-#slides-only[#pause $P(L) = {a, b}$, $S(L) = {c}$ et $F(L) = {a a, a b, b a, b c}$.]
+#solution[#pause $P(L) = {a, b}$, $S(L) = {c}$ et $F(L) = {a a, a b, b a, b c}$.]
 
 == Langages locaux
 #definition[
@@ -90,7 +90,7 @@ $ L ∖ {ε} = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^*. $
   + $L_3 = a^* | (a b)^*$
   + $L_4 = a^* (a b)^*$
 ]
-#slides-only[#pause Les trois premiers donnent deux langages locaux puis un contre-exemple : $a a b$ respecte les conditions locales de $L_3$ sans lui appartenir. $L_4$ est local.]
+#solution[#pause Les trois premiers donnent deux langages locaux puis un contre-exemple : $a a b$ respecte les conditions locales de $L_3$ sans lui appartenir. $L_4$ est local.]
 
 #slides-only[== Stabilité des langages locaux]
 #theorem[
@@ -98,7 +98,7 @@ $ L ∖ {ε} = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^*. $
   Si $L_1$ est local, $L_1^*$ est local sur $Σ_1$.
 ]
 #article-only[*Preuve* :]
-#slides-only[
+#solution[
   #pause
   Pour l'union, aucun facteur autorisé ne passe d'un alphabet à l'autre.
   Pour la concaténation, un mot non vide passe au plus une fois de $Σ_1$ à $Σ_2$.
@@ -109,7 +109,7 @@ L'hypothèse d'alphabets disjoints est essentielle pour les deux premières opé
 #slides-only[== Expression linéaire et langage local]
 #theorem[Si $e$ est une expression régulière linéaire, $cal(L)(e)$ est local.]
 #article-only[*Preuve* :]
-#slides-only[#pause Procéder par induction structurelle. Les deux sous-expressions d'une union ou d'une concaténation utilisent des alphabets disjoints.]
+#solution[#pause Procéder par induction structurelle. Les deux sous-expressions d'une union ou d'une concaténation utilisent des alphabets disjoints.]
 
 == Automate local
 #definition[
@@ -127,7 +127,7 @@ Pour reconnaître un langage local $L$, utiliser $Q = Σ ∪ {q_0}$, avec $q_0 �
 
 #slides-only[== Exemple d'automate local]
 #exercise[Construire un automate local reconnaissant $a (a | b)^*$.]
-#slides-only[
+#solution[
   #pause
   #dessiner-automate(
     (("q_0", (0, 0), true, false), ("a", (3, 0), false, true), ("b", (6, 0), false, true)),
@@ -154,7 +154,7 @@ Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réc
 
 #slides-only[== Application de Berry-Sethi]
 #exercise[Appliquer l'algorithme à $e = a (a | b)^*$.]
-#slides-only[
+#solution[
   #pause
   Linéarisation : $a_0 (a_1 | b_0)^*$.
   $P = {a_0}$, $S = {a_0, a_1, b_0}$ et
@@ -191,7 +191,7 @@ Cet automate reconnaît ${ε, b, a c, a a, a a b}$.
 #slides-only[== Élimination des ε-transitions]
 #theorem[Tout automate avec $ε$-transitions est équivalent à un automate sans $ε$-transition.]
 #article-only[*Preuve* :]
-#slides-only[
+#solution[
   #pause
   Noter $C(X)$ l'ensemble des états atteints depuis $X$ par des $ε$-transitions.
   Prendre $I' = C(I)$, garder $F$, et poser :
@@ -229,7 +229,7 @@ Garder seulement les états initiaux du premier et les états finaux du second.
   + Construire un automate de Thompson pour $a (a b | b)^*$.
   + Borner les nombres d'états des automates de Thompson et de Glushkov en fonction de la taille de l'expression.
 ]
-#slides-only[#pause Les deux constructions donnent un nombre d'états linéaire. Glushkov utilise un état par occurrence de lettre, plus l'état initial.]
+#solution[#pause Les deux constructions donnent un nombre d'états linéaire. Glushkov utilise un état par occurrence de lettre, plus l'état initial.]
 
 = Reconnaissable ⟹ régulier
 
@@ -240,7 +240,7 @@ Garder seulement les états initiaux du premier et les états finaux du second.
   - Un unique état final $q_f$ sans transition sortante.
 ]
 #article-only[*Preuve* :]
-#slides-only[#pause Ajouter $q_i$ et $q_f$, relier $q_i$ aux anciens états initiaux et les anciens états finaux à $q_f$ par des $ε$-transitions.]
+#solution[#pause Ajouter $q_i$ et $q_f$, relier $q_i$ aux anciens états initiaux et les anciens états finaux à $q_f$ par des $ε$-transitions.]
 
 == Élimination d'un état
 Autoriser des expressions régulières comme étiquettes.
@@ -267,7 +267,7 @@ Chaque élimination conserve le langage. À la fin, l'étiquette restante décri
 #exercise[Donner une expression régulière pour l'automate suivant par élimination des états.]
 #dessiner-automate(elimination-etats, elimination-arcs)
 
-#slides-only[
+#solution[
   == Normaliser l'exemple
   #dessiner-automate(
     (

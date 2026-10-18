@@ -4,7 +4,7 @@ export interface Exercise {
   duree: [number, number] | null;
   concours: { nom?: string; annee?: number; filiere?: string; oral?: boolean } | null;
 }
-export type Variant = 'enonce' | 'corrige';
+export type Variant = 'enonce' | 'corrige' | 'presentation';
 export const facets = ['chapitres', 'algorithmes', 'structures', 'langages', 'niveaux', 'concours'] as const;
 export type Facet = typeof facets[number];
 export type Filters = Partial<Record<Facet, string>> & { difficulteMax?: number; type?: string };
@@ -19,24 +19,35 @@ export function safeSource(file: string): string {
 }
 
 export function availableVariants(documentType?: string): Variant[] {
-  return documentType === 'cours' || documentType === 'presentation' ? ['enonce'] : ['enonce', 'corrige'];
+  if (documentType === 'cours-presentation') return ['enonce', 'corrige', 'presentation'];
+  return documentType === 'presentation' ? ['enonce'] : ['enonce', 'corrige'];
 }
 
 export function outputVariant(variant: Variant, documentType?: string): string {
-  if (documentType === 'cours-presentation') return variant === 'enonce' ? 'cours' : 'presentation';
-  return documentType === 'cours' || documentType === 'presentation' ? documentType : variant;
+  if (documentType === 'cours-presentation') return variant === 'presentation' ? 'presentation' : variant === 'corrige' ? 'corrige' : 'cours';
+  return documentType === 'cours' && variant === 'enonce' ? 'cours' : documentType === 'presentation' ? 'presentation' : variant;
 }
 
 export function variantLabels(documentType?: string): Record<Variant, string> {
-  if (documentType === 'cours-presentation') return { enonce: 'Cours', corrige: 'Présentation' };
-  if (documentType === 'cours' || documentType === 'presentation') return { enonce: documentType === 'cours' ? 'Cours' : 'Présentation', corrige: '' };
-  return { enonce: 'Énoncé', corrige: 'Corrigé' };
+  if (documentType === 'cours-presentation') return { enonce: 'Cours', corrige: 'Cours corrigé', presentation: 'Présentation' };
+  if (documentType === 'cours') return { enonce: 'Cours', corrige: 'Cours corrigé', presentation: '' };
+  if (documentType === 'presentation') return { enonce: 'Présentation', corrige: '', presentation: '' };
+  return { enonce: 'Énoncé', corrige: 'Corrigé', presentation: '' };
+}
+
+export function compilationInputs(variant: Variant, documentType?: string): Record<string, string> {
+  return {
+    ...(documentType === 'cours-presentation' ? { format: variant === 'presentation' ? 'presentation' : 'cours' } : {}),
+    corrige: String(variant === 'corrige'),
+  };
 }
 
 export function pdfFilename(source: string, variant: Variant, documentType?: string): string {
   safeSource(source);
-  if (documentType === 'cours-presentation') return `${outputVariant(variant, documentType)}-${sourceId(source).replace(/^cours-/, '')}.pdf`;
-  if (documentType === 'cours' || documentType === 'presentation') return `${sourceId(source)}.pdf`;
+  if (documentType === 'cours-presentation') {
+    const prefix = variant === 'presentation' ? 'presentation' : 'cours';
+    return `${prefix}-${sourceId(source).replace(/^cours-/, '')}${variant === 'corrige' ? '-cor' : ''}.pdf`;
+  }
   return `${sourceId(source)}${variant === 'corrige' ? '-cor' : ''}.pdf`;
 }
 

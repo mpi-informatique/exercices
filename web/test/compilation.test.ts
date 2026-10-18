@@ -71,13 +71,17 @@ test('Typst extrait les métadonnées sans catalogue et isole les fichiers priv�
 });
 
 
-test('les cours sont indexés et les deux formats produisent des PDF distincts', async () => {
+test('les trois variantes des cours respectent leurs paramètres et produisent des PDF distincts', async () => {
   const resource = resources.find(resource => resource.id === 'cours-kleene')!;
   assert.equal(resource.type, 'cours-presentation');
-  const code = '#assert(sys.inputs.at("corrige", default: "false") == "false")\n' + await source(resource);
-  const course = await engine.compile(resource, code, 'enonce');
-  const slides = await engine.compile(resource, code, 'corrige');
+  const code = await source(resource);
+  const normal = '#assert(sys.inputs.at("corrige") == "false")\n' + code;
+  const course = await engine.compile(resource, normal, 'enonce');
+  const corrected = await engine.compile(resource, '#assert(sys.inputs.at("corrige") == "true")\n' + code, 'corrige');
+  const slides = await engine.compile(resource, normal, 'presentation');
+  assert.notDeepEqual(course.pdf, corrected.pdf);
   assert.notDeepEqual(course.pdf, slides.pdf);
+  assert.notDeepEqual(corrected.pdf, slides.pdf);
   const metadata = await engine.inspect(resource.fichier, 'document', resource.type);
   assert.equal(metadata.titre, resource.titre);
   assert.equal(metadata.type, 'cours-presentation');

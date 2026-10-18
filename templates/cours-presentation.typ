@@ -1,4 +1,4 @@
-#import "/load.typ": article-only, cours-et-presentation, pause, slides-only
+#import "/load.typ": article-only, cours-et-presentation, pause, slides-only, solution
 #import "/load.typ": theoremes
 #import theoremes: definition, exercise, theorem
 
@@ -24,4 +24,8 @@
 #slides-only[
   #pause
   Indication à révéler pendant la présentation.
+]
+
+#solution[
+  Justifier les étapes de la résolution.
 ]

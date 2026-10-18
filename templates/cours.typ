@@ -1,4 +1,4 @@
-#import "/load.typ": cours
+#import "/load.typ": cours, solution
 #import "/load.typ": theoremes
 #import theoremes: algorithm, definition, exercise, theorem
 
@@ -20,4 +20,8 @@
 
 #exercise[
   Appliquer le résultat précédent.
+]
+
+#solution[
+  Justifier les étapes de la résolution.
 ]

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Download, FileCode, CodeXml, RotateCcw, CircleAlert, CircleDot, GitPullRequest, GitCommitHorizontal, X } from 'lucide-react';
-import { availableVariants, outputVariant, variantLabels, duration, pdfFilename, type Resource, type Variant } from '@mpi-informatique/exercices-core';
+import { availableVariants, variantLabels, duration, pdfFilename, type Resource, type Variant } from '@mpi-informatique/exercices-core';
 import SearchSidebar from './SearchSidebar';
 import { ResizeHandle } from './ResizeHandle';
 import { useCompiler } from '../hooks/useCompiler';
@@ -13,7 +13,7 @@ import CommandPalette, { type Command } from './CommandPalette';
 import type { SearchFilters } from '../lib/filters';
 import { createSearch } from '../lib/search';
 import { resourceTypeLabel } from '../lib/labels';
-import { exerciseUrl, routeId } from '../lib/urls';
+import { exerciseUrl, routeId, routeVariant } from '../lib/urls';
 import { stored, store } from '../lib/storage';
 import { githubEditUrl, githubFileUrl, githubIssueUrl, repositoryUrl } from '../lib/github';
 import { authUrl, startContribution } from '../lib/githubAuth';
@@ -81,7 +81,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
 
   useEffect(() => {
     setDark(document.documentElement.dataset.theme === 'exercices-dark');
-    setVariant(new URLSearchParams(location.search).get('vue') === 'corrige' ? 'corrige' : 'enonce');
+    setVariant(routeVariant(location.search));
     setSidebarOpen(window.innerWidth > 900);
     setEditorOpen(window.innerWidth > 1100 && stored('editor-open') !== 'false');
     const side = Number(stored('sidebar-width'));
@@ -90,7 +90,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
     if (editor >= 280 && editor <= 900) setEditorWidth(editor);
     const pop = () => {
       setSelected(routeId(location.pathname, location.hash) ?? 'residuels-minimisation');
-      setVariant(new URLSearchParams(location.search).get('vue') === 'corrige' ? 'corrige' : 'enonce');
+      setVariant(routeVariant(location.search));
     };
     window.addEventListener('popstate', pop);
     return () => window.removeEventListener('popstate', pop);
@@ -199,9 +199,10 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
   function downloadPdf() {
     if (!resource || !compilation.pdf || !canDownloadPdf) return;
     const stem = resource.fichier.split('/').at(-1)!.slice(0, -4);
+    const suffix = variant === 'corrige' ? '-cor' : '';
     const privateFilename = resource.type === 'cours-presentation'
-      ? `${outputVariant(variant, resource.type)}-${stem.replace(/^cours-/, '')}.pdf`
-      : `${stem}${variant === 'corrige' && resource.type !== 'cours' && resource.type !== 'presentation' ? '-cor' : ''}.pdf`;
+      ? `${variant === 'presentation' ? 'presentation' : 'cours'}-${stem.replace(/^cours-/, '')}${suffix}.pdf`
+      : `${stem}${suffix}.pdf`;
     download(compilation.pdf, privateResource ? privateFilename : pdfFilename(resource.fichier, variant, resource.type), 'application/pdf');
   }
   const commands: Command[] = [

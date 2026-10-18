@@ -10,6 +10,9 @@ assert pdf_filename('chapitres/langages/colle.typ', 'corrige') == 'colle-cor.pdf
 assert pdf_filename('chapitres/langages/cours-kleene.typ', 'cours', 'cours-presentation') == 'cours-kleene.pdf'
 assert pdf_filename('chapitres/langages/cours-kleene.typ', 'presentation', 'cours-presentation') == 'presentation-kleene.pdf'
 assert pdf_filename('chapitres/langages/support.typ', 'cours', 'cours') == 'support.pdf'
+assert pdf_filename('chapitres/langages/support.typ', 'corrige', 'cours') == 'support-cor.pdf'
+assert pdf_filename('chapitres/langages/cours-kleene.typ', 'corrige', 'cours-presentation') == 'cours-kleene-cor.pdf'
+assert pdf_filename('chapitres/langages/support.typ', 'corrige', 'cours-presentation') == 'cours-support-cor.pdf'
 
 assert classify('#let ex = exercice()', '2026/graphes/un.typ') == 'exercice'
 assert classify('#show: feuille.with(type: "devoir", exercices: ())', 'ds.typ') == 'document'
@@ -27,8 +30,8 @@ assert classify('#show: cours.with(titre: "Cours")', 'libre/a.typ') == 'cours'
 assert classify('#show: presentation.with(titre: "Présentation")', 'libre/b.typ') == 'presentation'
 assert classify('#show: cours-et-presentation.with(titre: "Cours")', 'libre/c.typ') == 'cours-presentation'
 assert classify('// #show: cours-et-presentation.with()\n`#show: presentation.with()`', 'a.typ') is None
-assert variants('cours-presentation') == {'cours': ('format=cours',), 'presentation': ('format=presentation',)}
-assert variants('cours') == {'cours': ()}
+assert variants('cours-presentation') == {'cours': ('format=cours', 'corrige=false'), 'corrige': ('format=cours', 'corrige=true'), 'presentation': ('format=presentation', 'corrige=false')}
+assert variants('cours') == {'cours': ('corrige=false',), 'corrige': ('corrige=true',)}
 assert variants('presentation') == {'presentation': ()}
 assert variants('exercice') == variants('document') == {'enonce': ('corrige=false',), 'corrige': ('corrige=true',)}
 print('Découverte des sources et variantes : exercices, documents, cours et présentations vérifiés.')

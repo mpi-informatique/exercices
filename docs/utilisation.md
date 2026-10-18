@@ -22,7 +22,7 @@ Les consignes de création et de reformulation sont regroupées dans [Créer des
 
 ## Cours et présentations
 
-Préfixer les sources de cours par `cours-`, y compris lorsqu'elles génèrent aussi une présentation : `cours-kleene.typ`, par exemple. Les PDF exportés depuis l'extension sont nommés `cours-kleene.pdf` et `presentation-kleene.pdf`.
+Préfixer les sources de cours par `cours-`, y compris lorsqu'elles génèrent aussi une présentation : `cours-kleene.typ`, par exemple. Les PDF sont nommés `cours-kleene.pdf`, `cours-kleene-cor.pdf` et `presentation-kleene.pdf`. Un cours sans présentation produit également sa variante `-cor.pdf`.
 
 Partir de [templates/cours.typ](../templates/cours.typ) pour un cours A4, de [templates/presentation.typ](../templates/presentation.typ) pour des diapositives, ou de [templates/cours-presentation.typ](../templates/cours-presentation.typ) pour produire les deux à partir du même contenu.
 
@@ -85,10 +85,22 @@ Placer les pauses et commandes d'animation à l'extérieur des cadres de `lib/th
 ```sh
 nix develop . -c just c chapitres/langages/cours-langages-reguliers.typ
 nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ cours
+nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ corrige
 nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ presentation
 ```
 
-Pour compiler directement, utiliser `typst compile --root . --input format=cours source.typ cours.pdf` ou `--input format=presentation`.
+Pour compiler directement, utiliser `typst compile --root . --input format=cours source.typ cours.pdf`, ajouter `--input corrige=true` pour le corrigé, ou choisir `--input format=presentation` pour les diapositives.
+
+Placer les réponses et preuves dans `solution[...]`, importé depuis `/load.typ` :
+
+```typst
+#exercise[Résoudre le problème.]
+#solution[
+  Donner la résolution et sa justification.
+]
+```
+
+Ce contenu est masqué dans le cours normal, affiché après l'énoncé dans le cours corrigé et conservé dans la présentation. Les pauses et titres propres à la projection peuvent rester dans `slides-only[...]` à l'intérieur de la solution. Les cours ne renseignent pas automatiquement les solutions manquantes.
 
 ## Aide de l'API
 

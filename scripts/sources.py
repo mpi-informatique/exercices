@@ -73,9 +73,11 @@ def classify(text, source):
 def variants(kind):
     """Les sorties d'une source et les paramètres de compilation correspondants."""
     if kind == 'cours-presentation':
-        return {'cours': ('format=cours',), 'presentation': ('format=presentation',)}
-    if kind in ('cours', 'presentation'):
-        return {kind: ()}
+        return {'cours': ('format=cours', 'corrige=false'), 'corrige': ('format=cours', 'corrige=true'), 'presentation': ('format=presentation', 'corrige=false')}
+    if kind == 'cours':
+        return {'cours': ('corrige=false',), 'corrige': ('corrige=true',)}
+    if kind == 'presentation':
+        return {'presentation': ()}
     return {'enonce': ('corrige=false',), 'corrige': ('corrige=true',)}
 
 
@@ -83,7 +85,8 @@ def pdf_filename(source, variant, kind=None):
     """Nom de PDF commun à la compilation, à la surveillance et aux exports."""
     stem = Path(source).stem
     if kind == 'cours-presentation':
-        return f'{variant}-{stem.removeprefix("cours-")}.pdf'
+        prefix = 'presentation' if variant == 'presentation' else 'cours'
+        return f'{prefix}-{stem.removeprefix("cours-")}' + ('-cor' if variant == 'corrige' else '') + '.pdf'
     return stem + ('-cor' if variant == 'corrige' else '') + '.pdf'
 
 

@@ -1,19 +1,24 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { availableVariants, outputVariant, pdfFilename, variantLabels } from '../../shared/src/index.ts';
+import { availableVariants, compilationInputs, outputVariant, pdfFilename, variantLabels } from '../../shared/src/index.ts';
 
-test('les formats et téléchargements correspondent aux boutons du lecteur', () => {
-  assert.deepEqual(variantLabels('cours-presentation'), { enonce: 'Cours', corrige: 'Présentation' });
-  assert.deepEqual(variantLabels('td'), { enonce: 'Énoncé', corrige: 'Corrigé' });
-  assert.deepEqual(availableVariants('cours-presentation'), ['enonce', 'corrige']);
-  for (const [variant, format] of [['enonce', 'cours'], ['corrige', 'presentation']] as const) {
-    assert.equal(outputVariant(variant, 'cours-presentation'), format);
-    assert.equal(pdfFilename('chapitres/langages/cours-kleene.typ', variant, 'cours-presentation'), `${format}-kleene.pdf`);
+test('les cours, corrigés et présentations ont des paramètres et noms distincts', () => {
+  assert.deepEqual(variantLabels('cours-presentation'), { enonce: 'Cours', corrige: 'Cours corrigé', presentation: 'Présentation' });
+  assert.deepEqual(availableVariants('cours-presentation'), ['enonce', 'corrige', 'presentation']);
+  for (const [variant, format, name] of [
+    ['enonce', 'cours', 'cours-kleene.pdf'],
+    ['corrige', 'cours', 'cours-kleene-cor.pdf'],
+    ['presentation', 'presentation', 'presentation-kleene.pdf'],
+  ] as const) {
+    assert.equal(outputVariant(variant, 'cours-presentation'), variant === 'corrige' ? 'corrige' : format);
+    assert.deepEqual(compilationInputs(variant, 'cours-presentation'), { format, corrige: String(variant === 'corrige') });
+    assert.equal(pdfFilename('chapitres/langages/cours-kleene.typ', variant, 'cours-presentation'), name);
   }
-  for (const type of ['cours', 'presentation']) {
-    assert.deepEqual(availableVariants(type), ['enonce']);
-    assert.equal(outputVariant('enonce', type), type);
-    assert.equal(pdfFilename(`chapitres/support-${type}.typ`, 'enonce', type), `support-${type}.pdf`);
-  }
+  assert.deepEqual(availableVariants('cours'), ['enonce', 'corrige']);
+  assert.equal(pdfFilename('chapitres/support.typ', 'corrige', 'cours'), 'support-cor.pdf');
+  assert.deepEqual(compilationInputs('corrige', 'cours'), { corrige: 'true' });
+  assert.deepEqual(availableVariants('presentation'), ['enonce']);
+  assert.equal(pdfFilename('chapitres/support.typ', 'enonce', 'presentation'), 'support.pdf');
+  assert.deepEqual(availableVariants('td'), ['enonce', 'corrige']);
   assert.equal(pdfFilename('chapitres/exercice.typ', 'corrige', 'exercice'), 'exercice-cor.pdf');
 });

@@ -2,7 +2,7 @@ import { createTypstCompiler } from '@myriaddreamin/typst.ts/compiler';
 import { loadFonts, withAccessModel, withPackageRegistry } from '@myriaddreamin/typst.ts/options.init';
 import { MemoryAccessModel } from '@myriaddreamin/typst.ts/fs/memory';
 import type { WebAssemblyModuleRef } from '@myriaddreamin/typst.ts/wasm';
-import { outputVariant, type Resource, type Variant } from '@mpi-informatique/exercices-core';
+import { compilationInputs, type Resource, type Variant } from '@mpi-informatique/exercices-core';
 
 interface Assets {
   bundle: Record<string, string>;
@@ -68,9 +68,7 @@ export async function createEngine({ bundle, fonts, wasm }: Assets) {
       const result = await compiler.runWithWorld({
         mainFilePath: resource.kind === 'exercice' ? '/@memory/workspace/templates/fiche.typ' : path,
         root: '/@memory/workspace',
-        inputs: resource.type === 'cours-presentation'
-          ? { format: outputVariant(variant, resource.type) }
-          : { corrige: String(variant === 'corrige'), exercice: `/${resource.fichier}` },
+        inputs: { ...compilationInputs(variant, resource.type), exercice: `/${resource.fichier}` },
       }, world => world.pdf({ diagnostics: 'unix' }));
       if (!result.result) throw new Error(result.diagnostics?.join('\n') || 'La compilation a échoué.');
       return { pdf: new Uint8Array(result.result), diagnostics: result.diagnostics ?? [], duration: Math.round(performance.now() - start) };

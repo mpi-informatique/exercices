@@ -6,7 +6,7 @@
 #import "lib/automate.typ" as automate
 #import "lib/code.typ" as code
 #import "lib/theoremes.typ" as theoremes
-#import "lib/cours.typ": cours, espace-reponse
+#import "lib/cours.typ": cours, espace-reponse, solution
 #import "lib/presentation.typ": presentation, cours-et-presentation, colonnes-cours, pause, uncover, only, slide, article-only, slides-only
 
 /// Importe un exercice ou un sujet depuis le package.
