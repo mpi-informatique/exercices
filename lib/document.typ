@@ -7,6 +7,10 @@
 /// -> content
 #let sep = h(0.5em)
 
+/// Complète la ligne courante par des pointillés.
+/// -> content
+#let pointilles() = box(width: 1fr, repeat[.])
+
 /// Tilde élargi, y compris au-dessus d'une seule lettre.
 /// - body (content): Expression à surmonter d'un tilde.
 /// -> content

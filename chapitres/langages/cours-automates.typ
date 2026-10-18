@@ -1,4 +1,4 @@
-#import "/load.typ": article-only, automate, colonnes-cours, cours-et-presentation, pause, sep, slides-only, solution, theoremes
+#import "/load.typ": article-only, automate, colonnes-cours, cours-et-presentation, pause, pointilles, sep, slides-only, solution, theoremes
 #import theoremes: algorithm, definition, exercise, lemma, theorem
 #import automate: cetz, dessiner-automate, finite, style-automates, unite-automates
 #import "@preview/touying:0.8.0": touying-reducer
@@ -289,7 +289,7 @@ let accepte a m =
 ```
   ],
 )
-Complexité : #box(width: 1fr, repeat[.])
+Complexité : #pointilles()
 
 == Déterminisation
 #theorem(coeur: true)[Tout automate est équivalent à un automate déterministe complet.]
