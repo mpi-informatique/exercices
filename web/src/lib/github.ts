@@ -2,6 +2,15 @@ export const repositoryUrl = 'https://github.com/mpi-informatique/exercices';
 
 export const githubEditUrl = (file: string): string => `${repositoryUrl}/edit/main/${file.split('/').map(encodeURIComponent).join('/')}`;
 
+export const githubFileUrl = (file: string, repository = repositoryUrl, branch = 'main'): string => `${repository}/blob/${encodeURIComponent(branch)}/${file.split('/').map(encodeURIComponent).join('/')}`;
+
+export function githubIssueUrl(file: string, title: string, repository = repositoryUrl, branch = 'main'): string {
+  const url = new URL(`${repository}/issues/new`);
+  url.searchParams.set('title', `Signaler un problème : ${title}`);
+  url.searchParams.set('body', `Fichier concerné : ${githubFileUrl(file, repository, branch)}\n\nDescription du problème :\n`);
+  return url.href;
+}
+
 export interface Contribution { file: string; source: string; original: string; title: string }
 
 export function encodeSource(source: string): string {

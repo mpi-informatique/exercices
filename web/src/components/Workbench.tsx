@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
-import { Download, FileCode, CodeXml, RotateCcw, CircleAlert, GitPullRequest, GitCommitHorizontal, X } from 'lucide-react';
+import { Download, FileCode, CodeXml, RotateCcw, CircleAlert, CircleDot, GitPullRequest, GitCommitHorizontal, X } from 'lucide-react';
 import { availableVariants, outputVariant, variantLabels, duration, pdfFilename, type Resource, type Variant } from '@mpi-informatique/exercices-core';
 import SearchSidebar from './SearchSidebar';
 import { ResizeHandle } from './ResizeHandle';
@@ -7,6 +7,7 @@ import { useCompiler } from '../hooks/useCompiler';
 import { useSource } from '../hooks/useSource';
 import { useCodeFiles } from '../hooks/useCodeFiles';
 import { Navbar } from './Navbar';
+import { GitHubIcon } from './GitHubIcon';
 import { VariantTabs } from './VariantTabs';
 import CommandPalette, { type Command } from './CommandPalette';
 import type { SearchFilters } from '../lib/filters';
@@ -14,7 +15,7 @@ import { createSearch } from '../lib/search';
 import { resourceTypeLabel } from '../lib/labels';
 import { exerciseUrl, routeId } from '../lib/urls';
 import { stored, store } from '../lib/storage';
-import { githubEditUrl } from '../lib/github';
+import { githubEditUrl, githubFileUrl, githubIssueUrl, repositoryUrl } from '../lib/github';
 import { authUrl, startContribution } from '../lib/githubAuth';
 import { usePrivateBank } from '../hooks/usePrivateBank';
 import PrivateBankPanel from './PrivateBankPanel';
@@ -66,6 +67,8 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
   const codeFiles = useCodeFiles(resource?.fichier, code?.source, codePath, privateResource ? library.bank : undefined);
   const editorPath = codePath ?? resource?.fichier;
   const editorSource = codePath ? codeFiles.file?.source : code?.source;
+  const editorRepository = privateResource ? `https://github.com/${library.bank!.repository}` : repositoryUrl;
+  const editorBranch = privateResource ? library.bank!.branch : 'main';
   const associatedFiles = codePath && !codeFiles.associated.includes(codePath) ? [...codeFiles.associated, codePath] : codeFiles.associated;
   const compilation = useCompiler(resource, code?.source, variant, retry, privateResource ? library.bank?.bundle : undefined);
 
@@ -234,6 +237,10 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
                 {associatedFiles.map(path => <option key={path} value={path}>{path.slice(0, path.lastIndexOf('/')) === resource?.fichier.slice(0, resource.fichier.lastIndexOf('/')) ? path.split('/').at(-1) : path}</option>)}
               </select> : <span>{editorPath?.split('/').at(-1)}</span>}{privateResource && <span className="private-badge">Privé</span>}{!codePath && modified && <span className="modified-dot" role="img" aria-label="Brouillon modifié" title={privateResource ? 'Brouillon privé, conservé dans cet onglet' : 'Brouillon modifié, enregistré localement'} />}</span>
               <div>
+                {editorPath && resource && <>
+                  <a className="btn btn-ghost btn-xs btn-square" aria-label="Voir le fichier sur GitHub" title="Voir le fichier sur GitHub" href={githubFileUrl(editorPath, editorRepository, editorBranch)} target="_blank" rel="noreferrer"><GitHubIcon size={14} /></a>
+                  <a className="btn btn-ghost btn-xs btn-square" aria-label="Signaler un problème sur GitHub" title="Créer une issue pour le fichier affiché" href={githubIssueUrl(editorPath, resource.titre, editorRepository, editorBranch)} target="_blank" rel="noreferrer"><CircleDot size={14} /></a>
+                </>}
                 {!codePath && privateResource && library.account && <button className="btn btn-ghost btn-xs btn-square" aria-label="Créer un commit sur GitHub" title={`Enregistrer les modifications dans ${library.bank?.repository}, branche ${library.bank?.branch}`} disabled={!modified || library.commitPending || library.busy} onClick={commitPrivate}>{library.commitPending ? <span className="loading loading-spinner loading-xs" /> : <GitCommitHorizontal size={14} />}</button>}
                 {!codePath && resource && !privateResource && (authUrl && modified
                   ? <button className="btn btn-ghost btn-xs btn-square" aria-label="Ouvrir une pull request sur GitHub" title="Se connecter à GitHub et proposer le brouillon modifié" disabled={contributionPending} onClick={proposeContribution}>{contributionPending ? <span className="loading loading-spinner loading-xs" /> : <GitPullRequest size={14} />}</button>
