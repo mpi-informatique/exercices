@@ -76,8 +76,8 @@
       #produit-modulo(((0, 0), (1, 1)))
     ]),
     question([$L_4={m∈{a,b}^* | abs(m)_a=abs(m)_b}$.], solution: [
-      Supposons $L_4$ reconnaissable et soit $n≥1$ une longueur de pompage.
-      Le mot $u=a^n b^n$ appartient à $L_4$ et a une longueur au moins $n$.
+      Supposons $L_4$ reconnaissable et soit $n≥1$ une taille de pompage.
+      Le mot $u=a^n b^n$ appartient à $L_4$ et a une taille au moins $n$.
       Le lemme de l'étoile donne $u=x y z$ avec $abs(x y)≤n$, $y≠ε$ et $x y^k z∈L_4$ pour tout $k∈NN$.
       Le mot $y$ ne contient que des $a$ ; pour $k=0$, $x z$ contient strictement moins de $a$ que de $b$.
       Contradiction : $L_4$ n'est pas reconnaissable.
@@ -116,9 +116,9 @@
       ],
     ),
     question([$L_6={a^p | p " est un nombre premier"}$.], solution: [
-      Supposons $L_6$ reconnaissable et soit $n$ une longueur de pompage.
+      Supposons $L_6$ reconnaissable et soit $n$ une taille de pompage.
       Choisissons un nombre premier $p≥n+2$. Le lemme de l'étoile appliqué à $a^p$ donne $a^p=a^(i_1)(a^(i_2))a^(i_3)$ avec $i_1+i_2≤n$, $i_2>0$ et $a^(i_1+k i_2+i_3)∈L_6$ pour tout $k∈NN$.
-      Prenons $k=i_1+i_3$. La longueur obtenue est $q=(i_1+i_3)(1+i_2)$.
+      Prenons $k=i_1+i_3$. La taille obtenue est $q=(i_1+i_3)(1+i_2)$.
       Les deux facteurs sont strictement supérieurs à $1$, car $i_3=p-i_1-i_2≥2$.
       Donc $q$ n'est pas premier : contradiction.
     ]),

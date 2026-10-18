@@ -180,9 +180,9 @@
       ],
     ),
     question([Montrer que $"Pal"(Σ) ∩ (Σ^2)^*={u widetilde(u) | u ∈ Σ^*}$.], solution: [
-      Le langage $(Σ^2)^*$ contient exactement les mots de longueur paire.
-      Tout $u widetilde(u)$ est un palindrome de longueur $2 abs(u)$.
-      Réciproquement, si un palindrome a longueur $2n$, sa seconde moitié est le miroir de sa première moitié $u$.
+      Le langage $(Σ^2)^*$ contient exactement les mots de taille paire.
+      Tout $u widetilde(u)$ est un palindrome de taille $2 abs(u)$.
+      Réciproquement, si un palindrome a pour taille $2n$, sa seconde moitié est le miroir de sa première moitié $u$.
       Il vaut donc $u widetilde(u)$.
       L'égalité reste vraie pour $u=ε$.
     ]),
@@ -252,8 +252,8 @@
       On appelle alphabet tout ensemble fini de lettres.
       On note généralement l'alphabet $Σ$.
       On note $Σ^*$ l'ensemble de tous les mots formés sur $Σ$.
-      La longueur (ou la taille) d'un mot $w ∈ Σ^*$ est son nombre de lettres et se note $abs(w)$.
-      Le mot vide, noté $ε$, est le seul mot de longueur nulle.
+      La taille d'un mot $w ∈ Σ^*$ est son nombre de lettres et se note $abs(w)$.
+      Le mot vide, noté $ε$, est le seul mot de taille nulle.
       Si $abs(w)=n$, on note $w=a_0 a_1 … a_(n-1)$, où les $a_i$ sont des lettres de $Σ$.
       Un langage sur l'alphabet $Σ$ est un ensemble $L ⊂ Σ^*$.
       L'étoile de Kleene d'un langage $L$, notée $L^*$, est le plus petit langage qui inclut $L$, qui contient $ε$ et qui est stable par concaténation.
@@ -309,7 +309,7 @@
     ],
     partie("I", "Mots et automates", contenu: (
       partie("I.A", "Miroir d'un mot et automate transposé", contenu: (
-        [Pour tout mot $w=a_0 a_1 … a_(n-1)$ de longueur $n ∈ NN^*$, son miroir est $widetilde(w)=a_(n-1) … a_1 a_0$.
+        [Pour tout mot $w=a_0 a_1 … a_(n-1)$ de taille $n ∈ NN^*$, son miroir est $widetilde(w)=a_(n-1) … a_1 a_0$.
           Le mot vide $ε$ est son propre miroir.
           Pour tout langage $L ⊂ Σ^*$, on pose $widetilde(L)={widetilde(w) | w ∈ L}$.],
         question(
@@ -824,7 +824,7 @@
             =x^(-1)cal(L)(S).
           $
           La dernière égalité vient de ce que $x z$ appartient à une union si et seulement s'il appartient à l'un de ses termes.
-          Raisonnons maintenant par récurrence sur la longueur de $w$, pour tout $S$.
+          Raisonnons maintenant par récurrence sur la taille de $w$, pour tout $S$.
           Le cas $ε$ est immédiat car $∂_ε(S)=S$.
           Pour $w=u x$, l'identité pour une lettre, l'hypothèse de récurrence et la question 46 donnent
           $

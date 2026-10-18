@@ -149,7 +149,7 @@
     ]),
     question(
       [
-        Soit $C(n)$ le nombre de mots de Dyck de longueur $2n$.
+        Soit $C(n)$ le nombre de mots de Dyck de taille $2n$.
         Trouver une équation de récurrence sur $C(n)$, puis montrer que $C(n)=1/(n+1) binom(2n, n)$.
       ],
       solution: [

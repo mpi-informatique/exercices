@@ -84,4 +84,4 @@ let () =
     ) (mots 4)
   ) exemples;
   let (_ : int regexp) = to_regexp { n = 1; finaux = [0]; transitions = [0, 42, 0] } in
-  print_endline "10 automates : équivalence vérifiée sur tous les mots de longueur au plus 4 ; polymorphisme vérifié."
+  print_endline "10 automates : équivalence vérifiée sur tous les mots de taille au plus 4 ; polymorphisme vérifié."

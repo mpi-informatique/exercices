@@ -12,7 +12,7 @@
   ),
   corrections: [
     - Numérotation : commencer à 1 et décaler les renvois d'une unité.
-    - Question 2, corrigé : le bloc répété a longueur $d$, et l'exposant vaut $abs(w)/d$.
+    - Question 2, corrigé : le bloc répété a pour taille $d$, et l'exposant vaut $abs(w)/d$.
     - Question 6, corrigé : la lecture part de l'état initial ; le parcours inverse part de tous les états finaux.
     - Question 7, corrigé : inclure $i=0$ lorsque l'automate a un seul état.
   ],
@@ -26,7 +26,7 @@
     ],
     question(
       [
-        Le mot $a b a a a b a a$ est-il primitif ? Le mot $a b a b b a a b b b a b a b b a b$, de longueur 17, est-il primitif ?
+        Le mot $a b a a a b a a$ est-il primitif ? Le mot $a b a b b a a b b b a b a b b a b$, de taille 17, est-il primitif ?
       ],
       solution: [
         Le premier est $(a b a a)^2$, donc n'est pas primitif.
@@ -39,8 +39,8 @@
       ],
       solution: [
         Rejeter le mot vide. Pour chaque $1≤d≤floor(abs(w)/2)$ qui divise $abs(w)$, tester $w_i=w_(i+d)$ pour $1≤i≤abs(w)-d$.
-        Si un test réussit, $w$ est la puissance d'exposant $abs(w)/d$ de son préfixe de longueur $d$ : le rejeter. Sinon, l'accepter.
-        Toute puissance non triviale possède une telle longueur de bloc, ce qui prouve la correction.
+        Si un test réussit, $w$ est la puissance d'exposant $abs(w)/d$ de son préfixe de taille $d$ : le rejeter. Sinon, l'accepter.
+        Toute puissance non triviale possède une telle taille de bloc, ce qui prouve la correction.
         Au plus $abs(w)$ tests de divisibilité et $abs(w)$ comparaisons par candidat donnent $O(abs(w)^2)$ en temps et $O(1)$ en espace auxiliaire, sans copier les facteurs.
       ],
     ),
@@ -67,7 +67,7 @@
       ],
       solution: [
         Le langage $a b^*$ n'est pas continuable : aucun prolongement de $b$ n'y appartient.
-        Le langage des mots de longueur paire est continuable (ajouter au besoin une lettre) et son complémentaire, celui des mots de longueur impaire, est infini.
+        Le langage des mots de taille paire est continuable (ajouter au besoin une lettre) et son complémentaire, celui des mots de taille impaire, est infini.
       ],
     ),
     question(
@@ -87,7 +87,7 @@
         #enum(
           numbering: "a)",
           [Montrer que tout langage régulier continuable contient une infinité de mots primitifs.],
-          [Donner une borne supérieure sur la longueur de son plus petit mot primitif.],
+          [Donner une borne supérieure sur la taille de son plus petit mot primitif.],
           [La réciproque de a) est-elle vraie ?],
         )
       ],
@@ -97,7 +97,7 @@
         Si $w_i=u^p$ avec $p≥2$, alors $abs(u)≤floor((i+N)/2)≤i$.
         La lettre en position $1+abs(u)$ devrait être $b$, comme la première, mais cette position appartient au bloc de $a$. Contradiction.
         Si $i=0=N-1$, $w_i=b$ est directement primitif.
-        Les longueurs des $w_i$ sont non bornées, donc ces mots primitifs sont en nombre infini.
+        Les tailles des $w_i$ sont non bornées, donc ces mots primitifs sont en nombre infini.
 
         b) Prendre $i=N-1$ : $abs(w_i)≤2N-1$.
 

@@ -54,7 +54,7 @@
         $ F(L) ⊂ F(L_1) ∩ F(L_2). $
 
         Soit $u = u_1 … u_n in Sigma^*$ avec $n ≥ 1$.
-        Supposons que $u_1 ∈ P(L)$, $u_n ∈ S(L)$ et que tous les facteurs $u_k u_(k+1)$ de longueur deux de $u$ appartiennent à $F(L)$.
+        Supposons que $u_1 ∈ P(L)$, $u_n ∈ S(L)$ et que tous les facteurs $u_k u_(k+1)$ de taille deux de $u$ appartiennent à $F(L)$.
 
         Les inclusions précédentes donnent, pour chaque $i ∈ {1,2}$ :
         $
@@ -89,11 +89,11 @@
         $ cal(L)_"lin" ⊂ cal(L)_"loc" ⊂ cal(L)_"reg". $
         Les deux inclusions sont strictes dès que l'alphabet contient une lettre $a$.
 
-        Le langage $L = {a^n | n ≥ 1}$ est local : les premières et dernières lettres sont $a$, le seul facteur autorisé de longueur deux est $a a$, et $ε$ est exclu. Il n'est pas linéaire. En effet, dans une expression linéaire produisant $a a$, l'unique occurrence de $a$ doit être répétée par une étoile. Considérons l'étoile la plus extérieure contenant cette
+        Le langage $L = {a^n | n ≥ 1}$ est local : les premières et dernières lettres sont $a$, le seul facteur autorisé de taille deux est $a a$, et $ε$ est exclu. Il n'est pas linéaire. En effet, dans une expression linéaire produisant $a a$, l'unique occurrence de $a$ doit être répétée par une étoile. Considérons l'étoile la plus extérieure contenant cette
         occurrence. Dans cette production, tout ce qui lui est extérieur produit le mot vide, puisqu'il ne contient aucune autre occurrence
         de $a$. En prenant zéro répétition, on produirait donc aussi $ε$, ce qui est impossible pour $L$.
 
-        Le langage dénoté par $(a a)^*$ est régulier mais pas local : puisque $a a$ appartient au langage, ses ensembles de premières et dernières lettres contiennent $a$. La condition locale accepterait alors aussi le mot $a$ (qui n'a aucun facteur de longueur deux), alors que sa longueur est impaire.
+        Le langage dénoté par $(a a)^*$ est régulier mais pas local : puisque $a a$ appartient au langage, ses ensembles de premières et dernières lettres contiennent $a$. La condition locale accepterait alors aussi le mot $a$ (qui n'a aucun facteur de taille deux), alors que sa taille est impaire.
         Sur l'alphabet vide, les trois familles coïncident avec ${∅, {ε}}$.
       ],
     ),

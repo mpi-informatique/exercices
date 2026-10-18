@@ -6,7 +6,7 @@
 #import "/chapitres/langages/exercices/cloture-miroir-prefixes-suffixes-facteurs.typ": ex as cloture
 #import "/chapitres/langages/exercices/reconnaissable-ou-non.typ": ex as reconnaissable
 #import "/chapitres/langages/exercices/algorithmes-automates.typ": ex as algorithmes
-#import "/chapitres/langages/exercices/longueur-discriminante-automates.typ": ex as longueur
+#import "/chapitres/langages/exercices/longueur-discriminante-automates.typ": ex as taille
 #import "/chapitres/langages/exercices/ensembles-distinguants-automates.typ": ex as distinguant
 #import "/devoirs/concours/oral/ens/ens-oral-mp-automates-palindromes.typ": ex as palindromes
 
@@ -67,6 +67,6 @@
   titre: "TD : Automates",
   niveau: "MPI",
   auteur: "Q. Fortier",
-  exercices: (determinisation, cloture, reconnaissable, algorithmes, longueur, distinguant, palindromes),
+  exercices: (determinisation, cloture, reconnaissable, algorithmes, taille, distinguant, palindromes),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
 )

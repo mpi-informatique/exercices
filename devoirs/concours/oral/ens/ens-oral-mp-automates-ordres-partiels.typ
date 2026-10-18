@@ -82,7 +82,7 @@
 
         b) L'automate des préfixes suivant convient ; toute transition non dessinée est absente.
         #fini
-        Les transitions augmentent la longueur du préfixe, donc aucun cycle n'est possible.
+        Les transitions augmentent la taille du préfixe, donc aucun cycle n'est possible.
 
         c) Le langage $a^*$ est infini et est reconnu par :
         #infini
@@ -141,7 +141,7 @@
 
         b) Pour $u=a_1…a_n$, prendre les états $0,…,n$, initial $0$, seul final $n$.
         Depuis $k<n$, avancer à $k+1$ sur $a_(k+1)$ et boucler sur toute autre lettre ; depuis $n$, boucler sur toutes les lettres.
-        Après chaque préfixe lu, l'état est la longueur du plus long préfixe de $u$ déjà rencontré comme sous-mot, par récurrence.
+        Après chaque préfixe lu, l'état est la taille du plus long préfixe de $u$ déjà rencontré comme sous-mot, par récurrence.
         Cet automate reconnaît $↑u$ et ses états ne peuvent que croître. Appliquer la stabilité par union finie de la question 2, y compris pour $F=∅$.
 
         c) Si aucune famille finie ne suffit, choisir $w_0∈L$, puis $w_j∈L$ hors de $⋃_(i<j)↑w_i$.

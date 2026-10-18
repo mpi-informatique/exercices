@@ -117,6 +117,8 @@ let f x = (* f x renvoie ... *)
 
 ## Syntaxe
 
+- Employer « taille » pour le nombre de lettres d'un mot, y compris pour ses préfixes, suffixes et facteurs, dans les cours, énoncés, corrigés et commentaires.
+
 - Noter `cal(L)(A)` le langage reconnu par un automate $A$ et `cal(L)(e)` le langage dénoté par une expression régulière $e$. Appliquer cette convention dans les cours, énoncés, corrigés et commentaires.
 
 - Noter les compositions de fonctions ou d'endomorphismes avec `∘`, par exemple `$g ∘ f = f ∘ g$`, plutôt que par juxtaposition.

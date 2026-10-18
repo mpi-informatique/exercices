@@ -58,7 +58,7 @@
         Oui. Écrivons $A=(Q,I,F,δ)$ et renversons ses transitions pour obtenir l'automate miroir $overline(A)$.
         Construisons le produit $B$ d'états $Q×Q$, initiaux $I×F$ et finaux $D={(q,q) | q∈Q}$, avec
         $ (p,r) arrow.r.long^(a) (p',r') ⇔ (p,a,p')∈δ " et " (r',a,r)∈δ. $
-        Par récurrence sur la longueur de $u$, un chemin de $B$ étiqueté $u$ de $(i,f)$ à $(p,r)$ correspond exactement à un chemin $i arrow.r.long^(u) p$ et à un chemin $r arrow.r.long^(overline(u)) f$ dans $A$.
+        Par récurrence sur la taille de $u$, un chemin de $B$ étiqueté $u$ de $(i,f)$ à $(p,r)$ correspond exactement à un chemin $i arrow.r.long^(u) p$ et à un chemin $r arrow.r.long^(overline(u)) f$ dans $A$.
         Il est acceptant si et seulement si $p=r$, ce qui permet de concaténer ces deux chemins en un chemin acceptant de $A$ étiqueté $u overline(u)$.
         Réciproquement, scinder un chemin acceptant de $A$ étiqueté $u overline(u)$ après la lecture de $u$ donne un tel chemin acceptant de $B$.
         Ainsi $cal(L)(B)={u∈Σ^* | u overline(u)∈cal(L)(A)}$ : prendre $A'_Π=B$.
@@ -93,7 +93,7 @@
         Le résultat est $∑_(s∈I×F)c(s)$, en ne conservant que les états utiles.
         L'unicité des chemins acceptants justifie que ce compte de chemins soit un compte de mots.
         Il y a $O(N^2+M)$ opérations arithmétiques et autant de mémoire structurelle.
-        En coût binaire, si les compteurs ont au plus $b$ bits, les additions coûtent $O(b)$ et les compteurs $O(N^2 b)$ bits ; on peut prendre $b=O(1+N^2 log(1+abs(Σ)))$, puisque les mots acceptés ont longueur inférieure à $N^2$.
+        En coût binaire, si les compteurs ont au plus $b$ bits, les additions coûtent $O(b)$ et les compteurs $O(N^2 b)$ bits ; on peut prendre $b=O(1+N^2 log(1+abs(Σ)))$, puisque les mots acceptés ont une taille inférieure à $N^2$.
       ],
     ),
     question(

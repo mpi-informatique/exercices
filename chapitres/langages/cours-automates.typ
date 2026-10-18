@@ -243,12 +243,12 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 #slides-only[== Un test fini d'universalité]
 #exercise[
   Soit $A$ un automate déterministe complet à $n$ états sur un alphabet $Σ$.
-  Montrer que si $A$ accepte tous les mots de longueur strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
+  Montrer que si $A$ accepte tous les mots de taille strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
   La borne est-elle optimale ?
 ]
 #solution[
   #slides-only[== Correction : supprimer une boucle]
-  Supposons $cal(L)(A) ≠ Σ^*$ et soit $m$ un mot refusé de longueur minimale.
+  Supposons $cal(L)(A) ≠ Σ^*$ et soit $m$ un mot refusé de taille minimale.
   Par hypothèse, $abs(m) ≥ n$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
@@ -261,7 +261,7 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
   La borne est optimale sur $Σ = {a}$.
   Prenons $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
   $ δ(i, a) = min(i + 1, n - 1). $
-  Cet automate accepte tous les mots de longueur strictement inférieure à $n - 1$, mais refuse $a^(n - 1)$.
+  Cet automate accepte tous les mots de taille strictement inférieure à $n - 1$, mais refuse $a^(n - 1)$.
 ]
 
 == Implémentation déterministe

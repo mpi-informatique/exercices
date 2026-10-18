@@ -10,7 +10,7 @@
   ),
   contenu: (
     [On fixe un alphabet fini $Sigma$.
-      Si $u=u_1 dots u_n$ et $v=v_1 dots v_n$ sont deux mots de même longueur, leur distance de Hamming est
+      Si $u=u_1 dots u_n$ et $v=v_1 dots v_n$ sont deux mots de même taille, leur distance de Hamming est
       $ d(u,v)=abs({i in {1,dots,n} | u_i != v_i}). $],
     question(
       [

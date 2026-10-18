@@ -10,7 +10,7 @@
   ),
   contenu: (
     [On admet le lemme de pompage suivant pour les langages non-contextuels :
-      si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de longueur au moins $p$ s'écrit $t = u v w x y$, avec :
+      si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de taille au moins $p$ s'écrit $t = u v w x y$, avec :
       - $abs(v w x) ≤ p$
       - $v x ≠ ε$
       - $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$
@@ -24,7 +24,7 @@
       Supposer $L_2$ non-contextuel et prendre $p$ fourni par le lemme.
       Le mot $a^p b^p c^p$ possède alors une décomposition satisfaisant ses conditions.
       Puisque $abs(v w x) ≤ p$, ce facteur ne peut contenir à la fois un $a$ et un $c$ :
-      un tel facteur aurait longueur au moins $p+2$.
+      un tel facteur aurait pour taille au moins $p+2$.
       Une des trois lettres est donc absente de $v x$.
       Pour $i=0$, on retire au moins une lettre puisque $v x ≠ ε$, tandis que le nombre d'occurrences de la lettre absente reste $p$.
       Les trois nombres ne sont plus égaux, donc $u w y ∉ L_2$ : contradiction.

@@ -45,7 +45,7 @@
         Une réparation par insertion finale de $w$ est un mot $z$ tel que $w z∈L$. Proposer un algorithme décidant son existence et donner ses complexités en temps et en espace.
       ],
       solution: [
-        Notons $P_i$ les états atteints après le préfixe de longueur $i$.
+        Notons $P_i$ les états atteints après le préfixe de taille $i$.
         Le pseudocode suivant utilise $δ(P,a)=⋃_(q∈P)δ(q,a)$.
         ```text
         P ← I
@@ -60,7 +60,7 @@
     ),
     question(
       [
-        Modifier l'algorithme de la question 2 pour produire une insertion finale de longueur minimale ; préciser les complexités.
+        Modifier l'algorithme de la question 2 pour produire une insertion finale de taille minimale ; préciser les complexités.
       ],
       solution: [
         Faire un parcours en largeur depuis tous les finaux dans le graphe inversé.
@@ -84,7 +84,7 @@
     ),
     question(
       [
-        Modifier l'algorithme de la question 4 pour produire une décomposition et une insertion $z$ de longueur minimale.
+        Modifier l'algorithme de la question 4 pour produire une décomposition et une insertion $z$ de taille minimale.
       ],
       solution: [
         À chaque coupure, utiliser un parcours en largeur multi-source depuis $P_i$ et prendre la plus petite distance atteinte dans $T_i$.
@@ -96,7 +96,7 @@
     question(
       [
         Une réparation par suppression de $w$ est une décomposition $w=u z v$ telle que $u v∈L$.
-        Proposer un algorithme naïf décidant son existence et produisant une suppression de longueur minimale. Préciser ses complexités.
+        Proposer un algorithme naïf décidant son existence et produisant une suppression de taille minimale. Préciser ses complexités.
       ],
       solution: [
         Énumérer les coupures $0≤i≤j≤n$, simuler $A$ sur $w[0,i]w[j,n]$, et conserver une paire acceptante minimisant $j-i$.
@@ -140,7 +140,7 @@
     question(
       [
         Une réparation par insertions de $w$ est un mot $w'∈L$ dont $w$ est un sous-mot : il existe une application strictement croissante $φ:{1,…,abs(w)}→{1,…,abs(w')}$ telle que $w_i=w'_(φ(i))$.
-        Décider s'il en existe une et produire un $w'$ de longueur minimale ; préciser les complexités.
+        Décider s'il en existe une et produire un $w'$ de taille minimale ; préciser les complexités.
       ],
       solution: [
         Précalculer par $N$ parcours en largeur les distances $d(p,q)$ entre états, ainsi que des chemins témoins.
@@ -152,7 +152,7 @@
         Conserver pour chaque minimum la transition choisie ; remonter les préfixes et insérer les chemins témoins donne $w'$.
         Le prétraitement coûte $O(N(N+m))$. Pour chaque lettre, examiner chaque transition de cette lettre et chaque état d'arrivée donne $O(N(N+m))$ comme borne simple.
         Temps total $O((n+1)N(N+m))$, espace $O(N^2+(n+1)N+m)$ avec reconstruction.
-        Les chemins insérés ont longueur au plus $N-1$, donc la sortie a longueur $O((n+1)N)$.
+        Les chemins insérés ont longueur au plus $N-1$, donc la sortie est de taille $O((n+1)N)$.
       ],
     ),
     question(

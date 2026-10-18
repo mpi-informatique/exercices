@@ -81,7 +81,7 @@
         Le premier $a$ change seulement d'état ; les $n-1$ suivants empilent chacun un $α$.
         Le premier $b$ impose qu'un $α$ soit présent, donc $n≥2$. Les $n-1$ premiers $b$ dépilent les $α$, puis le dernier lit le fond $γ_0$ et termine en $q_3$.
         Réciproquement, toute exécution acceptante suit nécessairement ce schéma, donc lit exactement $a^n b^n$ avec $n≥2$.
-        Ce langage n'est pas régulier : pomper un facteur non vide du premier bloc de $a^p b^p$, pour une longueur de pompage $p≥2$, détruit l'égalité des comptes.
+        Ce langage n'est pas régulier : pomper un facteur non vide du premier bloc de $a^p b^p$, pour une taille de pompage $p≥2$, détruit l'égalité des comptes.
         Les automates à pile reconnaissent donc strictement plus de langages que les automates finis.
       ],
     ),
@@ -100,7 +100,7 @@
     ),
     [
       Pour $η∈NN^*$, une configuration $η$-tronquée est un couple $(q,z)$ avec $1≤abs(z)≤η$.
-      Un calcul $η$-tronqué suit les mêmes règles, mais remplace toute nouvelle pile de longueur supérieure à $η$ par son suffixe de longueur $η$ ; une pile vide reste interdite.
+      Un calcul $η$-tronqué suit les mêmes règles, mais remplace toute nouvelle pile de taille supérieure à $η$ par son suffixe de taille $η$ ; une pile vide reste interdite.
       On note $cal(L)_(≤η)(A)$ le langage des calculs $η$-tronqués acceptants.
     ],
     question(
@@ -120,7 +120,7 @@
       Dans un calcul $χ=(q_0,z_0),…,(q_p,z_p)$, posons $h_i=abs(z_i)$.
       Une $η$-montagne est un triplet $0≤l<m<r≤p$ tel que $h_l=h_r$, $h_m-h_l≥η$ et $h_j>h_l$ pour tout $l<j<r$.
       Une montagne est une $η$-montagne pour un $η≥1$.
-      Soit $G$ la longueur maximale d'un mot de pile figurant dans une transition, avec $G=0$ s'il n'y a aucune transition.
+      Soit $G$ la taille maximale d'un mot de pile figurant dans une transition, avec $G=0$ s'il n'y a aucune transition.
     ],
     question(
       [

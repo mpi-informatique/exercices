@@ -40,7 +40,7 @@
       solution: [
         a) Si $e$ et $e'$ sont neutres, $e=e · e'=e'$.
 
-        b) Le mot vide est neutre. Les deux concaténations $(u v)w$ et $u(v w)$ ont même longueur et les mêmes lettres à chaque position : d'abord celles de $u$, puis celles de $v$, puis celles de $w$. La concaténation est associative.
+        b) Le mot vide est neutre. Les deux concaténations $(u v)w$ et $u(v w)$ ont même taille et les mêmes lettres à chaque position : d'abord celles de $u$, puis celles de $v$, puis celles de $w$. La concaténation est associative.
       ],
     ),
     question(

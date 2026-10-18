@@ -57,7 +57,7 @@
         Réciproquement, pour un mot équilibré non vide commençant par $a$, prendre son premier
         préfixe équilibré non vide : le mot s'écrit $a u b v$, avec $u$ et $v$ équilibrés.
         S'il commence par $b$, il s'écrit de même $b u a v$.
-        Une récurrence sur la longueur fournit alors une dérivation depuis $X$.
+        Une récurrence sur la taille fournit alors une dérivation depuis $X$.
 
         Toute dérivation terminale depuis $S$ produit $u_0 a u_1 a … a u_k$, où les $u_i$ sont équilibrés et $k ≥ 0$.
         Elle a donc un excédent de $k$ lettres $a$.

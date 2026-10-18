@@ -15,7 +15,7 @@
   contenu: (
     [
       On fixe l'alphabet $Sigma = {a, b}$.
-      Pour $w in Sigma^*$, on note $w = w_1 dots w_n$, où $n = abs(w)$ est sa longueur.
+      Pour $w in Sigma^*$, on note $w = w_1 dots w_n$, où $n = abs(w)$ est sa taille.
       Le mot vide est noté $epsilon$.
       Un mot $s in Sigma^*$ est un *facteur* de $w$ s'il existe deux mots $u, v in Sigma^*$ tels que $w = u s v$.
       Autrement dit, $s$ apparaît dans $w$ en un bloc de lettres consécutives.
@@ -26,19 +26,19 @@
     ],
     question(
       [
-        Donner un mot de longueur au moins $12$ qui évite
+        Donner un mot de taille au moins $12$ qui évite
         $ S_0 = {a a a a, a a a b, a b a, b a a a, b a b, b b b b}. $
       ],
       solution: [
         Le mot $(a a b b)^3 = a a b b a a b b a a b b$ convient.
-        Ses facteurs de longueur $3$ sont $a a b$, $a b b$, $b b a$ et $b a a$ ; ceux de longueur $4$ sont $a a b b$, $a b b a$, $b b a a$ et $b a a b$.
+        Ses facteurs de taille $3$ sont $a a b$, $a b b$, $b b a$ et $b a a$ ; ceux de taille $4$ sont $a a b b$, $a b b a$, $b b a a$ et $b a a b$.
         Aucun ne figure dans $S_0$.
       ],
     ),
     question(
       [
         Donner le pseudocode d'un algorithme simple qui détermine si un mot $w$ évite un ensemble fini $S$.
-        Analyser son coût en temps et en espace lorsque les $m$ mots de $S$ ont tous la même longueur $ell$.
+        Analyser son coût en temps et en espace lorsque les $m$ mots de $S$ ont tous la même taille $ell$.
       ],
       solution: [
         On compare chaque motif à chaque position possible, sans extraire de sous-chaîne.
@@ -46,9 +46,9 @@
 
         ```text
         évite(w, S):
-            n ← longueur(w)
+            n ← taille(w)
             pour chaque s dans S:
-                ℓ ← longueur(s)
+                ℓ ← taille(s)
                 si ℓ = 0: renvoyer faux
                 si ℓ ≤ n:
                     pour i de 0 à n − ℓ inclus:
@@ -70,7 +70,7 @@
       On pose
       $ "Av"(S) = {w in Sigma^* | w " évite " S}. $
       L'ensemble $S$ est *inévitable* si $"Av"(S)$ est fini, et *évitable* sinon.
-      Sur un alphabet fini, être évitable équivaut à admettre des mots évitants de longueurs arbitrairement grandes.
+      Sur un alphabet fini, être évitable équivaut à admettre des mots évitants de tailles arbitrairement grandes.
     ],
     question(
       [
@@ -86,29 +86,29 @@
     question(
       [
         Montrer que $S_2 = {a a a, b a b, b a a b, b b b}$ est inévitable.
-        On pourra donner une borne sur la longueur des mots qui l'évitent.
+        On pourra donner une borne sur la taille des mots qui l'évitent.
       ],
       solution: [
-        Supposons qu'un mot de longueur $7$ évite $S_2$.
-        Ses cinq premières lettres contiennent $b a$ : sinon ce préfixe serait de la forme $a^i b^j$, avec $i <= 2$ et $j <= 2$ pour éviter $a a a$ et $b b b$, donc de longueur au plus $4$.
+        Supposons qu'un mot de taille $7$ évite $S_2$.
+        Ses cinq premières lettres contiennent $b a$ : sinon ce préfixe serait de la forme $a^i b^j$, avec $i <= 2$ et $j <= 2$ pour éviter $a a a$ et $b b b$, donc de taille au plus $4$.
 
         Cette occurrence de $b a$ commence à une position $p <= 4$ ; elle est donc suivie d'au moins deux lettres.
         La première doit être $a$, pour éviter $b a b$.
         La suivante ne peut être ni $a$ (facteur $a a a$), ni $b$
         (facteur $b a a b$).
         C'est impossible.
-        Tout mot de longueur au moins $7$ contient donc un facteur dans $S_2$.
-        La borne est optimale : $a a b b a a$, de longueur $6$, évite $S_2$.
+        Tout mot de taille au moins $7$ contient donc un facteur dans $S_2$.
+        La borne est optimale : $a a b b a a$, de taille $6$, évite $S_2$.
       ],
     ),
     question(
       [
         Soient maintenant un alphabet fini non vide $Sigma$, de cardinal $r$, et un entier $k >= 1$.
-        Montrer que tout mot de longueur au moins $r^k + k$ possède deux occurrences distinctes d'un même facteur de longueur $k$.
+        Montrer que tout mot de taille au moins $r^k + k$ possède deux occurrences distinctes d'un même facteur de taille $k$.
         Autrement dit, il existe $1 <= p < q <= abs(w) - k + 1$ tels que $w_(p+j) = w_(q+j)$ pour tout $0 <= j < k$.
       ],
       solution: [
-        Un mot de longueur $n$ possède $n-k+1$ positions où commence un facteur de longueur $k$, alors qu'il n'existe que $r^k$ mots de cette longueur.
+        Un mot de taille $n$ possède $n-k+1$ positions où commence un facteur de taille $k$, alors qu'il n'existe que $r^k$ mots de cette taille.
         Si $n >= r^k+k$, le principe des tiroirs donne deux positions distinctes portant le même facteur.
         Les deux occurrences peuvent se chevaucher.
       ],
@@ -127,18 +127,18 @@
         $ k = max_(s in S) abs(s), #sep L = sum_(s in S) abs(s), #sep N = r^k + k. $
 
         *Répétition et cycle.* Considérons le graphe dont les sommets sont les mots
-        de longueur $k$ qui évitent $S$.
+        de taille $k$ qui évitent $S$.
         Il existe une arête de $u$ vers $v$ si $v$ s'obtient en supprimant la première lettre de $u$ et en ajoutant une lettre à sa fin.
-        Les facteurs successifs de longueur $k$ d'un mot évitant $S$ décrivent un chemin dans ce graphe.
+        Les facteurs successifs de taille $k$ d'un mot évitant $S$ décrivent un chemin dans ce graphe.
 
-        Réciproquement, un chemin donne un mot évitant $S$ : tout facteur interdit, de longueur au plus $k$, serait contenu dans l'une de ses fenêtres de longueur $k$.
+        Réciproquement, un chemin donne un mot évitant $S$ : tout facteur interdit, de taille au plus $k$, serait contenu dans l'une de ses fenêtres de taille $k$.
         Un chemin qui répète un sommet contient un cycle ; en parcourant ce cycle autant de fois que voulu, on obtient des mots évitants arbitrairement longs.
         Cet argument vaut aussi lorsque les deux occurrences se chevauchent.
 
-        Par la question 5, un mot évitant de longueur $N$ fournit un tel cycle.
+        Par la question 5, un mot évitant de taille $N$ fournit un tel cycle.
         Ainsi,
-        $ S " est inévitable " <==> " aucun mot de longueur " N " n'évite " S. $
-        Il suffit donc d'énumérer les $r^N$ mots de longueur *exactement* $N$ et de les tester avec l'algorithme de la question 2.
+        $ S " est inévitable " <==> " aucun mot de taille " N " n'évite " S. $
+        Il suffit donc d'énumérer les $r^N$ mots de taille *exactement* $N$ et de les tester avec l'algorithme de la question 2.
         Un seul témoin évitant suffit pour répondre « évitable ».
 
         Le coût au pire est $O(r^N N L)$ en temps et $O(N)$ en espace auxiliaire, en générant un seul mot à la fois.
@@ -163,7 +163,7 @@
     ),
     question(
       [
-        Une expression régulière $e$ est *bornée* s'il existe $n in NN$ tel que tout mot de $cal(L)(e)$ soit de longueur au plus $n$.
+        Une expression régulière $e$ est *bornée* s'il existe $n in NN$ tel que tout mot de $cal(L)(e)$ soit de taille au plus $n$.
         Si $e$ est bornée, comment déterminer si elle est inévitable ?
       ],
       solution: [
@@ -220,12 +220,12 @@
       solution: [
         Si $epsilon in S$, on prend $S' = {epsilon}$.
         Sinon, $epsilon$ évite $S$ ; l'ensemble fini $"Av"(S)$ est donc non vide.
-        Notons $n$ la longueur maximale de ses éléments.
+        Notons $n$ la taille maximale de ses éléments.
 
-        Chaque mot $u$ de longueur $n+1$ possède un facteur $s_u in S$.
+        Chaque mot $u$ de taille $n+1$ possède un facteur $s_u in S$.
         On choisit un tel facteur pour chacun de ces mots et on pose
         $ S' = {s_u | u in Sigma^(n+1)}. $
-        Cet ensemble est fini, inclus dans $S$ et inévitable : tout mot de longueur au moins $n+1$ possède un préfixe de longueur $n+1$, qui contient l'un des facteurs choisis.
+        Cet ensemble est fini, inclus dans $S$ et inévitable : tout mot de taille au moins $n+1$ possède un préfixe de taille $n+1$, qui contient l'un des facteurs choisis.
         Il ne reste qu'un nombre fini de mots plus courts.
       ],
     ),
@@ -238,8 +238,8 @@
         Sinon, l'automate de la question 9 reconnaît un langage fini non vide, celui des mots évitant $cal(L)(e)$.
 
         Son graphe utile est un graphe orienté acyclique.
-        Un calcul de plus long chemin dans un ordre topologique donne la longueur maximale $n$ d'un mot accepté.
-        On énumère alors les mots $u$ de longueur $n+1$ ; pour chacun, on énumère ses facteurs et on en retient un accepté par un automate de $cal(L)(e)$.
+        Un calcul de plus long chemin dans un ordre topologique donne la taille maximale $n$ d'un mot accepté.
+        On énumère alors les mots $u$ de taille $n+1$ ; pour chacun, on énumère ses facteurs et on en retient un accepté par un automate de $cal(L)(e)$.
         Un tel facteur existe par définition de $n$.
 
         L'ensemble des facteurs retenus, après suppression des doublons, est une réponse par la question 11.

@@ -40,12 +40,12 @@
       Oui. Si $u ∈ L$, alors $u^2 ∈ L_2$, donc $u ∈ sqrt(L_2)$.
 
       Réciproquement, si $u ∈ sqrt(L_2)$, il existe $v ∈ L$ tel que $u^2 = v^2$.
-      L'égalité des longueurs donne $abs(u) = abs(v)$.
-      En prenant les préfixes de cette longueur dans $u^2 = v^2$, on obtient $u = v$, donc $u ∈ L$.
+      L'égalité des tailles donne $abs(u) = abs(v)$.
+      En prenant les préfixes de cette taille dans $u^2 = v^2$, on obtient $u = v$, donc $u ∈ L$.
       Ainsi $sqrt(L_2) = L$.
     ]),
     question([Est-il toujours vrai que $sqrt(L)^2=L$ ?], solution: [
-      Non. Pour $L = {a}$, aucun carré de mot n'appartient à $L$, car la longueur d'un carré est paire.
+      Non. Pour $L = {a}$, aucun carré de mot n'appartient à $L$, car la taille d'un carré est paire.
       Ainsi $sqrt(L) = ∅$, puis $sqrt(L)^2 = ∅ ≠ L$.
     ]),
   ),

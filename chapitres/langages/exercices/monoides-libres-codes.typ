@@ -184,7 +184,7 @@
         Par exemple, pour $C = {a b, c d e, a b c, d e}$, le message $a b c d e$ admet les décompositions $a b | c d e$ et $a b c | d e$, où les barres indiquent les coupures entre les facteurs.
         Après le premier facteur, on a lu $U = a b$ dans la première décomposition et $V = a b c$ dans la seconde. Le mot situé entre ces deux coupures est donc $r = c$, avec $U r = V$.
 
-        Plus généralement, on compare deux décompositions en lisant des facteurs entiers de chacune. Les préfixes déjà lus $U$ et $V$ peuvent avoir des longueurs différentes.
+        Plus généralement, on compare deux décompositions en lisant des facteurs entiers de chacune. Les préfixes déjà lus $U$ et $V$ peuvent avoir des tailles différentes.
         En échangeant leurs rôles si nécessaire, on peut supposer que $U$ est préfixe de $V$. On mémorise alors le mot $r$ défini par $U r = V$.
         Ce mot représente ce qui a déjà été lu dans la seconde décomposition mais pas encore dans la première. Il vaut $ε$ lorsque les deux coupures sont à la même position.
 

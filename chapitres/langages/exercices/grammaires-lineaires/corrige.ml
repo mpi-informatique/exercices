@@ -5,9 +5,9 @@ let reconnait (g : grammaire) s w =
   let m = Array.length g and n = String.length w in
   let d = Array.init m (fun _ ->
     Array.init (n + 1) (fun _ -> Array.make (n + 1) false)) in
-  for longueur = 0 to n do
-    for i = 0 to n - longueur do
-      let j = i + longueur in
+  for taille = 0 to n do
+    for i = 0 to n - taille do
+      let j = i + taille in
       let rec possible regles =
         match regles with
         | [] -> false

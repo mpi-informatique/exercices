@@ -14,7 +14,7 @@
   corrections: [
     - Numérotation : commencer à 1 et décaler les renvois d'une unité.
     - Question 2, corrigé : utiliser $b a a∈L_1$ comme témoin.
-    - Question 4, corrigé : fixer le nombre de $a$ et utiliser le langage des mots de même longueur.
+    - Question 4, corrigé : fixer le nombre de $a$ et utiliser le langage des mots de même taille.
     - Question 5, corrigé : distinguer composantes fortement connexes et composantes connexes.
     - Question 7, corrigé : expliciter la croissance dans chacune des deux coordonnées avant de stabiliser la diagonale.
   ],
@@ -54,7 +54,7 @@
       ],
       solution: [
         Prendre $L_2=(a b)^*$.
-        Si sa clôture était régulière, pour une longueur de pompage $p≥1$, le mot $a^p b^p$ aurait une boucle non vide entièrement dans ses $p$ premiers $a$.
+        Si sa clôture était régulière, pour une taille de pompage $p≥1$, le mot $a^p b^p$ aurait une boucle non vide entièrement dans ses $p$ premiers $a$.
         Pomper cette boucle changerait le nombre de $a$ sans changer celui des $b$, contradiction.
       ],
     ),
@@ -74,7 +74,7 @@
         Pour $0≤i≤k$, le langage $L_i=L∩{w | abs(w)_a=i}$ est régulier, car avoir exactement $i$ occurrences de $a$ est une condition régulière.
         Or
         $ "CCl"(L_i)="Len"(L_i)∩{w∈Σ^* | abs(w)_a=i}. $
-        En effet, à nombre de $a$ fixé, deux mots ont la même longueur si et seulement s'ils ont le même nombre de $b$.
+        En effet, à nombre de $a$ fixé, deux mots ont la même taille si et seulement s'ils ont le même nombre de $b$.
         Ainsi $"CCl"(L_i)$ est régulier par intersection, puis
         $ "CCl"(L) = union.big_(i = 0)^k "CCl"(L_i) $
         est régulier par union finie.

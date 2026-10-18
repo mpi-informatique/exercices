@@ -150,7 +150,7 @@
 
       L'existence de tels mots dans certaines machines est utile car elle permet de ramener une machine dans un état particulier connu en lisant un mot donné (donc en pratique de la « réinitialiser » par une succession précise d'ordres passés à la machine réelle).
 
-      La partie I étudie quelques considérations générales sur les mots synchronisants, la partie II est consacrée à des problèmes algorithmiques classiques, la partie III relie le problème de la satisfiabilité d'une formule logique à celui de la recherche d'un mot synchronisant de longueur donnée dans une certaine machine, et la partie IV étudie l'existence d'un mot synchronisant pour une machine donnée. Les parties I, II et III peuvent être traitées indépendamment. La partie IV, plus technique, utilise la partie II.
+      La partie I étudie quelques considérations générales sur les mots synchronisants, la partie II est consacrée à des problèmes algorithmiques classiques, la partie III relie le problème de la satisfiabilité d'une formule logique à celui de la recherche d'un mot synchronisant de taille donnée dans une certaine machine, et la partie IV étudie l'existence d'un mot synchronisant pour une machine donnée. Les parties I, II et III peuvent être traitées indépendamment. La partie IV, plus technique, utilise la partie II.
 
       Dans les exemples concrets de machines donnés plus loin, l'ensemble d'états peut être quelconque, de même que l'alphabet $(Σ={0,1},{a,b,c},…)$. Pour la modélisation en OCaml, l'alphabet $Σ$ sera toujours considéré comme étant un intervalle d'entiers $⟦0,p-1⟧$ où $p=abs(Σ)$. Une lettre correspondra donc à un entier entre $0$ et $p-1$. Un mot de $Σ^*$ sera représenté par une liste de lettres (donc d'entiers).
       ```ocaml
@@ -228,13 +228,13 @@
         ),
         question(
           [Montrer que pour qu'une machine ait un mot synchronisant, il faut qu'il existe une lettre $x$ et deux états distincts de $Q$, $q$ et $q'$, tels que $q.x=q'.x$.],
-          solution: [Soient $r ≠ r'$ et $u=x_1…x_k$ un mot synchronisant. Il existe un premier indice $j ≥ 1$ auquel les images de $r$ et $r'$ par le préfixe de longueur $j$ coïncident. Juste avant cette lettre, les états $q=r.(x_1…x_(j-1))$ et $q'=r'.(x_1…x_(j-1))$ sont distincts, et $q.x_j=q'.x_j$.],
+          solution: [Soient $r ≠ r'$ et $u=x_1…x_k$ un mot synchronisant. Il existe un premier indice $j ≥ 1$ auquel les images de $r$ et $r'$ par le préfixe de taille $j$ coïncident. Juste avant cette lettre, les états $q=r.(x_1…x_(j-1))$ et $q'=r'.(x_1…x_(j-1))$ sont distincts, et $q.x_j=q'.x_j$.],
         ),
         [Soit $L S(M)$ le langage des mots synchronisants d'une machine $M=(Q,Σ,δ)$. On introduit la machine des parties $hat(M)=(hat(Q),Σ,hat(δ))$ où $hat(Q)$ est l'ensemble des parties de $Q$ et où $hat(δ)$ est définie par
           $ ∀P ⊂ Q, #sep ∀x ∈ Σ, #sep hat(δ)(P,x)={δ(p,x) | p ∈ P}. $],
         question(
           [Justifier que l'existence d'un mot synchronisant pour $M$ se ramène à un problème d'accessibilité de certain(s) état(s) depuis certain(s) état(s) dans la machine des parties.],
-          solution: [Une récurrence sur la longueur de $u$ donne $hat(δ)^*(P,u)={δ^*(q,u) | q ∈ P}$. Ainsi $u$ est synchronisant si et seulement si $hat(δ)^*(Q,u)$ est un singleton. Il suffit donc de chercher si un singleton est accessible depuis l'état $Q$.],
+          solution: [Une récurrence sur la taille de $u$ donne $hat(δ)^*(P,u)={δ^*(q,u) | q ∈ P}$. Ainsi $u$ est synchronisant si et seulement si $hat(δ)^*(Q,u)$ est un singleton. Il suffit donc de chercher si un singleton est accessible depuis l'état $Q$.],
         ),
         question(
           [En déduire que le langage $L S(M)$ des mots synchronisants de la machine $M$ est reconnaissable.],
@@ -267,7 +267,7 @@
       contenu: (
         [On appellera *graphe d'automate* tout couple $(S,A)$ où $S$ est un ensemble dont les éléments sont appelés *sommets* et $A$ une partie de $S × Σ × S$ dont les éléments sont appelés *arcs*. Pour un arc $(q,x,q')$, $x$ est l'*étiquette* de l'arc, $q$ son *origine* et $q'$ son *extrémité*. Un graphe d'automate correspond donc à un automate non déterministe sans notion d'état initial ou final.
 
-          Soient $s$ et $s'$ deux sommets d'un graphe $(S,A)$. On appelle chemin de $s$ vers $s'$ de longueur $ℓ$ toute suite d'arcs $(s_1,x_1,s_1'),…,(s_ℓ,x_ℓ,s_ℓ')$ de $A$ telle que $s_1=s$, $s_ℓ'=s'$ et, pour tout $i ∈ ⟦1,ℓ-1⟧$, $s_i'=s_(i+1)$. L'étiquette de ce chemin est alors le mot $x_1…x_ℓ$ et on dit que $s'$ est accessible depuis $s$. En particulier, pour tout $s ∈ S$, $s$ est accessible depuis $s$ par le chemin vide d'étiquette $ε$.
+          Soient $s$ et $s'$ deux sommets d'un graphe $(S,A)$. On appelle chemin de $s$ vers $s'$ de taille $ℓ$ toute suite d'arcs $(s_1,x_1,s_1'),…,(s_ℓ,x_ℓ,s_ℓ')$ de $A$ telle que $s_1=s$, $s_ℓ'=s'$ et, pour tout $i ∈ ⟦1,ℓ-1⟧$, $s_i'=s_(i+1)$. L'étiquette de ce chemin est alors le mot $x_1…x_ℓ$ et on dit que $s'$ est accessible depuis $s$. En particulier, pour tout $s ∈ S$, $s$ est accessible depuis $s$ par le chemin vide d'étiquette $ε$.
 
           Par exemple, avec
           $ Σ={a,b}, #sep S_0={0,1,2,3,4,5}, $
@@ -393,7 +393,7 @@
             #code("accessibles")],
         ),
         question(
-          [Écrire une fonction ```ocaml chemin``` qui, prenant en entrée un sommet ```ocaml s``` et le tableau ```ocaml p``` calculé à l'aide de la fonction ```ocaml accessibles``` sur un graphe $G$ et un ensemble $X$, renvoie un mot de longueur minimale qui est l'étiquette d'un chemin d'un sommet de $X$ à $s$ (ou lèvera une exception s'il n'en existe pas).
+          [Écrire une fonction ```ocaml chemin``` qui, prenant en entrée un sommet ```ocaml s``` et le tableau ```ocaml p``` calculé à l'aide de la fonction ```ocaml accessibles``` sur un graphe $G$ et un ensemble $X$, renvoie un mot de taille minimale qui est l'étiquette d'un chemin d'un sommet de $X$ à $s$ (ou lèvera une exception s'il n'en existe pas).
             ```ocaml
             val chemin : etat -> arc array -> mot
             ```],
@@ -413,7 +413,7 @@
           $ F_1=(x_1 ∨ overline(x_2) ∨ x_3) ∧ (overline(x_1) ∨ overline(x_4)) ∧ (x_2 ∨ overline(x_3) ∨ x_4) $
           est une formule formée de trois clauses et portant sur quatre variables propositionnelles $x_1,x_2,x_3,x_4$.
 
-          Soit $F$ une formule sous forme normale conjonctive composée de $n$ clauses et faisant intervenir $m$ variables. On suppose les clauses numérotées $c_1,…,c_n$. On veut ramener le problème de sa satisfiabilité au problème de la recherche d'un mot synchronisant de longueur inférieure ou égale à $m$ sur une certaine machine. On introduit la machine suivante associée à $F$ :
+          Soit $F$ une formule sous forme normale conjonctive composée de $n$ clauses et faisant intervenir $m$ variables. On suppose les clauses numérotées $c_1,…,c_n$. On veut ramener le problème de sa satisfiabilité au problème de la recherche d'un mot synchronisant de taille inférieure ou égale à $m$ sur une certaine machine. On introduit la machine suivante associée à $F$ :
           - $Q$ est formé de $m n+n+1$ états : un état particulier $f$ et $n(m+1)$ autres états notés $q_(i,j)$, avec $(i,j) ∈ ⟦1,n⟧ × ⟦1,m+1⟧$.
           - $Σ={0,1}$
           - $δ$ est définie par :
@@ -445,16 +445,16 @@
           solution: [La distribution $(1,1,1,0)$ satisfait $F_1$ : les trois clauses sont satisfaites respectivement par $x_1$, $overline(x_4)$ et $x_2$. Le mot $1110$ est synchronisant : depuis $q_(1,1)$, $q_(2,1)$ et $q_(3,1)$ on atteint $f$ respectivement après une, quatre et deux lettres. Depuis tout $q_(i,j)$ avec $j ≥ 2$, quatre lettres suffisent également à atteindre $f$.],
         ),
         question(
-          [Montrer que tout mot $u$ de longueur $m+1$ est synchronisant. À quelle condition sur les $q_(i,1).u$ un mot de longueur $m$ est-il synchronisant ?],
-          solution: [Chaque transition qui n'atteint pas $f$ augmente le second indice de $1$. Depuis $q_(i,j)$, on atteint donc $f$ en au plus $m+2-j$ lettres, puis on y reste. Tout mot de longueur $m+1$ synchronise sur $f$.
-            Un mot de longueur $m$ envoie déjà tous les états $q_(i,j)$ avec $j ≥ 2$ sur $f$, et laisse $f$ inchangé. Il est synchronisant si et seulement si $q_(i,1).u=f$ pour tout $i$.],
+          [Montrer que tout mot $u$ de taille $m+1$ est synchronisant. À quelle condition sur les $q_(i,1).u$ un mot de taille $m$ est-il synchronisant ?],
+          solution: [Chaque transition qui n'atteint pas $f$ augmente le second indice de $1$. Depuis $q_(i,j)$, on atteint donc $f$ en au plus $m+2-j$ lettres, puis on y reste. Tout mot de taille $m+1$ synchronise sur $f$.
+            Un mot de taille $m$ envoie déjà tous les états $q_(i,j)$ avec $j ≥ 2$ sur $f$, et laisse $f$ inchangé. Il est synchronisant si et seulement si $q_(i,1).u=f$ pour tout $i$.],
         ),
         question(
-          [Montrer que si la formule $F$ est satisfiable, toute distribution de vérité la satisfaisant donne un mot synchronisant de longueur $m$ pour l'automate.],
+          [Montrer que si la formule $F$ est satisfiable, toute distribution de vérité la satisfaisant donne un mot synchronisant de taille $m$ pour l'automate.],
           solution: [Soit $u=u_1…u_m$ une valuation satisfaisante. Dans chaque clause $c_i$, prendre le plus petit indice $j$ d'un littéral satisfait par $u$. Depuis $q_(i,1)$, les $j-1$ premières lettres mènent à $q_(i,j)$, puis la lettre $u_j$ mène à $f$. Les lettres restantes laissent la machine en $f$. Ainsi tous les $q_(i,1).u$ valent $f$ : la question 24 permet de conclure.],
         ),
         question(
-          [Inversement, prouver que si l'automate dispose d'un mot synchronisant de longueur au plus $m$, $F$ est satisfiable. Donner alors une distribution de vérité convenable.],
+          [Inversement, prouver que si l'automate dispose d'un mot synchronisant de taille au plus $m$, $F$ est satisfiable. Donner alors une distribution de vérité convenable.],
           solution: [Soit $v=v_1…v_k$ synchronisant, avec $k ≤ m$. Puisque $f$ est absorbant, il synchronise nécessairement sur $f$.
             Depuis $q_(i,1)$, les $k$ lettres ne permettent pas d'atteindre $f$ par la transition finale de $q_(i,m+1)$, qui demanderait $m+1$ lettres. On atteint donc $f$ par un littéral de $c_i$ satisfait par l'une des valeurs $v_j$, avec $j ≤ k$.
             Compléter la distribution en posant $u_j=v_j$ pour $j ≤ k$ et $u_j=0$ pour $k < j ≤ m$. Chaque clause contient un littéral déjà satisfait par ce préfixe : $u$ satisfait $F$.],
@@ -468,7 +468,7 @@
       contenu: (
         [On reprend le problème de l'existence d'un mot synchronisant pour une machine $M=(Q,Σ,δ)$. Pour toute partie $E$ de $Q$ et tout mot $u$ de $Σ^*$, on note $E.u={q.u | q ∈ E}$.],
         question(
-          [Soit $u$ un mot synchronisant de $M$ et $u_0,u_1,…,u_r$ une suite de préfixes de $u$ rangés dans l'ordre croissant de leur longueur et telle que $u_r=u$. Que peut-on dire de la suite des cardinaux $abs(Q.u_i)$ ?],
+          [Soit $u$ un mot synchronisant de $M$ et $u_0,u_1,…,u_r$ une suite de préfixes de $u$ rangés dans l'ordre croissant de leur taille et telle que $u_r=u$. Que peut-on dire de la suite des cardinaux $abs(Q.u_i)$ ?],
           solution: [Pour tout ensemble $E$ et tout mot $v$, l'image $E.v$ a au plus $abs(E)$ éléments. Puisque $u_(i+1)=u_i v$ pour un certain suffixe $v$, la suite est décroissante au sens large. Ses valeurs sont au moins $1$ et sa dernière valeur est $1$.],
         ),
         question(

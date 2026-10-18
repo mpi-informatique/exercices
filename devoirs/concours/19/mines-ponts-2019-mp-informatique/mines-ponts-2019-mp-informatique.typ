@@ -204,9 +204,9 @@
     partie("I", "Premiers exemples", contenu: (
       question(
         [Donner, sans preuve, une description courte en langue française de $cal(L)(cal(A)_1)$.],
-        solution: [Les mots de longueur impaire sur ${a,b}$.],
+        solution: [Les mots de taille impaire sur ${a,b}$.],
         bareme: 0.5,
-        notation: [100 % pour les longueurs impaires ; 0 % sinon.],
+        notation: [100 % pour les tailles impaires ; 0 % sinon.],
       ),
       question(
         [Donner, sans preuve, une description courte en langue française de $cal(L)(cal(A)_2)$.],
@@ -218,7 +218,7 @@
         [Donner, sans preuve, une expression régulière qui dénote $cal(L)(cal(A)_1)$.],
         solution: [$ (a|b)((a|b)(a|b))^*. $],
         bareme: 0.5,
-        notation: [100 % si correcte ; 50 % pour une seule petite erreur avec longueur impaire, ou pour exactement les longueurs paires ; 0 % si deux erreurs cumulées ou parité non maîtrisée.],
+        notation: [100 % si correcte ; 50 % pour une seule petite erreur avec taille impaire, ou pour exactement les tailles paires ; 0 % si deux erreurs cumulées ou parité non maîtrisée.],
       ),
       question(
         [Donner, sans preuve, une expression régulière qui dénote $cal(L)(cal(A)_2)$.],

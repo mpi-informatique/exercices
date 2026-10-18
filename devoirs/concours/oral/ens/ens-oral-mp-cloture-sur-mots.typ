@@ -130,7 +130,7 @@
         Appelons *mauvaise* une suite $(w_n)$ pour laquelle il n'existe aucun $i<j$ tel que $w_i ≼ w_j$.
         Supposons qu'une telle suite existe.
 
-        Construisons une mauvaise suite minimale : $w_0$ est de longueur minimale parmi les mots pouvant commencer une mauvaise suite ; une fois $w_0,dots,w_(n-1)$ fixés, on choisit $w_n$ de longueur minimale parmi les mots permettant de prolonger ce préfixe en une mauvaise suite.
+        Construisons une mauvaise suite minimale : $w_0$ est de taille minimale parmi les mots pouvant commencer une mauvaise suite ; une fois $w_0,dots,w_(n-1)$ fixés, on choisit $w_n$ de taille minimale parmi les mots permettant de prolonger ce préfixe en une mauvaise suite.
         La suite obtenue est mauvaise, car chaque préfixe possède un prolongement mauvais.
 
         Aucun $w_n$ n'est vide, puisque $epsilon$ est sous-mot de tout mot suivant.

@@ -35,7 +35,7 @@
       solution: [
         Soit $k$ le premier indice strictement positif où la hauteur d'un préfixe redevient nulle.
         Cet indice existe, car la hauteur finale est nulle.
-        La première lettre est $a$, la $k$-ième est $b$, et les hauteurs des préfixes de longueurs $1$ à $k-1$ sont au moins $1$.
+        La première lettre est $a$, la $k$-ième est $b$, et les hauteurs des préfixes de tailles $1$ à $k-1$ sont au moins $1$.
         Poser $u=w_2 … w_(k-1)$ et $v=w_(k+1) … w_(abs(w))$.
         La hauteur totale de $u$ est nulle et ses hauteurs de préfixes sont celles du mot initial diminuées de $1$, donc non négatives. Les préfixes de $v$ reprennent après une hauteur nulle.
         Ainsi $u,v ∈ D$.
@@ -52,7 +52,7 @@
         $ε$ est de Dyck, et la concaténation de deux mots de Dyck ainsi que l'ajout d'un $a$ au début et d'un $b$ à la fin préservent cette propriété.
         Une induction sur les arbres d'analyse donne donc $L(G) ⊂ D$.
 
-        Réciproquement, raisonner par récurrence forte sur la longueur.
+        Réciproquement, raisonner par récurrence forte sur la taille.
         Le mot vide est engendré. Un mot non vide s'écrit $a u b v$, avec $u,v ∈ D$ strictement plus courts. Ils sont engendrés par hypothèse, et
         $ S ⇒ S S ⇒ a S b S ⇒^* a u b v. $
         Ainsi $D ⊂ L(G)$.
@@ -64,12 +64,12 @@
     ]),
     question([Donner une grammaire non ambiguë engendrant $D$.], solution: [
       Prendre $S → a S b S ∣ ε$.
-      La décomposition unique établie précédemment montre par récurrence sur la longueur que chaque mot non vide possède un unique arbre, dont les deux sous-arbres engendrent $u$ et $v$. Le mot vide utilise nécessairement $S → ε$.
+      La décomposition unique établie précédemment montre par récurrence sur la taille que chaque mot non vide possède un unique arbre, dont les deux sous-arbres engendrent $u$ et $v$. Le mot vide utilise nécessairement $S → ε$.
       La même décomposition montre que tous les mots de Dyck sont engendrés, et l'induction sur les arbres prouve l'inclusion réciproque.
     ]),
     question(
       [
-        Donner une bijection entre les mots de Dyck et les arbres binaires stricts ordonnés, dont chaque nœud possède zéro ou deux fils. Préciser le lien entre la longueur du mot et les nombres de nœuds internes et de feuilles.
+        Donner une bijection entre les mots de Dyck et les arbres binaires stricts ordonnés, dont chaque nœud possède zéro ou deux fils. Préciser le lien entre la taille du mot et les nombres de nœuds internes et de feuilles.
       ],
       solution: [
         Noter $F$ une feuille et $N(g,d)$ un nœud interne de sous-arbres gauche $g$ et droit $d$.
@@ -79,17 +79,17 @@
         Son inverse est
         $ g(F)=ε, #sep g(N(t_1,t_2))=a g(t_1) b g(t_2). $
         Des inductions sur les mots et les arbres prouvent que les deux compositions sont l'identité.
-        Une paire de lettres correspond à un nœud interne : un mot de longueur $2n$ correspond à un arbre de $n$ nœuds internes et de $n+1$ feuilles.
+        Une paire de lettres correspond à un nœud interne : un mot de taille $2n$ correspond à un arbre de $n$ nœuds internes et de $n+1$ feuilles.
         Le mot vide correspond à une feuille, et non à un arbre vide.
       ],
     ),
     question(
       [
-        Soit $C_n$ le nombre de mots de Dyck de longueur $2n$.
+        Soit $C_n$ le nombre de mots de Dyck de taille $2n$.
         Donner $C_0$ et une relation de récurrence. Calculer $C_1,C_2,C_3,C_4$.
       ],
       solution: [
-        $C_0=1$. Pour un mot de longueur $2(n+1)$, la décomposition $a u b v$ donne $abs(u)=2k$ et $abs(v)=2(n-k)$, avec $0 ≤ k ≤ n$.
+        $C_0=1$. Pour un mot de taille $2(n+1)$, la décomposition $a u b v$ donne $abs(u)=2k$ et $abs(v)=2(n-k)$, avec $0 ≤ k ≤ n$.
         Les choix de $u$ et $v$ sont indépendants et la décomposition est unique, donc
         $ C_(n+1)=sum_(k=0)^n C_k C_(n-k). $
         On obtient $C_1=1$, $C_2=2$, $C_3=5$ et $C_4=14$.
@@ -160,7 +160,7 @@
     ),
     question(
       [
-        Décrire un algorithme en temps linéaire pour trouver la longueur du plus long facteur bien parenthésé d'un mot sur ${a,b}$. La réponse vaut zéro si aucun facteur non vide ne convient.
+        Décrire un algorithme en temps linéaire pour trouver la taille du plus long facteur bien parenthésé d'un mot sur ${a,b}$. La réponse vaut zéro si aucun facteur non vide ne convient.
       ],
       solution: [
         Numéroter les lettres de $0$ à $n-1$.

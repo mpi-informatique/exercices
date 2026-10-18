@@ -34,8 +34,8 @@
 
         *$3 ==> 2$.* Posons $d=gcd(abs(u), abs(v))$, $abs(u)=d p$ et $abs(v)=d q$,
         avec $gcd(p, q)=1$.
-        On découpe $u=U_0 dots U_(p-1)$ et $v=V_0 dots V_(q-1)$ en blocs de longueur $d$.
-        La longueur commune $N=m abs(u)=n abs(v)$ est un multiple commun de $abs(u)$ et $abs(v)$, donc $N>=d p q$.
+        On découpe $u=U_0 dots U_(p-1)$ et $v=V_0 dots V_(q-1)$ en blocs de taille $d$.
+        La taille commune $N=m abs(u)=n abs(v)$ est un multiple commun de $abs(u)$ et $abs(v)$, donc $N>=d p q$.
         Les $p q$ premiers blocs de $u^m$ et de $v^n$ coïncident :
         $ U_(t mod p) = V_(t mod q) quad (0 <= t < p q). $
         Le théorème des restes chinois assure que, pour tous $0<=i<p$ et $0<=j<q$, il existe $0<=t<p q$ avec $t equiv i (mod p)$ et $t equiv j (mod q)$.

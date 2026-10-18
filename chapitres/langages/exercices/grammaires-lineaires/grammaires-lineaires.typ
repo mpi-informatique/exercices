@@ -109,9 +109,9 @@
         Réciproquement, chaque terme vrai de la disjonction fournit une première règle
         et une dérivation du facteur restant, donc une dérivation du mot voulu.
 
-        Les facteurs utilisés à droite ont longueur $j-i-1$.
-        On remplit donc la table par longueurs croissantes, de $0$ à $n$.
-        Une récurrence sur la longueur, avec le cas vide ci-dessus, prouve la correction de toutes les cases. La réponse est $D(S,0,n)$.
+        Les facteurs utilisés à droite ont pour taille $j-i-1$.
+        On remplit donc la table par tailles croissantes, de $0$ à $n$.
+        Une récurrence sur la taille, avec le cas vide ci-dessus, prouve la correction de toutes les cases. La réponse est $D(S,0,n)$.
       ],
     ),
     [
@@ -151,19 +151,19 @@
       solution: [
         La table allouée contient $m(n+1)^2$ booléens ; son initialisation coûte $O(m(n+1)^2)$ en temps et en espace.
         Il y a $(n+1)(n+2)/2$ intervalles $[i,j[$.
-        Pour chacun, le parcours des $m$ variables examine au plus $r$ règles au total, chacune en temps constant. Le temps total est donc $O((m+r)(n+1)^2)$, quadratique en la longueur du mot lorsque la grammaire est fixée.
+        Pour chacun, le parcours des $m$ variables examine au plus $r$ règles au total, chacune en temps constant. Le temps total est donc $O((m+r)(n+1)^2)$, quadratique en la taille du mot lorsque la grammaire est fixée.
         La mémoire auxiliaire est $O(m(n+1)^2)$, hors grammaire et mot d'entrée.
         Les appels récursifs parcourant les règles sont terminaux.
 
-        Pour une longueur $ℓ$, on ne lit que des valeurs correspondant à $ℓ-1$.
+        Pour une taille $ℓ$, on ne lit que des valeurs correspondant à $ℓ-1$.
         Il suffit de deux tableaux indépendants de taille $m × (n+1)$, indexés par la variable et le début du facteur.
         On initialise le premier pour les facteurs vides.
         Pour calculer le facteur $w[i:i+ℓ]$, une règle $X → a Y$ consulte la case $(Y,i+1)$ du tableau précédent, et une règle $X → Y a$ sa case $(Y,i)$.
         On écrit toutes les cases utiles du second tableau avant d'échanger les deux tableaux.
-        On ne doit pas écraser une case de la longueur précédente pendant son utilisation.
+        On ne doit pas écraser une case de la taille précédente pendant son utilisation.
 
         On conserve le même nombre de calculs et on utilise $O(m(n+1))$ cases.
-        Après la longueur $n$, la réponse se lit à l'axiome, à l'indice $0$.
+        Après la taille $n$, la réponse se lit à l'axiome, à l'indice $0$.
       ],
     ),
     question(

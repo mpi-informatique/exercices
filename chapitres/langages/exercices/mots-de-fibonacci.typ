@@ -13,7 +13,7 @@
       $ f_0=a, #sep f_1=b, #sep f_(n+2)=f_(n+1) f_n " pour " n>=0. $],
     question(
       [
-        Montrer que pour $n>=2$, le suffixe de longueur $2$ de $f_n$ est $b a$ si $n$ est pair, $a b$ si $n$ est impair.
+        Montrer que pour $n>=2$, le suffixe de taille $2$ de $f_n$ est $b a$ si $n$ est pair, $a b$ si $n$ est impair.
       ],
       solution: [
         On procède par récurrence double.
