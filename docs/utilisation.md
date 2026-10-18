@@ -100,7 +100,7 @@ Placer les réponses et preuves dans `solution[...]`, importé depuis `/load.typ
 ]
 ```
 
-Ce contenu est masqué dans le cours normal, affiché après l'énoncé dans le cours corrigé et conservé dans la présentation. Les pauses et titres propres à la projection peuvent rester dans `slides-only[...]` à l'intérieur de la solution. Les cours ne renseignent pas automatiquement les solutions manquantes.
+Ce contenu est masqué dans le cours normal, affiché après l'énoncé dans le cours corrigé avec le même environnement que les solutions des feuilles (`bloc-solution`), et conservé dans la présentation. Les pauses et titres propres à la projection peuvent rester dans `slides-only[...]` à l'intérieur de la solution. Les cours ne renseignent pas automatiquement les solutions manquantes.
 
 ## Aide de l'API
 

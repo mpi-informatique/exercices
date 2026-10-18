@@ -72,10 +72,14 @@ $widetilde(a b), #sep widetilde(L)$
 #solution[
   #slides-only[== Solution projetée]
   #metadata("solution") <solution-cours-test> Une solution réservée au corrigé et aux diapositives.
+  #pause
+  #block[#slides-only[Un détail projeté.] #article-only[Un détail imprimé.]]
+  La fin de la solution.
 ]
 #context {
-  let visible = sys.inputs.at("corrige", default: "false") == "true" or sys.inputs.at("format") == "presentation"
-  assert(query(<solution-cours-test>).len() == if visible { 1 } else { 0 })
+  // La pause répète la solution sur deux diapositives, une seule fois dans le corrigé.
+  let nombre = if sys.inputs.at("format") == "presentation" { 2 } else if sys.inputs.at("corrige", default: "false") == "true" { 1 } else { 0 }
+  assert(query(<solution-cours-test>).len() == nombre)
 }
 #slides-only[
   Un complément projeté.
@@ -110,4 +114,17 @@ $widetilde(a b), #sep widetilde(L)$
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante, '--input', 'corrige=' + corrige,
                         str(source), str(output)], check=True)
         assert output.stat().st_size > 0
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, solution
+#show: cours.with(titre: "Cours sans présentation")
+Un énoncé.
+#solution[#metadata("solution") <solution-simple-test> Une solution.]
+#context {
+  let corrige = sys.inputs.at("corrige", default: "false") == "true"
+  assert(query(<solution-simple-test>).len() == if corrige { 1 } else { 0 })
+}
+''', encoding='utf-8')
+    for corrige in ('false', 'true'):
+        subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                        '--package-path', str(racine / 'packages'), '--input', 'corrige=' + corrige,
+                        str(source), str(racine / ('cours-simple-' + corrige + '.pdf'))], check=True)
 print('Package local : imports, ressources, énoncé, corrigé, cours et présentation vérifiés.')
