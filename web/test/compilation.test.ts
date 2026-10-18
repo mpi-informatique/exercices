@@ -2,29 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 import { createEngine } from '../src/compiler/engine.ts';
-import { availableVariants, type Resource } from '../../shared/src/index.ts';
-
-const publicPath = new URL('../public/', import.meta.url);
-const json = async (path: string) => JSON.parse(await readFile(new URL(path, publicPath), 'utf8'));
-const resources: Resource[] = JSON.parse(await readFile(new URL('../src/generated/catalogue.json', import.meta.url), 'utf8'));
-const manifest = await json('banque/manifest.json');
-const engine = await createEngine({
-  bundle: await json('banque/bundle.json'),
-  fonts: await Promise.all(manifest.fonts.map(async (font: string) => new Uint8Array(await readFile(new URL(`fonts/${font}`, publicPath))))),
-  wasm: new Uint8Array(await readFile(new URL('typst/compiler.wasm', publicPath))),
-});
-const source = (resource: Resource) => readFile(new URL(`banque/${resource.fichier}`, publicPath), 'utf8');
-
-test('toute la banque compile avec le moteur WASM du navigateur dans ses formats disponibles', async () => {
-  for (const resource of resources) {
-    const code = await source(resource);
-    for (const variant of availableVariants(resource.type)) {
-      const result = await engine.compile(resource, code, variant);
-      assert.equal(new TextDecoder().decode(result.pdf.slice(0, 5)), '%PDF-', `${resource.id} / ${variant}`);
-      assert.ok(result.pdf.length > 1000, `${resource.id} / ${variant}`);
-    }
-  }
-});
+import { engine, json, manifest, publicPath, resources, source } from './compiler-fixture.ts';
 
 test('une erreur Typst ne bloque pas les compilations suivantes ni les imports', async () => {
   const resource = resources.find(resource => resource.id === 'residuels-minimisation')!;
