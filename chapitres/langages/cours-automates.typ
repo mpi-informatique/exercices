@@ -236,7 +236,7 @@ Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonct
 ]
 On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 #slides-only[== Lecture d'une concaténation]
-#theorem[$δ^*(q, u v) = δ^*(δ^*(q, u), v)$.]
+#theorem[$δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-transition-concatenation>
 #article-only[*Preuve* :]
 #slides-only[#pause Démontrer le résultat par récurrence sur $abs(u)$.]
 
@@ -253,7 +253,7 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
   $ δ^*(q_0, x) = δ^*(q_0, x y). $
-  L'identité de concaténation donne
+  Le #link(<thm-transition-concatenation>)[théorème sur la lecture d'une concaténation] donne
   $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
   Le mot $x z$ est donc refusé et strictement plus court que $m$, ce qui contredit sa minimalité.
 
