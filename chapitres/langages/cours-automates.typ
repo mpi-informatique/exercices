@@ -242,8 +242,9 @@ On a $u ∈ cal(L)(A) ⇔ δ^*(q_i, u) ∈ F$.
 
 #slides-only[== Un test fini d'universalité]
 #exercise[
-  Un automate déterministe complet à $n$ états accepte tous les mots de longueur strictement inférieure à $n$.
-  Montrer qu'il accepte tous les mots. La borne est-elle optimale ?
+  Soit $A$ un automate déterministe complet à $n$ états sur un alphabet $Σ$.
+  Montrer que si $A$ accepte tous les mots de longueur strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
+  La borne est-elle optimale ?
 ]
 #solution[
   #slides-only[== Correction : supprimer une boucle]
