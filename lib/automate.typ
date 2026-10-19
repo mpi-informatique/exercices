@@ -14,7 +14,7 @@
 /// Dessine un automate centré à partir de ses états et arcs explicites.
 /// - etats (array): Entrées `(nom, position, initial, final)` ; `nom` est une chaîne mathématique Typst.
 /// - arcs (array): Entrées `(départ, arrivée, étiquette, style)` ; étiquette mathématique et style finite.
-///   Les étiquettes des transitions droites sont placées au-dessus par défaut, celles des arcs courbes à l'extérieur. `label: (dist: ...)` permet de changer de côté.
+///   Les étiquettes des transitions droites sont placées au-dessus par défaut, celles des arcs courbes à l'extérieur. `inverser: true` place l'étiquette de l'autre côté ; `label: (dist: ...)` permet de régler sa distance explicitement.
 /// - echelle (array): Facteurs horizontal et vertical des positions, défaut `(1, 1)`.
 /// - rayon (function): Rayon d'un état selon son nom, dans l'unité commune.
 /// -> content
@@ -31,10 +31,11 @@
   }
   for (p, q, etiquette, style) in arcs {
     let style-etiquette = style.remove("label", default: (:))
+    let autre-cote = style.remove("inverser", default: false)
     let courbure = style.at("curve", default: 1)
     // Pour une transition droite, finite calcule la normale à l'opposé du sens de lecture.
     let inverser = courbure < 0 or (courbure == 0 and positions.at(q).at(0) > positions.at(p).at(0))
     transition(p, q, label: (text: math.equation(eval(etiquette, mode: "math")),
-      dist: if inverser { -distance } else { distance }) + style-etiquette, ..style)
+      dist: if inverser != autre-cote { -distance } else { distance }) + style-etiquette, ..style)
   }
 }))
