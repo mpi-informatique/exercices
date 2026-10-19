@@ -1,4 +1,4 @@
-#import "/lib/exercice.typ": afficher-exercice, exercice, feuille, partie, question, texte-concours, titre-concours
+#import "/lib/exercice.typ": afficher-exercice, cible-question, exercice, feuille, partie, question, texte-concours, titre-concours
 #import "/lib/meta.typ": (
   chapitres-informatique, chapitres-maths, chapitres-programme, langages-possibles, niveaux-par-chapitre,
 )
@@ -137,4 +137,17 @@
 #afficher-exercice(sujet-jury, corrige: true)
 #context {
   assert(query(<jury-test>).map(it => it.value) == ("sujet", "partie", "question"))
+}
+
+// Un renvoi numéroté conserve l'alignement hérité par le texte.
+#for (i, alignement) in (left, center, right).enumerate() {
+  let etiquette = label("question-alignement-" + str(i))
+  align(alignement, context {
+    let attendu = align.alignment
+    cible-question(question([], label: etiquette), i + 1, [
+      #context assert(align.alignment == attendu, message: "Le label ne doit pas modifier l'alignement de la question.")
+      Question avec un renvoi numéroté.
+    ])
+  })
+  [Voir #ref(etiquette).]
 }

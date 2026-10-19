@@ -36,8 +36,13 @@
 #let cible-question(q, numero, body) = {
   let etiquette = q.at("label", default: none)
   if etiquette == none { return body }
-  show figure.where(kind: "question"): it => it.body
-  [#figure(kind: "question", supplement: [Question], numbering: _ => str(numero), outlined: false, body)#etiquette]
+  context {
+    let alignement = align.alignment
+    // La figure sert de cible au renvoi et ne doit pas centrer le texte de la question.
+    show figure.where(kind: "question"): set align(alignement)
+    show figure.where(kind: "question"): it => it.body
+    [#figure(kind: "question", supplement: [Question], numbering: _ => str(numero), outlined: false, body)#etiquette]
+  }
 }
 
 #let texte-concours(concours) = (
