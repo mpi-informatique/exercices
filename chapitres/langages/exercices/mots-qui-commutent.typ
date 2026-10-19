@@ -8,6 +8,7 @@
     niveaux: ("MPI",),
   ),
   contenu: (
+    [On fixe un alphabet $Σ$. Tous les mots considérés sont des éléments de $Σ^*$.],
     question(
       [
         Soient $u$ et $v$ deux mots *non vides*.
@@ -40,6 +41,35 @@
         $ U_(t mod p) = V_(t mod q) quad (0 <= t < p q). $
         Le théorème des restes chinois assure que, pour tous $0<=i<p$ et $0<=j<q$, il existe $0<=t<p q$ avec $t equiv i (mod p)$ et $t equiv j (mod q)$.
         Donc $U_i=V_j$ pour tout couple $(i,j)$ : tous les blocs sont égaux, et $u=U_0^p$, $v=U_0^q$.
+      ],
+    ),
+    question(
+      [
+        Soit $u$ un mot non vide. On appelle *commutant* de $u$ le langage
+        $ C(u) = {v ∈ Σ^* | u v = v u}. $
+        Montrer que $C(u)$ est un sous-monoïde de $Σ^*$, c'est-à-dire qu'il contient $ε$ et est stable par concaténation.
+        Montrer ensuite qu'il existe un unique mot non vide $r$ tel que
+        $ C(u) = {r^k | k ∈ NN}. $
+      ],
+      solution: [
+        Le mot $ε$ commute avec $u$. Si $v, w ∈ C(u)$, alors $u v w = v u w = v w u$, donc $v w ∈ C(u)$.
+        Ainsi $C(u)$ est un sous-monoïde de $Σ^*$.
+
+        Comme $u ∈ C(u)$ et $u ≠ ε$, choisissons un mot non vide $r ∈ C(u)$ de taille minimale.
+        Toutes ses puissances appartiennent à $C(u)$.
+        Montrons réciproquement, par récurrence forte sur $abs(v)$, que tout $v ∈ C(u)$ est une puissance de $r$.
+        C'est immédiat si $v = ε$.
+
+        Soit $v ∈ C(u)$ non vide. Par minimalité, $abs(r) ≤ abs(v)$.
+        Pour tout entier $N$, on a $u^N r = r u^N$ et $u^N v = v u^N$.
+        En choisissant $N$ tel que $abs(u^N) ≥ abs(v)$, on voit que $r$ et $v$ sont des préfixes de $u^N$.
+        Donc $r$ est préfixe de $v$ : écrivons $v = r t$.
+        L'égalité $u v = v u$ donne $u r t = r t u$, puis $r u t = r t u$ puisque $u r = r u$.
+        Par simplification, $u t = t u$, donc $t ∈ C(u)$.
+        Comme $abs(t) < abs(v)$, l'hypothèse de récurrence donne $t = r^k$, puis $v = r^(k + 1)$.
+
+        Enfin, si un mot non vide $s$ engendre aussi $C(u)$, il existe $a, b ≥ 1$ tels que $r = s^a$ et $s = r^b$.
+        Les tailles donnent $abs(r) = a b abs(r)$, donc $a = b = 1$ et $r = s$.
       ],
     ),
   ),
