@@ -1,4 +1,4 @@
-#import "/load.typ": exercice, partie, question
+#import "/load.typ": exercice, partie, question, sep
 
 #let ex = exercice(
   meta: (
@@ -150,6 +150,55 @@
         ],
         label: <centraliseur-alphabet>,
       ),
+      [
+        Pour $E ⊂ NN$, on pose $K_E = union.big_(n ∈ E) Σ^n$.
+        L'ensemble $E$ est _ultimement périodique_ s'il existe $t ∈ NN$ et $p ∈ NN^*$ tels que
+        $ ∀n ≥ t, #sep n ∈ E ⟺ n + p ∈ E. $
+      ],
+      question(
+        [
+          Montrer que si $E$ est ultimement périodique, alors $K_E$ est régulier.
+          Construire une expression régulière de $K_E$ à partir d'un seuil $t$ et d'une période $p$.
+        ],
+        solution: [
+          Posons $F = E ∩ {0, …, t - 1}$ et $B = E ∩ {t, …, t + p - 1}$, avec $F = ∅$ lorsque $t = 0$.
+          La périodicité donne
+          $ E = F ∪ union.big_(r ∈ B) {r + k p | k ∈ NN}, $
+          puis
+          $ K_E = (union.big_(j ∈ F) Σ^j) ∪ (union.big_(r ∈ B) Σ^r (Σ^p)^*). $
+          Soit $e$ l'expression régulière obtenue en prenant l'alternative de toutes les lettres de $Σ$.
+          Une expression de $K_E$ est l'alternative des $e^j$, pour $j ∈ F$, et des $e^r (e^p)^*$, pour $r ∈ B$.
+          Une alternative vide dénote le langage vide et $e^0$ dénote ${ε}$.
+          Il s'agit d'une expression régulière car $F$ et $B$ sont finis.
+        ],
+        label: <centraliseur-periode-expression>,
+      ),
+      question(
+        [
+          Montrer réciproquement que si $K_E$ est régulier, alors $E$ est ultimement périodique.
+          On pourra appliquer le lemme de l'étoile aux mots $a^n$, pour une lettre $a ∈ Σ$, et utiliser la factorielle de la constante fournie par ce lemme.
+          Conclure sur les langages réguliers qui commutent avec $Σ$.
+        ],
+        solution: [
+          Soit $p ≥ 1$ une constante du lemme de l'étoile et posons $P = p!$.
+          Si $n ∈ E$ avec $n ≥ p$, appliquons ce lemme à $a^n ∈ K_E$.
+          Il fournit $a^n = x y z$, avec $1 ≤ abs(y) ≤ p$, tel que $x y^k z ∈ K_E$ pour tout $k ∈ NN$.
+          L'entier $d = abs(y)$ divise $P$.
+          Avec $k = 1 + P / d$, le mot obtenu a pour taille $n + P$, donc $n + P ∈ E$.
+          Ainsi, au-delà de $p$, l'appartenance à $E$ se propage par ajout de $P$.
+
+          Pour chaque classe modulo $P$ qui rencontre $E ∩ {n ∈ NN | n ≥ p}$, choisissons son plus petit élément $n_r$ dans cet ensemble.
+          Il n'y a qu'un nombre fini de telles classes.
+          Prenons $t$ supérieur ou égal à $p$ et à tous les $n_r$.
+          Pour $n ≥ t$, si sa classe a été choisie, alors $n = n_r + k P$ pour un entier $k ≥ 0$, donc $n ∈ E$ par le résultat précédent.
+          Si sa classe n'a pas été choisie, alors $n ∉ E$.
+          L'appartenance à $E$ ne dépend donc plus que de la classe modulo $P$ lorsque $n ≥ t$.
+          Cela prouve que $E$ est ultimement périodique.
+
+          La @centraliseur-alphabet et la @centraliseur-periode-expression permettent de conclure : les langages réguliers commutant avec $Σ$ sont exactement les $K_E$ pour lesquels $E$ est ultimement périodique.
+        ],
+        label: <centraliseur-regularite-tailles>,
+      ),
       question(
         [
           Un langage commutant avec un langage régulier est-il nécessairement régulier ?
@@ -157,14 +206,12 @@
         ],
         solution: [
           Le langage $Σ$ est fini, donc régulier. D'après la @centraliseur-alphabet, $K$ commute avec $Σ$.
-          Montrons pourtant que $K$ n'est pas régulier.
-
-          Supposons le contraire et soit $p ≥ 1$ une constante du lemme de l'étoile.
-          Fixons $a ∈ Σ$ et appliquons ce lemme au mot $a^(p^2) ∈ K$.
-          Pour une décomposition $a^(p^2) = x y z$ vérifiant $1 ≤ abs(y) ≤ p$, le mot $x y^2 z$ devrait encore appartenir à $K$.
-          Pourtant,
-          $ p^2 < abs(x y^2 z) = p^2 + abs(y) ≤ p^2 + p < (p + 1)^2. $
-          Sa taille n'est pas un carré, ce qui donne une contradiction.
+          Montrons pourtant que l'ensemble $E = {n^2 | n ∈ NN}$ n'est pas ultimement périodique.
+          Sinon, soient $t$ un seuil et $p ≥ 1$ une période.
+          Choisissons $n$ tel que $n^2 ≥ t$ et $2 n + 1 > p$.
+          Comme $n^2 ∈ E$, on devrait avoir $n^2 + p ∈ E$.
+          Or $n^2 < n^2 + p < (n + 1)^2$, donc $n^2 + p$ n'est pas un carré.
+          Cette contradiction et la @centraliseur-regularite-tailles montrent que $K$ n'est pas régulier.
           Ainsi un langage peut commuter avec un langage régulier sans être régulier.
           Cela concerne un langage commutant avec $Σ$, et non son centraliseur, qui vaut ici $Σ^*$.
         ],
