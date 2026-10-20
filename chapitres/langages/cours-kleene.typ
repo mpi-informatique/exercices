@@ -85,10 +85,18 @@ $ L ∖ {ε} = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^*. $
 #slides-only[== Exemples et contre-exemples]
 #exercise[
   Les langages suivants sont-ils locaux ?
-  + $L_1 = a^*$
-  + $L_2 = (a b)^*$
-  + $L_3 = a^* | (a b)^*$
-  + $L_4 = a^* (a b)^*$
+  #grid(
+    columns: (1fr, 1fr),
+    column-gutter: 1.5em,
+    [
+      + $L_1 = a^*$
+      + $L_2 = (a b)^*$
+    ],
+    enum(start: 3,
+      [$L_3 = a^* | (a b)^*$],
+      [$L_4 = a^* (a b)^*$],
+    ),
+  )
 ]
 #solution[#pause Les trois premiers donnent deux langages locaux puis un contre-exemple : $a a b$ respecte les conditions locales de $L_3$ sans lui appartenir. $L_4$ est local.]
 
