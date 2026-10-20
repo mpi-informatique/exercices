@@ -6,7 +6,7 @@
     titre: "Ensembles inévitables de mots",
     chapitres: ("langages-reguliers", "automates-finis", "graphes"),
     algorithmes: ("parcours-en-profondeur", "determinisation"),
-    structures: ("graphe-oriente",),
+    structures: ("graphe",),
     difficulte: 4,
     niveaux: ("MPI", "MP"),
     duree: none,

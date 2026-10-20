@@ -5,7 +5,7 @@
     titre: "Nombre minimal d'arcs à ajouter pour rendre un graphe fortement connexe",
     chapitres: ("graphes",),
     algorithmes: ("kosaraju", "parcours-en-profondeur"),
-    structures: ("graphe-oriente", "liste-adjacence", "tableau", "liste"),
+    structures: ("graphe", "tableau", "liste"),
     langages: ("OCaml",),
     difficulte: 4,
     niveaux: ("MPI",),

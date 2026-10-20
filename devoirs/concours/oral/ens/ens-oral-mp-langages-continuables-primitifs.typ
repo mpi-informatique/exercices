@@ -4,7 +4,7 @@
     titre: "Langages continuables et mots primitifs",
     chapitres: ("langages-reguliers", "automates-finis"),
     algorithmes: ("parcours-en-largeur",),
-    structures: ("graphe-oriente",),
+    structures: ("graphe",),
     difficulte: 4,
     niveaux: ("MPI", "MP"),
     duree: (1, 0),

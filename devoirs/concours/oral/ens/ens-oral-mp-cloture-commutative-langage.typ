@@ -5,7 +5,7 @@
     titre: "Clôture commutative de langages réguliers",
     chapitres: ("langages-reguliers", "automates-finis"),
     algorithmes: ("kosaraju", "parcours-en-profondeur"),
-    structures: ("graphe-oriente",),
+    structures: ("graphe",),
     difficulte: 5,
     niveaux: ("MPI", "MP"),
     duree: (1, 0),

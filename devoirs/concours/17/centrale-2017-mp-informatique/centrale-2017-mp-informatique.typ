@@ -112,7 +112,7 @@
     titre: "Mots synchronisants",
     chapitres: ("automates-finis", "langages-reguliers", "graphes", "structures", "logique"),
     algorithmes: ("parcours-en-largeur", "determinisation"),
-    structures: ("file", "tableau", "liste-adjacence"),
+    structures: ("file", "tableau", "graphe"),
     langages: ("OCaml",),
     difficulte: 4,
     niveaux: ("MPI",),

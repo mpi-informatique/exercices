@@ -5,7 +5,7 @@
     titre: "Centraliseur d'un langage",
     chapitres: ("langages-reguliers", "graphes", "algorithmique"),
     algorithmes: ("parcours-en-profondeur",),
-    structures: ("graphe-oriente", "liste-adjacence"),
+    structures: ("graphe",),
     langages: (),
     difficulte: 4,
     niveaux: ("MPI",),

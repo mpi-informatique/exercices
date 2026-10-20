@@ -165,7 +165,7 @@
     titre: "Morphismes d'automates",
     chapitres: ("automates-finis", "langages-reguliers", "graphes"),
     algorithmes: ("parcours-en-profondeur",),
-    structures: ("tableau", "liste", "graphe-oriente", "graphe-non-oriente", "liste-adjacence"),
+    structures: ("tableau", "liste", "graphe"),
     langages: ("OCaml",),
     difficulte: 4,
     niveaux: ("MPI", "MP"),

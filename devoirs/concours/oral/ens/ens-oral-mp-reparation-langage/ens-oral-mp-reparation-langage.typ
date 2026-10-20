@@ -5,7 +5,7 @@
     titre: "Réparation de mots pour un langage régulier",
     chapitres: ("langages-reguliers", "automates-finis"),
     algorithmes: ("programmation-dynamique", "parcours-en-largeur"),
-    structures: ("tableau", "graphe-oriente", "liste-adjacence"),
+    structures: ("tableau", "graphe"),
     difficulte: 4,
     niveaux: ("MPI", "MP"),
     duree: (1, 0),

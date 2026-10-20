@@ -6,7 +6,7 @@
     titre: "Sous-monoïdes de mots et codes",
     chapitres: ("langages-reguliers", "recursivite-et-induction", "algorithmique", "graphes"),
     algorithmes: ("algorithme-glouton", "parcours-en-largeur"),
-    structures: ("graphe-oriente", "liste-adjacence", "file"),
+    structures: ("graphe", "file"),
     langages: (),
     difficulte: 3,
     niveaux: ("MPI",),

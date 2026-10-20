@@ -5,7 +5,7 @@
     titre: "Taille discriminante",
     chapitres: ("automates-finis", "langages-reguliers"),
     algorithmes: ("parcours-en-largeur",),
-    structures: ("graphe-oriente", "file", "liste-adjacence"),
+    structures: ("graphe", "file"),
     difficulte: 2,
     niveaux: ("MPI",),
   ),

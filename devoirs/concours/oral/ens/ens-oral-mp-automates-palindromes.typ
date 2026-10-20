@@ -4,7 +4,7 @@
     titre: "Automates et palindromes",
     chapitres: ("langages-reguliers", "automates-finis"),
     algorithmes: ("parcours-en-profondeur", "tri-topologique", "programmation-dynamique"),
-    structures: ("graphe-oriente",),
+    structures: ("graphe",),
     difficulte: 4,
     niveaux: ("MPI", "MP"),
     duree: (1, 0),

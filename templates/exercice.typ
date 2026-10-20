@@ -5,7 +5,7 @@
     titre: "Titre de l'exercice",
     chapitres: ("graphes",), // doivent apparaître dans lib/meta.typ
     algorithmes: ("parcours-en-profondeur",), // doivent apparaître dans lib/meta.typ
-    structures: ("graphe-oriente",), // doivent apparaître dans lib/meta.typ
+    structures: ("graphe",), // doivent apparaître dans lib/meta.typ
     difficulte: 2, // Entre 1 et 5, 1 étant le plus facile
     niveaux: ("MPI",),
     duree: (0, 20), // (Heures, minutes) ; none si non estimée.

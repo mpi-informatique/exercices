@@ -5,7 +5,7 @@
     titre: "Algorithmes sur les automates",
     chapitres: ("automates-finis", "langages-reguliers"),
     algorithmes: ("parcours-en-profondeur", "parcours-en-largeur", "determinisation"),
-    structures: ("graphe-oriente", "liste-adjacence"),
+    structures: ("graphe",),
     difficulte: 2,
     niveaux: ("MPI",),
   ),
