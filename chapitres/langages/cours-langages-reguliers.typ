@@ -90,14 +90,31 @@
 
 Rappels d'utilisation d'une chaîne de caractères (```ocaml string```) :
 
-```ocaml
-let s = "abc" (* définit une chaîne de caractères *)
-s.[1] (* donne 'b' *)
-String.length s (* donne 3 *)
-"abc" ^ "def" (* concaténation *)
-```
+#grid(
+  columns: (1fr, 1fr),
+  column-gutter: 1em,
+  [
+    *OCaml*
+    ```ocaml
+    let s = "abc" (* définit une chaîne de caractères *)
+    s.[1] (* donne 'b' *)
+    String.length s (* donne 3 *)
+    "abc" ^ "def" (* concaténation *)
+    ```
+  ],
+  [
+    *C*
+    ```c
+    #include <string.h>
+    char s[7] = "abc";
+    s[1]; // donne 'b'
+    strlen(s); // donne 3
+    strcat(s, "def"); // s vaut "abcdef"
+    ```
+  ],
+)
 
-Contrairement à ```ocaml array```, le type ```ocaml string``` est immuable/persistant : on ne peut pas modifier un caractère d'une chaîne.
+En OCaml, contrairement à ```ocaml array```, le type ```ocaml string``` est immuable/persistant : on ne peut pas modifier un caractère d'une chaîne.
 
 #slides-only[== Reconnaissance d'un sous-mot]
 
