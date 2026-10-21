@@ -1,7 +1,7 @@
 #import "/load.typ": article-only, cours-et-presentation, taille-presentation, item-by-item, only, pause, slides-only, solution
 #import "/load.typ": automate, theoremes
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
-#import "/load.typ": sep, widetilde
+#import "/load.typ": sep, widetilde, colonnes-cours
 
 #import automate: Lreg
 
@@ -270,10 +270,15 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 
 #exercice[
   Montrer que les langages suivants sont réguliers sur $Σ = {a, b}$ :
-  + Mots commençant par $a$.
-  + Mots commençant par $a$ et finissant par $b$.
-  + Mots de taille paire.
-  + Mots de taille impaire.
+  #colonnes-cours(
+    [
+      + Mots commençant par $a$.
+      + Mots commençant par $a$ et finissant par $b$.
+    ],
+    [
+      #enum(start: 3)[Mots de taille paire.][Mots de taille impaire.]
+    ],
+  )
 ]
 
 = Expressions régulières
