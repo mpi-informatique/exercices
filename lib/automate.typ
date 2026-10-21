@@ -1,3 +1,7 @@
+/// Notation de l’ensemble des langages réguliers.
+/// -> content
+#let Lreg = $cal(L)_("reg")$
+
 // Échelle commune proportionnelle au texte : 0.8cm à 10pt, agrandie en présentation.
 #let unite-automates = (0.8cm / 10pt) * 1em
 #let rayon-etat = 0.6

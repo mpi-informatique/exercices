@@ -1,9 +1,9 @@
 #import "/load.typ": article-only, cours-et-presentation, taille-presentation, item-by-item, only, pause, slides-only, solution
-#import "/load.typ": theoremes
+#import "/load.typ": automate, theoremes
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
 #import "/load.typ": sep, widetilde
 
-#let Lreg = $cal(L)_("reg")$
+#import automate: Lreg
 
 #show: cours-et-presentation.with(titre: "Langages réguliers", niveau: "MPI")
 
