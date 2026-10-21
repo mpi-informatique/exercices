@@ -1,3 +1,4 @@
+#import "/load.typ": nouvelle-diapositive
 #import "/load.typ": article-only, cours-et-presentation, taille-presentation, item-by-item, only, pause, slides-only, solution
 #import "/load.typ": automate, theoremes
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
@@ -8,7 +9,7 @@
 #show: cours-et-presentation.with(titre: "Langages réguliers", niveau: "MPI")
 
 #slides-only[
-  == Motivation des langages formels
+  #nouvelle-diapositive()
 
   Recherche d'un motif dans un texte.
 
@@ -18,7 +19,6 @@
 
 = Alphabet et mot
 
-#slides-only[== Alphabet, mot]
 
 #definition(item-by-item[
   - Un _alphabet_ est un ensemble $Σ$ fini de lettres.
@@ -31,21 +31,21 @@
 
 #underline[Attention] : $ε$ est un mot, pas une lettre.
 
-#slides-only[== Concaténation et puissance]
+#nouvelle-diapositive()
 
 #definition[
   - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est $u v = u_1 … u_n v_1 … v_p$.
   - Si $u in Σ^*$, on définit ses _puissances_ par récurrence $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
 ]
 
-#slides-only[== Une équation sur les mots]
+#nouvelle-diapositive()
 
 #exercice[
   Soient $Σ$ un alphabet, $a, b ∈ Σ$ et $u ∈ Σ^*$ tels que $a u = u b$.
   Montrer que $a = b$ et : $exists k ∈ ℕ, u = a^k$.
 ]
 
-#slides-only[== Monoïdes et taille (hors programme)]
+#nouvelle-diapositive()
 
 #exercice(titre: [Monoïdes et taille])[
   Un _monoïde_ est un ensemble muni d'une loi associative et d'un élément neutre.
@@ -59,7 +59,7 @@
 ]
 
 #solution[
-  #slides-only[== Monoïdes et taille — correction]
+  #nouvelle-diapositive()
 
   + La concaténation est associative et admet $ε$ pour élément neutre.
     L'addition est associative et admet $0$ pour élément neutre.
@@ -72,7 +72,7 @@
     Si $Σ$ est vide, le seul mot est $ε$ et la propriété est immédiate.
 ]
 
-#slides-only[== Préfixe, suffixe, facteur, sous-mot]
+#nouvelle-diapositive()
 
 #definition[
   Soient $u$ et $m$ deux mots sur $Σ$.
@@ -85,7 +85,7 @@
 #underline[Exemple] : $a b c$ est un sous-mot de $a a b a c b$, mais pas un facteur.
 
 #slides-only[
-  == Dénombrement des préfixes et des sous-mots
+  #nouvelle-diapositive()
 
   #exercice[
     Soit $m$ un mot de taille $n$ dont toutes les lettres sont différentes.
@@ -95,7 +95,7 @@
   ]
 ]
 
-#slides-only[== Implémentation d'un mot avec une chaîne de caractères]
+#nouvelle-diapositive()
 
 Rappels d'utilisation d'une chaîne de caractères (```ocaml string```) :
 
@@ -125,7 +125,7 @@ Rappels d'utilisation d'une chaîne de caractères (```ocaml string```) :
 
 En OCaml, contrairement à ```ocaml array```, le type ```ocaml string``` est immuable/persistant : on ne peut pas modifier un caractère d'une chaîne.
 
-#slides-only[== Reconnaissance d'un sous-mot]
+#nouvelle-diapositive()
 
 #exercice[
   1. Écrire une fonction ```ocaml sous_mot : string -> string -> bool``` testant si un mot est un sous-mot d'un autre.
@@ -134,14 +134,13 @@ En OCaml, contrairement à ```ocaml array```, le type ```ocaml string``` est imm
 
 = Langage
 
-#slides-only[== Langage sur un alphabet]
 
 #definition[
   Un _langage_ $L$ sur un alphabet $Σ$ est un ensemble de mots sur $Σ$.
 ]
 De façon équivalente, $L$ est un langage si $L ⊂ Σ^*$, ou encore $L ∈ cal(P)(Σ^*)$.
 
-#slides-only[== Exemples de langages]
+#nouvelle-diapositive()
 
 #underline[Exemples] :
 + L'ensemble $L_0 = {ε, a, b a b}$ sur $Σ = {a, b}$.
@@ -150,7 +149,7 @@ De façon équivalente, $L$ est un langage si $L ⊂ Σ^*$, ou encore $L ∈ cal
 + L'ensemble $L_3$ des programmes OCaml sur $Σ = {a, …, z, "_", "!", "<", ">", …}$.
 
 #slides-only[
-  == Problèmes algorithmiques
+  #nouvelle-diapositive()
 
   #probleme[
     Étant donné un langage $L$ et un mot $m$, est-ce que $m ∈ L$ ?
@@ -176,14 +175,14 @@ De façon équivalente, $L$ est un langage si $L ⊂ Σ^*$, ou encore $L ∈ cal
 ]
 $L_1 L_2$ est l'ensemble des mots obtenus par concaténation d'un mot de $L_1$ et d'un mot de $L_2$.
 
-#slides-only[== Calcul d'une concaténation]
+#nouvelle-diapositive()
 
 #exercice[
   + Soit $L_1 = {a, a b}$ et $L_2 = {ε, b, b b a}$. Déterminer $L_1 L_2$.
   + Quel lien a-t-on entre $abs(L_1 L_2)$ et $abs(L_1) abs(L_2)$ dans le cas général ?
 ]
 
-#slides-only[== Propriétés de la concaténation]
+#nouvelle-diapositive()
 
 #exercice[
   + La concaténation de deux langages est-elle commutative ? Associative ?
@@ -207,7 +206,7 @@ $ L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_
 
 #underline[Exemple] : $Σ^n$ est l'ensemble des mots de taille $n$ sur l'alphabet $Σ$.
 
-#slides-only[== Puissance et inclusion]
+#nouvelle-diapositive()
 
 #exercice[
   Soit $L$ un langage.
@@ -231,13 +230,12 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 
 = Langages réguliers
 
-#slides-only[== Définition des langages réguliers]
 
 #definition(coeur: true)[
   L'ensemble des _langages réguliers_ sur $Σ$ est le plus petit ensemble, pour l'inclusion, contenant les langages finis sur $Σ$ et stable par union, concaténation et étoile de Kleene.
 ]
 
-#slides-only[== Définition inductive équivalente]
+#nouvelle-diapositive()
 
 #definition(coeur: true)[
   - Tout langage fini est régulier.
@@ -250,7 +248,7 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
   Montrer qu'on peut remplacer « contenant les langages finis sur $Σ$ » par $∅ ∈ Lreg, {ε} ∈ Lreg$ et ${a} ∈ Lreg$ pour $a ∈ Σ$.
 ]
 
-#slides-only[== Unions et concaténations finies]
+#nouvelle-diapositive()
 
 #propriete[
   Par récurrence immédiate, si $L_1, …, L_n$ sont réguliers, alors $L_1 ∪ … ∪ L_n$ et $L_1 L_2 … L_n$ sont réguliers.
@@ -260,7 +258,7 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 - Une union infinie de langages réguliers n'est pas forcément régulière.
 - Un langage particulier n'est pas forcément stable par concaténation.
 
-#slides-only[== Exemples de langages réguliers]
+#nouvelle-diapositive()
 
 + Soit $m$ un mot. Alors ${m}$ est fini, donc régulier. On le note aussi $m$ par abus de notation.
 #pause
@@ -270,7 +268,7 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 #pause
 + Si $m = m_1 … m_n$, l'ensemble des mots ayant $m$ comme sous-mot est égal à $Σ^* m_1 Σ^* m_2 … Σ^* m_n Σ^*$, donc régulier.
 
-#slides-only[== Construction de langages réguliers]
+#nouvelle-diapositive()
 
 #exercice[
   Montrer que les langages suivants sont réguliers sur $Σ = {a, b}$ :
@@ -299,7 +297,7 @@ Les expressions régulières sont une notation plus concise pour représenter un
   - Si $e ∈ cal(R)(Σ)$, alors $e^* ∈ cal(R)(Σ)$.
 ]
 
-#slides-only[== Notations et exemples]
+#nouvelle-diapositive()
 
 - On utilise seulement les parenthèses nécessaires : $(((a b) c) | d)$ sera noté $a b c | d$.
 - On utilise parfois $+$ à la place de $|$.
@@ -325,7 +323,7 @@ type 'a regexp = (* 'a est le type des lettres de l'alphabet *)
   Concat(L 'a', Concat(Etoile(Union(L 'a', L 'b')), L 'b'))
   ```
 
-  == Lettres d'une expression régulière
+  #nouvelle-diapositive()
 
   #type-regexp
 
@@ -345,7 +343,7 @@ type 'a regexp = (* 'a est le type des lettres de l'alphabet *)
   - $cal(L)(e^*) = cal(L)(e)^*$
 ]
 
-#slides-only[== Langages réguliers et expressions régulières]
+#nouvelle-diapositive()
 
 Par abus de langage, on confond souvent $e$ et $cal(L)(e)$.
 Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ ou un langage singleton.\
@@ -357,7 +355,7 @@ Cette notation est à la base des moteurs d'expressions régulières utilisés d
   Un langage $L$ est régulier si et seulement s'il existe une expression régulière $e$ telle que $L = cal(L)(e)$.
 ]
 
-#slides-only[== Exemples de langages associés]
+#nouvelle-diapositive()
 
 Sur $Σ = {a, b}$ :
 - $(a | b)^*$ représente l'ensemble de tous les mots, $Σ^*$.
@@ -386,7 +384,7 @@ Sur $Σ = {a, b}$ :
 ]
 
 
-#slides-only[== Recherche d'expressions régulières]
+#nouvelle-diapositive()
 
 #exercice[
   Donner une expression régulière pour les langages suivants sur $Σ = {a, b}$ :
@@ -406,7 +404,6 @@ Sur $Σ = {a, b}$ :
 
 = Équivalence d'expressions régulières
 
-#slides-only[== Définition de l'équivalence]
 
 #definition[
   Deux expressions régulières $e_1$ et $e_2$ sont dites _équivalentes_, ce que l'on note $e_1 ≡ e_2$, si elles définissent le même langage, c'est-à-dire si $cal(L)(e_1) = cal(L)(e_2)$.
@@ -414,7 +411,7 @@ Sur $Σ = {a, b}$ :
 
 #underline[Exemple] : $(a b)^* a ≡ a (b a)^*$.
 
-#slides-only[== Propriétés à compléter]
+#nouvelle-diapositive()
 
 #propriete[
   Pour des expressions régulières $e$, $e_1$, $e_2$ et $e_3$, compléter :
@@ -459,7 +456,7 @@ Sur $Σ = {a, b}$ :
   Alors $cal(P)(e)$ est vraie pour toute expression régulière $e$.
 ]
 
-#slides-only[== Miroir d'un langage]
+#nouvelle-diapositive()
 
 #exercice[
   On note $widetilde(m) = m_n … m_1$ le _miroir_ d'un mot $m = m_1 … m_n$ et $widetilde(L) = {widetilde(m) ∣ m ∈ L}$ celui d'un langage $L$.
@@ -470,7 +467,7 @@ Sur $Σ = {a, b}$ :
 ]
 
 #slides-only[
-  == Méthodes de démonstration
+  #nouvelle-diapositive()
 
   - Pour montrer une égalité de deux mots, on peut faire une récurrence sur la taille du mot.
   - Pour montrer une égalité de deux langages, on peut montrer une double inclusion.
@@ -482,7 +479,6 @@ Sur $Σ = {a, b}$ :
 
   = Expressions régulières en pratique (non exigible)
 
-  == Recherche avec grep
 
   ```sh grep -E``` est une commande qui permet de chercher des motifs dans un texte en utilisant des expressions régulières étendues :
 
@@ -498,7 +494,6 @@ Sur $Σ = {a, b}$ :
 
   = Complément : dénombrabilité et langages non réguliers
 
-  == Dénombrabilité des mots
 
   Soit $Σ$ un alphabet non vide.
 
@@ -516,7 +511,7 @@ Sur $Σ = {a, b}$ :
   ]
   Par exemple, le langage des programmes OCaml est dénombrable.
 
-  == Théorème de Cantor
+  #nouvelle-diapositive()
 
   #theoreme[
     Un ensemble $E$ ne peut pas être en bijection avec $cal(P)(E)$.
@@ -529,7 +524,7 @@ Sur $Σ = {a, b}$ :
     Pour $Σ$ non vide, l'ensemble $cal(P)(Σ^*)$ des langages sur $Σ$ n'est pas dénombrable.
   ]
 
-  == Limites des algorithmes de reconnaissance
+  #nouvelle-diapositive()
 
   L'ensemble des langages est indénombrable alors que l'ensemble des programmes OCaml est dénombrable.
   Il existe donc des langages $L$ pour lesquels aucun algorithme ne résout le problème suivant :
@@ -539,7 +534,7 @@ Sur $Σ = {a, b}$ :
   ]
   On se restreint donc à un ensemble plus simple de langages.
 
-  == Dénombrabilité des langages réguliers
+  #nouvelle-diapositive()
 
   Soit $Σ$ un alphabet non vide.
 
@@ -551,7 +546,7 @@ Sur $Σ = {a, b}$ :
   L'ensemble des langages réguliers est donc au plus dénombrable.
   Si $a ∈ Σ$, les langages ${a^n}$, pour $n ∈ ℕ$, sont réguliers et deux à deux distincts.
 
-  == Existence de langages non réguliers
+  #nouvelle-diapositive()
 
   Comme l'ensemble des langages sur $Σ$ est indénombrable :
 

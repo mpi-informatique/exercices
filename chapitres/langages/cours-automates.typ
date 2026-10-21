@@ -1,3 +1,4 @@
+#import "/load.typ": nouvelle-diapositive
 #import "/load.typ": (
   article-only, automate, colonnes-cours, cours-et-presentation, pause, completer, sep, slides-only, solution, theoremes,
 )
@@ -57,11 +58,14 @@
   $E = {(0, a, 0), (0, b, 1), (1, a, 0), (1, a, 2), (2, b, 2)}$
 ])
 
-#colonnes-cours(
-  columns: (1.2fr, 1fr),
-  definition-automate,
-  exemple-automate,
-)
+#article-only[
+  #grid(columns: (1.2fr, 1fr), column-gutter: 1.5em, align: top, definition-automate, exemple-automate)
+]
+#slides-only[
+  #definition-automate
+  #nouvelle-diapositive()
+  #exemple-automate
+]
 
 // #exercice[
 //   En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ?
@@ -103,7 +107,6 @@
 
 = Langage reconnaissable
 
-#slides-only[== Chemin acceptant]
 #definition[
   Un chemin $C$ dans un automate $A$ est une suite de transitions consécutives :
   $q_0 limits(arrow.long)^(a_1) q_1 limits(arrow.long)^(a_2) … limits(arrow.long)^(a_n) q_n.$\
@@ -113,14 +116,14 @@
 
 #underline[Remarque] : il suffit d'un chemin acceptant pour que $m in cal(L)(A)$, même si un autre chemin d'étiquette $m$ n'est pas acceptant.
 
-#slides-only[== Langage reconnu]
+#nouvelle-diapositive()
 #definition[
   Un mot est accepté par $A$ s'il est l'étiquette d'un chemin acceptant.
   Le langage $cal(L)(A)$ reconnu par $A$ est l'ensemble des mots acceptés.
   Un langage est reconnaissable s'il est reconnu par un automate.
 ]
 
-#slides-only[== Lecture d'un automate]
+#nouvelle-diapositive()
 #exercice[Déterminer les langages reconnus par les automates suivants.]
 #grid(
   columns: (1fr, 1fr),
@@ -131,14 +134,14 @@
 )
 
 #slides-only[
-  == Lecture d'un automate : réponses
+  #nouvelle-diapositive()
   À gauche : les mots contenant un nombre impair de $a$, par exemple $b b a b$.
 
   À droite : $a^* b | b^* a$.
   Chaque état initial correspond à l'une des deux branches de l'union.
 ]
 
-#slides-only[== Construction d'automates]
+#nouvelle-diapositive()
 
 #colonnes-cours(
   encadrer: contenu => exercice[
@@ -158,12 +161,11 @@
 
 = Test d'appartenance
 
-#slides-only[== Ensemble des états atteints]
 Pour déterminer si $m = m_1 … m_n in cal(L)(A)$, on peut calculer l'ensemble des états atteignables après lecture de $m[:k]$ :
 $ Q_0 = I, quad Q_k = union.big_(q ∈ Q_(k - 1)) δ(q, m_k). $
 Alors $m ∈ cal(L)(A)$ si et seulement si $Q_n ∩ F ≠ ∅$.
 
-#slides-only[== Programmation de la reconnaissance]
+#nouvelle-diapositive()
 #exercice[
   + Quelle est la complexité de cette méthode, en temps et mémoire ?
   + Proposer une autre méthode par mémoïsation. Comparer les deux méthodes.
@@ -173,14 +175,13 @@ Alors $m ∈ cal(L)(A)$ si et seulement si $Q_n ∩ F ≠ ∅$.
 
 = Automate complet
 
-#slides-only[== Équivalence et complétude]
 #definition[
   Deux automates sont équivalents s'ils reconnaissent le même langage.
   Un automate est complet si :
   $ ∀ q ∈ Q, #sep ∀ a ∈ Σ, #sep ∃ q' ∈ Q, #sep (q, a, q') ∈ E. $
 ]
 Un automate complet n'a pas de blocage.
-#slides-only[== Compléter un automate]
+#nouvelle-diapositive()
 #theoreme[Tout automate est équivalent à un automate complet.]
 
 = Automate déterministe (AD)
@@ -206,6 +207,7 @@ Un automate complet n'a pas de blocage.
 
 Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonction de transition de la forme $δ : Q × Σ → Q$.
 
+#nouvelle-diapositive()
 #exercice[
   Soient $A = (Q, Σ, q_0, F, E)$ un AD, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?
   + $(q_1, a, q) ∈ E ∧ (q_2, a, q) ∈ E ==> q_1 = q_2.$
@@ -215,7 +217,7 @@ Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonct
   + Si $A'$ est non ambigu alors $A'$ est déterministe.
 ]
 
-#slides-only[== Fonction de transition étendue]
+#nouvelle-diapositive()
 #definition[
   Pour un automate déterministe complet, on définit $δ^* : Q × Σ^* → Q$ récursivement, pour $q ∈ Q$ :
   - $δ^*(q, ε) = q$
@@ -223,17 +225,17 @@ Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonct
 ]
 $δ^*(q, u)$ est l'état atteint après lecture de $u$ depuis $q$.
 On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
-#slides-only[== Lecture d'une concaténation]
+#nouvelle-diapositive()
 #theoreme[$∀q ∈ Q, u, v ∈ Σ^* : #sep δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-delta-etoile>
 
-#slides-only[== Un test fini d'universalité]
+#nouvelle-diapositive()
 #exercice[
   Soit $A$ un automate déterministe complet à $n$ états sur un alphabet $Σ$.
   Montrer que si $A$ accepte tous les mots de taille strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
   La borne est-elle optimale ?
 ]
 #solution[
-  #slides-only[== Correction : supprimer une boucle]
+  #nouvelle-diapositive()
   Supposons $cal(L)(A) ≠ Σ^*$ et soit $m ∈ Σ^* \\ cal(L)(A)$ de taille minimale.
   Par hypothèse, $abs(m) ≥ n$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
@@ -242,7 +244,7 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
   @thm-delta-etoile donne $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
   Donc $x z ∉ cal(L)(A)$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
 
-  #slides-only[== Correction : optimalité de la borne]
+  #nouvelle-diapositive()
   La borne est optimale sur $Σ = {a}$.
   En effet, soit $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
   $ δ(i, a) = min(i + 1, n - 1). $
@@ -283,10 +285,10 @@ let accepte a m =
 L'automate des parties est $A' = (Σ, cal(P)(Q), {I}, F', δ')$, où :
 $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q, a). $
 
-#slides-only[== Correction de la déterminisation]
+#nouvelle-diapositive()
 #underline[Invariant] : après lecture d'un mot $u$, l'état atteint dans $A'$ est exactement l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
 
-#slides-only[== Construire seulement les états accessibles]
+#nouvelle-diapositive()
 #algorithme(coeur: true)[
   + Initialiser la liste d'attente à ${I}$.
   + Tant que la liste n'est pas vide, extraire un ensemble $X$.
@@ -295,7 +297,7 @@ $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q,
 ]
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire que les états accessibles. L'ensemble vide joue le rôle d'un puits.
 
-#slides-only[== Exemple de déterminisation]
+#nouvelle-diapositive()
 #exercice(coeur: true)[Déterminiser l'automate suivant.]
 #facteur
 #solution[
@@ -346,7 +348,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
   ]
 ]
 
-#slides-only[== Coût exponentiel]
+#nouvelle-diapositive()
 #exercice[
   Soit $L_n = Σ^* a Σ^n$ sur $Σ = {a, b}$, avec $n ∈ ℕ$.
   + Construire un automate non déterministe à $n + 2$ états reconnaissant $L_n$.
@@ -364,7 +366,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
   Prendre un automate déterministe complet reconnaissant $L$ et remplacer $F$ par $Q ∖ F$.
   Chaque mot possède un unique chemin, qui aboutit dans un état final exactement lorsque le mot n'appartient pas à $L$.
 ]
-#slides-only[== Hypothèses et application]
+#nouvelle-diapositive()
 #exercice[
   + Montrer pourquoi la preuve nécessite un automate déterministe complet.
   + Dessiner un automate reconnaissant les mots contenant le facteur $a a a$, puis un automate reconnaissant les mots ne le contenant pas.
@@ -377,7 +379,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 Pour deux automates déterministes complets $A_1$, $A_2$, utiliser les états $Q_1 × Q_2$, l'état initial $(i_1, i_2)$ et :
 $ δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)). $
 
-#slides-only[== Choix des états finaux du produit]
+#nouvelle-diapositive()
 Le produit simule les deux lectures en parallèle. Compléter l'ensemble des états finaux :
 #solution[
   - Pour $L_1 ∩ L_2$ : $F_1 × F_2$.
@@ -395,7 +397,7 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
   Ces résultats se généralisent aux unions et intersections finies.
   Pour une union, on peut aussi prendre l'union disjointe de deux automates non déterministes.
 ]
-#slides-only[== Applications du produit]
+#nouvelle-diapositive()
 #exercice[
   + La construction fonctionne-t-elle sans les hypothèses de déterminisme et de complétude ? Examiner chaque opération.
   + Construire un automate reconnaissant les mots sur ${a, b}$ contenant un nombre pair de $a$ et un nombre de $b$ congru à $2$ modulo $3$.
@@ -403,28 +405,26 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
 
 = Accessibilité et émondage
 
-#slides-only[== États accessibles et co-accessibles]
 #definition[
   - Un état est accessible s'il existe un chemin depuis un état initial vers cet état.
   - Il est co-accessible s'il existe un chemin depuis cet état vers un état final.
   - Un automate est émondé si tous ses états sont accessibles et co-accessibles.
 ]
-#slides-only[== Calcul de l'accessibilité]
+#nouvelle-diapositive()
 #exercice[Décrire un algorithme de coût $O(abs(Q) + abs(E))$ déterminant ces deux ensembles.]
 #solution[#pause Parcourir le graphe depuis $I$, puis le graphe transposé depuis $F$.]
-#slides-only[== Émondage]
+#nouvelle-diapositive()
 #theoreme[Tout automate est équivalent à un automate émondé.]
 Supprimer les états inaccessibles et les états non co-accessibles : aucun chemin acceptant ne les utilise.
 #exercice[Tout automate est-il équivalent à un automate émondé déterministe complet ?]
 
 = Lemme de l'étoile
 
-#slides-only[== Énoncé]
 #lemme(coeur: true)[
   Soit $L$ reconnu par un automate à $n$ états. Pour tout $u ∈ L$ de taille au moins $n$, il existe $x, y, z$ tels que :
   $ u = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad ∀ k ∈ ℕ, #sep x y^k z ∈ L. $
 ]
-#slides-only[== Preuve : trouver un cycle]
+#nouvelle-diapositive()
 *Preuve* : prendre un chemin acceptant d'étiquette $u$.
 Parmi ses $n + 1$ premiers états, deux sont égaux : $q_i = q_j$, avec $0 ≤ i < j ≤ n$.
 Décomposer le mot en $x$, avant $q_i$, $y$, entre $q_i$ et $q_j$, et $z$, après $q_j$.
@@ -433,11 +433,11 @@ Décomposer le mot en $x$, avant $q_i$, $y$, entre $q_i$ et $q_j$, et $z$, aprè
   (("q_0", (0, 0), true, false), ("q_i", (4, 0), false, false), ("q_p", (8, 0), false, true)),
   (("q_0", "q_i", "x", (curve: 0)), ("q_i", "q_i", "y", (:)), ("q_i", "q_p", "z", (curve: 0))),
 )
-#slides-only[== Preuve : répéter le cycle]
+#nouvelle-diapositive()
 On a $abs(x y) = j ≤ n$ et $abs(y) = j - i > 0$.
 Répéter le cycle $k$ fois donne un chemin acceptant d'étiquette $x y^k z$, y compris pour $k = 0$.
 
-#slides-only[== Utiliser le lemme]
+#nouvelle-diapositive()
 *Attention* : la réciproque est fausse. On ne choisit pas la décomposition $x y z$.
 
 Pour montrer que $L$ n'est pas reconnaissable :
@@ -445,7 +445,7 @@ Pour montrer que $L$ n'est pas reconnaissable :
 + Choisir $u ∈ L$ avec $abs(u) ≥ n$.
 + Pour toute décomposition respectant le lemme, trouver un $k$ tel que $x y^k z ∉ L$.
 
-#slides-only[== Langages non reconnaissables]
+#nouvelle-diapositive()
 #exercice[
   Montrer que les langages suivants ne sont pas reconnaissables :
   + $L_1 = {a^n b^n ∣ n ∈ ℕ}$

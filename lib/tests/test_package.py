@@ -179,6 +179,28 @@ Un énoncé.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'corrige=' + corrige,
                         str(source), str(racine / ('cours-simple-' + corrige + '.pdf'))], check=True)
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, nouvelle-diapositive
+#import "@preview/touying:0.8.0": utils
+#show: cours-et-presentation.with(titre: "Saut de diapositive")
+== Titre commun
+#metadata("avant") <saut-diapositive-test>
+Premier contenu.
+#nouvelle-diapositive()
+#metadata("apres") <saut-diapositive-test>
+Deuxième contenu.
+#context {
+  let marques = query(<saut-diapositive-test>)
+  assert(marques.len() == 2)
+  let projection = sys.inputs.at("format") == "presentation"
+  let pages = marques.map(it => it.location().position().page)
+  assert(pages.last() - pages.first() == if projection { 1 } else { 0 })
+  if projection { assert(utils.current-heading().body == [Titre commun]) }
+}
+''', encoding='utf-8')
+    for variante in ('cours', 'presentation'):
+        subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                        '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
+                        str(source), str(racine / ('saut-' + variante + '.pdf'))], check=True)
     # Les noms historiques ne doivent plus être exportés par le module.
     for ancien in ('theorem', 'lemma', 'exercise', 'theorem-box', 'definition-box', 'theorem-counter', 'show-theorem'):
         source.write_text('#import "@mpi-informatique/exercices:0.1.0": theoremes\n#theoremes.' + ancien + '\n', encoding='utf-8')

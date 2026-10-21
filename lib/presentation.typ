@@ -7,6 +7,10 @@
 #import "code.typ": configurer-code
 #import "themes/madrid.typ": theme-madrid, titre-madrid
 
+/// Commence une nouvelle diapositive en conservant le titre courant, sans saut dans le cours.
+/// -> content
+#let nouvelle-diapositive() = slides-only(pagebreak())
+
 /// Modifie la taille du texte uniquement dans la présentation d'une source commune.
 /// - taille (relative): Taille utilisée lorsque l'entrée `format` vaut "presentation".
 /// - body (content): Contenu conservé à sa taille normale dans le cours et le corrigé.

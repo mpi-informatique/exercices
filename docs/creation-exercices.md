@@ -148,6 +148,8 @@ Partir des modèles et utiliser les fonctions communes de `lib/` pour les docume
 
 - Pour un titre déjà numéroté dans la source, utiliser `heading(numbering: none, ...)`.
 
+Pour continuer sur une nouvelle diapositive avec le même titre sans couper le cours, utiliser `nouvelle-diapositive()` depuis `/load.typ`. Conserver les titres de section communs aux deux formats.
+
 ### Théorèmes, lemmes et définitions
 
 Utiliser les environnements de [lib/theoremes.typ](../lib/theoremes.typ). Dans les cours, choisir les environnements numérotés (`theoreme`, `lemme`, `definition`, `algorithme`, etc.). Un titre optionnel se passe avec `titre: [Texte]`. Réserver les variantes `*-sans-numero` aux cadres volontairement sans numéro. Marquer les résultats à connaître par cœur avec `coeur: true`.

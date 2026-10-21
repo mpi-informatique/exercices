@@ -1,3 +1,4 @@
+#import "/load.typ": nouvelle-diapositive
 #import "/load.typ": article-only, automate, cours-et-presentation, pause, sep, slides-only, solution, theoremes
 #import theoremes: algorithme, definition, exercice, lemme, theoreme
 #import automate: dessiner-automate
@@ -37,7 +38,7 @@
   ("4", "4", "b", (:)),
 )
 
-#slides-only[== Objectif]
+#nouvelle-diapositive()
 Montrer qu'un langage est régulier si et seulement s'il est reconnaissable.
 On construit d'abord un automate à partir d'une expression régulière, puis une expression régulière à partir d'un automate.
 
@@ -49,7 +50,7 @@ On construit d'abord un automate à partir d'une expression régulière, puis un
 ]
 #underline[Exemple] : $b a | a$ n'est pas linéaire, mais $a^* b$ est linéaire.
 
-#slides-only[== Linéarisation]
+#nouvelle-diapositive()
 #definition[
   Linéariser une expression $e$ consiste à remplacer chacune de ses occurrences de lettres par une lettre distincte d'un nouvel alphabet $Σ'$.
   La projection $π : Σ' → Σ$ associe chaque nouvelle lettre à la lettre d'origine.
@@ -65,7 +66,7 @@ avec $π(a_0) = a$ et $π(b_i) = b$.
   - $S(L) = {a ∈ Σ ∣ Σ^* a ∩ L ≠ ∅}$ : dernières lettres.
   - $F(L) = {u ∈ Σ^2 ∣ Σ^* u Σ^* ∩ L ≠ ∅}$ : facteurs de taille $2$.
 ]
-#slides-only[== Calcul des ensembles locaux]
+#nouvelle-diapositive()
 #exercice[Donner $P(L)$, $S(L)$ et $F(L)$ pour $L = a^* b (a b)^* c$.]
 #solution[#pause $P(L) = {a, b}$, $S(L) = {c}$ et $F(L) = {a a, a b, b a, b c}$.]
 
@@ -77,12 +78,12 @@ avec $π(a_0) = a$ et $π(b_i) = b$.
 L'implication de gauche à droite est toujours vraie. Il suffit donc de prouver l'autre sens.
 L'appartenance de $ε$ est traitée séparément.
 
-#slides-only[== Une définition équivalente]
+#nouvelle-diapositive()
 Avec $N(L) = Σ^2 ∖ F(L)$, on a :
 $ L ∖ {ε} = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^*. $
 #exercice[Montrer qu'un langage local est reconnaissable.]
 
-#slides-only[== Exemples et contre-exemples]
+#nouvelle-diapositive()
 #exercice[
   Les langages suivants sont-ils locaux ?
   #grid(
@@ -100,7 +101,7 @@ $ L ∖ {ε} = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^*. $
 ]
 #solution[#pause Les trois premiers donnent deux langages locaux puis un contre-exemple : $a a b$ respecte les conditions locales de $L_3$ sans lui appartenir. $L_4$ est local.]
 
-#slides-only[== Stabilité des langages locaux]
+#nouvelle-diapositive()
 #theoreme[
   Si $L_1$ et $L_2$ sont locaux sur des alphabets disjoints $Σ_1$, $Σ_2$, alors $L_1 ∪ L_2$ et $L_1 L_2$ sont locaux sur $Σ_1 ∪ Σ_2$.
   Si $L_1$ est local, $L_1^*$ est local sur $Σ_1$.
@@ -114,7 +115,7 @@ $ L ∖ {ε} = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^*. $
 ]
 L'hypothèse d'alphabets disjoints est essentielle pour les deux premières opérations, comme le montre $a^* ∪ (a b)^*$.
 
-#slides-only[== Expression linéaire et langage local]
+#nouvelle-diapositive()
 #theoreme[Si $e$ est une expression régulière linéaire, $cal(L)(e)$ est local.]
 #article-only[*Preuve* :]
 #solution[#pause Procéder par induction structurelle. Les deux sous-expressions d'une union ou d'une concaténation utilisent des alphabets disjoints.]
@@ -127,13 +128,13 @@ L'hypothèse d'alphabets disjoints est essentielle pour les deux premières opé
 #theoreme[Un langage est local si et seulement s'il est reconnu par un automate local.]
 #article-only[*Preuve* :]
 
-#slides-only[== Construction de l'automate local]
+#nouvelle-diapositive()
 Pour reconnaître un langage local $L$, utiliser $Q = Σ ∪ {q_0}$, avec $q_0 ∉ Σ$.
 - L'état initial est $q_0$.
 - Les états finaux sont $S(L)$, auxquels ajouter $q_0$ si $ε ∈ L$.
 - Les transitions sont $(q_0, a, a)$ pour $a ∈ P(L)$ et $(a, b, b)$ pour $a b ∈ F(L)$.
 
-#slides-only[== Exemple d'automate local]
+#nouvelle-diapositive()
 #exercice[Construire un automate local reconnaissant $a (a | b)^*$.]
 #solution[
   #pause
@@ -160,7 +161,7 @@ Pour reconnaître un langage local $L$, utiliser $Q = Σ ∪ {q_0}$, avec $q_0 �
 ]
 Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réciproquement. Le langage reconnu est donc $cal(L)(e)$.
 
-#slides-only[== Application de Berry-Sethi]
+#nouvelle-diapositive()
 #exercice[Appliquer l'algorithme à $e = a (a | b)^*$.]
 #solution[
   #pause
@@ -192,11 +193,11 @@ Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réc
 On peut autoriser des transitions étiquetées par $ε$. Leur parcours ne consomme aucune lettre.
 Un automate possédant de telles transitions n'est pas déterministe au sens du cours.
 
-#slides-only[== Exemple avec ε-transitions]
+#nouvelle-diapositive()
 #epsilon
 Cet automate reconnaît ${ε, b, a c, a a, a a b}$.
 
-#slides-only[== Élimination des ε-transitions]
+#nouvelle-diapositive()
 #theoreme[Tout automate avec $ε$-transitions est équivalent à un automate sans $ε$-transition.]
 #article-only[*Preuve* :]
 #solution[
@@ -206,7 +207,7 @@ Cet automate reconnaît ${ε, b, a c, a a, a a b}$.
   $ δ'(q, a) = C(union.big_(p ∈ C({q})) δ(p, a)). $
   Les ensembles $C(X)$ se calculent par parcours de graphe.
 ]
-#slides-only[== Supprimer les ε-transitions d'un exemple]
+#nouvelle-diapositive()
 #exercice[Donner un automate sans $ε$-transition équivalent à l'exemple précédent.]
 #article-only[#epsilon]
 Pour déterminiser directement, partir de $C(I)$ et prendre la $ε$-fermeture après chaque lecture.
@@ -215,7 +216,7 @@ Pour déterminiser directement, partir de $C(I)$ et prendre la $ε$-fermeture ap
 La construction récursive d'un automate avec $ε$-transitions fournit une autre preuve de régulier ⟹ reconnaissable.
 Utiliser des copies à ensembles d'états disjoints.
 
-#slides-only[== Thompson : cas de base]
+#nouvelle-diapositive()
 - $T(∅)$ ne possède aucun chemin acceptant.
 - $T(ε)$ possède une transition $ε$ de l'état initial vers l'état final.
 - $T(a)$ possède une transition $a$ de l'état initial vers l'état final.
@@ -224,15 +225,15 @@ Utiliser des copies à ensembles d'états disjoints.
   (("i", "f", "a", (:)),),
 )
 
-#slides-only[== Thompson : concaténation]
+#nouvelle-diapositive()
 Pour $T(e_1 e_2)$, ajouter des transitions $ε$ des états finaux de $T(e_1)$ vers les états initiaux de $T(e_2)$.
 Garder seulement les états initiaux du premier et les états finaux du second.
 
-#slides-only[== Thompson : union et étoile]
+#nouvelle-diapositive()
 - Pour $T(e_1 | e_2)$, réunir les deux ensembles d'états initiaux et finaux.
 - Pour $T(e^*)$, ajouter un nouvel état $s$ initial et final, des transitions $ε$ de $s$ vers les anciens états initiaux et des anciens états finaux vers $s$. Retirer aux anciens états leurs rôles initial et final.
 
-#slides-only[== Applications de Thompson]
+#nouvelle-diapositive()
 #exercice[
   + Construire un automate de Thompson pour $a (a b | b)^*$.
   + Borner les nombres d'états des automates de Thompson et de Glushkov en fonction de la taille de l'expression.
@@ -259,11 +260,11 @@ Noter $R_(p, r)$ l'union des étiquettes des transitions de $p$ à $r$, et $∅$
   $ R_(p, r) ← R_(p, r) | R_(p, q) (R_(q, q))^* R_(q, r). $
   Supprimer ensuite $q$ et ses transitions.
 ]
-#slides-only[== Pourquoi la transformation est correcte]
+#nouvelle-diapositive()
 Tout passage par $q$ consiste à entrer dans $q$, parcourir sa boucle un nombre quelconque de fois, puis sortir de $q$.
 Les chemins qui évitent $q$ sont conservés par le premier terme de l'union.
 
-#slides-only[== Algorithme d'élimination des états]
+#nouvelle-diapositive()
 #algorithme[
   + Normaliser l'automate.
   + Tant qu'il reste au moins trois états, éliminer un état différent de $q_i$, $q_f$.
@@ -271,7 +272,7 @@ Les chemins qui évitent $q$ sont conservés par le premier terme de l'union.
 ]
 Chaque élimination conserve le langage. À la fin, l'étiquette restante décrit donc le langage initial.
 
-#slides-only[== Exemple d'élimination]
+#nouvelle-diapositive()
 #exercice[Donner une expression régulière pour l'automate suivant par élimination des états.]
 #dessiner-automate(elimination-etats, elimination-arcs)
 
@@ -345,18 +346,17 @@ Chaque élimination conserve le langage. À la fin, l'étiquette restante décri
 
 = Théorème de Kleene et conséquences
 
-#slides-only[== Théorème de Kleene]
 #theoreme(coeur: true)[Un langage est régulier si et seulement s'il est reconnaissable par un automate fini.]
 Choisir les automates ou les expressions régulières selon le problème.
 La conversion d'une expression vers un automate permet une reconnaissance efficace.
 
-#slides-only[== Stabilité des langages réguliers]
+#nouvelle-diapositive()
 #theoreme[
   Les langages réguliers sont stables par union finie, concaténation, étoile, intersection finie, complémentaire et différence.
 ]
 Les trois premières stabilités viennent de la définition. Les autres se déduisent du théorème de Kleene et des constructions sur les automates.
 
 #slides-only[
-  == Application
+  #nouvelle-diapositive()
   #exercice[Montrer que les mots sur $Σ = {a, b}$ ne contenant pas le facteur $a b a b b$ forment un langage régulier.]
 ]
