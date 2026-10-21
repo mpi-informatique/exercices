@@ -413,23 +413,14 @@ Sur $Σ = {a, b}$ :
 #slides-only[== Propriétés à compléter]
 
 #propriete[
+  #let liste-a-completer(start: 1, ..items) = enum(start: start, ..items.pos().map(item => [#item #completer()]))
   Pour des expressions régulières $e$, $e_1$, $e_2$ et $e_3$, compléter :
   #grid(
     columns: (1fr, 1fr),
     column-gutter: 2em,
     align: top,
-    [
-      + $e ∅ ≡$
-      + $e ε ≡$
-      + $e | ∅ ≡$
-      + $∅^* ≡$
-    ],
-    [
-      #set enum(start: 5)
-      + $ε^* ≡$
-      + $(e_1 | e_2) e_3 ≡$
-      + $e_1 (e_2 e_3) ≡$
-    ],
+    liste-a-completer($e ∅ ≡$, $e ε ≡$, $e | ∅ ≡$, $∅^* ≡$),
+    liste-a-completer(start: 5, $ε^* ≡$, $(e_1 | e_2) e_3 ≡$, $e_1 (e_2 e_3) ≡$),
   )
 ]
 
