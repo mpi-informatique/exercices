@@ -209,7 +209,7 @@ $ L_1 (L_2 ∪ L_3) = L_1 L_2 ∪ L_1 L_3. $
     L^n & = L^(n - 1) L " pour " n ≥ 1.
   $
 ]
-Dit autrement :
+Pour $n ≥ 1$ :
 $ L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_n ∈ L}. $
 
 #underline[Exemple] : $Σ^n$ est l'ensemble des mots de taille $n$ sur l'alphabet $Σ$.
