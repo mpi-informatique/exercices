@@ -148,15 +148,6 @@ De façon équivalente, $L$ est un langage si $L ⊂ Σ^*$, ou encore $L ∈ cal
 + L'ensemble $L_3$ des programmes OCaml sur $Σ = {a, …, z, "_", "!", "<", ">", …}$.
 
 #slides-only[
-  == Résumé des définitions
-
-  *Exercice* : soit $Σ = {a, b}$.
-  + $Σ$ est #only("2-")[un alphabet.]
-  + $a$ est #only("2-")[une lettre et aussi un mot de taille $1$.]
-  + $ε$ est #only("2-")[le mot vide.]
-  + $a b a a a b b$ est #only("2-")[un mot.]
-  + ${a, b, a b a a a b b}$ est #only("2-")[un langage.]
-
   == Problèmes algorithmiques
 
   #probleme[
@@ -361,6 +352,28 @@ Sur $Σ = {a, b}$ :
 - $(a | b)^*$ représente l'ensemble de tous les mots, $Σ^*$.
 #pause
 - $(a | b)^* b b$ représente les mots finissant par $b b$.
+
+== Résumé des définitions
+
+*Exercice* : compléter la colonne « Ensemble » (ensemble auquel appartient l'objet donné en exemple).
+
+#taille-presentation(0.75em)[
+  #table(
+    columns: (1.5fr, 1.2fr, 1fr),
+    align: left + horizon,
+    inset: (x: 0.5em, y: 0.35em),
+    table.header([*Description*], [*Exemple*], [*Ensemble*]),
+    [Lettre], [$a$], [#completer()],
+    [Alphabet], [$Σ = {a, b}$], [#completer()],
+    [Mot vide], [$ε$], [#completer()],
+    [Mot], [$a b a$], [#completer()],
+    [Langage], [${ε, a, a b}$], [#completer()],
+    [Expression régulière], [$e = a b^*$], [#completer()],
+    [Langage décrit par une expression régulière], [$cal(L)(e) = {a b^n | n ∈ ℕ}$], [#completer()],
+    [Langages réguliers], [$cal(L)_("reg")$], [#completer()],
+  )
+]
+
 
 #slides-only[== Recherche d'expressions régulières]
 
