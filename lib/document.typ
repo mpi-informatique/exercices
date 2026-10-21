@@ -7,9 +7,9 @@
 /// -> content
 #let sep = h(0.5em)
 
-/// Complète la ligne courante par des pointillés à 50 % d’opacité.
+/// Complète la ligne courante par des pointillés semi-transparents légèrement abaissés.
 /// -> content
-#let completer() = box(width: 1fr, text(fill: rgb(0%, 0%, 0%, 50%), repeat[.]))
+#let completer() = box(width: 1fr, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 50%), repeat[.])))
 
 /// Tilde élargi, y compris au-dessus d'une seule lettre.
 /// - body (content): Expression à surmonter d'un tilde.
