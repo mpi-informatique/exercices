@@ -43,24 +43,31 @@
   Montrer que $a = b$ et : $exists k ∈ ℕ, u = a^k$.
 ]
 
-#slides-only[
-  == Concaténation et taille (hors programme)
+#slides-only[== Monoïdes et taille (hors programme)]
 
-  Un monoïde est un ensemble muni d'une opération associative et d'un élément neutre.
+#exercise(title: [Monoïdes et taille])[
+  Un _monoïde_ est un ensemble muni d'une loi associative et d'un élément neutre.
+  Un _morphisme_ de $(Σ^*, ⋅)$ vers $(ℕ, +)$ est une application $f$ telle que
+  $f(ε) = 0$ et $f(u v) = f(u) + f(v)$ pour tous $u, v ∈ Σ^*$.
 
-  #lemma[
-    $(Σ^*, ⋅)$ est un monoïde, où $⋅$ est la concaténation de mots :
-    - $ε ⋅ m = m ⋅ ε = m$ : $ε$ est un élément neutre.
-    - $(m ⋅ n) ⋅ p = m ⋅ (n ⋅ p)$ : associativité.
-  ]
+  + Montrer que $(Σ^*, ⋅)$ et $(ℕ, +)$ sont des monoïdes.
+  + Montrer que la taille $u ↦ abs(u)$ est un morphisme.
+  + Montrer qu'un morphisme $f$ est entièrement déterminé par les poids $p_a = f(a)$ des lettres $a ∈ Σ$, et que tout choix de poids dans $ℕ$ convient.
+  + Quand la valeur $f(u)$ dépend-elle uniquement de $abs(u)$ ?
+]
 
-  == La taille comme morphisme (hors programme)
+#solution[
+  #slides-only[== Monoïdes et taille — correction]
 
-  #lemma[
-    La taille est un morphisme de monoïdes de $(Σ^*, ⋅)$ vers $(ℕ, +)$ :
-    - $abs(ε) = 0$
-    - $abs(m ⋅ n) = abs(m) + abs(n)$
-  ]
+  + La concaténation est associative et admet $ε$ pour élément neutre.
+    L'addition est associative et admet $0$ pour élément neutre.
+  + On a $abs(ε) = 0$ et $abs(u v) = abs(u) + abs(v)$.
+  + Pour $u = a_1 … a_n$, la propriété de morphisme impose
+    $ f(u) = sum_(i=1)^n p_(a_i). $
+    Cette formule définit réciproquement un morphisme : la somme vide vaut $0$ et la concaténation juxtapose les deux sommes.
+  + Si $f(u)$ dépend uniquement de $abs(u)$, toutes les lettres, de taille $1$, ont le même poids $c$.
+    Réciproquement, si tous les poids valent $c$, alors $f(u) = c abs(u)$.
+    Si $Σ$ est vide, le seul mot est $ε$ et la propriété est immédiate.
 ]
 
 #slides-only[== Préfixe, suffixe, facteur, sous-mot]
