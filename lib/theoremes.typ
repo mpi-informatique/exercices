@@ -1,7 +1,13 @@
 /// Environnements Theorion : cadres imprimés ou blocs colorés en présentation.
 #import "@preview/theorion:0.6.0" as theorion
 #import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils
-#import theorion.cosmos.fancy: *
+#import theorion.cosmos.fancy: (
+  fancy-box, get-fancy-radius,
+  set-primary-border-color, set-primary-body-color,
+  set-secondary-border-color, set-secondary-body-color,
+  set-tertiary-border-color, set-tertiary-body-color,
+  set-quaternary-border-color, set-quaternary-body-color,
+)
 #import "blocs.typ": epaisseur-trait
 
 #let espacement-cadres = state("exercices-espacement-cadres", none)
@@ -168,47 +174,31 @@
     numbering: "1",
     render: rendre-cadre.with(nom),
   )
-  (compteur, numerote.with(get-full-title: titre-cadre), sans-numero.with(get-full-title: titre-cadre), afficher)
+  let francais(cadre, titre: "", ..args) = cadre(title: titre, ..args)
+  (
+    compteur,
+    francais.with(numerote.with(get-full-title: titre-cadre)),
+    francais.with(sans-numero.with(get-full-title: titre-cadre)),
+    afficher,
+  )
 }
 
-#let (theorem-counter, theorem, theorem-box, show-theorem) = creer-environnement("theorem")
-#let (lemma-counter, lemma, lemma-box, show-lemma) = creer-environnement("lemma")
-#let (corollary-counter, corollary, corollary-box, show-corollary) = creer-environnement("corollary")
-#let (axiom-counter, axiom, axiom-box, show-axiom) = creer-environnement("axiom")
-#let (postulate-counter, postulate, postulate-box, show-postulate) = creer-environnement("postulate")
-#let (definition-counter, definition, definition-box, show-definition) = creer-environnement("definition")
-#let (proposition-counter, proposition, proposition-box, show-proposition) = creer-environnement("proposition")
-#let (assumption-counter, assumption, assumption-box, show-assumption) = creer-environnement("assumption")
-#let (property-counter, property, property-box, show-property) = creer-environnement("property")
-#let (conjecture-counter, conjecture, conjecture-box, show-conjecture) = creer-environnement("conjecture")
-#let (remark-counter, remark, remark-box, show-remark) = creer-environnement("remark")
-#let (note-counter, note, note-box, show-note) = creer-environnement("note")
-#let (example-counter, example, example-box, show-example) = creer-environnement("example")
-#let (exercise-counter, exercise, exercise-box, show-exercise) = creer-environnement("exercise")
-#let (problem-counter, problem, problem-box, show-problem) = creer-environnement("problem")
-#let (algorithm-counter, algorithm, algorithm-box, show-algorithm) = creer-environnement("algorithm")
-
-// API française ; les noms historiques restent disponibles pour les documents existants.
-#let cadre-francais(cadre, titre: none, ..args) = {
-  if titre == none { cadre(..args) } else { cadre(title: titre, ..args) }
-}
-
-#let (theoreme, theoreme-sans-numero) = (cadre-francais.with(theorem), cadre-francais.with(theorem-box))
-#let (lemme, lemme-sans-numero) = (cadre-francais.with(lemma), cadre-francais.with(lemma-box))
-#let (corollaire, corollaire-sans-numero) = (cadre-francais.with(corollary), cadre-francais.with(corollary-box))
-#let (axiome, axiome-sans-numero) = (cadre-francais.with(axiom), cadre-francais.with(axiom-box))
-#let (postulat, postulat-sans-numero) = (cadre-francais.with(postulate), cadre-francais.with(postulate-box))
-#let (definition, definition-sans-numero) = (cadre-francais.with(definition), cadre-francais.with(definition-box))
-#let (proposition, proposition-sans-numero) = (cadre-francais.with(proposition), cadre-francais.with(proposition-box))
-#let (hypothese, hypothese-sans-numero) = (cadre-francais.with(assumption), cadre-francais.with(assumption-box))
-#let (propriete, propriete-sans-numero) = (cadre-francais.with(property), cadre-francais.with(property-box))
-#let (conjecture, conjecture-sans-numero) = (cadre-francais.with(conjecture), cadre-francais.with(conjecture-box))
-#let (remarque, remarque-sans-numero) = (cadre-francais.with(remark), cadre-francais.with(remark-box))
-#let (note, note-sans-numero) = (cadre-francais.with(note), cadre-francais.with(note-box))
-#let (exemple, exemple-sans-numero) = (cadre-francais.with(example), cadre-francais.with(example-box))
-#let (exercice, exercice-sans-numero) = (cadre-francais.with(exercise), cadre-francais.with(exercise-box))
-#let (probleme, probleme-sans-numero) = (cadre-francais.with(problem), cadre-francais.with(problem-box))
-#let (algorithme, algorithme-sans-numero) = (cadre-francais.with(algorithm), cadre-francais.with(algorithm-box))
+#let (compteur-theoreme, theoreme, theoreme-sans-numero, afficher-theoreme) = creer-environnement("theorem")
+#let (compteur-lemme, lemme, lemme-sans-numero, afficher-lemme) = creer-environnement("lemma")
+#let (compteur-corollaire, corollaire, corollaire-sans-numero, afficher-corollaire) = creer-environnement("corollary")
+#let (compteur-axiome, axiome, axiome-sans-numero, afficher-axiome) = creer-environnement("axiom")
+#let (compteur-postulat, postulat, postulat-sans-numero, afficher-postulat) = creer-environnement("postulate")
+#let (compteur-definition, definition, definition-sans-numero, afficher-definition) = creer-environnement("definition")
+#let (compteur-proposition, proposition, proposition-sans-numero, afficher-proposition) = creer-environnement("proposition")
+#let (compteur-hypothese, hypothese, hypothese-sans-numero, afficher-hypothese) = creer-environnement("assumption")
+#let (compteur-propriete, propriete, propriete-sans-numero, afficher-propriete) = creer-environnement("property")
+#let (compteur-conjecture, conjecture, conjecture-sans-numero, afficher-conjecture) = creer-environnement("conjecture")
+#let (compteur-remarque, remarque, remarque-sans-numero, afficher-remarque) = creer-environnement("remark")
+#let (compteur-note, note, note-sans-numero, afficher-note) = creer-environnement("note")
+#let (compteur-exemple, exemple, exemple-sans-numero, afficher-exemple) = creer-environnement("example")
+#let (compteur-exercice, exercice, exercice-sans-numero, afficher-exercice) = creer-environnement("exercise")
+#let (compteur-probleme, probleme, probleme-sans-numero, afficher-probleme) = creer-environnement("problem")
+#let (compteur-algorithme, algorithme, algorithme-sans-numero, afficher-algorithme) = creer-environnement("algorithm")
 
 /// Active les règles Theorion ; `palette: none` conserve les cadres noirs imprimables.
 /// - espacement (length, none): Espacement supplémentaire autour des cadres.
@@ -232,21 +222,21 @@
   } else {
     it
   }
-  show: show-theorem
-  show: show-lemma
-  show: show-corollary
-  show: show-axiom
-  show: show-postulate
-  show: show-definition
-  show: show-proposition
-  show: show-assumption
-  show: show-property
-  show: show-conjecture
-  show: show-remark
-  show: show-note
-  show: show-example
-  show: show-exercise
-  show: show-problem
-  show: show-algorithm
+  show: afficher-theoreme
+  show: afficher-lemme
+  show: afficher-corollaire
+  show: afficher-axiome
+  show: afficher-postulat
+  show: afficher-definition
+  show: afficher-proposition
+  show: afficher-hypothese
+  show: afficher-propriete
+  show: afficher-conjecture
+  show: afficher-remarque
+  show: afficher-note
+  show: afficher-exemple
+  show: afficher-exercice
+  show: afficher-probleme
+  show: afficher-algorithme
   body
 }

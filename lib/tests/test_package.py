@@ -171,4 +171,11 @@ Un énoncé.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'corrige=' + corrige,
                         str(source), str(racine / ('cours-simple-' + corrige + '.pdf'))], check=True)
+    # Les noms historiques ne doivent plus être exportés par le module.
+    for ancien in ('theorem', 'lemma', 'exercise', 'theorem-box', 'definition-box', 'theorem-counter', 'show-theorem'):
+        source.write_text('#import "@mpi-informatique/exercices:0.1.0": theoremes\n#theoremes.' + ancien + '\n', encoding='utf-8')
+        result = subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                                 '--package-path', str(racine / 'packages'), str(source), str(racine / 'ancien.pdf')],
+                                capture_output=True, text=True)
+        assert result.returncode != 0 and ancien in result.stderr and 'does not contain' in result.stderr, result.stderr
 print('Package local : imports, ressources, énoncé, corrigé, cours et présentation vérifiés.')

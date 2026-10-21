@@ -148,7 +148,7 @@ Partir des modèles et utiliser les fonctions communes de `lib/` pour les docume
 
 ### Théorèmes, lemmes et définitions
 
-Utiliser les environnements de [lib/theoremes.typ](../lib/theoremes.typ). Dans les cours, choisir les environnements numérotés (`theorem`, `lemma`, `definition`, `algorithm`, etc.) et ne pas ajouter de sous-titre au cadre. Réserver les variantes `*-box` aux cadres volontairement sans numéro. Marquer les résultats à connaître par cœur avec `coeur: true`.
+Utiliser les environnements de [lib/theoremes.typ](../lib/theoremes.typ). Dans les cours, choisir les environnements numérotés (`theoreme`, `lemme`, `definition`, `algorithme`, etc.). Un titre optionnel se passe avec `titre: [Texte]`. Réserver les variantes `*-sans-numero` aux cadres volontairement sans numéro. Marquer les résultats à connaître par cœur avec `coeur: true`.
 
 ### Barème
 
