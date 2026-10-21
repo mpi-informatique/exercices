@@ -1,6 +1,6 @@
 #import "/load.typ": pause, presentation
 #import "/load.typ": theoremes
-#import theoremes: algorithm, definition, example, exercise, theorem
+#import theoremes: algorithme, definition, exemple, exercice, theoreme
 
 #show: presentation.with(titre: "Titre de la présentation", niveau: "MPI")
 
@@ -12,22 +12,22 @@
   Définir la notion et ses notations.
 ]
 #pause
-#theorem[
+#theoreme[
   Énoncer le résultat et ses hypothèses.
 ]
 
 == Application
 
-#exercise[
+#exercice[
   Proposer une application courte du résultat précédent.
 ]
 #pause
-#example[
+#exemple[
   Révéler un exemple ou une indication.
 ]
 
 == Algorithme
 
-#algorithm[
+#algorithme[
   Présenter les entrées, la sortie et les étapes de l'algorithme.
 ]

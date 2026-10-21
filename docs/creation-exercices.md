@@ -32,7 +32,7 @@ Pour les modules spécialisés, écrire par exemple :
 #import "/load.typ": automate, code, theoremes
 #import automate: dessiner-automate
 #import code: code-extrait
-#import theoremes: definition, theorem
+#import theoremes: definition, theoreme
 ```
 
 Pour afficher du code testé, extraire les déclarations par leur nom avec `code-extrait(read("corrige.ml"), "fonction")`. Un tuple de noms réunit plusieurs déclarations dans le même bloc, par exemple `code-extrait(read("corrige.ml"), ("regle", "grammaire"))`. Pour le C, ajouter `language: "c"`. `code-texte` renvoie uniquement le texte. Le package externe `code-extract` est verrouillé dans `flake.lock` et fourni par l'environnement Nix, l'installation locale et le site.

@@ -121,7 +121,7 @@
 /// - columns (int, array): Colonnes de la grille du cours, deux par défaut.
 /// - column-gutter (relative): Espacement entre les colonnes du cours.
 /// - align (alignment, array, auto): Alignement des cellules dans le cours.
-/// - encadrer (function): Fonction appliquée à l'ensemble dans chaque format, par exemple `theoremes.exercise`.
+/// - encadrer (function): Fonction appliquée à l'ensemble dans chaque format, par exemple `theoremes.exercice`.
 /// - ..contenus (arguments): Contenus dans l'ordre de lecture ; options supplémentaires de `grid`.
 /// -> content
 #let colonnes-cours(columns: (1fr, 1fr), column-gutter: 1.5em, align: top, encadrer: body => body, ..contenus) = {

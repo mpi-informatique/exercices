@@ -1,7 +1,7 @@
 #import "/load.typ": (
   article-only, automate, colonnes-cours, cours-et-presentation, pause, completer, sep, slides-only, solution, theoremes,
 )
-#import theoremes: algorithm, definition, exercise, lemma, theorem
+#import theoremes: algorithme, definition, exercice, lemme, theoreme
 #import automate: cetz, dessiner-automate, finite, style-automates, unite-automates
 #import "@preview/touying:0.8.0": touying-reducer
 
@@ -63,7 +63,7 @@
   exemple-automate,
 )
 
-// #exercise[
+// #exercice[
 //   En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ?
 // ]
 
@@ -95,7 +95,7 @@
 
 == Implémentation
 
-#exercise[
+#exercice[
   1. Rappeler la définition des structures de données abstraites de dictionnaire et d'ensemble.
   2. Comment s'en servir pour représenter un automate ?
   3. Proposer deux implémentations de ces structures de données.
@@ -121,7 +121,7 @@
 ]
 
 #slides-only[== Lecture d'un automate]
-#exercise[Déterminer les langages reconnus par les automates suivants.]
+#exercice[Déterminer les langages reconnus par les automates suivants.]
 #grid(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
@@ -141,7 +141,7 @@
 #slides-only[== Construction d'automates]
 
 #colonnes-cours(
-  encadrer: contenu => exercise[
+  encadrer: contenu => exercice[
     Montrer que les langages suivants sont reconnaissables :
     #contenu
   ],
@@ -164,7 +164,7 @@ $ Q_0 = I, quad Q_k = union.big_(q ∈ Q_(k - 1)) δ(q, m_k). $
 Alors $m ∈ cal(L)(A)$ si et seulement si $Q_n ∩ F ≠ ∅$.
 
 #slides-only[== Programmation de la reconnaissance]
-#exercise[
+#exercice[
   + Quelle est la complexité de cette méthode, en temps et mémoire ?
   + Proposer une autre méthode par mémoïsation. Comparer les deux méthodes.
 ]
@@ -181,7 +181,7 @@ Alors $m ∈ cal(L)(A)$ si et seulement si $Q_n ∩ F ≠ ∅$.
 ]
 Un automate complet n'a pas de blocage.
 #slides-only[== Compléter un automate]
-#theorem[Tout automate est équivalent à un automate complet.]
+#theoreme[Tout automate est équivalent à un automate complet.]
 
 = Automate déterministe (AD)
 
@@ -206,7 +206,7 @@ Un automate complet n'a pas de blocage.
 
 Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonction de transition de la forme $δ : Q × Σ → Q$.
 
-#exercise[
+#exercice[
   Soient $A = (Q, Σ, q_0, F, E)$ un AD, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?
   + $(q_1, a, q) ∈ E ∧ (q_2, a, q) ∈ E ==> q_1 = q_2.$
   + $A$ contient au plus un chemin d'étiquette $m$ partant de $q$.
@@ -224,10 +224,10 @@ Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonct
 $δ^*(q, u)$ est l'état atteint après lecture de $u$ depuis $q$.
 On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
 #slides-only[== Lecture d'une concaténation]
-#theorem[$∀q ∈ Q, u, v ∈ Σ^* : #sep δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-delta-etoile>
+#theoreme[$∀q ∈ Q, u, v ∈ Σ^* : #sep δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-delta-etoile>
 
 #slides-only[== Un test fini d'universalité]
-#exercise[
+#exercice[
   Soit $A$ un automate déterministe complet à $n$ états sur un alphabet $Σ$.
   Montrer que si $A$ accepte tous les mots de taille strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
   La borne est-elle optimale ?
@@ -279,7 +279,7 @@ let accepte a m =
 #underline[Complexité] : #completer()
 
 == Déterminisation
-#theorem(coeur: true)[Tout automate est équivalent à un automate déterministe complet.]
+#theoreme(coeur: true)[Tout automate est équivalent à un automate déterministe complet.]
 L'automate des parties est $A' = (Σ, cal(P)(Q), {I}, F', δ')$, où :
 $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q, a). $
 
@@ -287,7 +287,7 @@ $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q,
 #underline[Invariant] : après lecture d'un mot $u$, l'état atteint dans $A'$ est exactement l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
 
 #slides-only[== Construire seulement les états accessibles]
-#algorithm(coeur: true)[
+#algorithme(coeur: true)[
   + Initialiser la liste d'attente à ${I}$.
   + Tant que la liste n'est pas vide, extraire un ensemble $X$.
   + Pour chaque $a ∈ Σ$, calculer $X' = union.big_(q ∈ X) δ(q, a)$, mettre $X'$ dans $δ(q, X)$ et ajouter $X'$ s'il est nouveau.
@@ -296,7 +296,7 @@ $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q,
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire que les états accessibles. L'ensemble vide joue le rôle d'un puits.
 
 #slides-only[== Exemple de déterminisation]
-#exercise(coeur: true)[Déterminiser l'automate suivant.]
+#exercice(coeur: true)[Déterminiser l'automate suivant.]
 #facteur
 #solution[
   == Automate déterminisé
@@ -347,7 +347,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 ]
 
 #slides-only[== Coût exponentiel]
-#exercise[
+#exercice[
   Soit $L_n = Σ^* a Σ^n$ sur $Σ = {a, b}$, avec $n ∈ ℕ$.
   + Construire un automate non déterministe à $n + 2$ états reconnaissant $L_n$.
   + En déduire un automate déterministe à $2^(n + 2)$ états.
@@ -357,7 +357,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 = Stabilité des langages reconnaissables
 
 == Complémentaire
-#theorem(coeur: true)[Si $L ⊂ Σ^*$ est reconnaissable, $Σ^* ∖ L$ est reconnaissable.]
+#theoreme(coeur: true)[Si $L ⊂ Σ^*$ est reconnaissable, $Σ^* ∖ L$ est reconnaissable.]
 #article-only[*Preuve* :]
 #solution[
   #pause
@@ -365,13 +365,13 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
   Chaque mot possède un unique chemin, qui aboutit dans un état final exactement lorsque le mot n'appartient pas à $L$.
 ]
 #slides-only[== Hypothèses et application]
-#exercise[
+#exercice[
   + Montrer pourquoi la preuve nécessite un automate déterministe complet.
   + Dessiner un automate reconnaissant les mots contenant le facteur $a a a$, puis un automate reconnaissant les mots ne le contenant pas.
 ]
 
 == Automate produit
-#theorem(
+#theoreme(
   coeur: true,
 )[Les langages reconnaissables sur un même alphabet sont stables par intersection, union et différence.]
 Pour deux automates déterministes complets $A_1$, $A_2$, utiliser les états $Q_1 × Q_2$, l'état initial $(i_1, i_2)$ et :
@@ -396,7 +396,7 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
   Pour une union, on peut aussi prendre l'union disjointe de deux automates non déterministes.
 ]
 #slides-only[== Applications du produit]
-#exercise[
+#exercice[
   + La construction fonctionne-t-elle sans les hypothèses de déterminisme et de complétude ? Examiner chaque opération.
   + Construire un automate reconnaissant les mots sur ${a, b}$ contenant un nombre pair de $a$ et un nombre de $b$ congru à $2$ modulo $3$.
 ]
@@ -410,17 +410,17 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
   - Un automate est émondé si tous ses états sont accessibles et co-accessibles.
 ]
 #slides-only[== Calcul de l'accessibilité]
-#exercise[Décrire un algorithme de coût $O(abs(Q) + abs(E))$ déterminant ces deux ensembles.]
+#exercice[Décrire un algorithme de coût $O(abs(Q) + abs(E))$ déterminant ces deux ensembles.]
 #solution[#pause Parcourir le graphe depuis $I$, puis le graphe transposé depuis $F$.]
 #slides-only[== Émondage]
-#theorem[Tout automate est équivalent à un automate émondé.]
+#theoreme[Tout automate est équivalent à un automate émondé.]
 Supprimer les états inaccessibles et les états non co-accessibles : aucun chemin acceptant ne les utilise.
-#exercise[Tout automate est-il équivalent à un automate émondé déterministe complet ?]
+#exercice[Tout automate est-il équivalent à un automate émondé déterministe complet ?]
 
 = Lemme de l'étoile
 
 #slides-only[== Énoncé]
-#lemma(coeur: true)[
+#lemme(coeur: true)[
   Soit $L$ reconnu par un automate à $n$ états. Pour tout $u ∈ L$ de taille au moins $n$, il existe $x, y, z$ tels que :
   $ u = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad ∀ k ∈ ℕ, #sep x y^k z ∈ L. $
 ]
@@ -446,7 +446,7 @@ Pour montrer que $L$ n'est pas reconnaissable :
 + Pour toute décomposition respectant le lemme, trouver un $k$ tel que $x y^k z ∉ L$.
 
 #slides-only[== Langages non reconnaissables]
-#exercise[
+#exercice[
   Montrer que les langages suivants ne sont pas reconnaissables :
   + $L_1 = {a^n b^n ∣ n ∈ ℕ}$
   + $L_2 = {a^n b^p ∣ n, p ∈ ℕ, #sep n ≠ p}$

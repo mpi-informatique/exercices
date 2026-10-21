@@ -188,6 +188,28 @@
 #let (problem-counter, problem, problem-box, show-problem) = creer-environnement("problem")
 #let (algorithm-counter, algorithm, algorithm-box, show-algorithm) = creer-environnement("algorithm")
 
+// API française ; les noms historiques restent disponibles pour les documents existants.
+#let cadre-francais(cadre, titre: none, ..args) = {
+  if titre == none { cadre(..args) } else { cadre(title: titre, ..args) }
+}
+
+#let (theoreme, theoreme-sans-numero) = (cadre-francais.with(theorem), cadre-francais.with(theorem-box))
+#let (lemme, lemme-sans-numero) = (cadre-francais.with(lemma), cadre-francais.with(lemma-box))
+#let (corollaire, corollaire-sans-numero) = (cadre-francais.with(corollary), cadre-francais.with(corollary-box))
+#let (axiome, axiome-sans-numero) = (cadre-francais.with(axiom), cadre-francais.with(axiom-box))
+#let (postulat, postulat-sans-numero) = (cadre-francais.with(postulate), cadre-francais.with(postulate-box))
+#let (definition, definition-sans-numero) = (cadre-francais.with(definition), cadre-francais.with(definition-box))
+#let (proposition, proposition-sans-numero) = (cadre-francais.with(proposition), cadre-francais.with(proposition-box))
+#let (hypothese, hypothese-sans-numero) = (cadre-francais.with(assumption), cadre-francais.with(assumption-box))
+#let (propriete, propriete-sans-numero) = (cadre-francais.with(property), cadre-francais.with(property-box))
+#let (conjecture, conjecture-sans-numero) = (cadre-francais.with(conjecture), cadre-francais.with(conjecture-box))
+#let (remarque, remarque-sans-numero) = (cadre-francais.with(remark), cadre-francais.with(remark-box))
+#let (note, note-sans-numero) = (cadre-francais.with(note), cadre-francais.with(note-box))
+#let (exemple, exemple-sans-numero) = (cadre-francais.with(example), cadre-francais.with(example-box))
+#let (exercice, exercice-sans-numero) = (cadre-francais.with(exercise), cadre-francais.with(exercise-box))
+#let (probleme, probleme-sans-numero) = (cadre-francais.with(problem), cadre-francais.with(problem-box))
+#let (algorithme, algorithme-sans-numero) = (cadre-francais.with(algorithm), cadre-francais.with(algorithm-box))
+
 /// Active les règles Theorion ; `palette: none` conserve les cadres noirs imprimables.
 /// - espacement (length, none): Espacement supplémentaire autour des cadres.
 /// - palette (dictionary, none): Couleurs des environnements, indexées par leur nom anglais.

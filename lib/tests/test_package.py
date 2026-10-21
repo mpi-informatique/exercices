@@ -37,11 +37,11 @@ with TemporaryDirectory() as dossier:
 #show: feuille.with(titre: sujet.titre, exercices: sujet.exercices,
   corrige: sys.inputs.at("corrige", default: "false") == "true")
 $widetilde(a b), #sep widetilde(L)$
-#theoremes.lemma-box(outlined: false, full-title: [Lemme admis])[Énoncé du lemme.]
+#theoremes.lemme-sans-numero(outlined: false, full-title: [Lemme admis])[Énoncé du lemme.]
 #bloc-solution[Une solution.]
-#theoremes.remark[Une remarque compatible.]
+#theoremes.remarque[Une remarque compatible.]
 #theoremes.note[Une note compatible.]
-#theoremes.example[Un exemple compatible.]
+#theoremes.exemple[Un exemple compatible.]
 #let cible = question([Une question à déplacer.], label: <question-mobile>, solution: [Voir @question-mobile.])
 #let autre = question([Une autre question.])
 #let inverse = sys.inputs.at("corrige", default: "false") == "true"
@@ -75,14 +75,14 @@ Voir @question-mobile avant son énoncé.
   - #metadata("apres") <definition-animation-test> Un détail révélé ensuite.
 ] <definition-commune>
 #pause
-#theoremes.algorithm[Un algorithme commun.]
+#theoremes.algorithme[Un algorithme commun.]
 == Application
-#theoremes.exercise(title: [Monoïdes et taille])[Un exercice.]
-#theoremes.theorem[Un théorème.] <theoreme-commun>
-#article-only[#theoremes.definition-box[Une définition sans numéro.]]
+#theoremes.exercice(titre: [Monoïdes et taille])[Un exercice.]
+#theoremes.theoreme[Un théorème.] <theoreme-commun>
+#article-only[#theoremes.definition-sans-numero[Une définition sans numéro.]]
 == Autre notion
 #theoremes.definition[Une deuxième définition.]
-#theoremes.theorem[Un deuxième théorème.] <theoreme-suivant>
+#theoremes.theoreme[Un deuxième théorème.] <theoreme-suivant>
 Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 #context {
   for cible in (<definition-commune>, <theoreme-commun>, <theoreme-suivant>) {
@@ -136,7 +136,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 == Colonnes du cours
 #colonnes-cours(
   columns: (1.15fr, 1fr),
-  encadrer: theoremes.exercise-box.with(full-title: ""),
+  encadrer: theoremes.exercice-sans-numero.with(full-title: ""),
   [#metadata("gauche") <colonne-test> Contenu de gauche.],
   [#metadata("droite") <colonne-test> Contenu de droite.],
 )

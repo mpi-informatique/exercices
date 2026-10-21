@@ -1,6 +1,6 @@
 #import "/load.typ": cours, solution
 #import "/load.typ": theoremes
-#import theoremes: algorithm, definition, exercise, theorem
+#import theoremes: algorithme, definition, exercice, theoreme
 
 #show: cours.with(titre: "Titre du cours", niveau: "MPI")
 
@@ -10,15 +10,15 @@
   Définir la notion et ses notations.
 ]
 
-#theorem[
+#theoreme[
   Énoncer le résultat et ses hypothèses.
 ]
 
-#algorithm[
+#algorithme[
   Présenter les entrées, la sortie et les étapes de l'algorithme.
 ]
 
-#exercise[
+#exercice[
   Appliquer le résultat précédent.
 ]
 

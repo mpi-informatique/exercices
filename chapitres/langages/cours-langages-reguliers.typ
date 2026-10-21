@@ -1,6 +1,6 @@
 #import "/load.typ": article-only, cours-et-presentation, taille-presentation, item-by-item, only, pause, slides-only, solution
 #import "/load.typ": theoremes
-#import theoremes: corollary, definition, exercise, lemma, problem, property, theorem
+#import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
 #import "/load.typ": sep, widetilde
 
 #show: cours-et-presentation.with(titre: "Langages réguliers", niveau: "MPI")
@@ -38,14 +38,14 @@
 
 #slides-only[== Une équation sur les mots]
 
-#exercise[
+#exercice[
   Soient $Σ$ un alphabet, $a, b ∈ Σ$ et $u ∈ Σ^*$ tels que $a u = u b$.
   Montrer que $a = b$ et : $exists k ∈ ℕ, u = a^k$.
 ]
 
 #slides-only[== Monoïdes et taille (hors programme)]
 
-#exercise(title: [Monoïdes et taille])[
+#exercice(titre: [Monoïdes et taille])[
   Un _monoïde_ est un ensemble muni d'une loi associative et d'un élément neutre.
   Un _morphisme_ de $(Σ^*, ⋅)$ vers $(ℕ, +)$ est une application $f$ telle que
   $f(ε) = 0$ et $f(u v) = f(u) + f(v)$ pour tous $u, v ∈ Σ^*$.
@@ -85,7 +85,7 @@
 #slides-only[
   == Dénombrement des préfixes et des sous-mots
 
-  #exercise[
+  #exercice[
     Soit $m$ un mot de taille $n$ dont toutes les lettres sont différentes.
     Quel est son nombre de préfixes, de suffixes, de facteurs et de sous-mots ?
 
@@ -125,7 +125,7 @@ En OCaml, contrairement à ```ocaml array```, le type ```ocaml string``` est imm
 
 #slides-only[== Reconnaissance d'un sous-mot]
 
-#exercise[
+#exercice[
   1. Écrire une fonction ```ocaml sous_mot : string -> string -> bool``` testant si un mot est un sous-mot d'un autre.
   2. Connaissez-vous des algorithmes plus efficaces ?
 ]
@@ -159,13 +159,13 @@ De façon équivalente, $L$ est un langage si $L ⊂ Σ^*$, ou encore $L ∈ cal
 
   == Problèmes algorithmiques
 
-  #problem[
+  #probleme[
     Étant donné un langage $L$ et un mot $m$, est-ce que $m ∈ L$ ?
   ]
   *Applications* : correcteur orthographique, coloration syntaxique.
 
   #pause
-  #problem[
+  #probleme[
     Étant donné un texte $s$ et un langage $L$, $s$ contient-il un mot de $L$ ?
     Cas particulier $L = {m}$ : le mot $m$ apparaît-il dans le texte $s$ ?
   ]
@@ -185,14 +185,14 @@ $L_1 L_2$ est l'ensemble des mots obtenus par concaténation d'un mot de $L_1$ e
 
 #slides-only[== Calcul d'une concaténation]
 
-#exercise[
+#exercice[
   + Soit $L_1 = {a, a b}$ et $L_2 = {ε, b, b b a}$. Déterminer $L_1 L_2$.
   + Quel lien a-t-on entre $abs(L_1 L_2)$ et $abs(L_1) abs(L_2)$ dans le cas général ?
 ]
 
 #slides-only[== Propriétés de la concaténation]
 
-#exercise[
+#exercice[
   + La concaténation de deux langages est-elle commutative ? Associative ?
   + Quel est son élément neutre ? Son élément absorbant ?
 ]
@@ -216,7 +216,7 @@ $ L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_
 
 #slides-only[== Puissance et inclusion]
 
-#exercise[
+#exercice[
   Soit $L$ un langage.
   + Montrer que $L ⊂ L^2$ si et seulement si $L = ∅$ ou $ε ∈ L$.
   + Comparer $L^2$ et ${u^2 ∣ u ∈ L}$.
@@ -232,7 +232,7 @@ $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelco
 $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 
 #pause
-#exercise[
+#exercice[
   Montrer que $(L^*)^* = L^*$.
 ]
 
@@ -255,7 +255,7 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 
 #slides-only[== Unions et concaténations finies]
 
-#property[
+#propriete[
   Par récurrence immédiate, si $L_1, …, L_n$ sont réguliers, alors $L_1 ∪ … ∪ L_n$ et $L_1 L_2 … L_n$ sont réguliers.
 ]
 
@@ -275,7 +275,7 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 
 #slides-only[== Construction de langages réguliers]
 
-#exercise[
+#exercice[
   Montrer que les langages suivants sont réguliers sur $Σ = {a, b}$ :
   + Mots commençant par $a$.
   + Mots commençant par $a$ et finissant par $b$.
@@ -327,7 +327,7 @@ type 'a regexp = (* 'a est le type des lettres de l'alphabet *)
 
   #type-regexp
 
-  #exercise[
+  #exercice[
     Écrire une fonction ```ocaml lettres : 'a regexp -> 'a list``` qui renvoie la liste des lettres utilisées dans une expression régulière.
   ]
 ]
@@ -351,7 +351,7 @@ Une expression régulière décrit de façon compacte la construction d'un langa
 Cette notation est à la base des moteurs d'expressions régulières utilisés dans les éditeurs de texte.
 
 #pause
-#theorem[
+#theoreme[
   Un langage $L$ est régulier si et seulement s'il existe une expression régulière $e$ telle que $L = cal(L)(e)$.
 ]
 
@@ -364,7 +364,7 @@ Sur $Σ = {a, b}$ :
 
 #slides-only[== Recherche d'expressions régulières]
 
-#exercise[
+#exercice[
   Donner une expression régulière pour les langages suivants sur $Σ = {a, b}$ :
   + Mots contenant au plus un $a$.
   + Mots dont la taille est congrue à $1$ modulo $3$.
@@ -387,7 +387,7 @@ Sur $Σ = {a, b}$ :
 
 #slides-only[== Propriétés à compléter]
 
-#property[
+#propriete[
   Pour des expressions régulières $e$, $e_1$, $e_2$ et $e_3$, compléter :
   #grid(
     columns: (1fr, 1fr),
@@ -412,7 +412,7 @@ Sur $Σ = {a, b}$ :
 
 == Induction sur les langages réguliers
 
-#theorem(coeur: true)[
+#theoreme(coeur: true)[
   Soit $cal(P)(L)$ une propriété sur les langages réguliers telle que :
   - $cal(P)(L)$ est vraie pour les langages $L$ finis : cas de base.
   - $cal(P)(L_1) ∧ cal(P)(L_2) ==> cal(P)(L_1 L_2)$
@@ -429,7 +429,7 @@ Sur $Σ = {a, b}$ :
 
 == Induction sur les expressions régulières
 
-#theorem(coeur: true)[
+#theoreme(coeur: true)[
   Soit $cal(P)(e)$ une propriété sur les expressions régulières telle que :
   - $cal(P)(∅)$ et $cal(P)(ε)$ sont vraies : cas de base.
   - $cal(P)(a)$ est vraie pour $a ∈ Σ$ : cas de base.
@@ -442,7 +442,7 @@ Sur $Σ = {a, b}$ :
 
 #slides-only[== Miroir d'un langage]
 
-#exercise[
+#exercice[
   On note $widetilde(m) = m_n … m_1$ le miroir d'un mot $m = m_1 … m_n$ et $widetilde(L) = {widetilde(m) ∣ m ∈ L}$ celui d'un langage $L$.
 
   + Donner une expression régulière du miroir de $a (a | b)^* b$.
@@ -456,7 +456,7 @@ Sur $Σ = {a, b}$ :
   - Pour montrer une égalité de deux mots, on peut faire une récurrence sur la taille du mot.
   - Pour montrer une égalité de deux langages, on peut montrer une double inclusion.
 
-  #exercise[
+  #exercice[
     Soient $e_1$ et $e_2$ deux expressions régulières.
     Montrer que $(e_1^* e_2)^* e_1^* ≡ (e_1 | e_2)^*$.
   ]
@@ -483,7 +483,7 @@ Sur $Σ = {a, b}$ :
 
   Soit $Σ$ un alphabet non vide.
 
-  #theorem[
+  #theoreme[
     $Σ^+$, et donc aussi $Σ^*$, est infini dénombrable.
   ]
   #pause
@@ -492,21 +492,21 @@ Sur $Σ = {a, b}$ :
   L'ensemble est infini puisqu'il contient les mots $a^n$ pour $n ≥ 1$, avec $a ∈ Σ$.
 
   #pause
-  #corollary[
+  #corollaire[
     Un langage $L ⊂ Σ^*$ est au plus dénombrable.
   ]
   Par exemple, le langage des programmes OCaml est dénombrable.
 
   == Théorème de Cantor
 
-  #theorem[
+  #theoreme[
     Un ensemble $E$ ne peut pas être en bijection avec $cal(P)(E)$.
   ]
   #pause
   *Preuve* : si $f : E → cal(P)(E)$, alors $Y = {x ∈ E ∣ x ∉ f(x)}$ n'a pas d'antécédent par $f$.
 
   #pause
-  #corollary[
+  #corollaire[
     Pour $Σ$ non vide, l'ensemble $cal(P)(Σ^*)$ des langages sur $Σ$ n'est pas dénombrable.
   ]
 
@@ -515,7 +515,7 @@ Sur $Σ = {a, b}$ :
   L'ensemble des langages est indénombrable alors que l'ensemble des programmes OCaml est dénombrable.
   Il existe donc des langages $L$ pour lesquels aucun algorithme ne résout le problème suivant :
 
-  #problem[
+  #probleme[
     Étant donné un mot $m$, est-ce que $m ∈ L$ ?
   ]
   On se restreint donc à un ensemble plus simple de langages.
@@ -524,7 +524,7 @@ Sur $Σ = {a, b}$ :
 
   Soit $Σ$ un alphabet non vide.
 
-  #theorem[
+  #theoreme[
     L'ensemble des langages réguliers sur $Σ$ est infini dénombrable.
   ]
   #pause
@@ -536,7 +536,7 @@ Sur $Σ = {a, b}$ :
 
   Comme l'ensemble des langages sur $Σ$ est indénombrable :
 
-  #corollary[
+  #corollaire[
     Il existe des langages non réguliers sur $Σ$.
   ]
   On verra plus tard comment montrer qu'un langage n'est pas régulier.

@@ -31,7 +31,7 @@ Pour personnaliser le [thème Touying Madrid](../lib/themes/madrid.typ), passer 
 ```typst
 #import "/load.typ": cours-et-presentation, pause, article-only, slides-only
 #import "/load.typ": theoremes
-#import theoremes: definition, theorem, algorithm, exercise
+#import theoremes: definition, theoreme, algorithme, exercice
 
 #show: cours-et-presentation.with(titre: "Titre du cours", niveau: "MPI")
 
@@ -43,13 +43,13 @@ Pour personnaliser le [thème Touying Madrid](../lib/themes/madrid.typ), passer 
   Définition commune aux deux sorties.
 ]
 #pause
-#theorem[
+#theoreme[
   Énoncé commun aux deux sorties.
 ]
 
 == Application
 
-#exercise[
+#exercice[
   Appliquer le théorème.
 ]
 #slides-only[
@@ -78,7 +78,9 @@ Pour disposer des contenus en colonnes dans le cours et les afficher à la suite
 )
 ```
 
-Pour placer les deux contenus dans un même cadre, ajouter `encadrer: theoremes.exercise` à `colonnes-cours(...)`, plutôt que placer cet appel à l'intérieur du cadre : Touying doit résoudre les variantes avant le rendu du cadre.
+Pour placer les deux contenus dans un même cadre, ajouter `encadrer: theoremes.exercice` à `colonnes-cours(...)`, plutôt que placer cet appel à l'intérieur du cadre : Touying doit résoudre les variantes avant le rendu du cadre.
+
+Les fonctions des cadres utilisent des noms français (`theoreme`, `lemme`, `corollaire`, `propriete`, `exemple`, `exercice`, `probleme`, `algorithme`). Un titre se passe avec `titre: [Texte]`. Les variantes sans numéro portent le suffixe `-sans-numero`.
 
 Les cadres de `lib/theoremes.typ` acceptent les pauses et commandes d'animation dans leur contenu : Touying les résout avant le rendu du cadre. Conserver la syntaxe à un seul bloc de contenu :
 
@@ -106,7 +108,7 @@ Pour compiler directement, utiliser `typst compile --root . --input format=cours
 Placer les réponses et preuves dans `solution[...]`, importé depuis `/load.typ` :
 
 ```typst
-#exercise[Résoudre le problème.]
+#exercice[Résoudre le problème.]
 #solution[
   Donner la résolution et sa justification.
 ]
@@ -119,7 +121,7 @@ Ce contenu est masqué dans le cours normal, affiché après l'énoncé dans le 
 Utiliser une étiquette stable et la référence native `@etiquette`. Le type de bloc et son numéro sont calculés automatiquement, avec un lien vers l'énoncé, dans le cours, le corrigé et la présentation :
 
 ```typst
-#theorem[Énoncé du théorème.] <thm-concatenation>
+#theoreme[Énoncé du théorème.] <thm-concatenation>
 D'après le @thm-concatenation, on obtient…
 ```
 
