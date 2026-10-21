@@ -359,18 +359,18 @@ Sur $Σ = {a, b}$ :
 
 #taille-presentation(0.75em)[
   #table(
-    columns: (1.5fr, 1.2fr, 1fr),
+    columns: (1.5fr, 0.65fr, 1.2fr, 1fr),
     align: left + horizon,
     inset: (x: 0.5em, y: 0.35em),
-    table.header([*Description*], [*Exemple*], [*Ensemble*]),
-    [Lettre], [$a$], [#completer()],
-    [Alphabet], [$Σ = {a, b}$], [#completer()],
-    [Mot vide], [$ε$], [#completer()],
-    [Mot], [$a b a$], [#completer()],
-    [Langage], [${ε, a, a b}$], [#completer()],
-    [Expression régulière], [$e = a b^*$], [#completer()],
-    [Langage décrit par une expression régulière], [$cal(L)(e) = {a b^n | n ∈ ℕ}$], [#completer()],
-    [Langages réguliers], [$cal(L)_("reg")$], [#completer()],
+    table.header([*Description*], [*Notation*], [*Exemple*], [*Ensemble*]),
+    [Lettre], [$a$], [$a$], [#completer()],
+    [Alphabet], [$Σ$], [${a, b}$], [#completer()],
+    [Mot vide], [$ε$], [$ε$], [#completer()],
+    [Mot], [$m$], [$a b a$], [#completer()],
+    [Langage], [$L$], [${ε, a, a b}$], [#completer()],
+    [Expression régulière], [$e$], [$a b^*$], [#completer()],
+    [Langage décrit par une expression régulière], [$cal(L)(e)$], [${a b^n | n ∈ ℕ}$], [#completer()],
+    [Langages réguliers], [$cal(L)_("reg")$], [$cal(L)_("reg")$], [#completer()],
   )
 ]
 
