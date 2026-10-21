@@ -11,6 +11,12 @@
 /// -> content
 #let completer() = box(width: 1fr, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 50%), repeat[.])))
 
+/// Liste numérotée dont chaque élément est suivi de pointillés à compléter.
+/// - start (int): Premier numéro, défaut 1.
+/// - ..items (arguments): Contenus des éléments de la liste.
+/// -> content
+#let liste-a-completer(start: 1, ..items) = enum(start: start, ..items.pos().map(item => [#item #completer()]))
+
 /// Tilde élargi, y compris au-dessus d'une seule lettre.
 /// - body (content): Expression à surmonter d'un tilde.
 /// -> content

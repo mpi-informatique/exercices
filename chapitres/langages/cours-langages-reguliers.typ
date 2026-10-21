@@ -1,7 +1,7 @@
 #import "/load.typ": article-only, cours-et-presentation, taille-presentation, item-by-item, only, pause, slides-only, solution
 #import "/load.typ": automate, theoremes
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
-#import "/load.typ": sep, widetilde, colonnes-cours
+#import "/load.typ": sep, widetilde, colonnes-cours, liste-a-completer
 
 #import automate: Lreg
 
@@ -413,7 +413,6 @@ Sur $Σ = {a, b}$ :
 #slides-only[== Propriétés à compléter]
 
 #propriete[
-  #let liste-a-completer(start: 1, ..items) = enum(start: start, ..items.pos().map(item => [#item #completer()]))
   Pour des expressions régulières $e$, $e_1$, $e_2$ et $e_3$, compléter :
   #grid(
     columns: (1fr, 1fr),

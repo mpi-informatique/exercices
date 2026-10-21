@@ -102,6 +102,7 @@ Consulter le [résumé du programme](programme.md) pour choisir les étiquettes 
 - Formater les sources avec Typstyle via Tinymist. La configuration VS Code du dépôt active le formatage à l'enregistrement, avec une indentation de deux espaces et sans redistribution des lignes de prose. Laisser Typstyle disposer les appels et les crochets ; ne pas fixer de largeur de ligne dans la configuration.
 - Dans les fichiers `.typ`, revenir à la ligne lorsque cela facilite la lecture ou marque une articulation logique du paragraphe. Préserver les retours structurels (paragraphes, listes, titres, code et formules).
 - Préférer la syntaxe Typst native pour le contenu fixe (`== Titre`, listes…) ; réserver les appels de fonctions aux éléments calculés ou réutilisables.
+- Pour une liste numérotée dont chaque élément est suivi de pointillés à compléter, utiliser `liste-a-completer` depuis `/load.typ` plutôt que répéter les appels à `completer` ; voir [lib/document.typ](../lib/document.typ).
 - Délimiter les extraits de code Typst, inline ou en bloc, par des accents graves avec le langage adéquat, par exemple ```ocaml arbre_a_mot``` ; ne pas les entourer d'apostrophes.
 - Utiliser exclusivement l'apostrophe ASCII `'`, y compris dans les textes français.
 - Préférer la concision sans perdre en précision. Dans les listes de conditions mathématiques courtes et les blocs de règles de grammaire, omettre les points-virgules en fin de ligne et le point final. Ponctuer les phrases rédigées.
