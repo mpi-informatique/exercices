@@ -153,6 +153,12 @@
   }
 }
 
+// Séparer le titre du préfixe numéroté par deux-points, sans parenthèses.
+#let titre-cadre(prefix, title) = {
+  let avec-titre = (type(title) == str and title != "") or (type(title) == content and title != [] and title != [#""])
+  [#prefix#if avec-titre { [ : #title] }]
+}
+
 // Chaque type possède un compteur indépendant, sans héritage des sections.
 #let creer-environnement(nom) = {
   let (compteur, sans-numero, numerote, afficher) = theorion.make-frame(
@@ -162,7 +168,7 @@
     numbering: "1",
     render: rendre-cadre.with(nom),
   )
-  (compteur, numerote, sans-numero, afficher)
+  (compteur, numerote.with(get-full-title: titre-cadre), sans-numero.with(get-full-title: titre-cadre), afficher)
 }
 
 #let (theorem-counter, theorem, theorem-box, show-theorem) = creer-environnement("theorem")

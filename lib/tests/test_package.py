@@ -77,7 +77,7 @@ Voir @question-mobile avant son énoncé.
 #pause
 #theoremes.algorithm[Un algorithme commun.]
 == Application
-#theoremes.exercise[Un exercice.]
+#theoremes.exercise(title: [Monoïdes et taille])[Un exercice.]
 #theoremes.theorem[Un théorème.] <theoreme-commun>
 #article-only[#theoremes.definition-box[Une définition sans numéro.]]
 == Autre notion
@@ -91,6 +91,15 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 }
 #article-only[
   #context {
+    let texte(c) = {
+      if c.has("text") { c.text }
+      else if c.func() == [ ].func() { " " }
+      else if c.has("children") { c.children.map(texte).join() }
+      else { "" }
+    }
+    let exercice = query(<theorion-frame-metadata>).find(it => it.value.identifier == "exercise")
+    assert(texte((exercice.value.get-full-title)([Exercice 2], exercice.value.title)) == "Exercice 2 : Monoïdes et taille")
+    assert(texte((exercice.value.get-full-title)([Exercice 2], "")) == "Exercice 2")
     let cadres = query(<theorion-frame-metadata>).filter(it => it.value.numbering != none)
     assert(cadres.map(it => it.value.identifier) == ("definition", "algorithm", "exercise", "theorem", "definition", "theorem"))
     assert(cadres.map(it => (it.value.counter.at)(it.location())) == ((1,), (1,), (1,), (1,), (2,), (2,)))
