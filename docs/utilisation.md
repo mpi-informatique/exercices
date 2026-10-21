@@ -80,7 +80,17 @@ Pour disposer des contenus en colonnes dans le cours et les afficher à la suite
 
 Pour placer les deux contenus dans un même cadre, ajouter `encadrer: theoremes.exercise` à `colonnes-cours(...)`, plutôt que placer cet appel à l'intérieur du cadre : Touying doit résoudre les variantes avant le rendu du cadre.
 
-Placer les pauses et commandes d'animation à l'extérieur des cadres de `lib/theoremes.typ`, dont le rendu utilise `context` : Touying doit pouvoir les lire avant la mise en page.
+Les cadres de `lib/theoremes.typ` acceptent les pauses et commandes d'animation dans leur contenu : Touying les résout avant le rendu du cadre. Conserver la syntaxe à un seul bloc de contenu :
+
+```typst
+#definition[
+  - Un alphabet est un ensemble fini de lettres.
+  #pause
+  - Un mot est une suite finie de lettres.
+]
+```
+
+La présentation révèle la suite après la pause, tandis que le cours imprimé affiche la définition complète. Le numéro du cadre reste identique pendant l'animation.
 
 ```sh
 nix develop . -c just c chapitres/langages/cours-langages-reguliers.typ

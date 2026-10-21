@@ -1,5 +1,6 @@
 /// Environnements Theorion : cadres imprimés ou blocs colorés en présentation.
 #import "@preview/theorion:0.6.0" as theorion
+#import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils
 #import theorion.cosmos.fancy: *
 #import "blocs.typ": epaisseur-trait
 
@@ -64,9 +65,10 @@
 }
 
 // Conserver les mêmes environnements, références et compteurs dans les deux formats.
-#let rendre-cadre(
-  nom,
+#let composer-cadre(
   body,
+  nom: none,
+  self: none,
   prefix: none,
   title: "",
   full-title: auto,
@@ -142,6 +144,15 @@
   if espacement != none { v(espacement, weak: true) }
 }
 
+// Touying traite le contenu du cadre avant son rendu contextuel.
+#let rendre-cadre(nom, body, ..options) = {
+  if not utils.tree.has-touying-mark(body) {
+    composer-cadre(body, nom: nom, ..options)
+  } else {
+    touying-fn-wrapper-raw(composer-cadre, body, nom: nom, ..options)
+  }
+}
+
 // Chaque type possède un compteur indépendant, sans héritage des sections.
 #let creer-environnement(nom) = {
   let (compteur, sans-numero, numerote, afficher) = theorion.make-frame(
@@ -187,6 +198,12 @@
   set-tertiary-body-color(white)
   set-quaternary-border-color(black)
   set-quaternary-body-color(white)
+  // Hors de Touying, composer directement les cadres encore sous forme de marques.
+  show metadata: it => if type(it.value) == dictionary and it.value.at("fn", default: none) == composer-cadre {
+    composer-cadre(..it.value.args)
+  } else {
+    it
+  }
   show: show-theorem
   show: show-lemma
   show: show-corollary

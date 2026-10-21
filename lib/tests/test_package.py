@@ -66,7 +66,11 @@ Voir @question-mobile avant son énoncé.
 #show: cours-et-presentation.with(titre: "Cours externe", niveau: "MPI")
 = Section
 == Notion
-#theoremes.definition[Un contenu commun.] <definition-commune>
+#theoremes.definition[
+  - #metadata("avant") <definition-animation-test> Un contenu commun.
+  #pause
+  - #metadata("apres") <definition-animation-test> Un détail révélé ensuite.
+] <definition-commune>
 #pause
 #theoremes.algorithm[Un algorithme commun.]
 == Application
@@ -107,9 +111,16 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   #context {
     // La définition de la première diapositive est répétée lors de la pause.
     let definitions = query(<theorion-frame-metadata>).filter(it => it.value.identifier == "definition")
-    assert(definitions.map(it => (it.value.counter.at)(it.location())) == ((1,), (1,), (2,)))
+    assert(definitions.map(it => (it.value.counter.at)(it.location())) == ((1,), (1,), (1,), (2,)))
   }
 ]
+#context {
+  // Touying conserve les éléments masqués pour réserver leur place.
+  let marques = query(<definition-animation-test>)
+  let projection = sys.inputs.at("format") == "presentation"
+  assert(marques.filter(it => it.value == "avant").len() == if projection { 3 } else { 1 })
+  assert(marques.filter(it => it.value == "apres").len() == if projection { 3 } else { 1 })
+}
 == Colonnes du cours
 #colonnes-cours(
   columns: (1.15fr, 1fr),
