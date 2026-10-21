@@ -37,9 +37,9 @@
 
         Autre solution : $"Suff"(L)=widetilde("Pref"(widetilde(L)))$ puisque $widetilde(x y)=widetilde(y)widetilde(x)$.
         En effet,
-        $ m∈widetilde("Pref"(widetilde(L))) ⇔ ∃v, widetilde(m)v∈widetilde(L) ⇔ ∃v, widetilde(v)m∈L ⇔ m∈"Suff"(L). $
+        $ m∈widetilde("Pref"(widetilde(L))) ⟺ ∃v, widetilde(m)v∈widetilde(L) ⟺ ∃v, widetilde(v)m∈L ⟺ m∈"Suff"(L). $
         Enfin $"Fact"(L)="Suff"("Pref"(L))="Pref"("Suff"(L))$ :
-        $ m∈"Suff"("Pref"(L)) ⇔ ∃u, u m∈"Pref"(L) ⇔ ∃u,v, u m v∈L ⇔ m∈"Fact"(L). $
+        $ m∈"Suff"("Pref"(L)) ⟺ ∃u, u m∈"Pref"(L) ⟺ ∃u,v, u m v∈L ⟺ m∈"Fact"(L). $
       ],
     ),
     question(

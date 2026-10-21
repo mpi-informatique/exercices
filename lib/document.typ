@@ -9,7 +9,7 @@
 
 /// Complète la ligne courante par des pointillés semi-transparents légèrement abaissés.
 /// -> content
-#let completer() = box(width: 1fr, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 50%), repeat[.])))
+#let completer() = box(width: 1fr, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 25%), repeat[.])))
 
 /// Liste numérotée dont chaque élément est suivi de pointillés à compléter.
 /// - start (int): Premier numéro, défaut 1.

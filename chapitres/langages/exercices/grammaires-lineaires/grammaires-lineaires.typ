@@ -87,7 +87,7 @@
       Soit $w = w_0 … w_(n-1)$ le mot à reconnaître.
       Pour $0 ≤ i ≤ j ≤ n$, on note $w[i:j]$ son facteur allant de l'indice $i$ inclus à l'indice $j$ exclu ; $w[i:i] = ε$.
       On définit le booléen $D(X,i,j)$ par
-      $ D(X,i,j) = "vrai" quad ⇔ quad X ⇒^* w[i:j]. $
+      $ D(X,i,j) = "vrai" quad ⟺ quad X ⇒^* w[i:j]. $
     ],
     question(
       [
@@ -99,7 +99,7 @@
         Aucune règle contenant une lettre ne peut produire le mot vide, donc $D(X,i,i)$ est vrai exactement lorsque $X → ε ∈ R$.
         Pour $i < j$, on a
         $
-          D(X,i,j) ⇔
+          D(X,i,j) ⟺
           (⋁_(X → a Y ∈ R) (w_i = a ∧ D(Y,i+1,j)))
           ∨ (⋁_(X → Y a ∈ R) (w_(j-1) = a ∧ D(Y,i,j-1))).
         $

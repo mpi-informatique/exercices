@@ -9,7 +9,7 @@
 
 /// Commence une nouvelle diapositive en conservant le titre courant, sans saut dans le cours.
 /// -> content
-#let nouvelle-diapositive() = slides-only(pagebreak())
+#let slide() = slides-only(pagebreak())
 
 /// Modifie la taille du texte uniquement dans la présentation d'une source commune.
 /// - taille (relative): Taille utilisée lorsque l'entrée `format` vaut "presentation".

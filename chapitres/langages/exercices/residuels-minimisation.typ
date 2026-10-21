@@ -24,7 +24,7 @@
         Si $L$ est un langage, quel est le résiduel de $L$ par rapport à $ε$ ?
       ],
       solution: [
-        $ε^(-1)L = L$. En effet, si $m ∈ Σ^*$, $m ∈ ε^(-1)L ⇔ ε m = m ∈ L$.
+        $ε^(-1)L = L$. En effet, si $m ∈ Σ^*$, $m ∈ ε^(-1)L ⟺ ε m = m ∈ L$.
       ],
     ),
     question(
@@ -33,7 +33,7 @@
       ],
       solution: [
         Soient $L$ un langage et $u,v ∈ Σ^*$. Si $m ∈ Σ^*$, alors :
-        $ m ∈ u^(-1)(v^(-1)L) ⇔ u m ∈ v^(-1)L ⇔ v u m ∈ L ⇔ m ∈ (v u)^(-1)L. $
+        $ m ∈ u^(-1)(v^(-1)L) ⟺ u m ∈ v^(-1)L ⟺ v u m ∈ L ⟺ m ∈ (v u)^(-1)L. $
       ],
     ),
     question(
@@ -86,12 +86,12 @@
             Considérons deux mots $u,v$ tels que $δ^*(q_0,u) = δ^*(q_0,v)$.
             Pour tout $m ∈ Σ^*$,
             $
-              m ∈ u^(-1)L & ⇔ u m ∈ L \
-                          & ⇔ δ^*(q_0,u m) ∈ F \
-                          & ⇔ δ^*(δ^*(q_0,u),m) ∈ F \
-                          & ⇔ δ^*(δ^*(q_0,v),m) ∈ F \
-                          & ⇔ δ^*(q_0,v m) ∈ F \
-                          & ⇔ v m ∈ L ⇔ m ∈ v^(-1)L.
+              m ∈ u^(-1)L & ⟺ u m ∈ L \
+                          & ⟺ δ^*(q_0,u m) ∈ F \
+                          & ⟺ δ^*(δ^*(q_0,u),m) ∈ F \
+                          & ⟺ δ^*(δ^*(q_0,v),m) ∈ F \
+                          & ⟺ δ^*(q_0,v m) ∈ F \
+                          & ⟺ v m ∈ L ⟺ m ∈ v^(-1)L.
             $
             Ainsi $u^(-1)L = v^(-1)L$ : le résiduel associé à $q$ par $φ$ est indépendant du choix de $u$.],
           [Montrons que $φ$ est surjective. Soit $u^(-1)L$ un résiduel de $L$.
@@ -127,11 +127,11 @@
           [Soient $u,v ∈ Σ^*$ tels que $u^(-1)L = v^(-1)L$, et $a ∈ Σ$.
             Pour tout $m ∈ Σ^*$, d'après la définition et la question 2,
             $
-              m ∈ δ(u^(-1)L,a) & ⇔ m ∈ (u a)^(-1)L \
-                               & ⇔ u a m ∈ L \
-                               & ⇔ a m ∈ u^(-1)L \
-                               & ⇔ a m ∈ v^(-1)L \
-                               & ⇔ m ∈ a^(-1)(v^(-1)L) = δ(v^(-1)L,a).
+              m ∈ δ(u^(-1)L,a) & ⟺ m ∈ (u a)^(-1)L \
+                               & ⟺ u a m ∈ L \
+                               & ⟺ a m ∈ u^(-1)L \
+                               & ⟺ a m ∈ v^(-1)L \
+                               & ⟺ m ∈ a^(-1)(v^(-1)L) = δ(v^(-1)L,a).
             $
             Ces deux langages sont donc égaux. L'état atteint en lisant $a$ depuis le résiduel $u^(-1)L$ ne dépend que de ce résiduel, et non du choix de $u$.],
           [Par hypothèse, l'ensemble des résiduels de $L$, qui est aussi l'ensemble des états de $M(L)$, est fini. Donc $M(L)$ est un automate

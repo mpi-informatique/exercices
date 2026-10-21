@@ -807,8 +807,8 @@
       question([Montrer que pour tous mots $u,v$ et tout langage $L$, $v^(-1)(u^(-1)L)=(u v)^(-1)L$.], solution: [
         Pour tout $z$, on a successivement
         $
-          z ∈ v^(-1)(u^(-1)L) ⇔ v z ∈ u^(-1)L ⇔ u v z ∈ L
-          ⇔ z ∈ (u v)^(-1)L.
+          z ∈ v^(-1)(u^(-1)L) ⟺ v z ∈ u^(-1)L ⟺ u v z ∈ L
+          ⟺ z ∈ (u v)^(-1)L.
         $
       ]),
       [Pour un ensemble d'expressions $S$, on note $cal(L)(S)$ la réunion de leurs langages.

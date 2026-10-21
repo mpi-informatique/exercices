@@ -190,7 +190,7 @@
 
         Soit $S$ l'ensemble formé de $ε$ et des suffixes propres non vides des mots de $C$.
         On définit le graphe orienté $G = (S, A)$ par les arcs suivants, pour $r ∈ S ∖ {ε}$ et $s ∈ S$ :
-        $ (r, s) ∈ A ⇔ ∃c ∈ C, #sep (r s = c " ou " c s = r). $
+        $ (r, s) ∈ A ⟺ ∃c ∈ C, #sep (r s = c " ou " c s = r). $
         Aucun arc ne part de $ε$. Les sommets de départ forment l'ensemble :
         $ R = {r ∈ Σ^+ ∣ ∃x, y ∈ C, #sep x ≠ y " et " x r = y}. $
         Un chemin peut avoir une longueur nulle.],

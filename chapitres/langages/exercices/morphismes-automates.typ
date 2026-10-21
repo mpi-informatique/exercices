@@ -142,7 +142,7 @@
       Soit $B=(Q_B,i_B,δ_B,F_B)$ accessible, muni de morphismes $f:B→A$ et $g:B→A'$.
       On cherche $C$ et des morphismes $f':A→C$, $g':A'→C$.
       Définissons sur $Q_B$ la relation d'équivalence
-      $ p≡q ⇔ ∃q_0,…,q_k, q_0=p, q_k=q, $
+      $ p≡q ⟺ ∃q_0,…,q_k, q_0=p, q_k=q, $
       où, pour chaque $0≤i<k$, $f(q_i)=f(q_(i+1))$ ou $g(q_i)=g(q_(i+1))$.
       Les suites de longueur nulle, leur renversement et leur concaténation montrent respectivement réflexivité, symétrie et transitivité.
     ],

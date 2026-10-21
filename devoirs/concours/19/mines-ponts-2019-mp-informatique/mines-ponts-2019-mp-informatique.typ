@@ -351,7 +351,7 @@
                                     & = δ_cal(B)^*(δ_cal(B)(φ(q),σ),w') \
                                     & = δ_cal(B)^*(φ(q),σ w').
             $
-            Par (2) et (4), $δ_cal(A)^*(i_cal(A),w) ∈ F_cal(A) ⇔ δ_cal(B)^*(i_cal(B),w) ∈ F_cal(B)$.
+            Par (2) et (4), $δ_cal(A)^*(i_cal(A),w) ∈ F_cal(A) ⟺ δ_cal(B)^*(i_cal(B),w) ∈ F_cal(B)$.
             Donc $cal(L)(cal(A)) = cal(L)(cal(B))$.
           ],
           bareme: 2,
@@ -369,7 +369,7 @@
             - Par (2), $φ^(-1)(i_cal(B))=i_cal(A)$.
             - En appliquant (3) à $φ^(-1)(q)$ puis $φ^(-1)$ à l'égalité obtenue,
               $φ^(-1)(δ_cal(B)(q,σ))=δ_cal(A)(φ^(-1)(q),σ)$.
-            - Par (4), $q ∈ F_cal(B) ⇔ φ^(-1)(q) ∈ F_cal(A)$.
+            - Par (4), $q ∈ F_cal(B) ⟺ φ^(-1)(q) ∈ F_cal(A)$.
           ],
           bareme: 1.5,
           notation: [Un cinquième pour la bijectivité par égalité des cardinaux, puis un cinquième pour chacune des quatre propriétés de l'inverse : surjectivité, état initial, compatibilité avec les transitions, équivalence sur les finaux. Ne pas pénaliser les seuls lapsus d'indices sans ambiguïté.],
@@ -381,7 +381,7 @@
             - $ψ ∘ φ$ est surjective comme composée de surjections.
             - $(ψ ∘ φ)(i_cal(A))=ψ(i_cal(B))=i_cal(C)$
             - $(ψ ∘ φ)(δ_cal(A)(q,σ))=ψ(δ_cal(B)(φ(q),σ))=δ_cal(C)((ψ ∘ φ)(q),σ)$
-            - $q ∈ F_cal(A) ⇔ φ(q) ∈ F_cal(B) ⇔ (ψ ∘ φ)(q) ∈ F_cal(C)$
+            - $q ∈ F_cal(A) ⟺ φ(q) ∈ F_cal(B) ⟺ (ψ ∘ φ)(q) ∈ F_cal(C)$
           ],
           bareme: 1,
           notation: [25 % pour la surjectivité, 25 % pour l'état initial, 25 % pour les transitions, 25 % pour l'équivalence sur les finaux. Attribuer 90 % si seule la réciproque sur les finaux manque.],
@@ -461,7 +461,7 @@
             Par récurrence sur $abs(w)$,
             $ δ_(cal(A) × cal(A)')^*((q,q'),w)=(δ_cal(A)^*(q,w),δ_(cal(A)')^*(q',w)). $
             L'accessibilité fournit donc un même mot $w$ tel que $q=δ_cal(A)^*(i_cal(A),w)$ et $q'=δ_(cal(A)')^*(i_(cal(A)'),w)$.
-            Alors $q ∈ F_cal(A) ⇔ w ∈ cal(L)(cal(A)) ⇔ w ∈ cal(L)(cal(A)') ⇔ q' ∈ F_(cal(A)')$.
+            Alors $q ∈ F_cal(A) ⟺ w ∈ cal(L)(cal(A)) ⟺ w ∈ cal(L)(cal(A)') ⟺ q' ∈ F_(cal(A)')$.
           ],
           bareme: 1.5,
           notation: [50 % pour un même mot menant aux deux composantes, 50 % pour l'équivalence de leurs caractères finaux par égalité des langages. L'accessibilité du couple doit être utilisée.],
@@ -476,7 +476,7 @@
             - $φ(i_cal(B))=φ(i_cal(A),i_(cal(A)'))=i_cal(A)$
             - Par définition du produit, $φ(δ_cal(B)((q,q'),σ))=δ_cal(A)(q,σ)=δ_cal(A)(φ(q,q'),σ)$.
             - Par la question 20,
-              $(q,q') ∈ F_cal(B) ⇔ q ∈ F_cal(A) " et " q' ∈ F_(cal(A)') ⇔ q ∈ F_cal(A)$.
+              $(q,q') ∈ F_cal(B) ⟺ q ∈ F_cal(A) " et " q' ∈ F_(cal(A)') ⟺ q ∈ F_cal(A)$.
             La seconde projection $ψ(q,q')=q'$ est de même un morphisme vers $cal(A)'$.
           ],
           bareme: 2,
@@ -519,7 +519,7 @@
             [Montrer que, si $p ≡ q$, alors $p$ est final dans $cal(B)$ si et seulement si $q$ l'est.],
             solution: [
               Lorsque $φ(q_j)=φ(q_(j+1))$, la condition (4) donne
-              $ q_j ∈ F_cal(B) ⇔ φ(q_j) ∈ F_cal(A) ⇔ φ(q_(j+1)) ∈ F_cal(A) ⇔ q_(j+1) ∈ F_cal(B). $
+              $ q_j ∈ F_cal(B) ⟺ φ(q_j) ∈ F_cal(A) ⟺ φ(q_(j+1)) ∈ F_cal(A) ⟺ q_(j+1) ∈ F_cal(B). $
               On obtient la même équivalence si les images par $ψ$ sont égales.
               Le caractère final est donc constant le long d'une suite témoin.
             ],
@@ -540,7 +540,7 @@
               Les questions 23 et 24 assurent que transitions et caractère final sont indépendants du représentant choisi.
               On obtient donc un automate déterministe complet.
               L'application $η$ est surjective, préserve l'état initial et commute aux transitions par définition.
-              La question 24 donne $q ∈ F_cal(B) ⇔ [q] ∈ F_cal(C)$ : $η$ est un morphisme.
+              La question 24 donne $q ∈ F_cal(B) ⟺ [q] ∈ F_cal(C)$ : $η$ est un morphisme.
               Enfin, l'accessibilité de $cal(B)$ fournit pour chaque $q$ un mot $w$ menant à $q$.
               Par (∗), $δ_cal(C)^*(S_0,w)=η(q)=[q]$, donc $cal(C)$ est accessible.
             ],
@@ -558,7 +558,7 @@
               - $φ'(i_cal(A))=φ'(φ(i_cal(B)))=[i_cal(B)]=i_cal(C)$
               - Si $q=φ(p)$,
                 $ φ'(δ_cal(A)(q,σ))=φ'(φ(δ_cal(B)(p,σ)))=[δ_cal(B)(p,σ)]=δ_cal(C)(φ'(q),σ). $
-              - $q ∈ F_cal(A) ⇔ p ∈ F_cal(B) ⇔ [p] ∈ F_cal(C) ⇔ φ'(q) ∈ F_cal(C)$
+              - $q ∈ F_cal(A) ⟺ p ∈ F_cal(B) ⟺ [p] ∈ F_cal(C) ⟺ φ'(q) ∈ F_cal(C)$
               On définit de même $ψ'(ψ(p))=[p]$. C'est un morphisme et $ψ' ∘ ψ=η$.
             ],
             bareme: 3,
@@ -720,7 +720,7 @@
             solution: [
               On commence par prendre la partie accessible, ce qui conserve le langage.
               Avec la table $D$ de la question 36 corrigée, définir
-              $ p ∼ q ⇔ D[p,q]="faux" ⇔ ∀ w ∈ {a,b}^*, (δ^*(p,w) ∈ F ⇔ δ^*(q,w) ∈ F). $
+              $ p ∼ q ⟺ D[p,q]="faux" ⟺ ∀ w ∈ {a,b}^*, (δ^*(p,w) ∈ F ⟺ δ^*(q,w) ∈ F). $
               Cette relation exprime l'égalité des langages reconnus depuis chaque état : c'est une équivalence.
               Le choix $w=ε$ montre que le caractère final est constant dans une classe.
               Si $p ∼ q$, lire $σ w$ montre que $δ(p,σ) ∼ δ(q,σ)$ pour chaque lettre $σ$.
