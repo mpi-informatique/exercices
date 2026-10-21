@@ -219,7 +219,7 @@ $ L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_
 
 #definition[
   On définit l'étoile de Kleene $L^*$ d'un langage $L$ par :
-  $ L^* = union.big_(k ∈ ℕ) L^k. $
+  $ L^* = display(union.big_(k ∈ ℕ)) L^k. $
 ]
 $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelconque de mots de $L$. \
 $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
