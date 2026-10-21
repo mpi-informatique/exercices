@@ -246,6 +246,10 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
   - Si $L$ est régulier, alors $L^*$ est régulier.
 ]
 
+#exercice[
+  Montrer qu'on peut remplacer « contenant les langages finis sur $Σ$ » par $∅ ∈ Lreg, {ε} ∈ Lreg$ et ${a} ∈ Lreg$ pour $a ∈ Σ$.
+]
+
 #slides-only[== Unions et concaténations finies]
 
 #propriete[
