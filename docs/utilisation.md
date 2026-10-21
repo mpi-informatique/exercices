@@ -90,7 +90,7 @@ Les cadres de `lib/theoremes.typ` acceptent les pauses et commandes d'animation 
 ]
 ```
 
-La présentation révèle la suite après la pause, tandis que le cours imprimé affiche la définition complète. Le numéro du cadre reste identique pendant l'animation.
+La présentation révèle la suite après la pause, tandis que le cours imprimé affiche la définition complète. Le numéro du cadre reste identique pendant l'animation. Pour révéler automatiquement chaque élément d'une liste, importer `item-by-item` depuis `/load.typ` et écrire `#definition(item-by-item[ ... ])` avec les éléments `- ...` dans le bloc : aucune répétition de `#pause` n'est nécessaire.
 
 ```sh
 nix develop . -c just c chapitres/langages/cours-langages-reguliers.typ

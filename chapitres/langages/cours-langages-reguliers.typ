@@ -1,4 +1,4 @@
-#import "/load.typ": article-only, cours-et-presentation, only, pause, slides-only, solution
+#import "/load.typ": article-only, cours-et-presentation, item-by-item, only, pause, slides-only, solution
 #import "/load.typ": theoremes
 #import theoremes: corollary, definition, exercise, lemma, problem, property, theorem
 #import "/load.typ": sep, widetilde
@@ -18,14 +18,14 @@
 
 #slides-only[== Alphabet, mot]
 
-#definition[
+#definition(item-by-item[
   - Un alphabet est un ensemble $Σ$ fini de lettres.
   - Un mot $m$ sur un alphabet $Σ$ est une suite finie $m_1, …, m_n$ de lettres de $Σ$, et on note $m = m_1 … m_n$.
   L'entier $n$ est la taille de $m$, notée $abs(m)$.
   - Le mot vide, ne contenant aucune lettre, est noté $ε$.
   - Deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ sur $Σ$ sont égaux si $n = p$ et : $forall i ∈ [|1, n|]$, $u_i = v_i$.
   - $Σ^*$ est l'ensemble des mots sur $Σ$ et $Σ^+ = Σ^* ∖ {ε}$.
-]
+])
 
 #underline[Attention] : $ε$ est un mot, pas une lettre.
 

@@ -1,6 +1,6 @@
 /// Présentations Touying et cours issus d'une même source.
 #import "@preview/touying:0.8.0" as touying
-#import touying: article-only, only, pause, slide, slides-only, uncover
+#import touying: article-only, item-by-item, only, pause, slide, slides-only, uncover
 #import "cours.typ": cours, espace-reponse
 #import "document.typ": auteur-par-defaut
 #import "theoremes.typ": configurer-theoremes
