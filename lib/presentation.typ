@@ -68,6 +68,7 @@
 ) = {
   show: configurer-theoremes
   set text(font: "New Computer Modern", lang: "fr")
+  set align(if article { top } else { horizon })
   show: theme-madrid.with(
     aspect-ratio: aspect-ratio,
     couleur: couleur,
