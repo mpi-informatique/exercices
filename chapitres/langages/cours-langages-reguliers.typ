@@ -19,11 +19,11 @@
 #slides-only[== Alphabet, mot]
 
 #definition(item-by-item[
-  - Un alphabet est un ensemble $Σ$ fini de lettres.
-  - #taille-presentation(0.92em)[Un mot $m$ sur un alphabet $Σ$ est une suite finie $m_1, …, m_n$ de lettres de $Σ$, et on note $m = m_1 … m_n$.]
-  L'entier $n$ est la taille de $m$, notée $abs(m)$.
-  - Le mot vide, ne contenant aucune lettre, est noté $ε$.
-  - Deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ sur $Σ$ sont égaux si $n = p$ et : $forall i ∈ [|1, n|]$, $u_i = v_i$.
+  - Un _alphabet_ est un ensemble $Σ$ fini de lettres.
+  - #taille-presentation(0.92em)[Un _mot_ $m$ sur un alphabet $Σ$ est une suite finie $m_1, …, m_n$ de lettres de $Σ$, et on note $m = m_1 … m_n$.]
+  L'entier $n$ est la _taille_ de $m$, notée $abs(m)$.
+  - Le _mot vide_, ne contenant aucune lettre, est noté $ε$.
+  - Deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ sur $Σ$ sont _égaux_ si $n = p$ et : $forall i ∈ [|1, n|]$, $u_i = v_i$.
   - $Σ^*$ est l'ensemble des mots sur $Σ$ et $Σ^+ = Σ^* ∖ {ε}$.
 ])
 
@@ -32,8 +32,8 @@
 #slides-only[== Concaténation et puissance]
 
 #definition[
-  - La concaténation de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est $u v = u_1 … u_n v_1 … v_p$.
-  - Si $u in Σ^*$, on définit par récurrence $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
+  - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est $u v = u_1 … u_n v_1 … v_p$.
+  - Si $u in Σ^*$, on définit ses _puissances_ par récurrence $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
 ]
 
 #slides-only[== Une équation sur les mots]
@@ -74,10 +74,10 @@
 
 #definition[
   Soient $u$ et $m$ deux mots sur $Σ$.
-  - $u$ est un préfixe de $m$ s'il existe un mot $v$ tel que $m = u v$.
-  - $u$ est un suffixe de $m$ s'il existe un mot $v$ tel que $m = v u$.
-  - $u$ est un facteur (_substring_ en anglais) de $m$ s'il existe des mots $v, w$ tels que $m = v u w$.
-  - $u$ est un sous-mot (_subsequence_ en anglais) de $m$ si $u$ est une sous-suite, ou suite extraite, de $m$.
+  - $u$ est un _préfixe_ de $m$ s'il existe un mot $v$ tel que $m = u v$.
+  - $u$ est un _suffixe_ de $m$ s'il existe un mot $v$ tel que $m = v u$.
+  - $u$ est un _facteur_ (_substring_ en anglais) de $m$ s'il existe des mots $v, w$ tels que $m = v u w$.
+  - $u$ est un _sous-mot_ (_subsequence_ en anglais) de $m$ si $u$ est une sous-suite, ou suite extraite, de $m$.
 ]
 
 #underline[Exemple] : $a b c$ est un sous-mot de $a a b a c b$, mais pas un facteur.
@@ -135,7 +135,7 @@ En OCaml, contrairement à ```ocaml array```, le type ```ocaml string``` est imm
 #slides-only[== Langage sur un alphabet]
 
 #definition[
-  Un langage $L$ sur un alphabet $Σ$ est un ensemble de mots sur $Σ$.
+  Un _langage_ $L$ sur un alphabet $Σ$ est un ensemble de mots sur $Σ$.
 ]
 De façon équivalente, $L$ est un langage si $L ⊂ Σ^*$, ou encore $L ∈ cal(P)(Σ^*)$.
 
@@ -203,7 +203,7 @@ $ L_1 (L_2 ∪ L_3) = L_1 L_2 ∪ L_1 L_3. $
 == Puissance d'un langage
 
 #definition[
-  On définit la puissance $L^n$ du langage $L$ par récurrence :
+  On définit la _puissance_ $L^n$ du langage $L$ par récurrence :
   $
     L^0 & = {ε}, \
     L^n & = L^(n - 1) L " pour " n ≥ 1.
@@ -225,7 +225,7 @@ $ L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_
 == Étoile de Kleene
 
 #definition[
-  On définit l'étoile de Kleene $L^*$ d'un langage $L$ par :
+  On définit l'_étoile de Kleene_ $L^*$ d'un langage $L$ par :
   $ L^* = display(union.big_(k ∈ ℕ)) L^k. $
 ]
 $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelconque de mots de $L$. \
@@ -241,7 +241,7 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 #slides-only[== Définition des langages réguliers]
 
 #definition(coeur: true)[
-  L'ensemble des langages réguliers sur $Σ$ est le plus petit ensemble, pour l'inclusion, contenant les langages finis sur $Σ$ et stable par union, concaténation et étoile de Kleene.
+  L'ensemble des _langages réguliers_ sur $Σ$ est le plus petit ensemble, pour l'inclusion, contenant les langages finis sur $Σ$ et stable par union, concaténation et étoile de Kleene.
 ]
 
 #slides-only[== Définition inductive équivalente]
@@ -290,7 +290,7 @@ $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
 Les expressions régulières sont une notation plus concise pour représenter un langage régulier.
 
 #definition[
-  L'ensemble $cal(R)(Σ)$ des expressions régulières sur $Σ$ est le plus petit ensemble vérifiant :
+  L'ensemble $cal(R)(Σ)$ des _expressions régulières_ sur $Σ$ est le plus petit ensemble vérifiant :
   - $∀ a ∈ Σ, #sep a ∈ cal(R)(Σ)$
   - $∅ ∈ cal(R)(Σ)$ et $ε ∈ cal(R)(Σ)$
   - Si $e_1, e_2 ∈ cal(R)(Σ)$, alors $(e_1 | e_2) ∈ cal(R)(Σ)$ et $(e_1 e_2) ∈ cal(R)(Σ)$.
@@ -335,7 +335,7 @@ type 'a regexp = (* 'a est le type des lettres de l'alphabet *)
 == Langage d'une expression régulière
 
 #definition[
-  Le langage $cal(L)(e)$ d'une expression régulière $e$ est défini récursivement :
+  Le _langage_ $cal(L)(e)$ d'une expression régulière $e$ est défini récursivement :
   - $cal(L)(a) = {a}$ si $a ∈ Σ$.
   - $cal(L)(∅) = ∅$ et $cal(L)(ε) = {ε}$
   - $cal(L)(e | e') = cal(L)(e) ∪ cal(L)(e')$
@@ -380,7 +380,7 @@ Sur $Σ = {a, b}$ :
 #slides-only[== Définition de l'équivalence]
 
 #definition[
-  Deux expressions régulières $e_1$ et $e_2$ sont dites équivalentes, ce que l'on note $e_1 ≡ e_2$, si elles définissent le même langage, c'est-à-dire si $cal(L)(e_1) = cal(L)(e_2)$.
+  Deux expressions régulières $e_1$ et $e_2$ sont dites _équivalentes_, ce que l'on note $e_1 ≡ e_2$, si elles définissent le même langage, c'est-à-dire si $cal(L)(e_1) = cal(L)(e_2)$.
 ]
 
 #underline[Exemple] : $(a b)^* a ≡ a (b a)^*$.
@@ -443,7 +443,7 @@ Sur $Σ = {a, b}$ :
 #slides-only[== Miroir d'un langage]
 
 #exercice[
-  On note $widetilde(m) = m_n … m_1$ le miroir d'un mot $m = m_1 … m_n$ et $widetilde(L) = {widetilde(m) ∣ m ∈ L}$ celui d'un langage $L$.
+  On note $widetilde(m) = m_n … m_1$ le _miroir_ d'un mot $m = m_1 … m_n$ et $widetilde(L) = {widetilde(m) ∣ m ∈ L}$ celui d'un langage $L$.
 
   + Donner une expression régulière du miroir de $a (a | b)^* b$.
   + Soit $L$ un langage régulier. Montrer que $widetilde(L)$ est régulier.
