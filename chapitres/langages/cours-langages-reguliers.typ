@@ -20,11 +20,11 @@
 
 #definition(item-by-item[
   - Un _alphabet_ est un ensemble $Σ$ fini de lettres.
-  - #taille-presentation(0.92em)[Un _mot_ $m$ sur un alphabet $Σ$ est une suite finie $m_1, …, m_n$ de lettres de $Σ$, et on note $m = m_1 … m_n$.]
-  L'entier $n$ est la _taille_ de $m$, notée $abs(m)$.
+  - #taille-presentation(0.92em)[Un _mot_ $m$ de $Σ$ est une suite finie $m_1, …, m_n$ de lettres de $Σ$, noté $m = m_1 … m_n$.]
+  - La _taille_ $abs(m)$ de $m$ est son nombre de lettres.
   - Le _mot vide_, ne contenant aucune lettre, est noté $ε$.
-  - Deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ sur $Σ$ sont _égaux_ si $n = p$ et : $forall i ∈ [|1, n|]$, $u_i = v_i$.
-  - $Σ^*$ est l'ensemble des mots sur $Σ$ et $Σ^+ = Σ^* ∖ {ε}$.
+  - Des mots $u = u_1 … u_n$ et $v = v_1 … v_p$ de $Σ$ sont _égaux_ si $n = p$ et : $forall i ∈ [|1, n|]$, $u_i = v_i$.
+  - On note $Σ^*$ l'ensemble des mots sur $Σ$ et $Σ^+ = Σ^* ∖ {ε}$.
 ])
 
 #underline[Attention] : $ε$ est un mot, pas une lettre.
