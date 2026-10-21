@@ -99,6 +99,8 @@ nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ corrige
 nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ presentation
 ```
 
+Pour réduire un passage uniquement dans la présentation, importer `taille-presentation` depuis `/load.typ` et écrire `#taille-presentation(0.92em)[Texte]`. La fonction utilise l'entrée `format` de la source commune ; le cours et le corrigé conservent la taille du texte environnant.
+
 Pour compiler directement, utiliser `typst compile --root . --input format=cours source.typ cours.pdf`, ajouter `--input corrige=true` pour le corrigé, ou choisir `--input format=presentation` pour les diapositives.
 
 Placer les réponses et preuves dans `solution[...]`, importé depuis `/load.typ` :

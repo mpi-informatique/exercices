@@ -7,6 +7,18 @@
 #import "code.typ": configurer-code
 #import "themes/madrid.typ": theme-madrid, titre-madrid
 
+/// Modifie la taille du texte uniquement dans la présentation d'une source commune.
+/// - taille (relative): Taille utilisée lorsque l'entrée `format` vaut "presentation".
+/// - body (content): Contenu conservé à sa taille normale dans le cours et le corrigé.
+/// -> content
+#let taille-presentation(taille, body) = {
+  if sys.inputs.at("format", default: "cours") == "presentation" {
+    text(size: taille, body)
+  } else {
+    body
+  }
+}
+
 /// Couleurs sémantiques des blocs projetés, surchargeables dans `presentation`.
 #let couleurs-blocs = (
   theorem: rgb("#233e6a"),

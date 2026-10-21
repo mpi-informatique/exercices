@@ -62,10 +62,13 @@ Voir @question-mobile avant son énoncé.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'corrige=' + variante,
                         str(source), str(racine / (variante + '.pdf'))], check=True)
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, pause, article-only, slides-only, solution, theoremes
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, taille-presentation, pause, article-only, slides-only, solution, theoremes
 #show: cours-et-presentation.with(titre: "Cours externe", niveau: "MPI")
 = Section
 == Notion
+#text(size: 20pt)[#taille-presentation(0.5em)[#context {
+  assert(text.size == if sys.inputs.at("format") == "presentation" { 10pt } else { 20pt })
+}]]
 #theoremes.definition[
   - #metadata("avant") <definition-animation-test> Un contenu commun.
   #pause
