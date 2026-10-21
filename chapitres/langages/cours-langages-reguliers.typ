@@ -3,6 +3,8 @@
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
 #import "/load.typ": sep, widetilde
 
+#let Lreg = $cal(L)_("reg")$
+
 #show: cours-et-presentation.with(titre: "Langages réguliers", niveau: "MPI")
 
 #slides-only[
@@ -370,7 +372,7 @@ Sur $Σ = {a, b}$ :
     [Langage], [$L$], [${ε, a, a b}$], [#completer()],
     [Expression régulière], [$e$], [$a b^*$], [#completer()],
     [Langage décrit par une expression régulière], [$cal(L)(e)$], [${a b^n | n ∈ ℕ}$], [#completer()],
-    [Langages réguliers], [$cal(L)_("reg")$], [$cal(L)_("reg")$], [#completer()],
+    [Langages réguliers], [$Lreg$], [$Lreg$], [#completer()],
   )
 ]
 
