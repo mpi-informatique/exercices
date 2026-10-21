@@ -81,73 +81,81 @@
   coeur: false,
   marge-haute: true,
   ..args,
-) = context {
-  let palette = style-cadres.get()
-  let cadre = if palette == none {
-    let rendre = if nom in ("exercise", "problem") { rendre-exercice } else { fancy-box }
-    rendre(
-      get-symbol: loc => none,
-      get-border-color: loc => black,
-      get-body-color: loc => white,
-      prefix: prefix,
-      title: title,
-      full-title: full-title,
-      frame: (
-        thickness: epaisseur-trait,
-        radius: get-fancy-radius(here()),
-        inset: (x: 1em, top: if full-title != "" { 0.5em } else { 1em }, bottom: 1em),
-        border-color: black,
-        title-color: white,
-        body-color: white,
-        title-inset: (x: 1em, y: .5em),
-      ),
-      title-style: (boxed-style: (anchor: (x: start, y: horizon), radius: 0em), color: black, weight: "semibold"),
-      ..args,
-      body,
-    )
-  } else {
-    let couleur = palette.at(nom, default: palette.at("theorem", default: rgb("#233e6a")))
-    block(width: 100%, breakable: false, {
-      if full-title != "" {
-        block(width: 100%, fill: couleur, radius: (top: 4pt), above: 0pt, below: 0pt, inset: (x: 0.7em, y: 0.3em), text(
-          size: 1em,
-          weight: "bold",
-          fill: white,
-          [#full-title#if coeur {
-              h(0.4em)
-              [♡]
-            }],
-        ))
-      }
-      block(
-        width: 100%,
-        fill: couleur.lighten(88%),
-        radius: (bottom: 4pt),
-        above: 0pt,
-        below: 0pt,
-        inset: (x: 0.7em, y: 0.5em),
-        body,
-      )
+) = {
+  if self != none {
+    let article = self.at("article-mode", default: false)
+    body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
+      if (marque.kind == "touying-article-only") == article { marque.body } else { [] }
     })
   }
-  let espacement = espacement-cadres.get()
-  if espacement != none {
-    v(espacement, weak: true)
-  } else if palette == none and marge-haute {
-    // Garder une marge en tête des fragments produits par Touying en mode article.
-    v(0.5em)
+  context {
+    let palette = style-cadres.get()
+    let cadre = if palette == none {
+      let rendre = if nom in ("exercise", "problem") { rendre-exercice } else { fancy-box }
+      rendre(
+        get-symbol: loc => none,
+        get-border-color: loc => black,
+        get-body-color: loc => white,
+        prefix: prefix,
+        title: title,
+        full-title: full-title,
+        frame: (
+          thickness: epaisseur-trait,
+          radius: get-fancy-radius(here()),
+          inset: (x: 1em, top: if full-title != "" { 0.5em } else { 1em }, bottom: 1em),
+          border-color: black,
+          title-color: white,
+          body-color: white,
+          title-inset: (x: 1em, y: .5em),
+        ),
+        title-style: (boxed-style: (anchor: (x: start, y: horizon), radius: 0em), color: black, weight: "semibold"),
+        ..args,
+        body,
+      )
+    } else {
+      let couleur = palette.at(nom, default: palette.at("theorem", default: rgb("#233e6a")))
+      block(width: 100%, breakable: false, {
+        if full-title != "" {
+          block(width: 100%, fill: couleur, radius: (top: 4pt), above: 0pt, below: 0pt, inset: (x: 0.7em, y: 0.3em), text(
+            size: 1em,
+            weight: "bold",
+            fill: white,
+            [#full-title#if coeur {
+                h(0.4em)
+                [♡]
+              }],
+          ))
+        }
+        block(
+          width: 100%,
+          fill: couleur.lighten(88%),
+          radius: (bottom: 4pt),
+          above: 0pt,
+          below: 0pt,
+          inset: (x: 0.7em, y: 0.5em),
+          body,
+        )
+      })
+    }
+    let espacement = espacement-cadres.get()
+    if espacement != none {
+      v(espacement, weak: true)
+    } else if palette == none and marge-haute {
+      // Garder une marge en tête des fragments produits par Touying en mode article.
+      v(0.5em)
+    }
+    if coeur and palette == none {
+      grid(
+        columns: (0pt, 1fr),
+        column-gutter: 0pt,
+        align: (left + horizon, left + top),
+        box(width: 0pt, move(dx: -1.5em, dy: 0.4em, box[♡])), cadre,
+      )
+    } else {
+      cadre
+    }
+    if espacement != none { v(espacement, weak: true) }
   }
-  if coeur and palette == none {
-    grid(
-      columns: (0pt, 1fr),
-      column-gutter: 0pt,
-      align: (left + horizon, left + top),
-      box(width: 0pt, move(dx: -1.5em, dy: 0.4em, box[♡])), cadre,
-    )
-  } else {
-    cadre
-  }
-  if espacement != none { v(espacement, weak: true) }
 }
 
 // Touying traite le contenu du cadre avant son rendu contextuel.

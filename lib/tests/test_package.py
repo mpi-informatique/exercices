@@ -77,7 +77,15 @@ Voir @question-mobile avant son énoncé.
 #pause
 #theoremes.algorithme[Un algorithme commun.]
 == Application
-#theoremes.exercice(titre: [Monoïdes et taille])[Un exercice.]
+#theoremes.exercice(titre: [Monoïdes et taille])[
+  Un exercice. #slides-only[#linebreak()#metadata("presentation") <retour-exercice-test>]
+  Une suite commune. #article-only[#metadata("cours") <retour-exercice-test>]
+]
+#context {
+  let marques = query(<retour-exercice-test>)
+  assert(marques.len() == 1)
+  assert(marques.first().value == if sys.inputs.at("format") == "presentation" { "presentation" } else { "cours" })
+}
 #theoremes.theoreme[Un théorème.] <theoreme-commun>
 #article-only[#theoremes.definition-sans-numero[Une définition sans numéro.]]
 == Autre notion
