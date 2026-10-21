@@ -386,10 +386,15 @@ Sur $Σ = {a, b}$ :
 
 #exercice[
   Donner une expression régulière pour les langages suivants sur $Σ = {a, b}$ :
-  + Mots contenant au plus un $a$.
-  + Mots dont la taille est congrue à $1$ modulo $3$.
-  + Mots contenant un nombre pair de $a$.
-  + Mots contenant un nombre impair de $a$.
+  #colonnes-cours(
+    [
+      + Mots contenant au plus un $a$.
+      + Mots dont la taille est congrue à $1$ modulo $3$.
+    ],
+    [
+      #enum(start: 3)[Mots contenant un nombre pair de $a$.][Mots contenant un nombre impair de $a$.]
+    ],
+  )
 
   Sur $Σ = {0, 1}$ :
   #enum(start: 5)[Écritures en base $2$ des entiers divisibles par $4$.]
