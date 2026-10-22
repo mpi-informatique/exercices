@@ -23,6 +23,11 @@
   }
 }
 
+/// Affiche une formule en bloc dans la présentation et en ligne dans le cours et le corrigé.
+/// - body (content): Formule mathématique.
+/// -> content
+#let equation-presentation(body) = math.equation(block: sys.inputs.at("format", default: "cours") == "presentation", body)
+
 /// Couleurs sémantiques des blocs projetés, surchargeables dans `presentation`.
 #let couleurs-blocs = (
   theorem: rgb("#233e6a"),

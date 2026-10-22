@@ -2,7 +2,7 @@
 #import "/load.typ": cours-et-presentation, solution, taille-presentation, article-only, item-by-item, only, pause, slides-only
 #import "/load.typ": automate, theoremes, completer
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
-#import "/load.typ": sep, widetilde, colonnes-cours, liste-a-completer
+#import "/load.typ": sep, widetilde, colonnes-cours, liste-a-completer, equation-presentation
 #import automate: Lreg, LL
 #import "/load.typ": code
 #import code: code-extrait
@@ -37,7 +37,7 @@
 #slide()
 
 #definition[
-  - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est : #math.equation(block: sys.inputs.at("format", default: "cours") == "presentation", $u v = u_1 … u_n v_1 … v_p$)
+  - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est : #equation-presentation($u v = u_1 … u_n v_1 … v_p$)
   - Si $u in Σ^*$, on définit sa _puissance_ par récurrence : $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
 ]
 
