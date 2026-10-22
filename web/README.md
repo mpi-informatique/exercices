@@ -79,6 +79,12 @@ Le package `code-extract`, fourni par le dépôt public `mpi-informatique/typst-
 
 Le compilateur typst.ts est fixé à `0.8.0-rc3` : cette préversion intègre Typst 0.15, nécessaire aux imports de l'API commune et à Touying 0.8. L'export inclut le point d'entrée `load.typ` ; le test WASM compile toute la banque pour vérifier sa compatibilité.
 
+## Lecteur intégrable
+
+La route `/apercu/<id>/` affiche uniquement le lecteur PDF et ses variantes, sans recherche ni éditeur. Par exemple : `/apercu/cours-langages-reguliers/`. Elle compile la source publiée, sans reprendre les brouillons de l'éditeur, et conserve les commandes de navigation, zoom et téléchargement. `?vue=corrige` ou `?vue=presentation` choisit la version initiale ; `theme=light` ou `theme=dark` adapte le lecteur au site qui l'intègre.
+
+Cette route peut être chargée dans une iframe sur le site de cours. Avec GitHub Pages, son adresse est `https://mpi-informatique.github.io/exercices/apercu/cours-langages-reguliers/`. Le premier affichage télécharge le moteur Typst et compile dans le navigateur, comme la banque complète.
+
 ## Organisation
 
 | Chemin | Rôle |

@@ -1,0 +1,14 @@
+---
+import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
+import DocumentPreview from '../../components/DocumentPreview';
+import resources from '../../generated/catalogue.json';
+import type { Resource } from '@mpi-informatique/exercices-core';
+
+export function getStaticPaths() {
+  return (resources as Resource[]).map(resource => ({ params: { id: resource.id }, props: { resource } }));
+}
+const { resource } = Astro.props;
+---
+<WorkbenchLayout title={`${resource.titre} · Aperçu PDF`}>
+  <DocumentPreview resource={resource} client:only="react" />
+</WorkbenchLayout>
