@@ -293,20 +293,32 @@ Cette notation est utilisés dans les éditeurs de texte.
 
 == Résumé des définitions
 
-#table(
-  columns: (1.5fr, 0.65fr, 1.2fr, 1fr),
-  align: center + horizon,
-  inset: (x: 0.5em, y: 0.35em),
-  table.header([*Description*], [*Notation*], [*Exemple*], text(size: 0.89em)[*Ensemble d'appartenance*]),
-  [Lettre], [$a$], [$a$], [#completer()],
-  [Alphabet], [$Σ$], [${a, b}$], [#completer()],
-  [Mot vide], [$ε$], [$ε$], [#completer()],
-  [Mot], [$m$], [$a b a$], [#completer()],
-  [Langage], [$L$], [${ε, a, a b}$], [#completer()],
-  [Expression régulière], [$e$], [$a b^*$], [#completer()],
-  [Langage d'une expression régulière], [$LL(e)$], [${a b^n | n ∈ ℕ}$], [#completer()],
-  [Langages réguliers], [$Lreg$], [$Lreg$], [#completer()],
-)
+#{
+  let lignes = (
+    ([Lettre], [$a$], [$a$], [$Σ$]),
+    ([Alphabet], [$Σ$], [${a, b}$], [$cal(P)(Σ)$]),
+    ([Mot vide], [$ε$], [$ε$], [$Σ^*$]),
+    ([Mot], [$m$], [$a b a$], [$Σ^*$]),
+    ([Langage], [$L$], [${ε, a, a b}$], [$cal(P)(Σ^*)$]),
+    ([Expression régulière], [$e$], [$a b^*$], [$cal(R)(Σ)$]),
+    ([Langage d'une expression régulière], [$LL(e)$], [${a b^n | n ∈ ℕ}$], [$Lreg(Σ)$]),
+    ([Langages réguliers], [$Lreg$], [$Lreg$], [$cal(P)(cal(P)(Σ^*))$]),
+  )
+  let reponse(contenu) = if sys.inputs.at("format", default: "cours") == "presentation" {
+    [#pause #contenu]
+  } else if sys.inputs.at("corrige", default: "false") == "true" {
+    contenu
+  } else {
+    completer()
+  }
+  table(
+    columns: (1.5fr, 0.65fr, 1.2fr, 1fr),
+    align: center + horizon,
+    inset: (x: 0.5em, y: 0.35em),
+    table.header([*Description*], [*Notation*], [*Exemple*], text(size: 0.89em)[*Ensemble d'appartenance*]),
+    ..lignes.map(ligne => ligne.slice(0, 3) + (reponse(ligne.last()),)).flatten(),
+  )
+}
 
 = Équivalence d'expressions régulières
 
