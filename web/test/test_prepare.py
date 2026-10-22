@@ -2,9 +2,11 @@ from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from prepare import copy_tree
+from prepare import export_pdfs
 
 
 class CopyTreeTests(unittest.TestCase):
@@ -39,6 +41,31 @@ class CopyTreeTests(unittest.TestCase):
             (source / "outside.txt").symlink_to(private)
             with self.assertRaisesRegex(ValueError, "hors de la banque"):
                 copy_tree(source, root / "destination")
+
+
+class ExportPdfTests(unittest.TestCase):
+    def test_export_course_variants_with_versioned_urls(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            web = root / 'web'
+            bank = web / 'public/banque'
+            entries = [{'id': 'cours-exemple', 'fichier': 'chapitres/cours-exemple.typ'}]
+
+            def compile_pdf(source, output, signature, *inputs, exercice=False):
+                target = root / output
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(b'%PDF-test\n' + repr(inputs).encode())
+
+            with patch('prepare.ROOT', root), patch('prepare.WEB', web), patch('prepare.sources', return_value=[('chapitres/cours-exemple.typ', 'cours-presentation')]), patch('prepare.compiler', side_effect=compile_pdf):
+                export_pdfs(entries, bank, '1234567890abcdef' * 4)
+
+            self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige', 'presentation'})
+            for variant, url in entries[0]['pdfs'].items():
+                self.assertIn('1234567890abcdef.pdf', url)
+                self.assertTrue((web / 'public' / url).read_bytes().startswith(b'%PDF-test'))
+            presentation = (web / 'public' / entries[0]['pdfs']['presentation']).read_bytes()
+            self.assertIn(b'format=presentation', presentation)
+            self.assertNotIn(b'corrige=true', presentation)
 
 
 if __name__ == "__main__":

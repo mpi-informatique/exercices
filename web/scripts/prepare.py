@@ -14,7 +14,28 @@ WEB = Path(__file__).resolve().parents[1]
 ROOT = WEB.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 from catalogue import catalogue
-from sources import sources
+from sources import sources, variants, pdf_filename
+from build import compiler, empreinte
+
+
+def export_pdfs(entries, bank, signature):
+    """Compiler les versions publiées avec le cache commun à Just."""
+    kinds = dict(sources())
+    for entry in entries:
+        source = entry['fichier']
+        kind = kinds[source]
+        entry['pdfs'] = {}
+        for variant, inputs in variants(kind).items():
+            filename = pdf_filename(source, variant, kind)
+            output = Path('build') / Path(source).with_suffix('') / filename
+            compiler(source, output, signature, *inputs, exercice=kind == 'exercice')
+            # Le nom change avec les sources et dépendances : un ancien cache ne
+            # peut pas masquer la dernière version publiée.
+            public_name = f'{Path(filename).stem}-{signature[:16]}.pdf'
+            destination = bank / 'pdf' / entry['id'] / public_name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ROOT / output, destination)
+            entry['pdfs']['enonce' if variant == 'cours' else variant] = destination.relative_to(WEB / 'public').as_posix()
 
 
 def document(typst, source, kind="document"):
@@ -85,6 +106,8 @@ def prepare():
     bank = public / "banque"
     shutil.rmtree(bank, ignore_errors=True)
     bank.mkdir(parents=True)
+    export_pdfs(entries, bank, empreinte())
+    (bank / 'catalogue.json').write_text(json.dumps(entries, ensure_ascii=False))
     files = []
     shutil.copyfile(ROOT / "load.typ", bank / "load.typ")
     files.append("load.typ")

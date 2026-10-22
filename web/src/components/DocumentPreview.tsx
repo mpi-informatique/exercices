@@ -1,14 +1,15 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { Download, ExternalLink } from 'lucide-react';
 import { availableVariants, pdfFilename, type Resource, type Variant } from '@mpi-informatique/exercices-core';
-import { useCompiler } from '../hooks/useCompiler';
 import { assetUrl, exerciseUrl, routeVariant } from '../lib/urls';
 import { VariantTabs } from './VariantTabs';
 
 const PdfViewer = lazy(() => import('./PdfViewer'));
 
-export default function DocumentPreview({ resource }: { resource: Resource }) {
-  const [source, setSource] = useState<string>();
+export type PublishedResource = Resource & { pdfs: Partial<Record<Variant, string>> };
+
+export default function DocumentPreview({ resource }: { resource: PublishedResource }) {
+  const [loaded, setLoaded] = useState<{ variant: Variant; pdf: Uint8Array<ArrayBuffer> }>();
   const [loadError, setLoadError] = useState('');
   const [options] = useState(() => new URLSearchParams(location.search));
   const variants = availableVariants(resource.type).filter(value => value !== 'corrige' || options.get('cor') !== '0');
@@ -18,7 +19,7 @@ export default function DocumentPreview({ resource }: { resource: Resource }) {
   });
   const [dark, setDark] = useState(false);
   const [retry, setRetry] = useState(0);
-  const compilation = useCompiler(resource, source, variant, retry);
+  const pdf = loaded?.variant === variant ? loaded.pdf : undefined;
 
   useEffect(() => {
     const applyTheme = (theme: string | null) => {
@@ -40,26 +41,37 @@ export default function DocumentPreview({ resource }: { resource: Resource }) {
   useEffect(() => {
     const controller = new AbortController();
     setLoadError('');
-    // Afficher la source publiée, indépendamment des brouillons de l'éditeur.
-    fetch(assetUrl(`banque/${resource.fichier}`), { signal: controller.signal }).then(async response => {
+    const path = resource.pdfs[variant];
+    if (!path) { setLoadError('Cette version du PDF n’est pas disponible.'); return; }
+    fetch(assetUrl(path), { signal: controller.signal }).then(async response => {
       if (!response.ok) throw new Error(`Chargement impossible (${response.status}).`);
-      const source = await response.text();
-      if (!controller.signal.aborted) setSource(source);
+      const pdf = new Uint8Array(await response.arrayBuffer());
+      if (!controller.signal.aborted) setLoaded({ variant, pdf });
     }).catch(error => { if (!controller.signal.aborted) setLoadError(String(error.message)); });
     return () => controller.abort();
-  }, [resource, retry]);
+  }, [resource, variant, retry]);
+
+  useEffect(() => {
+    const path = resource.pdfs.presentation;
+    if (variant === 'presentation' || !path) return;
+    const prefetch = document.createElement('link');
+    prefetch.rel = 'prefetch';
+    prefetch.href = assetUrl(path);
+    prefetch.as = 'fetch';
+    document.head.append(prefetch);
+    return () => prefetch.remove();
+  }, [resource, variant]);
 
   function changeVariant(next: Variant) {
     setVariant(next);
     const url = new URL(location.href);
-    if (next === 'enonce') url.searchParams.delete('vue');
-    else url.searchParams.set('vue', next);
+    url.searchParams.set('vue', next);
     history.replaceState({}, '', url);
   }
 
   function download() {
-    if (!compilation.pdf || compilation.pending || compilation.error) return;
-    const url = URL.createObjectURL(new Blob([compilation.pdf], { type: 'application/pdf' }));
+    if (!pdf || loadError) return;
+    const url = URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }));
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = pdfFilename(resource.fichier, variant, resource.type);
@@ -67,15 +79,14 @@ export default function DocumentPreview({ resource }: { resource: Resource }) {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  const error = loadError || compilation.error;
   return <main id="main" className="document-preview" aria-label={resource.titre}>
-    {error && <div className="document-preview-error" role="alert"><p>{error}</p><button className="btn btn-sm" onClick={() => setRetry(value => value + 1)}>Réessayer</button></div>}
-    <Suspense fallback={<div className="preview-placeholder">Chargement du lecteur…</div>}><PdfViewer pdf={compilation.pdf} pending={!loadError && (source === undefined || compilation.pending)} dark={dark} onReady={() => {}}
+    {loadError && <div className="document-preview-error" role="alert"><p>{loadError}</p><button className="btn btn-sm" onClick={() => setRetry(value => value + 1)}>Réessayer</button></div>}
+    <Suspense fallback={<div className="preview-placeholder">Chargement du lecteur…</div>}><PdfViewer pdf={pdf} pending={!loadError && !pdf} pendingLabel="Chargement du PDF…" dark={dark} onReady={() => {}}
       toolbar={<VariantTabs variant={variant} documentType={resource.type} variants={variants} onChange={changeVariant} />}
       actions={<div>
-        <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" onClick={download} disabled={!compilation.pdf || compilation.pending || !!error}><Download size={17} /></button>
+        <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" onClick={download} disabled={!pdf || !!loadError}><Download size={17} /></button>
         <a className="btn btn-ghost btn-sm btn-square" href={exerciseUrl(resource.id, variant)} target="_blank" rel="noopener noreferrer" aria-label="Ouvrir dans la banque d’exercices" title="Ouvrir dans la banque d’exercices"><ExternalLink size={17} /></a>
       </div>} /></Suspense>
-    <div className="sr-only" role="status">{loadError ? 'Chargement impossible' : source === undefined ? 'Chargement du cours…' : compilation.message}</div>
+    <div className="sr-only" role="status">{loadError ? 'Chargement impossible' : pdf ? 'PDF prêt' : 'Chargement du PDF…'}</div>
   </main>;
 }

@@ -1,11 +1,10 @@
 ---
 import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
-import DocumentPreview from '../../components/DocumentPreview';
+import DocumentPreview, { type PublishedResource } from '../../components/DocumentPreview';
 import resources from '../../generated/catalogue.json';
-import type { Resource } from '@mpi-informatique/exercices-core';
 
 export function getStaticPaths() {
-  return (resources as Resource[]).map(resource => ({ params: { id: resource.id }, props: { resource } }));
+  return (resources as PublishedResource[]).map(resource => ({ params: { id: resource.id }, props: { resource } }));
 }
 const { resource } = Astro.props;
 ---

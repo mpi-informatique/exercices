@@ -213,8 +213,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible, [role="separator"]
 .cm-file-link:hover { text-decoration-color: currentColor; cursor: pointer; }
 .pdf-viewer { display: flex; flex-direction: column; flex: 1; min-height: 0; background: var(--viewer-bg); }
 .pdf-viewer:fullscreen { width: 100%; height: 100%; color: var(--ink); }
-.pdf-fullscreen .pdf-controls { height: auto; min-height: 44px; flex-wrap: wrap; }
-.pdf-fullscreen .pdf-scroll { display: flex; align-items: center; justify-content: center; }
+.pdf-fullscreen .pdf-controls { display: none; }
+.pdf-fullscreen .pdf-scroll { display: flex; align-items: center; justify-content: center; padding: 0; }
+.pdf-fullscreen .pdf-scroll:focus-visible { outline: none; }
 .pdf-fullscreen .pdf-page { margin: 0; }
 .pdf-controls { justify-content: start; color: var(--muted); overflow-x: auto; }
 .pdf-navigation { margin-left: auto; gap: 5px; flex-shrink: 0; }
