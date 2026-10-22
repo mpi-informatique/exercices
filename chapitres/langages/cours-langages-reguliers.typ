@@ -32,7 +32,7 @@
 #slide()
 
 #definition[
-  - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est : $ u v = u_1 … u_n v_1 … v_p $
+  - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est : #math.equation(block: sys.inputs.at("format", default: "cours") == "presentation", $u v = u_1 … u_n v_1 … v_p$)
   - Si $u in Σ^*$, on définit ses _puissances_ par récurrence $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
 ]
 
