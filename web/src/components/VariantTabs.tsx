@@ -1,7 +1,6 @@
 import { availableVariants, variantLabels, type Variant } from '@mpi-informatique/exercices-core';
 
-export function VariantTabs({ variant, documentType, onChange }: { variant: Variant; documentType?: string; onChange: (variant: Variant) => void }) {
-  const variants = availableVariants(documentType);
+export function VariantTabs({ variant, documentType, onChange, variants = availableVariants(documentType) }: { variant: Variant; documentType?: string; onChange: (variant: Variant) => void; variants?: Variant[] }) {
   const labels = variantLabels(documentType);
   return <div role="tablist" aria-label="Version du document" className="variant-tabs">
     {variants.map(value => <button key={value} id={`variant-${value}`} className={`btn btn-ghost btn-sm ${variant === value ? 'active' : ''}`} role="tab" aria-selected={variant === value} aria-controls="pdf-preview" tabIndex={variant === value ? 0 : -1} onClick={() => onChange(value)} onKeyDown={event => {

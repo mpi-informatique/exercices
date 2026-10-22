@@ -80,6 +80,8 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
 
   useEffect(() => {
     setDark(document.documentElement.dataset.theme === 'exercices-dark');
+    const themeObserver = new MutationObserver(() => setDark(document.documentElement.dataset.theme === 'exercices-dark'));
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     setVariant(routeVariant(location.search));
     setSidebarOpen(window.innerWidth > 900);
     setEditorOpen(window.innerWidth > 1100 && stored('editor-open') !== 'false');
@@ -92,7 +94,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
       setVariant(routeVariant(location.search));
     };
     window.addEventListener('popstate', pop);
-    return () => window.removeEventListener('popstate', pop);
+    return () => { themeObserver.disconnect(); window.removeEventListener('popstate', pop); };
   }, []);
 
   useEffect(() => {

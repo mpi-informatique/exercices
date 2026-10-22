@@ -10,19 +10,32 @@ const PdfViewer = lazy(() => import('./PdfViewer'));
 export default function DocumentPreview({ resource }: { resource: Resource }) {
   const [source, setSource] = useState<string>();
   const [loadError, setLoadError] = useState('');
-  const [variant, setVariant] = useState<Variant>('enonce');
+  const [options] = useState(() => new URLSearchParams(location.search));
+  const variants = availableVariants(resource.type).filter(value => value !== 'corrige' || options.get('cor') !== '0');
+  const [variant, setVariant] = useState<Variant>(() => {
+    const requested = options.has('vue') ? routeVariant(location.search) : 'presentation';
+    return variants.includes(requested) ? requested : variants[0]!;
+  });
   const [dark, setDark] = useState(false);
   const [retry, setRetry] = useState(0);
   const compilation = useCompiler(resource, source, variant, retry);
 
   useEffect(() => {
-    const requested = routeVariant(location.search);
-    if (availableVariants(resource.type).includes(requested)) setVariant(requested);
-    const theme = new URLSearchParams(location.search).get('theme');
-    const dark = theme === 'dark' || (theme !== 'light' && document.documentElement.dataset.theme === 'exercices-dark');
-    setDark(dark);
-    document.documentElement.dataset.theme = dark ? 'exercices-dark' : 'exercices';
-  }, [resource]);
+    const applyTheme = (theme: string | null) => {
+      if (theme === 'dark' || theme === 'light') document.documentElement.dataset.theme = theme === 'dark' ? 'exercices-dark' : 'exercices';
+      setDark(document.documentElement.dataset.theme === 'exercices-dark');
+    };
+    applyTheme(options.get('theme'));
+    const observer = new MutationObserver(() => setDark(document.documentElement.dataset.theme === 'exercices-dark'));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    const parentOrigin = document.referrer ? new URL(document.referrer).origin : undefined;
+    const receiveTheme = (event: MessageEvent) => {
+      if (event.source === window.parent && event.origin === parentOrigin && event.data?.type === 'exercices:theme') applyTheme(event.data.theme);
+    };
+    window.addEventListener('message', receiveTheme);
+    if (window.parent !== window && parentOrigin) window.parent.postMessage({ type: 'exercices:ready' }, parentOrigin);
+    return () => { observer.disconnect(); window.removeEventListener('message', receiveTheme); };
+  }, [options]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -58,11 +71,11 @@ export default function DocumentPreview({ resource }: { resource: Resource }) {
   return <main id="main" className="document-preview" aria-label={resource.titre}>
     {error && <div className="document-preview-error" role="alert"><p>{error}</p><button className="btn btn-sm" onClick={() => setRetry(value => value + 1)}>Réessayer</button></div>}
     <Suspense fallback={<div className="preview-placeholder">Chargement du lecteur…</div>}><PdfViewer pdf={compilation.pdf} pending={!loadError && (source === undefined || compilation.pending)} dark={dark} onReady={() => {}}
-      toolbar={<VariantTabs variant={variant} documentType={resource.type} onChange={changeVariant} />}
+      toolbar={<VariantTabs variant={variant} documentType={resource.type} variants={variants} onChange={changeVariant} />}
       actions={<div>
         <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" onClick={download} disabled={!compilation.pdf || compilation.pending || !!error}><Download size={17} /></button>
         <a className="btn btn-ghost btn-sm btn-square" href={exerciseUrl(resource.id, variant)} target="_blank" rel="noopener noreferrer" aria-label="Ouvrir dans la banque d’exercices" title="Ouvrir dans la banque d’exercices"><ExternalLink size={17} /></a>
       </div>} /></Suspense>
-    <div className="document-preview-status" role="status">{loadError ? 'Chargement impossible' : source === undefined ? 'Chargement du cours…' : compilation.message}</div>
+    <div className="sr-only" role="status">{loadError ? 'Chargement impossible' : source === undefined ? 'Chargement du cours…' : compilation.message}</div>
   </main>;
 }

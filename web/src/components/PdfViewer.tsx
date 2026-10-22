@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ChevronLeft, ChevronRight, Minus, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize, Minimize, Minus, Plus } from 'lucide-react';
 import { getDocument, GlobalWorkerOptions, TextLayer, type PDFDocumentProxy, type PDFPageProxy } from 'pdfjs-dist';
 import 'pdfjs-dist/web/pdf_viewer.css';
 import { assetUrl } from '../lib/urls';
@@ -61,6 +61,11 @@ export default function PdfViewer({ pdf, pending, dark, toolbar, actions, onRead
   const [width, setWidth] = useState(600);
   const [zoom, setZoom] = useState(1);
   const [current, setCurrent] = useState(1);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [fullscreenError, setFullscreenError] = useState('');
+  const [height, setHeight] = useState(600);
+  const [aspect, setAspect] = useState(1);
+  const viewer = useRef<HTMLDivElement>(null);
   const scroll = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -72,13 +77,34 @@ export default function PdfViewer({ pdf, pending, dark, toolbar, actions, onRead
     return () => { cancelled = true; void loading.destroy(); };
   }, [pdf]);
   useEffect(() => {
-    const observer = new ResizeObserver(entries => setWidth(Math.max(1, entries[0]!.contentRect.width)));
+    const observer = new ResizeObserver(entries => {
+      setWidth(Math.max(1, entries[0]!.contentRect.width));
+      setHeight(Math.max(1, entries[0]!.contentRect.height));
+    });
     observer.observe(scroll.current!);
     onReady();
     return () => observer.disconnect();
   }, []);
-  useEffect(() => { updateCurrentPage(); }, [document, width, zoom]);
+  useEffect(() => {
+    const changed = () => setFullscreen(globalThis.document.fullscreenElement === viewer.current);
+    globalThis.document.addEventListener('fullscreenchange', changed);
+    return () => globalThis.document.removeEventListener('fullscreenchange', changed);
+  }, []);
+  useEffect(() => {
+    if (!document || !fullscreen) return;
+    let cancelled = false;
+    document.getPage(current).then(page => {
+      const viewport = page.getViewport({ scale: 1 });
+      if (!cancelled) setAspect(viewport.width / viewport.height);
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, [document, current, fullscreen]);
+  useEffect(() => {
+    if (!fullscreen) scroll.current?.querySelector(`#pdf-page-${current}`)?.scrollIntoView({ block: 'start' });
+  }, [fullscreen]);
+  useEffect(() => { updateCurrentPage(); }, [document, width, zoom, fullscreen]);
   function updateCurrentPage() {
+    if (fullscreen) return;
     const container = scroll.current!;
     const pages = [...container.querySelectorAll<HTMLElement>('.pdf-page')];
     if (!pages.length) return;
@@ -96,10 +122,23 @@ export default function PdfViewer({ pdf, pending, dark, toolbar, actions, onRead
   function goTo(page: number) {
     if (!document || page < 1 || page > document.numPages) return;
     setCurrent(page);
-    scroll.current?.querySelector(`#pdf-page-${page}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!fullscreen) scroll.current?.querySelector(`#pdf-page-${page}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  return <div className="pdf-viewer">
+  async function toggleFullscreen() {
+    setFullscreenError('');
+    try {
+      if (fullscreen) await globalThis.document.exitFullscreen();
+      else { setZoom(1); await viewer.current!.requestFullscreen(); scroll.current?.focus(); }
+    } catch {
+      setFullscreenError('Le navigateur a refusé le plein écran. Réessayer depuis l’onglet actif.');
+    }
+  }
+
+  const pageWidth = fullscreen ? Math.min(width, height * aspect) * zoom : width * zoom;
+  const pages = document ? fullscreen ? [current] : Array.from({ length: document.numPages }, (_, index) => index + 1) : [];
+
+  return <div ref={viewer} className={`pdf-viewer${fullscreen ? ' pdf-fullscreen' : ''}`}>
     <div className="pdf-controls pane-toolbar">
       {toolbar}
       <div className="pdf-navigation">
@@ -107,14 +146,20 @@ export default function PdfViewer({ pdf, pending, dark, toolbar, actions, onRead
         <div className="zoom-controls"><button className="btn btn-ghost btn-sm btn-square" aria-label="Réduire le zoom" title="Réduire le zoom (− dans l’aperçu)" disabled={zoom <= 0.5} onClick={() => setZoom(zoom => Math.max(0.5, zoom - 0.1))}><Minus size={17} /></button><button className="btn btn-ghost btn-sm zoom-reset" aria-label="Ajuster à la largeur" title="Ajuster à la largeur (0 dans l’aperçu)" onClick={() => setZoom(1)}>{Math.round(zoom * 100)} %</button><button className="btn btn-ghost btn-sm btn-square" aria-label="Agrandir le zoom" title="Agrandir le zoom (+ dans l’aperçu)" disabled={zoom >= 2} onClick={() => setZoom(zoom => Math.min(2, zoom + 0.1))}><Plus size={17} /></button></div>
       </div>
       {actions}
+      <button className="btn btn-ghost btn-sm btn-square" aria-label={fullscreen ? 'Quitter le plein écran' : 'Présenter en plein écran'} title={fullscreen ? 'Quitter le plein écran (Échap)' : 'Présenter en plein écran'} disabled={!document} onClick={toggleFullscreen}>{fullscreen ? <Minimize size={17} /> : <Maximize size={17} />}</button>
     </div>
+    {fullscreenError && <p className="viewer-error" role="alert">{fullscreenError}</p>}
     <div ref={scroll} className="pdf-scroll" id="pdf-preview" role="tabpanel" tabIndex={0} aria-label="Aperçu PDF" aria-busy={pending} onScroll={updateCurrentPage} onKeyDown={event => {
       if (event.target !== event.currentTarget || event.metaKey || event.ctrlKey || event.altKey) return;
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); goTo(Math.max(1, Math.min(document?.numPages ?? 1, current + (event.key === 'ArrowRight' ? 1 : -1)))); }
       if (event.key === '+' || event.key === '=' || event.key === '-') { event.preventDefault(); setZoom(zoom => Math.max(0.5, Math.min(2, zoom + (event.key === '-' ? -0.1 : 0.1)))); }
       if (event.key === '0') { event.preventDefault(); setZoom(1); }
+      if (fullscreen && [' ', 'PageDown', 'PageUp', 'Home', 'End'].includes(event.key)) {
+        event.preventDefault();
+        goTo(event.key === 'Home' ? 1 : event.key === 'End' ? document?.numPages ?? 1 : current + (event.key === 'PageUp' || event.shiftKey ? -1 : 1));
+      }
     }}>
-      {document && Array.from({ length: document.numPages }, (_, index) => <PdfPage key={`${document.loadingTask.docId}-${index}`} document={document} dark={dark} number={index + 1} width={width * zoom} />)}
+      {document && pages.map(number => <PdfPage key={`${document.loadingTask.docId}-${number}`} document={document} dark={dark} number={number} width={pageWidth} />)}
       {!document && !error && <div className="preview-placeholder">{(pending || pdf) && <span className="loading loading-spinner loading-sm" />}<span>{pending ? 'Compilation…' : pdf ? 'Chargement…' : 'Aucun aperçu'}</span></div>}
       {error && <p className="viewer-error" role="alert">Impossible d’afficher le PDF : {error}</p>}
     </div>

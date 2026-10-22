@@ -81,7 +81,11 @@ Le compilateur typst.ts est fixé à `0.8.0-rc3` : cette préversion intègre Ty
 
 ## Lecteur intégrable
 
-La route `/apercu/<id>/` affiche uniquement le lecteur PDF et ses variantes, sans recherche ni éditeur. Par exemple : `/apercu/cours-langages-reguliers/`. Elle compile la source publiée, sans reprendre les brouillons de l'éditeur, et conserve les commandes de navigation, zoom et téléchargement. `?vue=corrige` ou `?vue=presentation` choisit la version initiale ; `theme=light` ou `theme=dark` adapte le lecteur au site qui l'intègre.
+La route `/apercu/<id>/` affiche uniquement le lecteur PDF et ses variantes, sans recherche ni éditeur. Par exemple : `/apercu/cours-langages-reguliers/`. Elle compile la source publiée, sans reprendre les brouillons de l'éditeur, et conserve les commandes de navigation, zoom et téléchargement. La présentation est choisie par défaut si elle existe ; `?vue=enonce`, `?vue=corrige` ou `?vue=presentation` choisit la version initiale. `cor=0` retire le corrigé des onglets, sans restreindre l'accès à la ressource publique.
+
+`theme=light` ou `theme=dark` choisit le thème initial. Pour suivre un site qui intègre le lecteur sans recharger le PDF, le parent envoie `{type: 'exercices:theme', theme: 'dark' | 'light'}` par `postMessage` à l'origine de la banque. Le lecteur accepte ces messages uniquement de sa fenêtre parente et de l'origine de son référent ; il annonce `{type: 'exercices:ready'}` lorsque son écouteur est prêt.
+
+Le bouton **Présenter en plein écran**, commun à la banque et au lecteur intégrable, affiche une page à la fois et l'ajuste à la largeur et à la hauteur disponibles. Les flèches gauche/droite, Espace, Page précédente/suivante, Début et Fin permettent de présenter ; Échap quitte le plein écran. Une iframe doit autoriser le plein écran (`allow="fullscreen"`).
 
 Cette route peut être chargée dans une iframe sur le site de cours. Avec GitHub Pages, son adresse est `https://mpi-informatique.github.io/exercices/apercu/cours-langages-reguliers/`. Le premier affichage télécharge le moteur Typst et compile dans le navigateur, comme la banque complète.
 
