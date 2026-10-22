@@ -492,14 +492,22 @@ Cette notation est utilisés dans les éditeurs de texte.
 ]
 #solution[
   #slides-only[== Identités : corrigé]
-  + $e ∅ ≡ ∅$
-  + $e ε ≡ e$
-  + $e | ∅ ≡ e$
-  + $∅^* ≡ ε$
-  #pause
-  + $ε^* ≡ ε$
-  + $(e_1 | e_2) e_3 ≡ e_1 e_3 | e_2 e_3$
-  + $e_1 (e_2 e_3) ≡ (e_1 e_2) e_3$
+  #grid(
+    columns: (1fr, 1fr),
+    column-gutter: 2em,
+    align: top,
+    [
+      + $e ∅ ≡ ∅$
+      + $e ε ≡ e$
+      + $e | ∅ ≡ e$
+      + $∅^* ≡ ε$
+    ],
+    enum(start: 5,
+      [$ε^* ≡ ε$],
+      [$(e_1 | e_2) e_3 ≡ e_1 e_3 | e_2 e_3$],
+      [$e_1 (e_2 e_3) ≡ (e_1 e_2) e_3$],
+    ),
+  )
 ]
 
 = Induction structurelle
