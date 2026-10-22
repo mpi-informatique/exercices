@@ -4,6 +4,11 @@
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
 #import "/load.typ": sep, widetilde, colonnes-cours, liste-a-completer
 #import automate: Lreg, LL
+#import "/load.typ": code
+#import code: code-extrait
+
+#let corrige-ocaml = read("langages-reguliers/corrige.ml")
+#let corrige-c = read("langages-reguliers/corrige.c")
 
 #show: cours-et-presentation.with(titre: "Langages réguliers", niveau: "MPI")
 
@@ -46,6 +51,15 @@
   Soient $Σ$ un alphabet, $a, b ∈ Σ$ et $u ∈ Σ^*$ tels que $a u = u b$. #slides-only[\ ]
   Montrer que $a = b$ et : $exists k ∈ ℕ, #sep u = a^k$.
 ]
+#solution[
+  #slides-only[== Théorème de Lévy : preuve]
+  Raisonnons par récurrence sur $abs(u)$.
+  - Si $u = ε$, l'égalité donne $a = b$ et $u = a^0$.
+  #pause
+  - Sinon, en comparant les premières lettres de $a u$ et $u b$, on obtient $u = a v$.
+    L'égalité $a a v = a v b$ donne $a v = v b$ après simplification par $a$.
+    Par hypothèse de récurrence, $a = b$ et $v = a^k$, donc $u = a^(k + 1)$.
+]
 
 #slide()
 
@@ -62,8 +76,19 @@
 #slide()
 #exercice[
   Soit $m$ un mot de taille $n$ dont toutes les lettres sont différentes.
-  + Quel est son nombre de préfixes, de suffixes, de facteurs et de sous-mots ?
+  + Quel est son nombre de préfixes, de suffixes, de facteurs et de sous-mots distincts, mot vide compris ?
   + Et si des lettres peuvent être répétées ?
+]
+#solution[
+  #slides-only[== Compter les mots extraits]
+  + Les préfixes et les suffixes sont déterminés par leur taille : il y en a $n + 1$ de chaque.
+    Les facteurs non vides correspondent aux intervalles de positions, donc il y a $1 + n(n + 1) / 2$ facteurs.
+    Les sous-mots correspondent aux parties des $n$ positions, donc il y en a $2^n$.
+  #pause
+  + Avec des répétitions, les préfixes et les suffixes restent distincts par leur taille.
+    Plusieurs intervalles ou parties de positions peuvent donner le même mot.
+    Il y a donc entre $n + 1$ et $1 + n(n + 1) / 2$ facteurs, et entre $n + 1$ et $2^n$ sous-mots.
+    Le mot $a^n$ atteint les deux bornes inférieures.
 ]
 
 == Chaînes de caractères en C et en OCaml
@@ -97,6 +122,21 @@
   + Écrire une fonction ```ocaml sous_mot : string -> string -> bool``` testant si le premier mot est un sous-mot du deuxième.
   + Donner deux algorithmes de MP2I pour chercher un facteur dans un mot. 
 ]
+#solution[
+  #slides-only[== Recherche d'un facteur : corrigé]
+  #taille-presentation(0.78em, code-extrait(corrige-c, "facteur", language: "c"))
+  #pause
+  Chaque position de départ est testée, y compris celle de fin si le motif est vide.
+  Pour des tailles $n$ et $p$, le coût est $O(p + n + (p - n + 1) n)$ si $n ≤ p$, et $O(p + n)$ sinon, calcul des tailles compris.
+]
+#solution[
+  #slides-only[== Recherche d'un sous-mot : corrigé]
+  #taille-presentation(0.78em, code-extrait(corrige-ocaml, "sous_mot"))
+  #pause
+  On associe chaque lettre de $u$ à sa première occurrence disponible dans $v$ : choisir une occurrence plus tardive ne laisserait pas davantage de possibilités.
+  Chaque appel avance dans $v$, donc le coût est $O(n + p)$, calcul des tailles compris.
+  Pour chercher un facteur : recherche naïve et algorithme de Rabin–Karp.
+]
 
 = Langage
 
@@ -105,6 +145,12 @@
   Un _langage_ $L$ sur un alphabet $Σ$ est un ensemble de mots sur $Σ$, c'est-à-dire $L ⊂ Σ^*$ ou encore $L ∈ cal(P)(Σ^*)$
 ]
 Le nombre de langages sur $Σ$ est : #completer()
+#solution[
+  #pause
+  Il y en a $2^(abs(Σ^*))$, puisque les langages sont les parties de $Σ^*$.
+  Si $Σ = ∅$, alors $Σ^* = {ε}$ : il y a exactement deux langages.
+  Sinon, $Σ^*$ est infini dénombrable et son ensemble de parties est indénombrable, comme on le verra dans le complément.
+]
 #slide()
 
 #underline[Exemples] :
@@ -122,16 +168,34 @@ Le nombre de langages sur $Σ$ est : #completer()
 #slide()
 
 #exercice[
-  + Soit $L_1 = {a, a b}$ et $L_2 = {ε, b, b b a}$. Déterminer $L_1 L_2$.
+  + Soit $L_1 = {a, a b}$ et $L_2 = {ε, b, b b a}$. Déterminer $L_1 L_2$ et $L_2 L_1$. Comparer.
   + Quel lien a-t-on entre $abs(L_1 L_2)$ et $abs(L_1) abs(L_2)$ dans le cas général ?
+]
+#solution[
+  #slides-only[== Concaténation : corrigé]
+  + $L_1 L_2 = {a, a b, a b b, a b b a, a b b b a}$, tandis que
+    $L_2 L_1 = {a, a b, b a, b a b, b b a a, b b a a b}$.
+    La concaténation n'est donc pas commutative.
+  #pause
+  + L'application $(u, v) ⟼ u v$ de $L_1 × L_2$ vers $L_1 L_2$ est surjective.
+    Ainsi $abs(L_1 L_2) ≤ abs(L_1) abs(L_2)$.
+    L'inégalité peut être stricte : ici $a ⋅ b = a b ⋅ ε$ et $abs(L_1 L_2) = 5 < 6$.
 ]
 
 #slide()
 
 #exercice[
-  + La concaténation de deux langages est-elle commutative ? Associative ?
-  + Quel est son élément neutre ? Son élément absorbant ?
-  + La concaténation est-elle distributive par rapport à l'union ? Et inversement ?
+  Les propositions suivantes sont-elles vraies ?
+  + $∀ u, v, w ∈ Σ^*, #sep u v = u w ==> v = w$.
+  + $∀ L_1, L_2, L_3 ⊂ Σ^*, #sep L_1 L_2 = L_1 L_3 ==> L_2 = L_3$.
+]
+#solution[
+  #slides-only[== Simplification : corrigé]
+  + Vrai : après les $abs(u)$ premières lettres communes, les suites de lettres restantes sont égales.
+  #pause
+  + Faux : si $L_1 = ∅$, les deux produits sont vides quels que soient $L_2$ et $L_3$.
+    Même avec des langages non vides, sur $Σ = {a}$, on peut prendre
+    $L_1 = Σ^*$, $L_2 = {ε}$ et $L_3 = {ε, a}$ : les deux produits valent $Σ^*$.
 ]
 
 == Puissance
@@ -150,6 +214,16 @@ $ L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_
   + Montrer que $L ⊂ L^2$ si et seulement si $L = ∅$ ou $ε ∈ L$.
   + Comparer $L^2$ et ${u^2 ∣ u ∈ L}$.
 ]
+#solution[
+  #slides-only[== Puissances : corrigé]
+  + Si $L = ∅$, l'inclusion est vraie. Si $ε ∈ L$, tout $u ∈ L$ s'écrit $u ε ∈ L^2$.
+    Réciproquement, supposons $L ≠ ∅$ et $L ⊂ L^2$.
+    Un mot de taille minimale $d$ dans $L$ est le produit de deux mots de $L$, donc $d ≥ 2 d$.
+    Ainsi $d = 0$ et $ε ∈ L$.
+  #pause
+  + On a toujours ${u^2 ∣ u ∈ L} ⊂ L^2$.
+    L'inclusion peut être stricte : pour $L = {a, b}$, $a b ∈ L^2$ mais $a b ∉ {a a, b b}$.
+]
 
 == Étoile de Kleene
 
@@ -163,6 +237,16 @@ $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelco
 #exercice[
   + Montrer que $(L^*)^* = L^*$.
   + Montrer que $L^* = L$ si et seulement si $L$ est un sous-monoïde de $Σ^*$, c'est-à-dire $L$ stable par concaténation et $ε ∈ L$.
+]
+#solution[
+  #slides-only[== Étoile de Kleene : corrigé]
+  + Comme $L ⊂ L^*$, on a $L^* ⊂ (L^*)^*$.
+    Réciproquement, un produit de produits finis de mots de $L$ est encore un produit fini de mots de $L$.
+    Donc $(L^*)^* ⊂ L^*$.
+  #pause
+  + Si $L = L^*$, alors $ε ∈ L$ et la concaténation de deux mots de $L$ reste dans $L$.
+    Réciproquement, si $L$ est un sous-monoïde, une récurrence donne $L^k ⊂ L$ pour tout $k ∈ ℕ$.
+    Ainsi $L^* ⊂ L$, et l'autre inclusion est toujours vraie.
 ]
 
 = Langages réguliers
@@ -182,6 +266,13 @@ En particulier :
 
 #exercice[
   Montrer qu'on peut remplacer « contenant les langages finis sur $Σ$ » par « $∅ ∈ Lreg, {ε} ∈ Lreg$ et ${a} ∈ Lreg, #sep ∀a ∈ Σ$ ».
+]
+#solution[
+  #slides-only[== Cas de base : corrigé]
+  Les langages $∅$, ${ε}$ et ${a}$ sont finis.
+  Réciproquement, tout singleton ${a_1 … a_n}$ s'obtient par concaténation des ${a_i}$, avec ${ε}$ pour $n = 0$.
+  Tout langage fini est une union finie de singletons, le cas vide étant fourni par $∅$.
+  Les deux conditions imposent donc les mêmes familles stables.
 ]
 
 #slide()
@@ -218,6 +309,19 @@ En particulier :
       #enum(start: 3)[Mots de taille paire.][Mots de taille impaire.]
     ],
   )
+]
+
+#solution[
+  #slides-only[== Exemples de langages réguliers : corrigé]
+  + $a Σ^*$
+  #pause
+  + $a Σ^* b$
+  #pause
+  + $(Σ Σ)^*$
+  #pause
+  + $Σ (Σ Σ)^*$
+
+  Ces langages sont construits à partir de langages finis par concaténation et étoile.
 ]
 
 = Expressions régulières
@@ -262,6 +366,15 @@ Cette notation est utilisés dans les éditeurs de texte.
 #theoreme[
   Un langage $L$ est régulier si et seulement s'il existe une expression régulière $e$ telle que $L = LL(e)$.
 ]
+#solution[
+  #slides-only[== Expressions et langages réguliers : preuve]
+  Tout langage dénoté par une expression régulière est régulier : c'est vrai des lettres, de $∅$ et de $ε$, et les trois constructeurs conservent la régularité.
+  Le raisonnement suit la construction de l'expression.
+  #pause
+  Réciproquement, la famille des langages dénotés contient tous les langages finis : un singleton s'écrit par concaténation de lettres, puis on prend une union finie.
+  Elle est stable par union, concaténation et étoile, grâce aux constructeurs correspondants.
+  Elle contient donc $Lreg$, par minimalité.
+]
 
 #slide()
 
@@ -279,22 +392,51 @@ Cette notation est utilisés dans les éditeurs de texte.
   )
 ]
 
+#solution[
+  #slides-only[== Expressions régulières : corrigé]
+  + $b^* (ε | a) b^*$
+  #pause
+  + $(a | b) ((a | b) (a | b) (a | b))^*$
+  #pause
+  + $b^* (a b^* a b^*)^*$
+  #pause
+  + $b^* a b^* (a b^* a b^*)^*$
+  #pause
+  + Pour les écritures canoniques, sans zéro initial, avec $0$ écrit $0$ : $0 | 1 (0 | 1)^* 0 0$.
+    Si les zéros initiaux sont autorisés : $0 | (0 | 1)^* 0 0$.
+
+  Les $a$ se regroupent par paires dans les réponses 3 et 4.
+  Un entier binaire non nul est divisible par $4$ si et seulement si ses deux derniers chiffres sont $0$.
+]
+
+#slide()
+
 #colonnes-cours(
   encadrer: exercice,
   [
-    + Écrire ```ocaml epsilon : 'a regexp -> bool``` qui détermine si $ε ∈ LL(e)$.
-    + Écrire ```ocaml est_vide : 'a regexp -> bool``` qui détermine si $LL(e) = ∅$.
+    + Écrire ```ocaml epsilon : 'a regexp -> bool``` qui teste $ε ∈ LL(e)$.
+    + Écrire ```ocaml vide : 'a regexp -> bool``` qui teste $LL(e) = ∅$.
   ],
   [
-    ```ocaml
-    type 'a regexp =
-      | Vide | Epsilon | L of 'a (* L a est la lettre a *)
-      | Union of 'a regexp * 'a regexp
-      | Concat of 'a regexp * 'a regexp
-      | Etoile of 'a regexp
-    ```
+    #code-extrait(corrige-ocaml, "regexp")
   ],
 )
+#solution[
+  #slides-only[== Test du mot vide : corrigé]
+  #code-extrait(corrige-ocaml, "epsilon")
+  #pause
+  Le mot vide appartient à une union si et seulement s'il appartient à l'un des deux langages.
+  Il appartient à une concaténation si et seulement s'il appartient aux deux langages, car $u v = ε$ impose $u = v = ε$.
+]
+#solution[
+  #slides-only[== Test du langage vide : corrigé]
+  #code-extrait(corrige-ocaml, "vide")
+  #pause
+  Une concaténation est vide si et seulement si l'un des facteurs l'est.
+  Une étoile contient toujours $ε$.
+  Ces règles prouvent les deux fonctions par induction structurelle.
+  Pour un arbre de taille $n$, leur coût est $O(n)$, car chaque nœud est visité au plus une fois.
+]
 
 == Résumé des définitions
 
@@ -325,6 +467,8 @@ Cette notation est utilisés dans les éditeurs de texte.
   )
 }
 
+#slide()
+
 = Équivalence d'expressions régulières
 
 
@@ -345,6 +489,17 @@ Cette notation est utilisés dans les éditeurs de texte.
     liste-a-completer($e ∅ ≡$, $e ε ≡$, $e | ∅ ≡$, $∅^* ≡$),
     liste-a-completer(start: 5, $ε^* ≡$, $(e_1 | e_2) e_3 ≡$, $e_1 (e_2 e_3) ≡$),
   )
+]
+#solution[
+  #slides-only[== Identités : corrigé]
+  + $e ∅ ≡ ∅$
+  + $e ε ≡ e$
+  + $e | ∅ ≡ e$
+  + $∅^* ≡ ε$
+  #pause
+  + $ε^* ≡ ε$
+  + $(e_1 | e_2) e_3 ≡ e_1 e_3 | e_2 e_3$
+  + $e_1 (e_2 e_3) ≡ (e_1 e_2) e_3$
 ]
 
 = Induction structurelle
@@ -382,9 +537,12 @@ Cette notation est utilisés dans les éditeurs de texte.
 )
 
 #solution[
+  #slides-only[== Induction structurelle : preuves]
+  Pour les langages, l'ensemble ${L ⊂ Σ^* ∣ cal(P)(L)}$ contient les langages finis et est stable par union, concaténation et étoile de Kleene.
+  Il contient donc tous les langages réguliers, par minimalité.
   #pause
-  L'ensemble ${L ∣ cal(P)(L)}$ contient les langages finis et est stable par union, concaténation et étoile de Kleene.
-  Il contient donc tous les langages réguliers, par définition.
+  Pour les expressions, l'ensemble ${e ∈ cal(R)(Σ) ∣ cal(P)(e)}$ contient les cas de base et est stable par les trois constructeurs.
+  Il contient donc tout $cal(R)(Σ)$, par minimalité.
 ]
 
 #slide()
@@ -396,6 +554,24 @@ Cette notation est utilisés dans les éditeurs de texte.
   + Soit $L$ un langage régulier. Montrer que $widetilde(L)$ est régulier.
   + Écrire une fonction OCaml ```ocaml miroir : 'a regexp -> 'a regexp``` renvoyant le miroir d'une expression régulière.
 ]
+#solution[
+  #slides-only[== Miroir : corrigé]
+  + $b (a | b)^* a$
+  #pause
+  + Le miroir conserve l'union, renverse l'ordre de la concaténation et commute avec l'étoile :
+    $widetilde(L_1 ∪ L_2) = widetilde(L_1) ∪ widetilde(L_2)$,
+    $widetilde(L_1 L_2) = widetilde(L_2) widetilde(L_1)$ et
+    $widetilde(L^*) = widetilde(L)^*$.
+    Le miroir d'un langage fini étant fini, une induction structurelle sur les langages donne la régularité du miroir.
+]
+#solution[
+  #slides-only[== Miroir d'une expression : corrigé]
+  #code-extrait(corrige-ocaml, "miroir")
+  #pause
+  Les identités précédentes prouvent par induction structurelle que
+  $LL("miroir"(e)) = widetilde(LL(e))$.
+  Le coût est linéaire en la taille de l'arbre de l'expression.
+]
 
 #slides-only[
   #slide()
@@ -406,6 +582,15 @@ Cette notation est utilisés dans les éditeurs de texte.
   #exercice[
     Soient $e_1$ et $e_2$ deux expressions régulières.
     Montrer que $(e_1^* e_2)^* e_1^* ≡ (e_1 | e_2)^*$.
+  ]
+  #solution[
+    == Équivalence : corrigé
+    Posons $A = LL(e_1)$ et $B = LL(e_2)$.
+    - Tout mot de $(A^* B)^* A^*$ est un produit de mots de $A$ ou de $B$, donc appartient à $(A ∪ B)^*$.
+    #pause
+    - Réciproquement, choisissons une décomposition en facteurs de $A ∪ B$, puis affectons chaque facteur à $A$ ou à $B$.
+      Regroupons chaque facteur de $B$ avec les facteurs de $A$ qui le précèdent depuis le dernier facteur de $B$.
+      Ces groupes appartiennent à $A^* B$, et les facteurs de $A$ restants forment un mot de $A^*$.
   ]
 
   = Expressions régulières en pratique (non exigible)
