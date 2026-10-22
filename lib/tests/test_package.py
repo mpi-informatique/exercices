@@ -190,13 +190,13 @@ Un énoncé.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'corrige=' + corrige,
                         str(source), str(racine / ('cours-simple-' + corrige + '.pdf'))], check=True)
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, nouvelle-diapositive
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, slide
 #import "@preview/touying:0.8.0": utils
 #show: cours-et-presentation.with(titre: "Saut de diapositive")
 == Titre commun
 #metadata("avant") <saut-diapositive-test>
 Premier contenu.
-#nouvelle-diapositive()
+#slide()
 #metadata("apres") <saut-diapositive-test>
 Deuxième contenu.
 #context {
