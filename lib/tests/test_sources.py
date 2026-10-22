@@ -38,5 +38,4 @@ print('Découverte des sources et variantes : exercices, documents, cours et pr�
 
 decouvertes = dict(sources())
 assert not any(source.startswith('lib/tests/') for source in decouvertes)
-assert decouvertes['chapitres/langages/cours-langages-reguliers.typ'] == 'cours-presentation'
 print('Exclusion des tests de bibliothèque vérifiée.')

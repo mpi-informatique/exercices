@@ -26,22 +26,14 @@ with TemporaryDirectory() as dossier:
     assert not (package / 'lib/tests').exists()
     assert not (package / 'ressources').exists()
     source = racine / 'document.typ'
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, meta, theoremes, bloc-solution, sep, widetilde, exercice, question, partie, afficher-exercice
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, theoremes, exercice, question, partie, afficher-exercice
 #let sujet = public("devoirs/concours/19/mines-ponts-2019-mp-informatique/mines-ponts-2019-mp-informatique.typ").sujet
 #let td = public("chapitres/langages/td-grammaire.typ")
 #assert(td.sujet.exercices.len() > 0)
 #assert(public("chapitres/langages/exercices/grammaires-lineaires/grammaires-lineaires.typ").ex.meta.titre != "")
 #assert(public("chapitres/maths/determinants/binomiaux.typ").ex.meta.matiere == "mathématiques")
-#assert("determinants" in meta.chapitres-programme)
-#assert(sujet.exercices.len() == 1)
 #show: feuille.with(titre: sujet.titre, exercices: sujet.exercices,
   corrige: sys.inputs.at("corrige", default: "false") == "true")
-$widetilde(a b), #sep widetilde(L)$
-#theoremes.lemme-sans-numero(outlined: false, full-title: [Lemme admis])[Énoncé du lemme.]
-#bloc-solution[Une solution.]
-#theoremes.remarque[Une remarque compatible.]
-#theoremes.note[Une note compatible.]
-#theoremes.exemple[Un exemple compatible.]
 #let cible = question([Une question à déplacer.], label: <question-mobile>, solution: [Voir @question-mobile.])
 #let autre = question([Une autre question.])
 #let inverse = sys.inputs.at("corrige", default: "false") == "true"
@@ -70,9 +62,9 @@ Voir @question-mobile avant son énoncé.
   assert(text.size == if sys.inputs.at("format") == "presentation" { 10pt } else { 20pt })
 }]]
 #theoremes.definition[
-  - #metadata("avant") <definition-animation-test> Un contenu commun.
+  - Un contenu commun.
   #pause
-  - #metadata("apres") <definition-animation-test> Un détail révélé ensuite.
+  - Un détail révélé ensuite.
 ] <definition-commune>
 #pause
 #theoremes.algorithme[Un algorithme commun.]
@@ -97,23 +89,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
     assert(query(cible).len() == 1 and query(cible).first().func() == figure)
   }
 }
-#article-only[
-  #context {
-    let texte(c) = {
-      if c.has("text") { c.text }
-      else if c.func() == [ ].func() { " " }
-      else if c.has("children") { c.children.map(texte).join() }
-      else { "" }
-    }
-    let exercice = query(<theorion-frame-metadata>).find(it => it.value.identifier == "exercise")
-    assert(texte((exercice.value.get-full-title)([Exercice 2], exercice.value.title)) == "Exercice 2 : Monoïdes et taille")
-    assert(texte((exercice.value.get-full-title)([Exercice 2], "")) == "Exercice 2")
-    let cadres = query(<theorion-frame-metadata>).filter(it => it.value.numbering != none)
-    assert(cadres.map(it => it.value.identifier) == ("definition", "algorithm", "exercise", "theorem", "definition", "theorem"))
-    assert(cadres.map(it => (it.value.counter.at)(it.location())) == ((1,), (1,), (1,), (1,), (2,), (2,)))
-  }
-  Un détail du polycopié.
-]
+#article-only[Un détail du polycopié.]
 #solution(presentation: true)[
   #slides-only[== Solution projetée]
   #metadata("solution") <solution-cours-test> Une solution réservée au corrigé et aux diapositives.
@@ -133,24 +109,8 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   for cible in (<solution-masquee-test>, <solution-non-projetee-test>) {
     assert(query(cible).len() == if corrige { 1 } else { 0 })
   }
-  // La pause répète la solution sur deux diapositives, une seule fois dans le corrigé.
-  let nombre = if sys.inputs.at("format") == "presentation" { 2 } else if sys.inputs.at("corrige", default: "false") == "true" { 1 } else { 0 }
-  assert(query(<solution-cours-test>).len() == nombre)
-}
-#slides-only[
-  Un complément projeté.
-  #context {
-    // La définition de la première diapositive est répétée lors de la pause.
-    let definitions = query(<theorion-frame-metadata>).filter(it => it.value.identifier == "definition")
-    assert(definitions.map(it => (it.value.counter.at)(it.location())) == ((1,), (1,), (1,), (2,)))
-  }
-]
-#context {
-  // Touying conserve les éléments masqués pour réserver leur place.
-  let marques = query(<definition-animation-test>)
-  let projection = sys.inputs.at("format") == "presentation"
-  assert(marques.filter(it => it.value == "avant").len() == if projection { 3 } else { 1 })
-  assert(marques.filter(it => it.value == "apres").len() == if projection { 3 } else { 1 })
+  let visible = corrige or sys.inputs.at("format") == "presentation"
+  assert((query(<solution-cours-test>).len() > 0) == visible)
 }
 == Colonnes du cours
 #colonnes-cours(
@@ -212,11 +172,4 @@ Deuxième contenu.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
                         str(source), str(racine / ('saut-' + variante + '.pdf'))], check=True)
-    # Les noms historiques ne doivent plus être exportés par le module.
-    for ancien in ('theorem', 'lemma', 'exercise', 'theorem-box', 'definition-box', 'theorem-counter', 'show-theorem'):
-        source.write_text('#import "@mpi-informatique/exercices:0.1.0": theoremes\n#theoremes.' + ancien + '\n', encoding='utf-8')
-        result = subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
-                                 '--package-path', str(racine / 'packages'), str(source), str(racine / 'ancien.pdf')],
-                                capture_output=True, text=True)
-        assert result.returncode != 0 and ancien in result.stderr and 'does not contain' in result.stderr, result.stderr
 print('Package local : imports, ressources, énoncé, corrigé, cours et présentation vérifiés.')

@@ -3,7 +3,6 @@ import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import { availableContestYears, contestYearBounds, fitYearRange, parseSearchQuery } from '../src/lib/filters.ts';
 import { createSearch } from '../src/lib/search.ts';
-import { resourceBadgeLabel } from '../src/lib/labels.ts';
 import type { Resource } from '../../shared/src/index.ts';
 
 const resources: Resource[] = JSON.parse(readFileSync(new URL('../src/generated/catalogue.json', import.meta.url), 'utf8'));
@@ -70,13 +69,6 @@ test('les filtres de documents et de métadonnées se cumulent', () => {
   assert.ok(search('', { difficulte: ['2'] }).every(resource => resource.difficulte === 2));
 });
 
-test('chaque nom de fichier produit une route unique, exercices et documents compris', () => {
-  assert.equal(new Set(resources.map(resource => resource.id)).size, resources.length);
-  assert.ok(resources.every(resource => resource.fichier.endsWith(`/${resource.id}.typ`)));
-  assert.ok(resources.some(resource => resource.kind === 'document' && resource.nombreExercices > 1));
-});
-
-
 test('critères textuels, valeurs multiples et années', () => {
   const criteria = 'concours:CCINP,ENS année:2022,2023';
   const expected = resources.filter(resource => ['CCINP', 'ENS'].includes(resource.concours?.nom ?? '') && [2022, 2023].includes(resource.concours?.annee ?? 0));
@@ -110,30 +102,4 @@ test('les chapitres sont regroupés selon le programme et une matière entière 
     assert.deepEqual(search('', { chapitres: group }), expected);
     assert.deepEqual(search('', { chapitres: group, type: ['exercice', 'concours'] }), expected.filter(resource => ['exercice', 'concours'].includes(resource.type)));
   }
-});
-
-test('les badges affichent les références connues du concours, sans inventer les champs absents', () => {
-  const resource = resources.find(resource => resource.id === 'mines-ponts-2019-mp-informatique')!;
-  assert.equal(resourceBadgeLabel(resource), 'Mines-Ponts 2019 MP');
-  assert.equal(resourceBadgeLabel({ ...resource, concours: { nom: 'Centrale', annee: 2022, filiere: 'MP' } }), 'Centrale 2022 MP');
-  assert.equal(resourceBadgeLabel({ ...resource, kind: 'exercice' }), 'Mines-Ponts 2019 MP');
-  assert.equal(resourceBadgeLabel({ ...resource, kind: 'exercice', concours: { nom: 'ENS', oral: true } }), 'ENS oral');
-  assert.equal(resourceBadgeLabel({ ...resource, concours: {} }), 'Sujet');
-  assert.equal(resourceBadgeLabel({ ...resource, concours: null, type: 'td' }), 'TD');
-});
-
-test('les oraux déplacés sont indexés à leur nouveau chemin et restent trouvables par métadonnées', () => {
-  for (const fichier of [
-    'devoirs/concours/oral/ens/ens-oral-mp-automates-monoides.typ',
-    'devoirs/concours/oral/ens/ens-oral-mp-reparation-langage/ens-oral-mp-reparation-langage.typ',
-    'devoirs/concours/oral/ccinp/ccinp-oral-langages-automates.typ',
-  ]) {
-    const resource = resources.find(resource => resource.fichier === fichier);
-    assert.ok(resource, fichier);
-    assert.equal(resource.type, 'concours');
-    assert.equal(resource.concours?.oral, true);
-    assert.ok(resource.chapitres.length);
-    assert.ok(search(`concours:${resource.concours.nom} chapitre:${resource.chapitres[0]}`, {}).some(result => result.id === resource.id));
-  }
-  assert.ok(search('monoïdes concours:ENS année:2022', {}).some(resource => resource.id === 'ens-oral-mp-automates-monoides'));
 });

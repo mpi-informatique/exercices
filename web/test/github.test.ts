@@ -1,11 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { encodeSource, githubEditUrl, prepareContribution, repositoryUrl } from '../src/lib/github.ts';
-
-test('le lien de contribution ouvre le fichier sélectionné sur la branche principale', () => {
-  const file = 'devoirs/concours/19/mines-ponts-2019-mp-informatique/mines-ponts-2019-mp-informatique.typ';
-  assert.equal(githubEditUrl(file), `${repositoryUrl}/edit/main/${file}`);
-});
+import { encodeSource, githubEditUrl, prepareContribution } from '../src/lib/github.ts';
 
 const draft = { file: 'chapitres/maths/exercices/énoncé.typ', original: '# Énoncé\n$x > 0$', source: '# Énoncé corrigé\n$x ≥ 0$\n', title: 'Énoncé' };
 

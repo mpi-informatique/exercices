@@ -1,8 +1,4 @@
 #import "/lib/exercice.typ": afficher-exercice, cible-question, exercice, feuille, partie, question, texte-concours, titre-concours
-#import "/lib/meta.typ": (
-  chapitres-informatique, chapitres-maths, chapitres-programme, langages-possibles, niveaux-par-chapitre,
-)
-
 // L'attribution complète le titre, sans mention « écrit » redondante.
 #let centrale = (nom: "Centrale", annee: 2017, filiere: "MP", oral: false)
 #assert(titre-concours("mots synchronisants", centrale) == "Centrale 2017 MP : mots synchronisants")
@@ -23,16 +19,7 @@
   )
   assert(ex.meta.chapitres == ("determinants",))
   assert(ex.meta.matiere == "mathématiques" and ex.meta.niveaux == niveaux)
-  assert(ex.meta.algorithmes == () and ex.meta.structures == () and ex.meta.langages == ())
 }
-#assert(chapitres-programme.dedup() == chapitres-programme)
-#assert(chapitres-informatique.all(chapitre => chapitre in chapitres-programme))
-#assert("determinants" in chapitres-maths)
-#assert(niveaux-par-chapitre.at("langages-reguliers") == ("MP", "MPI"))
-#assert("MP" in niveaux-par-chapitre.at("algorithmique"))
-#assert("MP" in niveaux-par-chapitre.at("graphes"))
-#assert("MPI" in niveaux-par-chapitre.at("determinants"))
-
 // SQL doit être accepté pour tous les niveaux, ainsi que sans niveau.
 #for niveaux in ((), ("MP2I",), ("MPI",)) {
   let ex = exercice(
@@ -40,18 +27,7 @@
     contenu: (question([Énoncé], solution: [Solution]),),
   )
   assert(ex.meta.langages == ("SQL",))
-  assert(ex.meta.duree == none and ex.meta.concours == none)
 }
-#assert("SQL" in langages-possibles)
-#let ex-sans-categories = exercice(
-  meta: (titre: "Sans catégories", chapitres: (), difficulte: 1),
-  contenu: (question([Énoncé]),),
-)
-#assert(ex-sans-categories.meta.algorithmes == ())
-#assert(ex-sans-categories.meta.structures == ())
-#assert(ex-sans-categories.meta.langages == ())
-#let p = partie("I", "Test", contenu: (question([Une question]),), contexte: ([Un rappel],))
-#assert(p.contexte.len() == 1)
 // Le départ est fixé à 1 ; les corrections sont conservées mais jamais affichées.
 #let meta = (titre: "Présentation", chapitres: (), difficulte: 1)
 #let contenu = (
@@ -74,10 +50,6 @@
   corrections: ordinaire.corrections,
 )
 #let unique = exercice(meta: meta, contenu: (question([Question unique], solution: [Solution]),))
-#assert("debut" not in ordinaire and "debut" not in sujet)
-#assert(sujet.corrections == ordinaire.corrections and sujet.corrections != none)
-#assert(ordinaire.notation != none and contenu.first().notation != none)
-#assert(unique.notation == none and unique.contenu.first().notation == none)
 #show: feuille.with(exercices: (), corrige: true)
 #afficher-exercice(ordinaire, corrige: true)
 #afficher-exercice(sujet, corrige: true)

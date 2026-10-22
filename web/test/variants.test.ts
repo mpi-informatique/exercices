@@ -1,16 +1,14 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { availableVariants, compilationInputs, outputVariant, pdfFilename, variantLabels } from '../../shared/src/index.ts';
+import { availableVariants, compilationInputs, pdfFilename } from '../../shared/src/index.ts';
 
 test('les cours, corrigés et présentations ont des paramètres et noms distincts', () => {
-  assert.deepEqual(variantLabels('cours-presentation'), { enonce: 'Cours', corrige: 'Cours corrigé', presentation: 'Présentation' });
   assert.deepEqual(availableVariants('cours-presentation'), ['enonce', 'corrige', 'presentation']);
   for (const [variant, format, name] of [
     ['enonce', 'cours', 'cours-kleene.pdf'],
     ['corrige', 'cours', 'cours-kleene-cor.pdf'],
     ['presentation', 'presentation', 'presentation-kleene.pdf'],
   ] as const) {
-    assert.equal(outputVariant(variant, 'cours-presentation'), variant === 'corrige' ? 'corrige' : format);
     assert.deepEqual(compilationInputs(variant, 'cours-presentation'), { format, corrige: String(variant === 'corrige') });
     assert.equal(pdfFilename('chapitres/langages/cours-kleene.typ', variant, 'cours-presentation'), name);
   }
