@@ -24,7 +24,7 @@
 = Alphabet et mot
 
 #definition(item-by-item[
-  - Un _alphabet_ est un ensemble $Σ$ fini de lettres.
+  - Un _alphabet_ est un ensemble $Σ$ fini, dont les éléments sont des _lettres_.
   - #taille-presentation(0.92em)[Un _mot_ $m$ de $Σ$ est une suite finie $m_1, …, m_n$ de lettres de $Σ$, noté $m = m_1 … m_n$.]
   - La _taille_ $abs(m)$ de $m$ est son nombre de lettres.
   - Le _mot vide_, ne contenant aucune lettre, est noté $ε$.
@@ -38,17 +38,17 @@
 
 #definition[
   - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est : #math.equation(block: sys.inputs.at("format", default: "cours") == "presentation", $u v = u_1 … u_n v_1 … v_p$)
-  - Si $u in Σ^*$, on définit ses _puissances_ par récurrence $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
+  - Si $u in Σ^*$, on définit sa _puissance_ par récurrence : $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
 ]
 
 #underline[Remarque] : 
-- $(Σ^*, ⋅)$ est un monoïde : la concaténation est associative et $ε$ est élément neutre
+- $(Σ^*, ⋅)$ est un monoïde : la concaténation est associative et $ε$ est élément neutre.
 - $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$.
 
 #slide()
 
 #exercice([Théorème de Lévy])[
-  Soient $Σ$ un alphabet, $a, b ∈ Σ$ et $u ∈ Σ^*$ tels que $a u = u b$. #slides-only[\ ]
+  Soient $a, b ∈ Σ$ et $u ∈ Σ^*$ tels que $a u = u b$. #slides-only[\ ]
   Montrer que $a = b$ et : $exists k ∈ ℕ, #sep u = a^k$.
 ]
 #solution[
@@ -64,7 +64,7 @@
 #slide()
 
 #definition[
-  Soient $u$ et $m$ deux mots sur $Σ$.
+  Soient $u, m ∈ Σ^*$.
   - $u$ est un _préfixe_ de $m$ s'il existe un mot $v$ tel que $m = u v$.
   - $u$ est un _suffixe_ de $m$ s'il existe un mot $v$ tel que $m = v u$.
   - $u$ est un _facteur_ (_substring_ en anglais) de $m$ s'il existe des mots $v, w$ tels que $m = v u w$.
@@ -153,9 +153,9 @@ Le nombre de langages sur $Σ$ est : #completer()
 ]
 #slide()
 
-#underline[Exemples] :
+#underline[Exemples de langages] :
 + L'ensemble $L_0 = {ε, a, b a b}$ sur $Σ = {a, b}$.
-+ L'ensemble $L_1$ des mots d'un dictionnaire ne contenant que des lettres minuscules non accentuées, sur $Σ = {a, b, …, z}$.
++ L'ensemble $L_1$ des mots du dictionnaire français sur $Σ = {a, b, …, z}$.
 + L'ensemble $L_2$ des formules arithmétiques sur $Σ = {0, …, 9, "+", "-", "/", "*", "(", ")"}$.
 + L'ensemble $L_3$ des programmes OCaml sur $Σ = {a, …, z, "_", "!", "<", ">", …}$.
 
@@ -164,6 +164,7 @@ Le nombre de langages sur $Σ$ est : #completer()
 #definition[
   La _concaténation_ de deux langages $L_1$ et $L_2$ est : $L_1 L_2 = {m_1 m_2 ∣ m_1 ∈ L_1, #sep m_2 ∈ L_2}$.
 ]
+#underline[Remarque] : La concaténation de langages est associative, d'élément neutre ${ε}$ et d'élément absorbant $∅$.
 
 #slide()
 
@@ -201,10 +202,9 @@ Le nombre de langages sur $Σ$ est : #completer()
 == Puissance
 
 #definition[
-  Si $L ⊂ Σ^*$, on définit sa _puissance_ par récurrence $L^0 = {ε}$ et $L^k = L L^(k - 1)$ pour $k ≥ 1$.
+  Si $L ⊂ Σ^*$, on définit sa _puissance_ par récurrence : $L^0 = {ε}$ et $L^k = L L^(k - 1)$ pour $k ≥ 1$.
 ]
-Pour $n ≥ 1$ :
-$ L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_n ∈ L}. $
+Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_n ∈ L}.$
 
 #underline[Exemple] : $Σ^n$ est l'ensemble des mots de taille $n$ sur l'alphabet $Σ$.
 
@@ -253,16 +253,18 @@ $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelco
 
 
 #definition(coeur: true)[
-  L'ensemble $Lreg(Σ)$, ou simplement $Lreg$, des _langages réguliers_ sur $Σ$ est le plus petit ensemble, pour l'inclusion, contenant les langages finis sur $Σ$ et stable par union, concaténation et étoile de Kleene.
+  L'ensemble $Lreg$ des _langages réguliers_ sur $Σ$ est le plus petit ensemble de langages, pour l'inclusion, contenant les langages finis sur $Σ$ et stable par union, concaténation et étoile de Kleene.
 ]
+
+#underline[Remarque] : Cette définition est similaire à celle de tribu borélienne en maths (plus petite tribu contenant tous les ouverts).
 
 #slide()
 
 En particulier :
 - Si $L$ est un langage fini alors $L ∈ Lreg$.
-- Si $L_1$ et $L_2$ sont réguliers alors $L_1 ∪ L_2 ∈ Lreg$.
-- Si $L_1$ et $L_2$ sont réguliers alors $L_1 L_2 ∈ Lreg$.
-- Si $L$ est régulier alors $L^* ∈ Lreg$.
+- Si $L_1 ∈ Lreg$ et $L_2 ∈ Lreg$ alors $L_1 ∪ L_2 ∈ Lreg$.
+- Si $L_1 ∈ Lreg$ et $L_2 ∈ Lreg$ alors $L_1 L_2 ∈ Lreg$.
+- Si $L ∈ Lreg$ alors $L^* ∈ Lreg$.
 
 #exercice[
   Montrer qu'on peut remplacer « contenant les langages finis sur $Σ$ » par « $∅ ∈ Lreg, {ε} ∈ Lreg$ et ${a} ∈ Lreg, #sep ∀a ∈ Σ$ ».
@@ -359,8 +361,6 @@ Les expressions régulières sont une notation plus concise pour représenter un
 
 Par abus de langage, on confond $e$ et $LL(e)$.
 Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ ou un langage singleton.\
-Une expression régulière décrit de façon plus simple et compacte un langage régulier à l'aide de l'union, de la concaténation et de l'étoile de Kleene.
-Cette notation est utilisés dans les éditeurs de texte.
 
 #pause
 #theoreme[
@@ -449,7 +449,7 @@ Cette notation est utilisés dans les éditeurs de texte.
     ([Langage], [$L$], [${ε, a, a b}$], [$cal(P)(Σ^*)$]),
     ([Expression régulière], [$e$], [$a b^*$], [$cal(R)(Σ)$]),
     ([Langage d'une expression régulière], [$LL(e)$], [${a b^n | n ∈ ℕ}$], [$Lreg(Σ)$]),
-    ([Langages réguliers], [$Lreg$], [$Lreg$], [$cal(P)(cal(P)(Σ^*))$]),
+    ([Ensemble des langages réguliers], [$Lreg$], [$Lreg$], [$cal(P)(cal(P)(Σ^*))$]),
   )
   let reponse(contenu) = if sys.inputs.at("format", default: "cours") == "presentation" {
     [#pause #contenu]
@@ -469,10 +469,7 @@ Cette notation est utilisés dans les éditeurs de texte.
 
 #slide()
 
-= Équivalence d'expressions régulières
-
-
-#definition[
+#definition[Équivalence d'expressions régulières][
   Deux expressions régulières $e_1$ et $e_2$ sont dites _équivalentes_, noté $e_1 ≡ e_2$, si $LL(e_1) = LL(e_2)$.
 ]
 
@@ -480,8 +477,8 @@ Cette notation est utilisés dans les éditeurs de texte.
 
 #slide()
 
-#propriete[
-  Pour des expressions régulières $e$, $e_1$, $e_2$ et $e_3$, compléter :
+#exercice[
+  Pour des expressions régulières $e$, $e_1$, $e_2$ et $e_3$ :
   #grid(
     columns: (1fr, 1fr),
     column-gutter: 2em,
@@ -512,29 +509,25 @@ Cette notation est utilisés dans les éditeurs de texte.
 
 = Induction structurelle
 
-== Induction sur les langages réguliers
-
 #colonnes-cours(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
   align: top,
   [
-    #theoreme(coeur: true, [Induction sur les langages réguliers])[
-      Soit $cal(P)(L)$ une propriété sur les langages réguliers telle que :
+    #theoreme(coeur: true)[
+      Soit $cal(P)(L)$ une propriété sur les langages telle que :
       - $cal(P)(L)$ est vraie pour les langages $L$ finis
       - $cal(P)(L_1) ∧ cal(P)(L_2) ==> cal(P)(L_1 L_2)$
       - $cal(P)(L_1) ∧ cal(P)(L_2) ==> cal(P)(L_1 ∪ L_2)$
       - $cal(P)(L) ==> cal(P)(L^*)$
-
       Alors $cal(P)(L)$ est vraie pour tout langage régulier $L$.
     ]
   ],
   [
     #if sys.inputs.at("format", default: "cours") == "presentation" { slide() }
-    #theoreme(coeur: true, [Induction sur les expressions régulières])[
-      Soit $cal(P)(e)$ une propriété sur les expressions régulières telle que :
-      - $cal(P)(∅)$ et $cal(P)(ε)$ sont vraies
-      - $cal(P)(a)$ est vraie pour $a ∈ Σ$
+    #theoreme[
+      Soit $cal(P)(e)$ une propriété sur $e ∈ cal(R)(Σ)$ telle que :
+      - $cal(P)(∅)$, $cal(P)(ε)$ et $cal(P)(a)$ sont vraies pour $a ∈ Σ$
       - $cal(P)(e_1) ∧ cal(P)(e_2) ==> cal(P)(e_1 e_2)$
       - $cal(P)(e_1) ∧ cal(P)(e_2) ==> cal(P)(e_1 | e_2)$
       - $cal(P)(e) ==> cal(P)(e^*)$
@@ -555,7 +548,7 @@ Cette notation est utilisés dans les éditeurs de texte.
 
 #slide()
 
-#exercice[
+#exercice([Miroir])[
   On note $widetilde(m) = m_n … m_1$ le _miroir_ d'un mot $m = m_1 … m_n$ et $widetilde(L) = {widetilde(m) ∣ m ∈ L}$ celui d'un langage $L$.
 
   + Donner une expression régulière du miroir de $a (a | b)^* b$.
@@ -583,8 +576,7 @@ Cette notation est utilisés dans les éditeurs de texte.
 
 #slides-only[
   #slide()
-
-  - Pour montrer une égalité de deux mots, on peut faire une récurrence sur la taille du mot.
+    - Pour montrer une égalité de deux mots, on peut faire une récurrence sur la taille du mot.
   - Pour montrer une égalité de deux langages, on peut montrer une double inclusion.
 
   #exercice[
@@ -601,8 +593,7 @@ Cette notation est utilisés dans les éditeurs de texte.
       Ces groupes appartiennent à $A^* B$, et les facteurs de $A$ restants forment un mot de $A^*$.
   ]
 
-  = Expressions régulières en pratique (non exigible)
-
+  = Complément : Expressions régulières en pratique
 
   ```sh grep -E``` est une commande qui permet de chercher des motifs dans un texte en utilisant des expressions régulières étendues :
 
@@ -625,7 +616,7 @@ Cette notation est utilisés dans les éditeurs de texte.
     $Σ^+$, et donc aussi $Σ^*$, est infini dénombrable.
   ]
   #pause
-  *Preuve* : identifier les $p$ lettres de $Σ$ avec les entiers de $1$ à $p$.
+  #underline[Preuve] : identifier les $p$ lettres de $Σ$ avec les entiers de $1$ à $p$.
   L'écriture en base $p + 1$ donne une injection de $Σ^+$ vers $ℕ$.
   L'ensemble est infini puisqu'il contient les mots $a^n$ pour $n ≥ 1$, avec $a ∈ Σ$.
 
@@ -641,7 +632,7 @@ Cette notation est utilisés dans les éditeurs de texte.
     Un ensemble $E$ ne peut pas être en bijection avec $cal(P)(E)$.
   ]
   #pause
-  *Preuve* : si $f : E → cal(P)(E)$, alors $Y = {x ∈ E ∣ x ∉ f(x)}$ n'a pas d'antécédent par $f$.
+  #underline[Preuve] : si $f : E --> cal(P)(E)$, alors $Y = {x ∈ E ∣ x ∉ f(x)}$ n'a pas d'antécédent par $f$.
 
   #pause
   #corollaire[
@@ -666,7 +657,7 @@ Cette notation est utilisés dans les éditeurs de texte.
     L'ensemble des langages réguliers sur $Σ$ est infini dénombrable.
   ]
   #pause
-  *Preuve* : l'ensemble des expressions régulières sur $Σ$ est dénombrable, car c'est un langage sur un alphabet fini.
+  #underline[Preuve] : l'ensemble des expressions régulières sur $Σ$ est dénombrable, car c'est un langage sur un alphabet fini.
   L'ensemble des langages réguliers est donc au plus dénombrable.
   Si $a ∈ Σ$, les langages ${a^n}$, pour $n ∈ ℕ$, sont réguliers et deux à deux distincts.
 
