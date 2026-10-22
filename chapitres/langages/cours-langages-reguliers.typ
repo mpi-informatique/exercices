@@ -346,32 +346,40 @@ Cette notation est utilisés dans les éditeurs de texte.
 
 == Induction sur les langages réguliers
 
-#theoreme(coeur: true)[
-  Soit $cal(P)(L)$ une propriété sur les langages réguliers telle que :
-  - $cal(P)(L)$ est vraie pour les langages $L$ finis
-  - $cal(P)(L_1) ∧ cal(P)(L_2) ==> cal(P)(L_1 L_2)$
-  - $cal(P)(L_1) ∧ cal(P)(L_2) ==> cal(P)(L_1 ∪ L_2)$
-  - $cal(P)(L) ==> cal(P)(L^*)$
+#colonnes-cours(
+  columns: (1fr, 1fr),
+  column-gutter: 1.5em,
+  align: top,
+  [
+    #theoreme(coeur: true, [Induction sur les langages réguliers])[
+      Soit $cal(P)(L)$ une propriété sur les langages réguliers telle que :
+      - $cal(P)(L)$ est vraie pour les langages $L$ finis
+      - $cal(P)(L_1) ∧ cal(P)(L_2) ==> cal(P)(L_1 L_2)$
+      - $cal(P)(L_1) ∧ cal(P)(L_2) ==> cal(P)(L_1 ∪ L_2)$
+      - $cal(P)(L) ==> cal(P)(L^*)$
 
-  Alors $cal(P)(L)$ est vraie pour tout langage régulier $L$.
-]
+      Alors $cal(P)(L)$ est vraie pour tout langage régulier $L$.
+    ]
+  ],
+  [
+    #if sys.inputs.at("format", default: "cours") == "presentation" { slide() }
+    #theoreme(coeur: true, [Induction sur les expressions régulières])[
+      Soit $cal(P)(e)$ une propriété sur les expressions régulières telle que :
+      - $cal(P)(∅)$ et $cal(P)(ε)$ sont vraies
+      - $cal(P)(a)$ est vraie pour $a ∈ Σ$
+      - $cal(P)(e_1) ∧ cal(P)(e_2) ==> cal(P)(e_1 e_2)$
+      - $cal(P)(e_1) ∧ cal(P)(e_2) ==> cal(P)(e_1 | e_2)$
+      - $cal(P)(e) ==> cal(P)(e^*)$
+
+      Alors $cal(P)(e)$ est vraie pour toute expression régulière $e$.
+    ]
+  ],
+)
+
 #solution[
   #pause
   L'ensemble ${L ∣ cal(P)(L)}$ contient les langages finis et est stable par union, concaténation et étoile de Kleene.
   Il contient donc tous les langages réguliers, par définition.
-]
-
-== Induction sur les expressions régulières
-
-#theoreme(coeur: true)[
-  Soit $cal(P)(e)$ une propriété sur les expressions régulières telle que :
-  - $cal(P)(∅)$ et $cal(P)(ε)$ sont vraies
-  - $cal(P)(a)$ est vraie pour $a ∈ Σ$
-  - $cal(P)(e_1) ∧ cal(P)(e_2) ==> cal(P)(e_1 e_2)$
-  - $cal(P)(e_1) ∧ cal(P)(e_2) ==> cal(P)(e_1 | e_2)$
-  - $cal(P)(e) ==> cal(P)(e^*)$
-
-  Alors $cal(P)(e)$ est vraie pour toute expression régulière $e$.
 ]
 
 #slide()
