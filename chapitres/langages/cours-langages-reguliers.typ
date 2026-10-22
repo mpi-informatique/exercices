@@ -240,18 +240,6 @@ Les expressions régulières sont une notation plus concise pour représenter un
 - On utilise seulement les parenthèses nécessaires : $(((a b) c) | d)$ sera noté $a b c | d$.
 - On utilise parfois $+$ à la place de $|$.
 
-== Représentation en OCaml
-
-On peut représenter informatiquement les expressions régulières par le type :
-
-```ocaml
-type 'a regexp = (* 'a est le type des lettres de l'alphabet *)
-  | Vide | Epsilon | L of 'a (* L a désigne la lettre a *)
-  | Union of 'a regexp * 'a regexp
-  | Concat of 'a regexp * 'a regexp
-  | Etoile of 'a regexp
-```
-
 #slide()
 
 #definition[
@@ -290,6 +278,23 @@ Cette notation est utilisés dans les éditeurs de texte.
     ],
   )
 ]
+
+#colonnes-cours(
+  encadrer: exercice,
+  [
+    + Écrire ```ocaml epsilon : 'a regexp -> bool``` qui détermine si $ε ∈ LL(e)$.
+    + Écrire ```ocaml est_vide : 'a regexp -> bool``` qui détermine si $LL(e) = ∅$.
+  ],
+  [
+    ```ocaml
+    type 'a regexp =
+      | Vide | Epsilon | L of 'a (* L a est la lettre a *)
+      | Union of 'a regexp * 'a regexp
+      | Concat of 'a regexp * 'a regexp
+      | Etoile of 'a regexp
+    ```
+  ],
+)
 
 == Résumé des définitions
 
