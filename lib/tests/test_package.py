@@ -114,14 +114,25 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   }
   Un détail du polycopié.
 ]
-#solution[
+#solution(presentation: true)[
   #slides-only[== Solution projetée]
   #metadata("solution") <solution-cours-test> Une solution réservée au corrigé et aux diapositives.
   #pause
   #block[#slides-only[Un détail projeté.] #article-only[Un détail imprimé.]]
   La fin de la solution.
 ]
+#solution[
+  #slides-only[== Solution masquée par défaut]
+  #metadata("solution") <solution-masquee-test> Une solution réservée au corrigé.
+  #pause
+  La suite reste également masquée dans la présentation.
+]
+#solution(presentation: false)[#metadata("solution") <solution-non-projetee-test> Une autre solution réservée au corrigé.]
 #context {
+  let corrige = sys.inputs.at("corrige", default: "false") == "true"
+  for cible in (<solution-masquee-test>, <solution-non-projetee-test>) {
+    assert(query(cible).len() == if corrige { 1 } else { 0 })
+  }
   // La pause répète la solution sur deux diapositives, une seule fois dans le corrigé.
   let nombre = if sys.inputs.at("format") == "presentation" { 2 } else if sys.inputs.at("corrige", default: "false") == "true" { 1 } else { 0 }
   assert(query(<solution-cours-test>).len() == nombre)

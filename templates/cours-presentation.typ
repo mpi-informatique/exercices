@@ -26,6 +26,7 @@
   Indication à révéler pendant la présentation.
 ]
 
+// Ajouter presentation: true pour révéler aussi la solution dans les diapositives.
 #solution[
   Justifier les étapes de la résolution.
 ]
