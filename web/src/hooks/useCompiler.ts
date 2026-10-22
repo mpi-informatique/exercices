@@ -45,7 +45,7 @@ export function useCompiler(resource: Resource | undefined, source: string | und
         }
       };
       active = true;
-      timeout = setTimeout(() => fail('La compilation dépasse 45 secondes. Vérifier le code puis réessayer.'), 45_000);
+      timeout = setTimeout(() => fail('La compilation dépasse 120 secondes. Vérifier le code puis réessayer.'), 120_000);
       worker.postMessage(request);
     };
     queue.current = request => { if (active) pending = request; else start(request); };

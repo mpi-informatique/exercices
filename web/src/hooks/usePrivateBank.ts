@@ -62,7 +62,7 @@ export function usePrivateBank() {
       const indexed = await new Promise<Pick<PrivateBank, 'resources' | 'warnings'>>((resolve, reject) => {
         let timeout: ReturnType<typeof setTimeout>;
         const fail = (error: Error) => { clearTimeout(timeout); reject(error); };
-        const arm = () => { clearTimeout(timeout); timeout = setTimeout(() => fail(new Error('L’indexation dépasse 45 secondes pour un exercice. Vérifier les sources du dépôt.')), 45_000); };
+        const arm = () => { clearTimeout(timeout); timeout = setTimeout(() => fail(new Error('L’indexation dépasse 120 secondes pour un exercice. Vérifier les sources du dépôt.')), 120_000); };
         arm();
         signal.addEventListener('abort', () => fail(new Error('Chargement annulé.')), { once: true });
         worker.onerror = () => fail(new Error('Le compilateur n’a pas pu indexer le dépôt.'));
