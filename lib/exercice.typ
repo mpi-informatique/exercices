@@ -64,7 +64,7 @@
 
 // Titres communs aux exercices et aux parties des sujets.
 #let titre-exercice(titre, prefixe, concours: none, niveau: 1) = {
-  block(breakable: false)[
+  block(breakable: false, sticky: true)[
     #heading(level: niveau, numbering: none)[
       #grid(
         columns: (1fr, auto),
@@ -275,7 +275,7 @@
 /// - afficher-titre (bool): Afficher le titre de l'exercice.
 ///   Pour un exercice de concours, l'attribution s'affiche à droite à la place de la durée.
 /// - afficher-contexte (bool): Conserver les textes libres dans le corrigé, défaut true. Les questions et leurs figures restent toujours visibles.
-/// - espacement (relative, auto): Espacement vertical des textes et questions, automatique par défaut.
+/// - espacement (relative, auto): Espacement vertical des textes et questions, défaut 0,8 em ; auto reprend les marges automatiques.
 /// -> content
 #let afficher-exercice(
   ex,
@@ -284,7 +284,7 @@
   afficher-titre: true,
   afficher-contexte: true,
   bareme: none,
-  espacement: auto,
+  espacement: 0.8em,
 ) = {
   let bareme = if bareme == none { ex.bareme } else { bareme }
   let nombre = nombre-questions(ex.contenu)
@@ -377,7 +377,7 @@
 /// - corrige (bool): Afficher les corrigés ; brancher sur `sys.inputs.at("corrige", default: "false") == "true"`.
 /// - bareme (array, none): Points dans l'ordre de toutes les questions de la feuille ; remplace les barèmes des exercices. `none` conserve ceux des exercices ; une entrée `none` masque les points de cette question.
 /// - nouvelle-page (bool): Commencer chaque exercice après le premier sur une nouvelle page, hors colles. En colle, les exercices s'enchaînent ; `sujet-colle` gère le saut entre les sujets.
-/// - espacement (relative, auto): Espacement vertical des textes et questions, automatique par défaut.
+/// - espacement (relative, auto): Espacement vertical des textes et questions, défaut 0,8 em ; auto reprend les marges automatiques.
 /// - afficher-exercices (bool): Composer automatiquement le tableau d'exercices ; false permet une composition personnalisée dans body.
 /// - body (content): Contenu placé avant les exercices, fourni par la règle show.
 /// -> content
@@ -392,7 +392,7 @@
   corrige: false,
   nouvelle-page: false,
   afficher-exercices: true,
-  espacement: auto,
+  espacement: 0.8em,
   bareme: none,
   body,
 ) = {
