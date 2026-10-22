@@ -52,7 +52,7 @@
       devShells = forAllSystems (system:
         let pkgs = packagesFor system; in {
           default = pkgs.mkShellNoCC {
-            packages = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ocaml pkgs.ripgrep ];
+            packages = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ocaml pkgs.stdenv.cc pkgs.ripgrep ];
             TYPST_PACKAGE_PATH = self.packages.${system}.typst-packages;
             TYPST_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts";
           };
@@ -66,7 +66,7 @@
       checks = forAllSystems (system:
         let pkgs = packagesFor system; in {
           documents = pkgs.runCommand "exercices-check" {
-            nativeBuildInputs = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ocaml ];
+            nativeBuildInputs = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ocaml pkgs.stdenv.cc ];
             TYPST_PACKAGE_PATH = self.packages.${system}.typst-packages;
             TYPST_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts";
           } ''
