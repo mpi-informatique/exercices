@@ -101,7 +101,7 @@ export default function PdfViewer({ pdf, pending, pendingLabel = 'Compilation…
     return () => { cancelled = true; };
   }, [document, current, fullscreen]);
   useEffect(() => {
-    if (!fullscreen) scroll.current?.querySelector(`#pdf-page-${current}`)?.scrollIntoView({ block: 'start' });
+    if (!fullscreen) scroll.current?.querySelector(`#pdf-page-${current}`)?.scrollIntoView({ behavior: 'instant', block: 'start' });
   }, [fullscreen]);
   useEffect(() => { updateCurrentPage(); }, [document, width, zoom, fullscreen]);
   function updateCurrentPage() {
@@ -123,7 +123,7 @@ export default function PdfViewer({ pdf, pending, pendingLabel = 'Compilation…
   function goTo(page: number) {
     if (!document || page < 1 || page > document.numPages) return;
     setCurrent(page);
-    if (!fullscreen) scroll.current?.querySelector(`#pdf-page-${page}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!fullscreen) scroll.current?.querySelector(`#pdf-page-${page}`)?.scrollIntoView({ behavior: 'instant', block: 'start' });
   }
 
   async function toggleFullscreen() {
