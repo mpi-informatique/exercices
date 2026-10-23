@@ -43,13 +43,14 @@
 }
 
 /// Affiche une solution dans le cours corrigé, et sur demande dans la présentation.
-/// Masquée dans le cours normal, avec le même bloc que les feuilles dans le corrigé.
+/// Masquée par défaut dans le cours normal, avec le même bloc que les feuilles lorsqu'elle est affichée.
 /// Les pauses et titres réservés à la projection peuvent rester dans `slides-only[...]`.
+/// - cours (bool): Afficher aussi la solution dans le cours non corrigé, défaut false.
 /// - presentation (bool): Afficher aussi la solution dans les diapositives, défaut false.
 /// - body (content): Solution ou preuve.
 /// -> content
-#let solution(presentation: false, body) = {
-  if sys.inputs.at("corrige", default: "false") == "true" {
+#let solution(cours: false, presentation: false, body) = {
+  if sys.inputs.at("corrige", default: "false") == "true" or (cours and sys.inputs.at("format", default: "cours") == "cours") {
     // Le filtre article de Touying ne descend pas dans les arguments des fonctions différées.
     body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
       if marque.kind == "touying-slides-only" { [] } else { marque.body }

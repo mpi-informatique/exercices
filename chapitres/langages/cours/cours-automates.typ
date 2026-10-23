@@ -282,8 +282,10 @@ let accepte a m =
 
 == Déterminisation
 #theoreme(coeur: true)[Tout automate est équivalent à un automate déterministe complet.]
-L'automate des parties est $A' = (Σ, cal(P)(Q), {I}, F', δ')$, où :
-$ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q, a). $
+#solution(cours: true)[
+  L'automate des parties est $A' = (Σ, cal(P)(Q), {I}, F', δ')$, où :
+  $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q, a). $
+]
 
 #slide()
 #underline[Invariant] : après lecture d'un mot $u$, l'état atteint dans $A'$ est exactement l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.

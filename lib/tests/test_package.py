@@ -104,6 +104,8 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   La suite reste également masquée dans la présentation.
 ]
 #solution(presentation: false)[#metadata("solution") <solution-non-projetee-test> Une autre solution réservée au corrigé.]
+#solution(cours: true)[#metadata("solution") <solution-cours-force-test> Une solution visible dans les deux cours.]
+#solution(cours: true, presentation: true)[#metadata("solution") <solution-partout-test> Une solution visible partout.]
 #context {
   let corrige = sys.inputs.at("corrige", default: "false") == "true"
   for cible in (<solution-masquee-test>, <solution-non-projetee-test>) {
@@ -111,6 +113,8 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   }
   let visible = corrige or sys.inputs.at("format") == "presentation"
   assert((query(<solution-cours-test>).len() > 0) == visible)
+  assert(query(<solution-cours-force-test>).len() == if sys.inputs.at("format") == "cours" { 1 } else { 0 })
+  assert(query(<solution-partout-test>).len() > 0)
 }
 == Colonnes du cours
 #colonnes-cours(
@@ -141,9 +145,11 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 #show: cours.with(titre: "Cours sans présentation")
 Un énoncé.
 #solution[#metadata("solution") <solution-simple-test> Une solution.]
+#solution(cours: true)[#metadata("solution") <solution-simple-force-test> Une solution toujours imprimée.]
 #context {
   let corrige = sys.inputs.at("corrige", default: "false") == "true"
   assert(query(<solution-simple-test>).len() == if corrige { 1 } else { 0 })
+  assert(query(<solution-simple-force-test>).len() == 1)
 }
 ''', encoding='utf-8')
     for corrige in ('false', 'true'):
