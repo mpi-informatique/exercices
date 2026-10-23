@@ -75,10 +75,22 @@ function schedulePdfProgress() {
   progressFrame = requestAnimationFrame(updatePdfProgress);
 }
 host.addEventListener('scroll', schedulePdfProgress, { passive: true });
-new ResizeObserver(schedulePdfProgress).observe(host);
+let resizeTimer;
+function schedulePdfRender() {
+  schedulePdfProgress();
+  clearTimeout(resizeTimer);
+  if (!state?.pdf || state.native) return;
+  resizeTimer = setTimeout(() => {
+    if (state?.pdf && !state.native) void pdf(state.pdf).catch(reportPdfError);
+  }, 150);
+}
+new ResizeObserver(schedulePdfRender).observe(host);
+window.addEventListener('resize', schedulePdfRender);
 let state;
 let epoch = 0;
 let rendered;
+let renderedWidth;
+let renderedPixelRatio;
 let workerSource;
 const controls = frame => {
   const style = getComputedStyle(document.body);
@@ -87,8 +99,13 @@ const controls = frame => {
 };
 new MutationObserver(() => { for (const frame of frames.values()) controls(frame); }).observe(document.body, { attributes: true, attributeFilter: ['class', 'style'] });
 async function pdf(data) {
-  if (rendered === data) return;
+  const width = host.clientWidth;
+  const pixelRatio = window.devicePixelRatio || 1;
+  if (!width || (rendered === data && renderedWidth === width && renderedPixelRatio === pixelRatio)) return;
+  const scrollTop = rendered === data ? host.scrollTop * width / renderedWidth : 0;
   rendered = data;
+  renderedWidth = width;
+  renderedPixelRatio = pixelRatio;
   const revision = ++epoch;
   pdfPages = 0;
   requestedPdfPage = undefined;
@@ -109,23 +126,38 @@ async function pdf(data) {
     pdfPages = doc.numPages;
     for (let n = 1; n <= doc.numPages && revision === epoch; n++) {
       const page = await doc.getPage(n);
-      const scale = Math.max(0.2, (host.clientWidth - 24) / page.getViewport({ scale: 1 }).width);
+      const scale = Math.max(0.2, (width - 24) / page.getViewport({ scale: 1 }).width);
       const viewport = page.getViewport({ scale });
       const pageView = document.createElement('div'); pageView.className = 'page';
       pageView.dataset.page = String(n);
-      const canvas = document.createElement('canvas'); canvas.width = viewport.width; canvas.height = viewport.height;
+      const canvas = document.createElement('canvas');
+      // La taille CSS reste celle de la page ; le bitmap utilise les pixels physiques.
+      canvas.width = Math.ceil(viewport.width * pixelRatio);
+      canvas.height = Math.ceil(viewport.height * pixelRatio);
+      canvas.style.width = `${viewport.width}px`;
+      canvas.style.height = `${viewport.height}px`;
       const textLayer = document.createElement('div'); textLayer.className = 'textLayer';
       if (revision !== epoch) break;
       pageView.append(canvas, textLayer); host.append(pageView);
       if (requestedPdfPage === n) goToPage(n);
       schedulePdfProgress();
       await Promise.all([
-        page.render({ canvasContext: canvas.getContext('2d'), canvas, viewport, intent: 'print' }).promise,
+        page.render({ canvasContext: canvas.getContext('2d'), canvas, viewport, transform: [pixelRatio, 0, 0, pixelRatio, 0, 0], intent: 'print' }).promise,
         new pdfjs.TextLayer({ textContentSource: page.streamTextContent(), container: textLayer, viewport }).render()
       ]);
     }
-    if (revision === epoch) vscode.postMessage({ type: 'pdfReady', pages: doc.numPages });
+    if (revision === epoch) {
+      host.scrollTop = scrollTop;
+      schedulePdfProgress();
+      const canvas = host.querySelector('canvas');
+      vscode.postMessage({ type: 'pdfReady', pages: doc.numPages, pixelRatio, width: canvas.width, displayWidth: canvas.getBoundingClientRect().width });
+    }
   } finally { await loading.destroy(); worker.destroy(); port.terminate(); URL.revokeObjectURL(url); }
+}
+function reportPdfError(error) {
+  rendered = undefined;
+  status.textContent = String(error); status.hidden = false;
+  vscode.postMessage({ type: 'pdfError', error: String(error) });
 }
 const variants = [...document.querySelectorAll('[data-variant]')].map(button => button.id);
 for (const id of [...variants, 'save', 'code', 'jumps', 'theme', 'fullscreen', 'restart']) {
@@ -144,7 +176,7 @@ window.addEventListener('message', ({ data }) => {
   if (data.native) showProgress(pagination.get(data.variant));
   document.body.classList.toggle('pdf-dark', !data.native && data.dark);
   document.getElementById('jumps').disabled = !data.native;
-  if (data.pdf) { status.hidden = true; void pdf(data.pdf).catch(error => { rendered = undefined; status.textContent = String(error); status.hidden = false; vscode.postMessage({ type: 'pdfError', error: String(error) }); }); }
+  if (data.pdf) { status.hidden = true; void pdf(data.pdf).catch(reportPdfError); }
   for (const [variant, url] of Object.entries(data.sessions)) {
     if (!frames.has(variant)) {
       const frame = document.createElement('iframe');
