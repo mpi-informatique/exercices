@@ -214,7 +214,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible, [role="separator"]
 .pdf-viewer { display: flex; flex-direction: column; flex: 1; min-height: 0; background: var(--viewer-bg); }
 .pdf-viewer:fullscreen { width: 100%; height: 100%; color: var(--ink); }
 .pdf-fullscreen .pdf-controls { display: none; }
-.pdf-fullscreen .pdf-scroll { display: flex; align-items: center; justify-content: center; padding: 0; }
+.pdf-fullscreen .pdf-scroll { display: flex; align-items: center; justify-content: center; padding: 0; touch-action: pinch-zoom; }
 .pdf-fullscreen .pdf-scroll:focus-visible { outline: none; }
 .pdf-fullscreen .pdf-page { margin: 0; }
 .pdf-controls { justify-content: start; color: var(--muted); overflow-x: auto; }
@@ -265,6 +265,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible, [role="separator"]
   .sidebar-backdrop { display: block; position: fixed; inset: 0; background: #09192555; z-index: 14; }
 }
 @media (max-width: 600px) {
+  .pdf-navigation .zoom-controls { display: none; }
   .pdf-scroll { padding: 8px; }
   .pdf-page { margin-bottom: 8px; scroll-margin-top: 8px; }
   .command-palette { margin-top: 8dvh; max-height: 82dvh; }

@@ -68,6 +68,7 @@ export default function PdfViewer({ pdf, pending, pendingLabel = 'Compilation…
   const [aspect, setAspect] = useState(1);
   const viewer = useRef<HTMLDivElement>(null);
   const scroll = useRef<HTMLDivElement>(null);
+  const swipe = useRef<{ id: number; x: number; y: number } | undefined>(undefined);
 
   useEffect(() => {
     if (!pdf) { setLoaded(undefined); return; }
@@ -150,7 +151,21 @@ export default function PdfViewer({ pdf, pending, pendingLabel = 'Compilation…
       <button className="btn btn-ghost btn-sm btn-square" aria-label={fullscreen ? 'Quitter le plein écran' : 'Présenter en plein écran'} title={fullscreen ? 'Quitter le plein écran (Échap)' : 'Présenter en plein écran'} disabled={!document} onClick={toggleFullscreen}>{fullscreen ? <Minimize size={17} /> : <Maximize size={17} />}</button>
     </div>
     {fullscreenError && <p className="viewer-error" role="alert">{fullscreenError}</p>}
-    <div ref={scroll} className="pdf-scroll" id="pdf-preview" role="tabpanel" tabIndex={0} aria-label="Aperçu PDF" aria-busy={pending} onScroll={updateCurrentPage} onKeyDown={event => {
+    <div ref={scroll} className="pdf-scroll" id="pdf-preview" role="tabpanel" tabIndex={0} aria-label="Aperçu PDF" aria-busy={pending} onScroll={updateCurrentPage} onTouchStart={event => {
+      const touch = event.touches[0];
+      swipe.current = fullscreen && event.touches.length === 1 && touch ? { id: touch.identifier, x: touch.clientX, y: touch.clientY } : undefined;
+    }} onTouchCancel={() => { swipe.current = undefined; }} onTouchEnd={event => {
+      const start = swipe.current;
+      swipe.current = undefined;
+      if (!fullscreen || !start || event.touches.length) return;
+      const touch = Array.from(event.changedTouches).find(touch => touch.identifier === start.id);
+      if (!touch) return;
+      const dx = touch.clientX - start.x;
+      const dy = touch.clientY - start.y;
+      const distance = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+      // Un balayage vers la gauche ou le haut avance d'une page ; ignorer les taps et pincements.
+      if (Math.abs(distance) >= 50) goTo(current + (distance < 0 ? 1 : -1));
+    }} onKeyDown={event => {
       if (event.target !== event.currentTarget || event.metaKey || event.ctrlKey || event.altKey) return;
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); goTo(Math.max(1, Math.min(document?.numPages ?? 1, current + (event.key === 'ArrowRight' ? 1 : -1)))); }
       if (event.key === '+' || event.key === '=' || event.key === '-') { event.preventDefault(); setZoom(zoom => Math.max(0.5, Math.min(2, zoom + (event.key === '-' ? -0.1 : 0.1)))); }
