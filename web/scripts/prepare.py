@@ -78,16 +78,16 @@ def export_pdfs(entries, bank, signature, pages):
             entry['pdfs']['enonce' if variant == 'cours' else variant] = destination.relative_to(WEB / 'public').as_posix()
 
 
-def export_tp(entries):
-    """Un manifeste voisin décrit les ressources à installer, sans analyser le Typst."""
+def export_tp(entries, bank):
+    """Publier les fichiers déclarés dans les métadonnées Typst des TP."""
+    exported = set()
     for entry in entries:
         if entry['type'] != 'tp':
             continue
-        directory = Path(entry['fichier']).with_suffix('')
-        manifest = ROOT / directory / 'tp.json'
-        if not manifest.is_file():
-            raise ValueError(f"Manifeste TP absent : {manifest}")
-        data = json.loads(manifest.read_text())
+        directory = Path(entry['fichier']).parent
+        data = entry.get('tp')
+        if not isinstance(data, dict):
+            raise ValueError(f"Métadonnées tp absentes ou invalides : {entry['fichier']}")
 
         def relative(value):
             if not isinstance(value, str) or not value or '\\' in value or ':' in value or any(part in ('', '.', '..') or part.startswith('.') for part in value.split('/')):
@@ -95,8 +95,12 @@ def export_tp(entries):
             return value
 
         def files(items):
+            if not isinstance(items, list):
+                raise ValueError(f"Liste de ressources TP invalide : {entry['fichier']}")
             result = []
             for item in items:
+                if not isinstance(item, dict) or 'source' not in item:
+                    raise ValueError(f"Ressource TP invalide : {item}")
                 source = relative(item['source'])
                 path = ROOT / directory / source
                 if not path.is_file() or not path.resolve().is_relative_to((ROOT / directory).resolve()):
@@ -106,11 +110,15 @@ def export_tp(entries):
                     if path.suffix.lower() != '.zip':
                         raise ValueError(f"Seuls les ZIP peuvent être extraits : {path}")
                     resource['extraire'] = relative(item['extraire'])
+                target = bank / directory / source
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(path, target)
+                exported.add((directory / source).as_posix())
                 result.append(resource)
             return result
 
-        skeleton = files(data['squelette'])
-        opening = relative(data['ouvrir'])
+        skeleton = files(data.get('squelette'))
+        opening = relative(data.get('ouvrir'))
         if opening not in [item['chemin'] for item in skeleton]:
             raise ValueError(f"Le fichier à ouvrir doit appartenir au squelette : {opening}")
         entry['tp'] = {
@@ -118,6 +126,7 @@ def export_tp(entries):
             'fichiers': skeleton + files(data.get('ressources', [])),
             'corrige': files(data.get('corrige', [])),
         }
+    return sorted(exported)
 
 
 def document(typst, source, kind="document"):
@@ -134,6 +143,7 @@ def document(typst, source, kind="document"):
         "concours": meta.get("concours"), "duree": None,
         "difficulte": max((ex["difficulte"] for ex in exercises), default=None),
         "nombreExercices": len(exercises),
+        **({'tp': meta['tp']} if 'tp' in meta else {}),
         **{field: sorted({value for ex in exercises for value in ex.get(field, [])})
            for field in ("chapitres", "algorithmes", "structures", "langages", "niveaux")},
     }
@@ -190,13 +200,16 @@ def prepare():
     shutil.rmtree(bank, ignore_errors=True)
     bank.mkdir(parents=True)
     export_pdfs(entries, bank, empreinte(), pages)
-    export_tp(entries)
+    tp_files = export_tp(entries, bank)
     (bank / 'catalogue.json').write_text(json.dumps(entries, ensure_ascii=False))
     files = []
     shutil.copyfile(ROOT / "load.typ", bank / "load.typ")
     files.append("load.typ")
     for directory in ("chapitres", "devoirs", "lib", "templates"):
         files.extend(f"{directory}/{file}" for file in copy_tree(ROOT / directory, bank / directory))
+    # Les fichiers explicitement fournis aux élèves restent publiés, y compris
+    # les annexes PDF et les ressources normalement exclues de la copie générale.
+    files = sorted(set(files) | set(tp_files))
     packages = []
     package_path = os.environ.get("TYPST_PACKAGE_PATH")
     if not package_path:

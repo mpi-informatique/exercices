@@ -131,18 +131,27 @@ La connexion utilise le [même Worker OAuth](../worker/README.md), sans nouvelle
 
 Le bouton **TP** de la barre du lecteur PDF, dans la banque et dans le lecteur intégrable, ouvre ou reprend le Codespace `mpi-informatique/tp-environnement` dans un nouvel onglet. Sélectionner ensuite le TP dans le panneau **TP MPI**. Ce bouton est réservé aux documents publics de type TP.
 
-Les documents `feuille.with(type: "tp", ...)` sont également publiés pour l'extension `tp-environnement/extension`. Partir de `templates/tp.typ`. À côté de `tp-exemple.typ`, créer le dossier `tp-exemple/` avec les fichiers et un `tp.json` :
+Les documents `feuille.with(type: "tp", ...)` sont également publiés pour l'extension `tp-environnement/extension`. Partir de `templates/tp.typ`. Regrouper chaque TP et ses fichiers dans un même dossier, par exemple `chapitres/langages/tp/tp-exemple/tp-exemple.typ`. Déclarer les ressources directement dans la feuille :
 
-```json
-{
-  "ouvrir": "main.ml",
-  "squelette": [{"source": "main.ml"}],
-  "ressources": [{"source": "graphes.zip", "extraire": "donnees"}],
-  "corrige": [{"source": "corrige.ml"}]
-}
+```typst
+#show: feuille.with(
+  type: "tp",
+  titre: sujet.meta.titre,
+  exercices: (sujet,),
+  tp: (
+    ouvrir: "main.ml",
+    squelette: ((source: "main.ml"),),
+    ressources: (
+      (source: "graphes.zip", extraire: "donnees"),
+      (source: "annexe.pdf"),
+    ),
+    corrige: ((source: "corrige.ml"),),
+  ),
+  corrige: sys.inputs.at("corrige", default: "false") == "true",
+)
 ```
 
-Les chemins `source` sont relatifs au dossier du manifeste. `destination` permet de choisir le chemin dans le dossier de travail, sinon le nom source est conservé. `extraire` désigne le sous-dossier d'extraction d'un ZIP ; sans ce champ, l'archive reste compressée. Les fichiers ordinaires peuvent également figurer dans `ressources`.
+Les chemins `source` sont relatifs au fichier `.typ`. `destination` permet de choisir le chemin dans le dossier de travail, sinon le nom source est conservé. `extraire` désigne le sous-dossier d'extraction d'un ZIP ; sans ce champ, l'archive reste compressée. Les fichiers déclarés sont copiés explicitement dans la banque publique, y compris les annexes PDF. Aucun `tp.json` source n'est nécessaire.
 
 Le catalogue ajoute `tp.ouvrir`, `tp.fichiers` et `tp.corrige` avec les URL publiques. Les deux PDF et les fichiers corrigés sont exportés pour tous les TP. L'extension décide de leur affichage en lisant la rubrique `- TP` du menu : corrigé autorisé hors du cours, et seulement avec `: cor` dans le cours. Modifier ce marqueur ne nécessite donc pas de reconstruire la banque. Les fichiers du dépôt public restent consultables sur GitHub : masquer un corrigé dans l'interface ne constitue pas une restriction d'accès.
 

@@ -10,7 +10,7 @@ test('les cours, corrigés et présentations ont des paramètres et noms distinc
     ['presentation', 'presentation', 'presentation-kleene.pdf'],
   ] as const) {
     assert.deepEqual(compilationInputs(variant, 'cours-presentation'), { format, corrige: String(variant === 'corrige') });
-    assert.equal(pdfFilename('chapitres/langages/cours-kleene.typ', variant, 'cours-presentation'), name);
+    assert.equal(pdfFilename('chapitres/langages/cours/cours-kleene.typ', variant, 'cours-presentation'), name);
   }
   assert.deepEqual(availableVariants('cours'), ['enonce', 'corrige']);
   assert.equal(pdfFilename('chapitres/support.typ', 'corrige', 'cours'), 'support-cor.pdf');

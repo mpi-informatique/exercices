@@ -8,11 +8,11 @@ Avant toute modification, lire l'API actuelle dans [lib/exercice.typ](../lib/exe
 
 ## Organisation et réutilisation
 
-Les contenus sont regroupés dans `chapitres/<chapitre>/` : `langages`, `graphes`, `structures`, etc. Les exercices autonomes sont dans le sous-dossier `exercices/` ; les feuilles (TD et devoirs) sont directement dans leur chapitre, par exemple `chapitres/langages/td-automate.typ`.
+Les contenus sont regroupés dans `chapitres/<chapitre>/` : `langages`, `graphes`, `structures`, etc. Les exercices autonomes sont dans le sous-dossier `exercices/`. Dans `langages/`, regrouper les cours et leurs ressources dans `cours/`, les feuilles de TD dans `td/` et les TP dans `tp/<identifiant>/`, avec le fichier `<identifiant>.typ` et ses ressources. Les autres chapitres conservent leurs feuilles directement à leur racine.
 Les mathématiques conservent leurs sous-dossiers dans `chapitres/maths/`, notamment `determinants/` et `reduction/`. Leurs feuilles sont directement dans `chapitres/maths/`.
-Les sujets écrits de concours sont dans `devoirs/concours/`, avec leur classement par année. Les exercices oraux sont dans `devoirs/concours/oral/<concours>/`, où `<concours>` est le nom en minuscules de l'une des valeurs de `concours-possibles`. Les cours et présentations sont dans leur chapitre, avec leurs ressources dans un sous-dossier voisin.
+Les sujets écrits de concours sont dans `devoirs/concours/`, avec leur classement par année. Les exercices oraux sont dans `devoirs/concours/oral/<concours>/`, où `<concours>` est le nom en minuscules de l'une des valeurs de `concours-possibles`. Les cours et présentations suivent cette organisation, avec leurs ressources dans un sous-dossier voisin.
 
-Partir des modèles [exercice](../templates/exercice.typ), [TD](../templates/feuille.typ), [devoir](../templates/devoir.typ) ou [sujet de concours](../templates/sujet-concours.typ).
+Partir des modèles [exercice](../templates/exercice.typ), [TD](../templates/feuille.typ), [TP](../templates/tp.typ), [devoir](../templates/devoir.typ) ou [sujet de concours](../templates/sujet-concours.typ).
 Avant de créer un exercice, vérifier qu'il n'existe pas déjà dans la banque.
 
 - Réutiliser un exercice par import direct de son fichier, sans créer de fichier relais dans les chapitres : les métadonnées permettent de le retrouver par chapitre. Réutiliser une partie en exportant une variable puis en l'important, sans copier le sujet ni rechercher une partie par numéro.

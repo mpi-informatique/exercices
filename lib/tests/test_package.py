@@ -28,7 +28,7 @@ with TemporaryDirectory() as dossier:
     source = racine / 'document.typ'
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, theoremes, exercice, question, partie, afficher-exercice
 #let sujet = public("devoirs/concours/19/mines-ponts-2019-mp-informatique/mines-ponts-2019-mp-informatique.typ").sujet
-#let td = public("chapitres/langages/td-grammaire.typ")
+#let td = public("chapitres/langages/td/td-grammaire.typ")
 #assert(td.sujet.exercices.len() > 0)
 #assert(public("chapitres/langages/exercices/grammaires-lineaires/grammaires-lineaires.typ").ex.meta.titre != "")
 #assert(public("chapitres/maths/determinants/binomiaux.typ").ex.meta.matiere == "mathématiques")

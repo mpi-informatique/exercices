@@ -7,11 +7,16 @@
   ),
 )
 
-// Placer les fichiers et tp.json dans un dossier portant le nom du .typ sans extension.
+// Placer le .typ et ses fichiers associés dans un même dossier.
 #show: feuille.with(
   type: "tp",
-  titre: "Titre du TP",
+  titre: sujet.meta.titre,
   niveau: "MPI",
   exercices: (sujet,),
+  tp: (
+    ouvrir: "main.ml",
+    squelette: ((source: "main.ml"),),
+    corrige: ((source: "corrige.ml"),),
+  ),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
 )

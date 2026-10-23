@@ -374,6 +374,7 @@
 /// - duree (array, none): Durée (heures, minutes) après le titre, uniquement pour un devoir/concours ; `none` reprend celle du sujet unique.
 /// - concours (dictionary, none): Filière affichée à gauche, autres informations à la place de l'auteur ; mêmes champs que `exercice.meta.concours`. Un concours utilise la base `type: "devoir"`. Dans un devoir/concours écrit (`oral` absent ou false), les textes libres du contexte sont masqués dans le corrigé ; les exercices affichés seuls ou dans un TD les conservent.
 /// - exercices (array): Objets `ex` importés, dans l'ordre ; `()` crée une feuille vide.
+/// - tp (dictionary, none): Ressources d'un TP, relatives au fichier source : `ouvrir`, `squelette`, `ressources` et `corrige`. Chaque fichier déclare `source`, éventuellement `destination` et, pour un ZIP, `extraire`. Exporté dans les métadonnées, sans effet sur le PDF.
 /// - corrige (bool): Afficher les corrigés ; brancher sur `sys.inputs.at("corrige", default: "false") == "true"`.
 /// - bareme (array, none): Points dans l'ordre de toutes les questions de la feuille ; remplace les barèmes des exercices. `none` conserve ceux des exercices ; une entrée `none` masque les points de cette question.
 /// - nouvelle-page (bool): Commencer chaque exercice après le premier sur une nouvelle page, hors colles. En colle, les exercices s'enchaînent ; `sujet-colle` gère le saut entre les sujets.
@@ -389,6 +390,7 @@
   duree: none,
   concours: none,
   exercices: (),
+  tp: none,
   corrige: false,
   nouvelle-page: false,
   afficher-exercices: true,
@@ -397,6 +399,7 @@
   body,
 ) = {
   assert(type == str(type) and type != "", message: "Le type de document doit être une chaîne non vide")
+  assert(tp == none or (type == "tp" and std.type(tp) == dictionary), message: "tp doit être un dictionnaire réservé aux documents de type tp")
   verifier-bareme(bareme, exercices.map(ex => nombre-questions(ex.contenu)).sum(default: 0))
   let titre-affiche = titre + if corrige { " : corrigé" } else { "" }
   let duree = if type not in ("devoir", "concours") { none } else if duree != none { duree } else if (
@@ -422,7 +425,7 @@
     titre-entete: titre-entete,
     repeter-entete: type == "colle",
   )
-  [#metadata((type: type, titre: titre, niveau: niveau, concours: concours)) <document-meta>]
+  [#metadata((type: type, titre: titre, niveau: niveau, concours: concours, ..if tp == none { (:) } else { (tp: tp) })) <document-meta>]
   body
   let afficher-contexte = type not in ("devoir", "concours") or concours == none or concours.at("oral", default: false)
   let debut-bareme = 0

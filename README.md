@@ -6,7 +6,7 @@ Ressources pédagogiques publiques de [mpi-informatique](https://github.com/mpi-
 
 ```text
 chapitres/               Contenus regroupés par chapitre
-  langages/              Cours, TD et colles, avec les exercices dans exercices/
+  langages/              Cours dans cours/, TD dans td/, TP dans tp/, exercices dans exercices/
   graphes/               Exercices dans exercices/
   structures/ Exercices dans exercices/
   maths/                 Exercices dans determinants/ et reduction/, feuilles à côté
@@ -45,11 +45,11 @@ Just est facultatif pour compiler : `nix develop . -c python3 scripts/build.py c
 ## Cours et présentations
 
 Partir des modèles [cours A4](templates/cours.typ), [présentation Touying](templates/presentation.typ) ou [source commune](templates/cours-presentation.typ).
-Le cours sur les [langages réguliers](chapitres/langages/cours-langages-reguliers.typ) génère le cours, son corrigé et la présentation sans recopier les énoncés :
+Le cours sur les [langages réguliers](chapitres/langages/cours/cours-langages-reguliers.typ) génère le cours, son corrigé et la présentation sans recopier les énoncés :
 
 ```sh
-nix develop . -c just c chapitres/langages/cours-langages-reguliers.typ
-nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ presentation
+nix develop . -c just c chapitres/langages/cours/cours-langages-reguliers.typ
+nix develop . -c just w chapitres/langages/cours/cours-langages-reguliers.typ presentation
 ```
 
 Voir le [guide de rédaction](docs/utilisation.md#cours-et-présentations) pour les pauses et les contenus propres à un format.

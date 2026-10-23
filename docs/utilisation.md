@@ -95,10 +95,10 @@ Les cadres de `lib/theoremes.typ` acceptent les pauses et commandes d'animation 
 La présentation révèle la suite après la pause, tandis que le cours imprimé affiche la définition complète. Le numéro du cadre reste identique pendant l'animation. Pour révéler automatiquement chaque élément d'une liste, importer `item-by-item` depuis `/load.typ` et écrire `#definition(item-by-item[ ... ])` avec les éléments `- ...` dans le bloc : aucune répétition de `#pause` n'est nécessaire.
 
 ```sh
-nix develop . -c just c chapitres/langages/cours-langages-reguliers.typ
-nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ cours
-nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ corrige
-nix develop . -c just w chapitres/langages/cours-langages-reguliers.typ presentation
+nix develop . -c just c chapitres/langages/cours/cours-langages-reguliers.typ
+nix develop . -c just w chapitres/langages/cours/cours-langages-reguliers.typ cours
+nix develop . -c just w chapitres/langages/cours/cours-langages-reguliers.typ corrige
+nix develop . -c just w chapitres/langages/cours/cours-langages-reguliers.typ presentation
 ```
 
 Pour réduire un passage uniquement dans la présentation, importer `taille-presentation` depuis `/load.typ` et écrire `#taille-presentation(0.92em)[Texte]`. La fonction utilise l'entrée `format` de la source commune ; le cours et le corrigé conservent la taille du texte environnant.

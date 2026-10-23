@@ -110,25 +110,44 @@ class TpExportTests(unittest.TestCase):
                 export_pdfs(entries, root / 'web/public/banque', 'signature', {'tp-test': False})
                 self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
 
-    def test_tp_manifest_resources_and_correction(self):
-        import json
+    def test_tp_metadata_resources_and_correction_are_published(self):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
-            directory = root / 'chapitres/tp-test'
+            directory = root / 'chapitres/langages/tp/tp-test'
             directory.mkdir(parents=True)
-            for name in ('main.ml', 'corrige.ml', 'data.zip'):
+            for name in ('main.ml', 'corrige.ml', 'data.zip', 'annexe.pdf'):
                 (directory / name).write_text('fictif')
-            data = {'ouvrir': 'main.ml', 'squelette': [{'source': 'main.ml'}], 'ressources': [{'source': 'data.zip', 'extraire': 'donnees'}], 'corrige': [{'source': 'corrige.ml'}]}
-            (directory / 'tp.json').write_text(json.dumps(data))
-            entries = [{'id': 'tp-test', 'fichier': 'chapitres/tp-test.typ', 'type': 'tp'}]
+            data = {'ouvrir': 'travail.ml', 'squelette': [{'source': 'main.ml', 'destination': 'travail.ml'}], 'ressources': [{'source': 'data.zip', 'extraire': 'donnees'}, {'source': 'annexe.pdf'}], 'corrige': [{'source': 'corrige.ml'}]}
+            source = 'chapitres/langages/tp/tp-test/tp-test.typ'
+            entries = [{'id': 'tp-test', 'fichier': source, 'type': 'tp', 'tp': data}]
+            bank = root / 'web/public/banque'
             with patch('prepare.ROOT', root):
-                export_tp(entries)
-                self.assertEqual(entries[0]['tp']['fichiers'][1]['extraire'], 'donnees')
-                self.assertEqual(len(entries[0]['tp']['corrige']), 1)
-                data['squelette'][0]['source'] = '../secret.ml'
-                (directory / 'tp.json').write_text(json.dumps(data))
-                with self.assertRaisesRegex(ValueError, 'Chemin TP invalide'):
-                    export_tp(entries)
+                exported = export_tp(entries, bank)
+            self.assertEqual(entries[0]['tp']['ouvrir'], 'travail.ml')
+            self.assertEqual(entries[0]['tp']['fichiers'][1]['extraire'], 'donnees')
+            self.assertEqual(len(entries[0]['tp']['corrige']), 1)
+            self.assertEqual(len(exported), 4)
+            for resource in entries[0]['tp']['fichiers'] + entries[0]['tp']['corrige']:
+                self.assertEqual((root / 'web/public' / resource['url']).read_text(), 'fictif')
+            self.assertIn('chapitres/langages/tp/tp-test/annexe.pdf', exported)
+            self.assertFalse((directory / 'tp.json').exists())
+
+    def test_tp_requires_metadata(self):
+        with self.assertRaisesRegex(ValueError, 'Métadonnées tp absentes'):
+            export_tp([{'type': 'tp', 'fichier': 'sujet.typ'}], Path('unused'))
+
+    def test_tp_rejects_unsafe_or_missing_resources(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / 'sujet'
+            source.mkdir()
+            (source / 'main.ml').write_text('fictif')
+            (root / 'secret.ml').write_text('privé')
+            (source / 'lien.ml').symlink_to(root / 'secret.ml')
+            for name, error in (('../secret.ml', 'Chemin TP invalide'), ('inconnu.ml', 'absente ou hors du dossier'), ('lien.ml', 'absente ou hors du dossier')):
+                data = {'ouvrir': 'main.ml', 'squelette': [{'source': name}]}
+                with self.subTest(name=name), patch('prepare.ROOT', root), self.assertRaisesRegex(ValueError, error):
+                    export_tp([{'type': 'tp', 'fichier': 'sujet/sujet.typ', 'tp': data}], root / 'bank')
 
 
 if __name__ == "__main__":

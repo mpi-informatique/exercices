@@ -1,12 +1,12 @@
 #import "/load.typ": exercice, feuille, question, code, automate
 #import automate: dessiner-automate
 #import code: code-extrait
-#let corrige = read("tp-automates/corrige.ml")
-#let squelette = read("tp-automates/tp2.ml")
+#let corrige = read("corrige.ml")
+#let squelette = read("tp2.ml")
 
 #let sujet = exercice(
   meta: (
-    titre: "TP : Automates",
+    titre: "TP Automates",
     chapitres: ("automates-finis", "langages-reguliers"),
     algorithmes: ("parcours-en-profondeur",),
     langages: ("OCaml",),
@@ -90,8 +90,13 @@
 
 #show: feuille.with(
   type: "tp",
-  titre: "TP : Automates",
+  titre: sujet.meta.titre,
   niveau: "MPI",
   exercices: (sujet,),
+  tp: (
+    ouvrir: "tp2.ml",
+    squelette: ((source: "tp2.ml"),),
+    corrige: ((source: "corrige.ml"),),
+  ),
   corrige: sys.inputs.at("corrige", default: "false") == "true",
 )
