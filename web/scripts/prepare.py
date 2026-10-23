@@ -59,12 +59,12 @@ def export_pdfs(entries, bank, signature, pages):
     kinds = dict(sources())
     for entry in entries:
         entry['pdfs'] = {}
-        if entry['id'] not in pages:
+        if entry['id'] not in pages and entry.get('type') != 'tp':
             continue
         source = entry['fichier']
         kind = kinds[source]
         for variant, inputs in variants(kind).items():
-            if variant == 'corrige' and not pages[entry['id']]:
+            if variant == 'corrige' and entry.get('type') != 'tp' and not pages.get(entry['id'], True):
                 continue
             filename = pdf_filename(source, variant, kind)
             output = Path('build') / Path(source).with_suffix('') / filename
@@ -76,6 +76,48 @@ def export_pdfs(entries, bank, signature, pages):
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / output, destination)
             entry['pdfs']['enonce' if variant == 'cours' else variant] = destination.relative_to(WEB / 'public').as_posix()
+
+
+def export_tp(entries):
+    """Un manifeste voisin décrit les ressources à installer, sans analyser le Typst."""
+    for entry in entries:
+        if entry['type'] != 'tp':
+            continue
+        directory = Path(entry['fichier']).with_suffix('')
+        manifest = ROOT / directory / 'tp.json'
+        if not manifest.is_file():
+            raise ValueError(f"Manifeste TP absent : {manifest}")
+        data = json.loads(manifest.read_text())
+
+        def relative(value):
+            if not isinstance(value, str) or not value or '\\' in value or ':' in value or any(part in ('', '.', '..') or part.startswith('.') for part in value.split('/')):
+                raise ValueError(f"Chemin TP invalide : {value}")
+            return value
+
+        def files(items):
+            result = []
+            for item in items:
+                source = relative(item['source'])
+                path = ROOT / directory / source
+                if not path.is_file() or not path.resolve().is_relative_to((ROOT / directory).resolve()):
+                    raise ValueError(f"Ressource TP absente ou hors du dossier : {path}")
+                resource = {'url': f'banque/{directory}/{source}', 'chemin': relative(item.get('destination', source))}
+                if 'extraire' in item:
+                    if path.suffix.lower() != '.zip':
+                        raise ValueError(f"Seuls les ZIP peuvent être extraits : {path}")
+                    resource['extraire'] = relative(item['extraire'])
+                result.append(resource)
+            return result
+
+        skeleton = files(data['squelette'])
+        opening = relative(data['ouvrir'])
+        if opening not in [item['chemin'] for item in skeleton]:
+            raise ValueError(f"Le fichier à ouvrir doit appartenir au squelette : {opening}")
+        entry['tp'] = {
+            'ouvrir': opening,
+            'fichiers': skeleton + files(data.get('ressources', [])),
+            'corrige': files(data.get('corrige', [])),
+        }
 
 
 def document(typst, source, kind="document"):
@@ -148,6 +190,7 @@ def prepare():
     shutil.rmtree(bank, ignore_errors=True)
     bank.mkdir(parents=True)
     export_pdfs(entries, bank, empreinte(), pages)
+    export_tp(entries)
     (bank / 'catalogue.json').write_text(json.dumps(entries, ensure_ascii=False))
     files = []
     shutil.copyfile(ROOT / "load.typ", bank / "load.typ")

@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from prepare import copy_tree
-from prepare import export_pdfs, parse_published_pages
+from prepare import export_pdfs, export_tp, parse_published_pages
 
 
 class CopyTreeTests(unittest.TestCase):
@@ -93,6 +93,42 @@ class ExportPdfTests(unittest.TestCase):
             presentation = (web / 'public' / entries[0]['pdfs']['presentation']).read_bytes()
             self.assertIn(b'format=presentation', presentation)
             self.assertNotIn(b'corrige=true', presentation)
+
+
+class TpExportTests(unittest.TestCase):
+    def test_tp_outside_course_gets_both_pdfs(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            entries = [{'id': 'tp-test', 'fichier': 'tp-test.typ', 'type': 'tp'}]
+            def compile_pdf(source, output, signature, *inputs, exercice=False):
+                target = root / output
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(b'%PDF-test')
+            with patch('prepare.ROOT', root), patch('prepare.WEB', root / 'web'), patch('prepare.sources', return_value=[('tp-test.typ', 'document')]), patch('prepare.compiler', side_effect=compile_pdf):
+                export_pdfs(entries, root / 'web/public/banque', 'signature', {})
+                self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
+                export_pdfs(entries, root / 'web/public/banque', 'signature', {'tp-test': False})
+                self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
+
+    def test_tp_manifest_resources_and_correction(self):
+        import json
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            directory = root / 'chapitres/tp-test'
+            directory.mkdir(parents=True)
+            for name in ('main.ml', 'corrige.ml', 'data.zip'):
+                (directory / name).write_text('fictif')
+            data = {'ouvrir': 'main.ml', 'squelette': [{'source': 'main.ml'}], 'ressources': [{'source': 'data.zip', 'extraire': 'donnees'}], 'corrige': [{'source': 'corrige.ml'}]}
+            (directory / 'tp.json').write_text(json.dumps(data))
+            entries = [{'id': 'tp-test', 'fichier': 'chapitres/tp-test.typ', 'type': 'tp'}]
+            with patch('prepare.ROOT', root):
+                export_tp(entries)
+                self.assertEqual(entries[0]['tp']['fichiers'][1]['extraire'], 'donnees')
+                self.assertEqual(len(entries[0]['tp']['corrige']), 1)
+                data['squelette'][0]['source'] = '../secret.ml'
+                (directory / 'tp.json').write_text(json.dumps(data))
+                with self.assertRaisesRegex(ValueError, 'Chemin TP invalide'):
+                    export_tp(entries)
 
 
 if __name__ == "__main__":

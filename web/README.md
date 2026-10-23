@@ -125,3 +125,23 @@ Les exercices privés proposent le même éditeur, les variantes et les téléch
 Le bouton **Créer un commit sur GitHub** dans la barre de CodeMirror enregistre le fichier modifié directement sur la branche par défaut du dépôt privé chargé. Il est désactivé sans modification et pendant l’enregistrement. Le compte connecté doit disposer du droit d’écriture ; GitHub applique les protections de branche. Si le fichier distant a changé, le commit est refusé et le brouillon conservé. Après réussite, la source enregistrée devient la nouvelle référence locale ; les éditions réalisées pendant l’enregistrement restent dans le brouillon.
 
 La connexion utilise le [même Worker OAuth](../worker/README.md), sans nouvelle configuration serveur. Le scope OAuth `repo` couvre la lecture de la banque privée et l’enregistrement de ses modifications. Les autorisations d’organisation restent gérées par GitHub.
+
+
+## TP pour VS Code et Codespaces
+
+Les documents `feuille.with(type: "tp", ...)` sont également publiés pour l'extension `tp-environnement/extension`. Partir de `templates/tp.typ`. À côté de `tp-exemple.typ`, créer le dossier `tp-exemple/` avec les fichiers et un `tp.json` :
+
+```json
+{
+  "ouvrir": "main.ml",
+  "squelette": [{"source": "main.ml"}],
+  "ressources": [{"source": "graphes.zip", "extraire": "donnees"}],
+  "corrige": [{"source": "corrige.ml"}]
+}
+```
+
+Les chemins `source` sont relatifs au dossier du manifeste. `destination` permet de choisir le chemin dans le dossier de travail, sinon le nom source est conservé. `extraire` désigne le sous-dossier d'extraction d'un ZIP ; sans ce champ, l'archive reste compressée. Les fichiers ordinaires peuvent également figurer dans `ressources`.
+
+Le catalogue ajoute `tp.ouvrir`, `tp.fichiers` et `tp.corrige` avec les URL publiques. Les deux PDF et les fichiers corrigés sont exportés pour tous les TP. L'extension décide de leur affichage en lisant la rubrique `- TP` du menu : corrigé autorisé hors du cours, et seulement avec `: cor` dans le cours. Modifier ce marqueur ne nécessite donc pas de reconstruire la banque. Les fichiers du dépôt public restent consultables sur GitHub : masquer un corrigé dans l'interface ne constitue pas une restriction d'accès.
+
+Le lecteur PDF des extensions et son script de préparation sont mutualisés dans `shared/viewer/`, `shared/src/pdf-viewer.ts` et `shared/build-viewer.mjs`.
