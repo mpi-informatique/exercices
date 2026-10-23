@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from prepare import copy_tree
-from prepare import export_pdfs
+from prepare import export_pdfs, parse_published_pages
 
 
 class CopyTreeTests(unittest.TestCase):
@@ -44,6 +44,33 @@ class CopyTreeTests(unittest.TestCase):
 
 
 class ExportPdfTests(unittest.TestCase):
+    def test_menu_selection(self):
+        menu = "- Langages\n  - Rubrique\n    - cours-exemple\n    - [TD](td-exemple): cor\n    - [QCM](doc:langages/qcm)\n    - [Lien](https://example.org)\n"
+        self.assertEqual(parse_published_pages(menu), {"cours-exemple": False, "td-exemple": True})
+
+    def test_only_selected_resources_and_corrections_are_compiled(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            entries = [{'id': name, 'fichier': f'{name}.typ'} for name in ('cours', 'td', 'autre')]
+
+            def compile_pdf(source, output, signature, *inputs, exercice=False):
+                target = root / output
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(b'%PDF-test')
+
+            with patch('prepare.ROOT', root), patch('prepare.WEB', root / 'web'), patch('prepare.sources', return_value=[('cours.typ', 'cours-presentation'), ('td.typ', 'document'), ('autre.typ', 'exercice')]), patch('prepare.compiler', side_effect=compile_pdf) as compile_mock:
+                export_pdfs(entries, root / 'web/public/banque', 'signature', {'cours': False, 'td': True})
+            self.assertEqual(compile_mock.call_count, 4)
+            self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'presentation'})
+            self.assertEqual(set(entries[1]['pdfs']), {'enonce', 'corrige'})
+            self.assertEqual(entries[2]['pdfs'], {})
+
+    def test_missing_resource_fails_before_compilation(self):
+        with patch('prepare.compiler') as compile_mock:
+            with self.assertRaisesRegex(ValueError, 'absents de la banque.*inconnu'):
+                export_pdfs([], Path('unused'), 'signature', {'inconnu': False})
+            compile_mock.assert_not_called()
+
     def test_export_course_variants_with_versioned_urls(self):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -57,7 +84,7 @@ class ExportPdfTests(unittest.TestCase):
                 target.write_bytes(b'%PDF-test\n' + repr(inputs).encode())
 
             with patch('prepare.ROOT', root), patch('prepare.WEB', web), patch('prepare.sources', return_value=[('chapitres/cours-exemple.typ', 'cours-presentation')]), patch('prepare.compiler', side_effect=compile_pdf):
-                export_pdfs(entries, bank, '1234567890abcdef' * 4)
+                export_pdfs(entries, bank, '1234567890abcdef' * 4, {'cours-exemple': True})
 
             self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige', 'presentation'})
             for variant, url in entries[0]['pdfs'].items():

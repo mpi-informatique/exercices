@@ -5,10 +5,12 @@ import base64
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
 import tomllib
+from urllib.request import urlopen
 
 WEB = Path(__file__).resolve().parents[1]
 ROOT = WEB.parent
@@ -18,14 +20,52 @@ from sources import sources, variants, pdf_filename
 from build import compiler, empreinte
 
 
-def export_pdfs(entries, bank, signature):
-    """Compiler les versions publiées avec le cache commun à Just."""
+def published_pages():
+    """Lire le menu voisin, ou sa version distante pour un clone autonome."""
+    local = Path(os.environ.get("COURS_PAGES_TYPST", ROOT.parent / "cours/pages-typst.md"))
+    if local.is_file() or "COURS_PAGES_TYPST" in os.environ:
+        markdown = local.read_text()
+    else:
+        with urlopen("https://raw.githubusercontent.com/mpi-informatique/cours/main/pages-typst.md", timeout=30) as response:
+            markdown = response.read().decode("utf-8")
+    return parse_published_pages(markdown)
+
+
+def parse_published_pages(markdown):
+    # Syntaxe des feuilles Typst de cours/scripts/typst-pages.mjs.
+    pages = {}
+    lines = [line for line in markdown.splitlines() if line.strip() and not line.startswith("#")]
+    for index, line in enumerate(lines):
+        item = re.fullmatch(r"( *)- (.+?)\s*", line)
+        if not item or not item[1]:
+            continue
+        if index + 1 < len(lines) and len(lines[index + 1]) - len(lines[index + 1].lstrip()) > len(item[1]):
+            continue
+        entry = re.fullmatch(r"(?:\[[^\]]+\]\(([a-z0-9][a-z0-9-]*)\)|([a-z0-9][a-z0-9-]*))(?:\s*:\s*(cor))?", item[2])
+        if entry:
+            pages[entry[1] or entry[2]] = entry[3] == "cor"
+        elif not re.fullmatch(r"\[[^\]]+\]\((?:doc:|https?://)[^\s)]+\)", item[2]):
+            raise ValueError(f"Entrée de menu Typst invalide : {line}")
+    if not pages:
+        raise ValueError("Aucune ressource Typst dans le menu du cours.")
+    return pages
+
+
+def export_pdfs(entries, bank, signature, pages):
+    """Compiler uniquement les versions utilisées par le menu du cours."""
+    missing = pages.keys() - {entry['id'] for entry in entries}
+    if missing:
+        raise ValueError(f"Documents du cours absents de la banque : {', '.join(sorted(missing))}")
     kinds = dict(sources())
     for entry in entries:
+        entry['pdfs'] = {}
+        if entry['id'] not in pages:
+            continue
         source = entry['fichier']
         kind = kinds[source]
-        entry['pdfs'] = {}
         for variant, inputs in variants(kind).items():
+            if variant == 'corrige' and not pages[entry['id']]:
+                continue
             filename = pdf_filename(source, variant, kind)
             output = Path('build') / Path(source).with_suffix('') / filename
             compiler(source, output, signature, *inputs, exercice=kind == 'exercice')
@@ -96,6 +136,7 @@ def copy_tree(source, destination, exclude_tests=True):
 
 def prepare():
     typst = os.environ.get("TYPST", "typst")
+    pages = published_pages()
     entries = resources(typst)
     chapters = subprocess.run(
         [typst, "eval", "--root", str(ROOT),
@@ -106,7 +147,7 @@ def prepare():
     bank = public / "banque"
     shutil.rmtree(bank, ignore_errors=True)
     bank.mkdir(parents=True)
-    export_pdfs(entries, bank, empreinte())
+    export_pdfs(entries, bank, empreinte(), pages)
     (bank / 'catalogue.json').write_text(json.dumps(entries, ensure_ascii=False))
     files = []
     shutil.copyfile(ROOT / "load.typ", bank / "load.typ")

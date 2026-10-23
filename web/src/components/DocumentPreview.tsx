@@ -12,7 +12,7 @@ export default function DocumentPreview({ resource }: { resource: PublishedResou
   const [loaded, setLoaded] = useState<{ variant: Variant; pdf: Uint8Array<ArrayBuffer> }>();
   const [loadError, setLoadError] = useState('');
   const [options] = useState(() => new URLSearchParams(location.search));
-  const variants = availableVariants(resource.type).filter(value => value !== 'corrige' || options.get('cor') !== '0');
+  const variants = availableVariants(resource.type).filter(value => resource.pdfs[value] && (value !== 'corrige' || options.get('cor') !== '0'));
   const [variant, setVariant] = useState<Variant>(() => {
     const requested = options.has('vue') ? routeVariant(location.search) : 'presentation';
     return variants.includes(requested) ? requested : variants[0]!;

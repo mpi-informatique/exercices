@@ -4,7 +4,7 @@ import DocumentPreview, { type PublishedResource } from '../../components/Docume
 import resources from '../../generated/catalogue.json';
 
 export function getStaticPaths() {
-  return (resources as PublishedResource[]).map(resource => ({ params: { id: resource.id }, props: { resource } }));
+  return (resources as PublishedResource[]).filter(resource => Object.keys(resource.pdfs).length > 0).map(resource => ({ params: { id: resource.id }, props: { resource } }));
 }
 const { resource } = Astro.props;
 ---
