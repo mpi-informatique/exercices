@@ -18,6 +18,7 @@
 
 /// Dessine un automate centré à partir de ses états et arcs explicites.
 /// - etats (array): Entrées `(nom, position, initial, final)` ; `nom` est une chaîne mathématique Typst.
+///   `initial` est un booléen ou un alignement indiquant le côté de la flèche entrante.
 /// - arcs (array): Entrées `(départ, arrivée, étiquette, style)` ; étiquette mathématique et style finite.
 ///   Les étiquettes des transitions droites sont placées au-dessus par défaut, celles des arcs courbes à l'extérieur. `inverser: true` place l'étiquette de l'autre côté ; `label: (dist: ...)` permet de régler sa distance explicitement.
 /// - echelle (array): Facteurs horizontal et vertical des positions, défaut `(1, 1)`.
@@ -32,7 +33,7 @@
     positions.insert(nom, (position.at(0) * echelle.at(0), position.at(1) * echelle.at(1)))
     state((position.at(0) * echelle.at(0), position.at(1) * echelle.at(1)), nom,
       radius: rayon(nom), label: math.equation(eval(nom, mode: "math")),
-      initial: if initial { (label: none) } else { false }, final: final)
+      initial: if initial == false { false } else if initial == true { (label: none) } else { (anchor: initial, label: none) }, final: final)
   }
   for (p, q, etiquette, style) in arcs {
     let style-etiquette = style.remove("label", default: (:))

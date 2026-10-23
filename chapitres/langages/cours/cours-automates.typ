@@ -23,7 +23,7 @@
   (("0", "0", "b", (:)), ("1", "1", "b", (:)), ("0", "1", "a", (curve: 0.5)), ("1", "0", "a", (curve: 0.5))),
 )
 #let deux-initiaux = dessiner-automate(
-  (("0", (0, 0.9), true, false), ("1", (0, -0.9), true, false), ("2", (3, 0), false, true)),
+  (("0", (0, 0.9), true, false), ("1", (0, -0.9), right, false), ("2", (3, 0), false, true)),
   (
     ("0", "0", "a", (:)),
     ("1", "1", "b", (anchor: bottom)),
