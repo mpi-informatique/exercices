@@ -1,4 +1,5 @@
-#import "/load.typ": exercice, feuille, question, code
+#import "/load.typ": exercice, feuille, question, code, automate
+#import automate: dessiner-automate
 #import code: code-extrait
 #let corrige = read("tp-automates/corrige.ml")
 #let squelette = read("tp-automates/tp2.ml")
@@ -25,8 +26,26 @@
     question([
       Définir en OCaml les automates `a1` et `a2` suivants :
       #grid(columns: (1fr, 1fr), align: center + horizon,
-        figure(image("tp-automates/a1.png", width: 65%), caption: [`a1`]),
-        figure(image("tp-automates/a2.png", width: 80%), caption: [`a2`]),
+        figure(dessiner-automate(
+          (("0", (0, 0), true, false), ("1", (3, 0), false, true)),
+          (
+            ("0", "0", "1", (:)),
+            ("1", "1", "1", (:)),
+            ("0", "1", "0", (curve: 0.5)),
+            ("1", "0", "0", (curve: 0.5)),
+          ),
+        ), caption: [`a1`]),
+        figure(dessiner-automate(
+          (("0", (0, 0), true, false), ("1", (2.5, 2.5), false, false), ("2", (5, 0), false, true)),
+          (
+            ("0", "0", "0", (anchor: bottom)),
+            ("1", "1", "0", (:)),
+            ("2", "2", "0", (anchor: bottom)),
+            ("0", "1", "1", (curve: 0)),
+            ("1", "2", "1", (curve: 0)),
+            ("2", "0", "1", (curve: 0)),
+          ),
+        ), caption: [`a2`]),
       )
     ], solution: [#code-extrait(corrige, ("a1", "a2"))]),
     question([
