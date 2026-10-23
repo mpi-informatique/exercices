@@ -129,6 +129,8 @@ La connexion utilise le [même Worker OAuth](../worker/README.md), sans nouvelle
 
 ## TP pour VS Code et Codespaces
 
+Le bouton **TP** de la barre du lecteur PDF, dans la banque et dans le lecteur intégrable, ouvre ou reprend le Codespace `mpi-informatique/tp-environnement` dans un nouvel onglet. Sélectionner ensuite le TP dans le panneau **TP MPI**. Ce bouton est réservé aux documents publics de type TP.
+
 Les documents `feuille.with(type: "tp", ...)` sont également publiés pour l'extension `tp-environnement/extension`. Partir de `templates/tp.typ`. À côté de `tp-exemple.typ`, créer le dossier `tp-exemple/` avec les fichiers et un `tp.json` :
 
 ```json

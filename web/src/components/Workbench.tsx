@@ -9,6 +9,7 @@ import { useCodeFiles } from '../hooks/useCodeFiles';
 import { SidebarActions } from './SidebarActions';
 import { GitHubIcon } from './GitHubIcon';
 import { VariantTabs } from './VariantTabs';
+import { TpCodespaceButton } from './TpCodespaceButton';
 import CommandPalette, { type Command } from './CommandPalette';
 import type { SearchFilters } from '../lib/filters';
 import { createSearch } from '../lib/search';
@@ -263,6 +264,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
               <VariantTabs documentType={resource?.type} variant={variant} onChange={value => resource && navigate(resource, value)} />
               <span className={`compilation-status ${compilation.error || loadError ? 'has-error' : ''}`} title={status} role="status">{compilation.pending ? <span className="loading loading-spinner loading-xs" /> : compilation.error || loadError ? <CircleAlert size={13} /> : <span className="status-dot" />}<span className="sr-only">{status}</span></span>
             </>} actions={<>
+              <TpCodespaceButton resource={resource} />
               <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" disabled={!canDownloadPdf} onClick={downloadPdf}><Download size={17} /></button>
             </>} /></Suspense>
           </section>

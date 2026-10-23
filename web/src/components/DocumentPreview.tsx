@@ -3,6 +3,7 @@ import { Download, ExternalLink } from 'lucide-react';
 import { availableVariants, pdfFilename, type Resource, type Variant } from '@mpi-informatique/exercices-core';
 import { assetUrl, exerciseUrl, routeVariant } from '../lib/urls';
 import { VariantTabs } from './VariantTabs';
+import { TpCodespaceButton } from './TpCodespaceButton';
 
 const PdfViewer = lazy(() => import('./PdfViewer'));
 
@@ -84,6 +85,7 @@ export default function DocumentPreview({ resource }: { resource: PublishedResou
     <Suspense fallback={<div className="preview-placeholder">Chargement du lecteur…</div>}><PdfViewer pdf={pdf} pending={!loadError && !pdf} pendingLabel="Chargement du PDF…" dark={dark} onReady={() => {}}
       toolbar={<VariantTabs variant={variant} documentType={resource.type} variants={variants} onChange={changeVariant} />}
       actions={<div>
+        <TpCodespaceButton resource={resource} />
         <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" onClick={download} disabled={!pdf || !!loadError}><Download size={17} /></button>
         <a className="btn btn-ghost btn-sm btn-square" href={exerciseUrl(resource.id, variant)} target="_blank" rel="noopener noreferrer" aria-label="Ouvrir dans la banque d’exercices" title="Ouvrir dans la banque d’exercices"><ExternalLink size={17} /></a>
       </div>} /></Suspense>
