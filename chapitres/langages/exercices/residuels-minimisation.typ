@@ -70,8 +70,8 @@
           numbering: "a)",
           [Montrer que la fonction
             $
-              φ: Q & → cal(R)_L \
-                 q & ↦ u^(-1)L quad "où " δ^*(q_0,u) = q
+              φ: Q & ⟶ cal(R)_L \
+                 q & ⟼ u^(-1)L quad "où " δ^*(q_0,u) = q
             $
             est correctement définie : $u$ est l'un des mots qui permettent d'atteindre $q$ depuis $q_0$.],
           [Montrer que $L$ admet un nombre fini de résiduels.],
