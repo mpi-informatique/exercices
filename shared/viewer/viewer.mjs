@@ -91,21 +91,29 @@ let epoch = 0;
 let rendered;
 let renderedWidth;
 let renderedPixelRatio;
+let renderedColors;
 let workerSource;
 const controls = frame => {
   const style = getComputedStyle(document.body);
   const scrollbarForeground = style.getPropertyValue('--vscode-foreground').trim();
   frame.contentWindow?.postMessage({ token: state.tokens?.[frame.dataset.variant], jumps: state.jumps, scrollbarForeground }, new URL(frame.src).origin);
 };
-new MutationObserver(() => { for (const frame of frames.values()) controls(frame); }).observe(document.body, { attributes: true, attributeFilter: ['class', 'style'] });
+new MutationObserver(() => { for (const frame of frames.values()) controls(frame); schedulePdfRender(); }).observe(document.body, { attributes: true, attributeFilter: ['class', 'style'] });
 async function pdf(data) {
   const width = host.clientWidth;
   const pixelRatio = window.devicePixelRatio || 1;
-  if (!width || (rendered === data && renderedWidth === width && renderedPixelRatio === pixelRatio)) return;
+  const style = getComputedStyle(document.body);
+  const pageColors = state?.theme === 'vscode' ? {
+    background: style.getPropertyValue('--vscode-editor-background').trim(),
+    foreground: (style.getPropertyValue('--vscode-editor-foreground') || style.getPropertyValue('--vscode-foreground')).trim()
+  } : undefined;
+  const colors = JSON.stringify(pageColors);
+  if (!width || (rendered === data && renderedWidth === width && renderedPixelRatio === pixelRatio && renderedColors === colors)) return;
   const scrollTop = rendered === data ? host.scrollTop * width / renderedWidth : 0;
   rendered = data;
   renderedWidth = width;
   renderedPixelRatio = pixelRatio;
+  renderedColors = colors;
   const revision = ++epoch;
   pdfPages = 0;
   requestedPdfPage = undefined;
@@ -142,7 +150,7 @@ async function pdf(data) {
       if (requestedPdfPage === n) goToPage(n);
       schedulePdfProgress();
       await Promise.all([
-        page.render({ canvasContext: canvas.getContext('2d'), canvas, viewport, transform: [pixelRatio, 0, 0, pixelRatio, 0, 0], intent: 'print' }).promise,
+        page.render({ canvasContext: canvas.getContext('2d'), canvas, viewport, transform: [pixelRatio, 0, 0, pixelRatio, 0, 0], pageColors, intent: 'print' }).promise,
         new pdfjs.TextLayer({ textContentSource: page.streamTextContent(), container: textLayer, viewport }).render()
       ]);
     }
@@ -150,7 +158,7 @@ async function pdf(data) {
       host.scrollTop = scrollTop;
       schedulePdfProgress();
       const canvas = host.querySelector('canvas');
-      vscode.postMessage({ type: 'pdfReady', pages: doc.numPages, pixelRatio, width: canvas.width, displayWidth: canvas.getBoundingClientRect().width });
+      vscode.postMessage({ type: 'pdfReady', pages: doc.numPages, pixelRatio, width: canvas.width, displayWidth: canvas.getBoundingClientRect().width, pageColors, background: Array.from(canvas.getContext('2d').getImageData(0, 0, 1, 1).data) });
     }
   } finally { await loading.destroy(); worker.destroy(); port.terminate(); URL.revokeObjectURL(url); }
 }
@@ -174,7 +182,8 @@ window.addEventListener('message', ({ data }) => {
   document.body.classList.toggle('native-preview', !!data.native);
   document.getElementById('code').hidden = !data.hasCode;
   if (data.native) showProgress(pagination.get(data.variant));
-  document.body.classList.toggle('pdf-dark', !data.native && data.dark);
+  document.body.classList.toggle('pdf-dark', !data.native && data.theme !== 'vscode' && data.dark);
+  document.body.classList.toggle('vscode-theme', data.theme === 'vscode');
   document.getElementById('jumps').disabled = !data.native;
   if (data.pdf) { status.hidden = true; void pdf(data.pdf).catch(reportPdfError); }
   for (const [variant, url] of Object.entries(data.sessions)) {
