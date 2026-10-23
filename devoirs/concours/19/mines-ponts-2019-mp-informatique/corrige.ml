@@ -33,8 +33,8 @@ let etats_accessibles (n, delta, f) =
   in
   renverser [] !resultat
 
-let partie_accessible ((n, delta, f) as aut) =
-  let accessibles = etats_accessibles aut in
+let partie_accessible ((n, delta, f) as a) =
+  let accessibles = etats_accessibles a in
   let num = numero n accessibles in
   let n' = List.length accessibles in
   let delta' = Array.make n' (0, 0) in
@@ -150,8 +150,8 @@ let table_de_predecesseurs (n, delta, f) =
   d
 
 let reduit aut =
-  let ((n, delta, f) as accessible) = partie_accessible aut in
-  let d = table_de_predecesseurs accessible in
+  let (n, delta, f) = partie_accessible aut in
+  let d = table_de_predecesseurs (n, delta, f) in
   let classe = Array.make n (-1) in
   let representant = Array.make n 0 in
   let nombre = ref 0 in

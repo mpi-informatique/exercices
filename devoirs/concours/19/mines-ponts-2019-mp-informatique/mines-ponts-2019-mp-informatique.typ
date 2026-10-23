@@ -719,11 +719,11 @@
               qui renvoie l'automate $cal(M)_L$ associé au langage $L$ de l'automate donné.],
             solution: [
               On commence par prendre la partie accessible, ce qui conserve le langage.
-              Avec la table $D$ de la question 36 corrigée, définir
+              Avec la table $D$ de la question 36 corrigée, on définit :
               $ p ∼ q ⟺ D[p,q]="faux" ⟺ ∀ w ∈ {a,b}^*, (δ^*(p,w) ∈ F ⟺ δ^*(q,w) ∈ F). $
               Cette relation exprime l'égalité des langages reconnus depuis chaque état : c'est une équivalence.
               Le choix $w=ε$ montre que le caractère final est constant dans une classe.
-              Si $p ∼ q$, lire $σ w$ montre que $δ(p,σ) ∼ δ(q,σ)$ pour chaque lettre $σ$.
+              Si $p ∼ q$, on a $δ(p,σ) ∼ δ(q,σ)$ pour chaque lettre $σ$.
               Comme à la question 25, on peut donc former le quotient : il est accessible et la projection est un morphisme, donc il reconnaît encore $L$.
 
               Deux classes distinctes sont distinguées par un mot. Par (∗) et (4), un morphisme ne peut les identifier.
