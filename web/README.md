@@ -41,7 +41,7 @@ Le serveur doit servir les `index.html` des répertoires et les `.wasm` avec le 
 
 ## Publication GitHub Pages
 
-Le site est publié à l'adresse <https://mpi-informatique.github.io/exercices/> par le [workflow de vérification et publication](../.github/workflows/check.yml). Chaque push sur `main` construit le site avec Nix, teste la banque et déploie `web/dist/` après réussite des deux jobs de vérification. Les pull requests construisent et testent le site sans le publier. Le workflow peut aussi être lancé manuellement depuis l'onglet Actions.
+Le site est publié à l'adresse <https://mpi-informatique.github.io/exercices/> par le [workflow de vérification et publication](../.github/workflows/checks-and-deploy.yml). Chaque push sur `main` construit le site avec Nix, teste la banque et déploie `web/dist/` après réussite des deux jobs de vérification. Les pull requests construisent et testent le site sans le publier. Le workflow peut aussi être lancé manuellement depuis l'onglet Actions.
 
 Dans **Settings → Pages → Build and deployment**, la source doit être **GitHub Actions**. Aucun secret supplémentaire n'est nécessaire. `configure-pages` fournit le préfixe et l'origine du site à Astro (`BASE_PATH` et `SITE_URL`) ; les routes, fichiers publics, workers et modules WASM utilisent ce préfixe. Un domaine personnalisé se configure dans ces mêmes réglages.
 
