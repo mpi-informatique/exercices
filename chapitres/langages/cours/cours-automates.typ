@@ -145,6 +145,7 @@
 #slide()
 
 #colonnes-cours(
+  align: left + top,
   encadrer: contenu => exercice[
     Montrer que les langages suivants sont reconnaissables :
     #contenu
