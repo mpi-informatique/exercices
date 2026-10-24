@@ -46,17 +46,17 @@
 = Automate non déterministe
 
 #let definition-automate = definition(marge-haute: false)[
-  Un automate est un $5$-uplet $A = (Σ, Q, I, F, E)$ où :
+  Un automate est un $5$-uplet $A = (Σ, Q, I, F, T)$ où :
   - $Σ$ est un alphabet.
   - $Q$ est un ensemble fini d'états.
   - $I ⊂ Q$ est l'ensemble des états initiaux.
   - $F ⊂ Q$ est l'ensemble des états finaux, ou acceptants.
-  - $E ⊂ Q × Σ × Q$ est l'ensemble des transitions.
+  - $T ⊂ Q × Σ × Q$ est l'ensemble des transitions.
 ]
 
 #let exemple-automate = figure(exemple, numbering: none, caption: [
   $Σ = {a, b}, Q = {0, 1, 2}, I = {0}, F = {2}$\
-  $E = {(0, a, 0), (0, b, 1), (1, a, 0), (1, a, 2), (2, b, 2)}$
+  $T = {(0, a, 0), (0, b, 1), (1, a, 0), (1, a, 2), (2, b, 2)}$
 ])
 
 #article-only[
@@ -75,8 +75,8 @@
 == Fonction de transition
 #let definition-transition = [
   #definition(marge-haute: false)[
-    On peut remplacer $E$ par  $δ : Q × Σ → cal(P)(Q)$ tel que :
-    $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ E}. $
+    On peut remplacer $T$ par  $δ : Q × Σ → cal(P)(Q)$ tel que :
+    $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T}. $
   ]
   On dit qu'il y a un blocage lorsque $δ(q, a) = ∅$.
 ]
@@ -190,7 +190,7 @@ Alors $m ∈ cal(L)(A)$ si et seulement si $Q_n ∩ F ≠ ∅$.
 #definition[
   Deux automates sont équivalents s'ils reconnaissent le même langage.
   Un automate est complet si :
-  $ ∀ q ∈ Q, #sep ∀ a ∈ Σ, #sep ∃ q' ∈ Q, #sep (q, a, q') ∈ E. $
+  $ ∀ q ∈ Q, #sep ∀ a ∈ Σ, #sep ∃ q' ∈ Q, #sep (q, a, q') ∈ T. $
 ]
 Un automate complet n'a pas de blocage.
 #slide()
@@ -205,7 +205,7 @@ Un automate complet n'a pas de blocage.
   definition(coeur: true, marge-haute: false)[
     Un automate est déterministe si :
     + Il possède un unique état initial
-    + $(q, a, q_1) ∈ E ∧ (q, a, q_2) ∈ E ==> q_1 = q_2$
+    + $(q, a, q_1) ∈ T ∧ (q, a, q_2) ∈ T ==> q_1 = q_2$
   ],
   figure(
     dessiner-automate(
@@ -221,8 +221,8 @@ Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonct
 
 #slide()
 #exercice[
-  Soient $A = (Q, Σ, q_0, F, E)$ un AD, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?
-  + $(q_1, a, q) ∈ E ∧ (q_2, a, q) ∈ E ==> q_1 = q_2.$
+  Soient $A = (Q, Σ, q_0, F, T)$ un AD, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?
+  + $(q_1, a, q) ∈ T ∧ (q_2, a, q) ∈ T ==> q_1 = q_2.$
   + $A$ contient au plus un chemin d'étiquette $m$ partant de $q$.
   + $A$ contient au plus un chemin de $q_0$ à $q$.
   + $A$ est non ambigu : un mot de $cal(L)(A)$ a un unique chemin acceptant.
@@ -425,7 +425,7 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
   - Un automate est émondé si tous ses états sont accessibles et co-accessibles.
 ]
 #slide()
-#exercice[Décrire un algorithme de coût $O(abs(Q) + abs(E))$ déterminant ces deux ensembles.]
+#exercice[Décrire un algorithme de coût $O(abs(Q) + abs(T))$ déterminant ces deux ensembles.]
 #solution[#pause Parcourir le graphe depuis $I$, puis le graphe transposé depuis $F$.]
 #slide()
 #theoreme[Tout automate est équivalent à un automate émondé.]
