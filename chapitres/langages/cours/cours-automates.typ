@@ -106,6 +106,16 @@
   3. Proposer deux implémentations de ces structures de données.
 ]
 
+#slides-only[== Extension de la fonction de transition]
+
+On peut étendre la fonction de transition aux ensembles d'états et aux mots, par récurrence :
+$
+  δ : & cal(P)(Q) × Σ^* & → & cal(P)(Q) \
+      & (S, ε) & ↦ & S \
+      & (S, w a) & ↦ & union.big_(q ∈ δ(S, w)) δ(q, a)
+$
+où $S ⊂ Q$, $w ∈ Σ^*$ et $a ∈ Σ$.
+
 = Langage reconnaissable
 
 #definition[
