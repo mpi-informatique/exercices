@@ -284,7 +284,7 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
 
 == Implémentation déterministe complet
 
-Le mot est un tableau de $n$ caractères de type `char` et `finaux[q]` indique si l'état `q` est final :
+En codant chaque lettre par un entier, le mot est un tableau de $n$ entiers et `finaux[q]` indique si l'état `q` est final :
 #grid(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
@@ -302,10 +302,10 @@ Le mot est un tableau de $n$ caractères de type `char` et `finaux[q]` indique s
   ],
   [
     ```c
-    bool accepte(const adc *a, const char m[], int n) {
+    bool accepte(const adc *a, const int m[], int n) {
       int etat = a->initial;
       for (int i = 0; i < n; i++) {
-        etat = a->delta[etat][(unsigned char)m[i]];
+        etat = a->delta[etat][m[i]];
       }
       return a->finaux[etat];
     }
