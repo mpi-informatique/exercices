@@ -13,26 +13,24 @@
   ),
   contenu: (
     [
-      Si $u ∈ Σ^*$ et $L$ est un langage sur $Σ$, on appelle résiduel de $L$ par rapport à $u$ le langage $u^(-1)L$ tel que :
+      Si $u ∈ Σ^*$ et $L ⊂ Σ^*$, on définit le _résiduel_ $u^(-1)L$ de $L$ par rapport à $u$ :
       $ u^(-1)L = {m ∈ Σ^* | u m ∈ L}. $
-      Intuitivement, le résiduel de $L$ par rapport à $u$ est l'ensemble des mots
-      avec lesquels on peut compléter $u$ pour obtenir un mot de $L$.
+      Intuitivement, $u^(-1)L$ est l'ensemble des mots permettant de compléter $u$ en un mot de $L$.\ 
       L'ensemble des résiduels de $L$ est noté $cal(R)_L = {u^(-1)L | u ∈ Σ^*}$.
     ],
     question(
       [
-        Si $L$ est un langage, quel est le résiduel de $L$ par rapport à $ε$ ?
+        Que vaut $ε^(-1)L$ ?
       ],
       solution: [
-        $ε^(-1)L = L$. En effet, si $m ∈ Σ^*$, $m ∈ ε^(-1)L ⟺ ε m = m ∈ L$.
+        $ε^(-1)L = L$. En effet, $m ∈ ε^(-1)L ⟺ ε m = m ∈ L$.
       ],
     ),
     question(
       [
-        Montrer que pour tout langage $L$ sur $Σ$ et tous mots $u,v ∈ Σ^*$, $u^(-1)(v^(-1)L) = (v u)^(-1)L$.
+        Montrer que pour tout $L ⊂ Σ^*$ et $u,v ∈ Σ^*$ : $u^(-1)(v^(-1)L) = (v u)^(-1)L$.
       ],
       solution: [
-        Soient $L$ un langage et $u,v ∈ Σ^*$. Si $m ∈ Σ^*$, alors :
         $ m ∈ u^(-1)(v^(-1)L) ⟺ u m ∈ v^(-1)L ⟺ v u m ∈ L ⟺ m ∈ (v u)^(-1)L. $
       ],
     ),
@@ -65,15 +63,15 @@
     [On veut montrer qu'un langage $L$ est reconnaissable si et seulement s'il admet un nombre fini de résiduels.],
     question(
       [
-        Soit $L$ un langage reconnaissable par un automate $A = (Σ,Q,q_0,F,δ)$ qu'on peut supposer déterministe, complet et dont tous les états sont accessibles sans perte de généralité.
+        Soit $L$ un langage reconnaissable par un automate déterministe complet $A = (Σ,Q,q_0,F,δ)$ dont tous les états sont accessibles.
         #enum(
           numbering: "a)",
-          [Montrer que la fonction
+          [Montrer que la fonction suivante est correctement définie.
             $
-              φ: Q & ⟶ cal(R)_L \
-                 q & ⟼ u^(-1)L quad "où " δ^*(q_0,u) = q
+              φ: q & ⟼ u^(-1)L quad "où " δ^*(q_0,u) = q \
+                 Q & ⟶ cal(R)_L
             $
-            est correctement définie : $u$ est l'un des mots qui permettent d'atteindre $q$ depuis $q_0$.],
+            ],
           [Montrer que $L$ admet un nombre fini de résiduels.],
         )
       ],
@@ -97,17 +95,17 @@
           [Montrons que $φ$ est surjective. Soit $u^(-1)L$ un résiduel de $L$.
             Comme $A$ est complet, le mot $u$ peut être lu à partir de $q_0$ :
             il existe $q ∈ Q$ tel que $δ^*(q_0,u) = q$.
-            En particulier, $u^(-1)L = φ(q)$.
+            Donc, $φ(q) = u^(-1)L$.
 
-            Ceci garantit que $abs(Q) ≥ abs(cal(R)_L)$.
-            L'automate $A$ étant fini, le langage $L$ a un nombre fini de résiduels.],
+            Comme $φ$ est surjective, $abs(Q) ≥ abs(cal(R)_L)$.
+            Donc $cal(R)_L$ est fini.],
         )
       ],
     ),
     question(
       [
         Soit à présent $L$ un langage ayant un nombre fini de résiduels.
-        On définit alors un automate $M(L) = (Σ,Q,I,F,δ)$, appelé automate des résiduels associé à $L$, où :
+        On définit alors un automate $M(L) = (Σ,Q,I,F,δ)$, appelé _automate des résiduels_ associé à $L$, où :
         - $Q = cal(R)_L$
         - $I = {ε^(-1)L}$
         - $F = {u^(-1)L | u ∈ L}$

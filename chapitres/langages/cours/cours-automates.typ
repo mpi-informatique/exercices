@@ -1,7 +1,8 @@
 #import "/load.typ": est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
-  article-only, automate, colonnes-cours, cours-et-presentation, pause, completer, sep, slides-only, solution, theoremes,
+  article-only, automate, colonnes-cours, completer, cours-et-presentation, pause, sep, slides-only, solution,
+  theoremes,
 )
 #import theoremes: algorithme, definition, exercice, lemme, theoreme
 #import automate: cetz, dessiner-automate, finite, style-automates, unite-automates
@@ -24,10 +25,10 @@
   (("0", "0", "b", (:)), ("1", "1", "b", (:)), ("0", "1", "a", (curve: 0.5)), ("1", "0", "a", (curve: 0.5))),
 )
 #let deux-initiaux = dessiner-automate(
-  (("0", (0, 0.9), true, false), ("1", (0, -0.9), right, false), ("2", (3, 0), false, true)),
+  (("0", (0, 0), true, false), ("1", (6, 0), right, false), ("2", (3, 0), false, true)),
   (
     ("0", "0", "a", (:)),
-    ("1", "1", "b", (anchor: bottom)),
+    ("1", "1", "b", (:)),
     ("0", "2", "b", (curve: 0)),
     ("1", "2", "a", (curve: 0)),
   ),
@@ -44,14 +45,15 @@
 )
 
 = Automate non déterministe
+#slide(titre: false, saut: false)
 
-#let definition-automate = definition(marge-haute: false)[
-  Un automate est un $5$-uplet $A = (Σ, Q, I, F, T)$ où :
+#let definition-automate = definition(marge-haute: false, [Automate non déterministe])[
+  Un _automate_ est un $5$-uplet $A = (Σ, Q, I, F, T)$ où :
   - $Σ$ est un alphabet.
-  - $Q$ est un ensemble fini d'états.
-  - $I ⊂ Q$ est l'ensemble des états initiaux.
-  - $F ⊂ Q$ est l'ensemble des états finaux, ou acceptants.
-  - $T ⊂ Q × Σ × Q$ est l'ensemble des transitions.
+  - $Q$ est un ensemble fini d'_états_.
+  - $I ⊂ Q$ est l'ensemble des _états initiaux_.
+  - $F ⊂ Q$ est l'ensemble des _états finaux_, ou acceptants.
+  - $T ⊂ Q × Σ × Q$ est l'ensemble des _transitions_.
 ]
 
 #let exemple-automate = figure(exemple, numbering: none, caption: [
@@ -59,35 +61,30 @@
   $T = {(0, a, 0), (0, b, 1), (1, a, 0), (1, a, 2), (2, b, 2)}$
 ])
 
-#article-only[
-  #grid(columns: (1.2fr, 1fr), column-gutter: 1.5em, align: top, definition-automate, exemple-automate)
-]
-#slides-only[
-  #definition-automate
-  #slide()
-  #exemple-automate
-]
+#colonnes-cours(
+  columns: (1.2fr, 1fr),
+  definition-automate,
+  exemple-automate,
+)
 
+#slide()
 // #exercice[
 //   En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ?
 // ]
 
-== Fonction de transition
 #let definition-transition = [
-  #definition(marge-haute: false)[
+  #definition(marge-haute: false, [Fonction de transition])[
     On peut remplacer $T$ par  $δ : Q × Σ → cal(P)(Q)$ tel que :
     $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T}. $
   ]
-  On dit qu'il y a un blocage lorsque $δ(q, a) = ∅$.
 ]
 #let exercice-transition = align(center, figure(
   table(
-    columns: (auto, ..(3em,)*3),
+    columns: (auto, ..(3em,) * 3),
     rows: 1.75em,
-    align: center + horizon,
     table.header($q$, ..range(0, 3).map(str)),
-    [$δ(q, a)$], ..(completer(),)*3,
-    [$δ(q, b)$], ..(completer(),)*3,
+    [$δ(q, a)$], ..(completer(),) * 3,
+    [$δ(q, b)$], ..(completer(),) * 3,
   ),
   caption: none,
 ))
@@ -97,51 +94,43 @@
   definition-transition,
   exercice-transition,
 )
+Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ a$.
 
-== Implémentation
+#slides-only[== Implémentation]
 
-#exercice[
+#exercice[Implémentation][
   1. Rappeler la définition des structures de données abstraites de dictionnaire et d'ensemble.
   2. Comment s'en servir pour représenter un automate ?
   3. Proposer deux implémentations de ces structures de données.
 ]
 
-#slides-only[== Extension de la fonction de transition]
-
-On peut étendre la fonction de transition aux ensembles d'états et aux mots, par récurrence :
-$
-  δ : & cal(P)(Q) × Σ^* & → & cal(P)(Q) \
-      & (S, ε) & ↦ & S \
-      & (S, w a) & ↦ & union.big_(q ∈ δ(S, w)) δ(q, a)
-$
-où $S ⊂ Q$, $w ∈ Σ^*$ et $a ∈ Σ$.
+On peut étendre $δ$ à un ensemble d'états $Q' ⊂ Q$ : $δ(Q', a) = ⋃_(q ∈ Q') δ(q, a)$
 
 = Langage reconnaissable
 
-#definition[
-  Un chemin $C$ dans un automate $A$ est une suite de transitions consécutives :
+#definition[Chemin acceptant][
+  Un _chemin_ $C$ dans un automate $A$ est une suite de transitions consécutives :
   $q_0 limits(arrow.long)^(a_1) q_1 limits(arrow.long)^(a_2) … limits(arrow.long)^(a_n) q_n.$\
-  L'étiquette de $C$ est le mot $a_1 … a_n$.
-  On dit que $C$ est acceptant si $q_0 ∈ I$ et $q_n ∈ F$.
+  L'_étiquette_ de $C$ est le mot $a_1 … a_n$.
+  On dit que $C$ est _acceptant_ si $q_0 ∈ I$ et $q_n ∈ F$.
 ]
 
 #underline[Remarque] : il suffit d'un chemin acceptant pour que $m in cal(L)(A)$, même si un autre chemin d'étiquette $m$ n'est pas acceptant.
 
 #slide()
-#definition[
-  Un mot est accepté par $A$ s'il est l'étiquette d'un chemin acceptant.
-  Le langage $cal(L)(A)$ reconnu par $A$ est l'ensemble des mots acceptés.
-  Un langage est reconnaissable s'il est reconnu par un automate.
+#definition[Langage reconnaissable][
+  Un mot est _accepté_ par $A$ s'il est l'étiquette d'un chemin acceptant.
+  Le _langage_ $cal(L)(A)$ reconnu par $A$ est l'ensemble des mots acceptés.
+  Un langage est _reconnaissable_ s'il est reconnu par un automate.
 ]
 
 #slide()
-#exercice[Déterminer les langages reconnus par les automates suivants.]
+#exercice[Déterminer les langages reconnus par les automates ci-dessous.]
 #grid(
   columns: if est-presentation() { (auto, 1fr) } else { (1fr, 1fr) },
-  column-gutter: 1.5em,
+  column-gutter: 1em,
   align: horizon,
-  figure(impair, numbering: none, gap: 0.4em, caption: [$A_1$]),
-  figure(deux-initiaux, numbering: none, gap: 0.4em, caption: [$A_2$]),
+  figure(impair, numbering: none, caption: [$A_1$]), figure(deux-initiaux, numbering: none, caption: [$A_2$]),
 )
 
 #slides-only[
@@ -173,9 +162,8 @@ où $S ⊂ Q$, $w ∈ Σ^*$ et $a ∈ Σ$.
 
 = Test d'appartenance
 
-Pour déterminer si $m = m_1 … m_n in cal(L)(A)$, on peut calculer l'ensemble des états atteignables après lecture de $m[:k]$ :
-$ Q_0 = I, quad Q_k = union.big_(q ∈ Q_(k - 1)) δ(q, m_k). $
-Alors $m ∈ cal(L)(A)$ si et seulement si $Q_n ∩ F ≠ ∅$.
+Pour déterminer si $m = m_1 … m_n ∈ cal(L)(A)$, on peut calculer itérativement l'ensemble $Q_k$ des états atteignables après lecture de $m_1 … m_k$ : $Q_0 = I$ et $Q_k = δ(Q_(k-1), m_k)$.
+Alors $m ∈ cal(L)(A) <==> Q_n ∩ F ≠ ∅$.
 
 #slide()
 #exercice[
@@ -187,12 +175,15 @@ Alors $m ∈ cal(L)(A)$ si et seulement si $Q_n ∩ F ≠ ∅$.
 
 = Automate complet
 
-#definition[
+#definition[Automates équivalents][
   Deux automates sont équivalents s'ils reconnaissent le même langage.
-  Un automate est complet si :
-  $ ∀ q ∈ Q, #sep ∀ a ∈ Σ, #sep ∃ q' ∈ Q, #sep (q, a, q') ∈ T. $
 ]
-Un automate complet n'a pas de blocage.
+
+#definition[Automate complet][
+  Un automate est complet s'il n'a pas de blocage :
+  $∀ q ∈ Q, #sep ∀ a ∈ Σ, #sep ∃ q' ∈ Q, #sep (q, a, q') ∈ T.$
+]
+
 #slide()
 #theoreme[Tout automate est équivalent à un automate complet.]
 
@@ -204,7 +195,7 @@ Un automate complet n'a pas de blocage.
   align: horizon,
   definition(coeur: true, marge-haute: false)[
     Un automate est déterministe si :
-    + Il possède un unique état initial
+    + Il possède un unique état initial.
     + $(q, a, q_1) ∈ T ∧ (q, a, q_2) ∈ T ==> q_1 = q_2$
   ],
   figure(
@@ -231,14 +222,37 @@ Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonct
 
 #slide()
 #definition[
-  Pour un automate déterministe complet, on définit $δ^* : Q × Σ^* → Q$ récursivement, pour $q ∈ Q$ :
+  Si $A = (Q, Σ, q_0, F, T)$ est un ADC, on définit $δ^* : Q × Σ^* → Q$ récursivement, pour $q ∈ Q$ :
   - $δ^*(q, ε) = q$
   - $∀ a ∈ Σ, m ∈ Σ^* : #sep δ^*(q, a m) = δ^*(δ(q, a), m)$
 ]
-$δ^*(q, u)$ est l'état atteint après lecture de $u$ depuis $q$.
+$δ^*(q, u)$, noté parfois $q ⋅ u$, est l'état atteint après lecture de $u$ depuis $q$.
 On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
 #slide()
 #theoreme[$∀q ∈ Q, u, v ∈ Σ^* : #sep δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-delta-etoile>
+
+#slide()
+#exercice[
+  Soit $A$ un ADC à $n$ états sur un alphabet $Σ$.
+  Montrer que si $A$ accepte tous les mots de taille strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
+  La borne est-elle optimale ?
+]
+#solution[
+  #slide()
+  Supposons $cal(L)(A) ≠ Σ^*$ et soit $m ∈ Σ^* \\ cal(L)(A)$ de taille minimale.
+  Par hypothèse, $abs(m) ≥ n$.
+  Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
+  On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
+  $δ^*(q_0, x) = δ^*(q_0, x y).$
+  @thm-delta-etoile donne $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
+  Donc $x z ∉ cal(L)(A)$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
+
+  #slide()
+  La borne est optimale sur $Σ = {a}$.
+  En effet, soit $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
+  $ δ(i, a) = min(i + 1, n - 1). $
+  Cet automate accepte tous les mots de taille strictement inférieure à $n - 1$, mais pas $a^(n - 1)$.
+]
 
 #slide()
 #exercice(titre: [Automates à permutations])[
@@ -250,8 +264,8 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
 ]
 #solution[
   + Oui : une application de l'ensemble fini $Q$ dans lui-même est injective si et seulement si elle est surjective, donc bijective.
-  + Posons $f_u (q) = δ^*(q, u)$. On a $f_ε = id_Q$ et $f_(v a) = δ_a ∘ f_v$.
-    Par récurrence sur la taille de $u$, $f_u$ est donc une permutation.
+  + Soit $f_u (q) = δ^*(q, u)$. On a $f_ε = id_Q$ et $f_(v a) = δ_a ∘ f_v$.
+    $f_u$ est donc une permutation, car composée de permutations.
     Pour $q ∈ Q$, la finitude de $Q$ donne $i < j$ tels que $f_u^i (q) = f_u^j (q)$.
     Comme $f_u^i$ est injective, $q = f_u^(j - i) (q) = δ^*(q, u^(j - i))$.
   + Non. Supposons $cal(L)(A) = Σ^* a Σ^*$. Comme $ε ∉ cal(L)(A)$, l'état initial $q_0$ n'est pas final.
@@ -259,32 +273,9 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
     Le mot $a^k$ est donc refusé, alors qu'il appartient à $Σ^* a Σ^*$ : contradiction.
 ]
 
-#slide()
-#exercice[
-  Soit $A$ un automate déterministe complet à $n$ états sur un alphabet $Σ$.
-  Montrer que si $A$ accepte tous les mots de taille strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
-  La borne est-elle optimale ?
-]
-#solution[
-  #slide()
-  Supposons $cal(L)(A) ≠ Σ^*$ et soit $m ∈ Σ^* \\ cal(L)(A)$ de taille minimale.
-  Par hypothèse, $abs(m) ≥ n$.
-  Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
-  On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
-  $ δ^*(q_0, x) = δ^*(q_0, x y). $
-  @thm-delta-etoile donne $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
-  Donc $x z ∉ cal(L)(A)$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
-
-  #slide()
-  La borne est optimale sur $Σ = {a}$.
-  En effet, soit $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
-  $ δ(i, a) = min(i + 1, n - 1). $
-  Cet automate accepte tous les mots de taille strictement inférieure à $n - 1$, mais pas $a^(n - 1)$.
-]
-
 == Implémentation déterministe complet
 
-En codant chaque lettre par un entier, le mot est un tableau de $n$ entiers et `finaux[q]` indique si l'état `q` est final :
+Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$) en temps et O($1$) en mémoire :
 #grid(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
@@ -315,14 +306,16 @@ En codant chaque lettre par un entier, le mot est un tableau de $n$ entiers et `
 #underline[Complexité] : #completer()
 
 == Déterminisation
-#theoreme(coeur: true)[Tout automate est équivalent à un automate déterministe complet.]
+#theoreme(
+  coeur: true,
+)[Soit $A = (Σ, Q, I, F, δ)$ un automate. Alors $A$ est équivalent à un automate déterministe complet.]
 #solution(cours: true)[
-  L'automate des parties est $A' = (Σ, cal(P)(Q), {I}, F', δ')$, où :
-  $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}, quad δ'(X, a) = union.big_(q ∈ X) δ(q, a). $
+  Soit $A' = (Σ, cal(P)(Q), {I}, F', δ')$, où $F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}$ et $δ'(X, a) = display(union.big_(q ∈ X)) δ(q, a).$\
+  Pour $u = u_1 … u_n$, on montre l'invariant : $δ'^*({I}, u) = {δ^*(q, u) ∣ q ∈ I}$. Donc $u ∈ cal(L)(A) <==> δ'^*({I}, u) ∩ F ≠ ∅ <==> u ∈ cal(L)(A')$.
 ]
 
 #slide()
-#underline[Invariant] : après lecture d'un mot $u$, l'état atteint dans $A'$ est exactement l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
+#underline[Invariant] : après lecture d'un mot $u$, l'état atteint dans $A'$ est l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
 
 #slide()
 #algorithme(coeur: true)[
@@ -423,9 +416,9 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
   - Pour $L_1 ∖ L_2$ : $F_1 × (Q_2 ∖ F_2)$.
 ]
 #article-only[
-  - Pour $L_1 ∩ L_2$ : $F =$ #line(length: 5cm)
-  - Pour $L_1 ∪ L_2$ : $F =$ #line(length: 5cm)
-  - Pour $L_1 ∖ L_2$ : $F =$ #line(length: 5cm)
+  - Pour $L_1 ∩ L_2$ : $F =$ #completer()
+  - Pour $L_1 ∪ L_2$ : $F =$ #completer()
+  - Pour $L_1 ∖ L_2$ : $F =$ #completer()
 ]
 
 #article-only[

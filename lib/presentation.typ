@@ -105,7 +105,14 @@
 }
 
 /// `encadrer` crée un cadre par contenu si `saut-slide` vaut true, un cadre commun sinon.
-#let colonnes-cours(columns: (1fr, 1fr), column-gutter: 1.5em, align: top, saut-slide: false, encadrer: body => body, ..contenus) = {
+#let colonnes-cours(
+  columns: (1fr, 1fr),
+  column-gutter: 1.5em,
+  align: center + horizon,
+  saut-slide: false,
+  encadrer: body => body,
+  ..contenus,
+) = {
   article-only(encadrer(grid(columns: columns, column-gutter: column-gutter, align: align, ..contenus)))
   slides-only(if saut-slide {
     contenus.pos().map(encadrer).join(slide() + parbreak())
