@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": automate
 #import automate: dist-lettre, rayon-etat, rayon-grand-etat, style-automates, unite-automates
 #import "/load.typ": exercice, feuille, question
@@ -68,5 +69,5 @@
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (determinisation, cloture, reconnaissable, algorithmes, taille, distinguant, palindromes),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
 )

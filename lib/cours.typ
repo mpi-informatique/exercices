@@ -1,3 +1,4 @@
+#import "options.typ": est-corrige
 #import "blocs.typ": bloc-solution, epaisseur-trait
 #import "@preview/touying:0.8.0": slides-only, touying-fn-wrapper-raw, utils
 #import "document.typ": auteur-par-defaut, document-pedagogique
@@ -6,7 +7,7 @@
 #let composer-solution(body, self: none) = bloc-solution(body)
 
 #let cours(titre: "Cours", niveau: none, auteur: auteur-par-defaut, taille: 10pt, body) = {
-  let corrige = sys.inputs.at("corrige", default: "false") == "true"
+  let corrige = est-corrige()
   show: document-pedagogique.with(
     titre: titre + if corrige { " — Corrigé" } else { "" },
     niveau: niveau,
@@ -32,7 +33,7 @@
 }
 
 #let solution(cours: false, presentation: false, body) = {
-  if sys.inputs.at("corrige", default: "false") == "true" or (cours and sys.inputs.at("format", default: "cours") == "cours") {
+  if est-corrige() or (cours and sys.inputs.at("format", default: "cours") == "cours") {
     // Le filtre article de Touying ne descend pas dans les arguments des fonctions différées.
     body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
       if marque.kind == "touying-slides-only" { [] } else { marque.body }

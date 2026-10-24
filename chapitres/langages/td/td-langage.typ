@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": exercice, feuille, question
 #import "/chapitres/langages/exercices/mots-qui-commutent.typ": ex as commutation
 #import "/chapitres/langages/exercices/mots-de-fibonacci.typ": ex as fibonacci
@@ -40,5 +41,5 @@
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (commutation, fibonacci, regles, exemples, hamming, sur-mots),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
 )

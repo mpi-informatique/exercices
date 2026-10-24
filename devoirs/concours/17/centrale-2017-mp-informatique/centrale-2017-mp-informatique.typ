@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": exercice, feuille, partie, question
 #import "/load.typ": sep, widetilde
 #import "/load.typ": code
@@ -531,6 +532,6 @@
   concours: ex.meta.concours,
   exercices: sujet.exercices,
   bareme: sujet.bareme,
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
-  espacement: if sys.inputs.at("corrige", default: "false") == "true" { 12pt } else { 10.6pt },
+  corrige: est-corrige(),
+  espacement: if est-corrige() { 12pt } else { 10.6pt },
 )

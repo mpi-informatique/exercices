@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": feuille
 #import "/chapitres/langages/exercices/miroir-langage-non-contextuel.typ": ex as miroir
 #import "/chapitres/langages/exercices/construire-grammaires.typ": ex as construire
@@ -20,5 +21,5 @@
   auteur: "Q. Fortier",
   exercices: sujet.exercices,
   bareme: sujet.bareme,
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
 )

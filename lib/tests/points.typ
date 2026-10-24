@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/lib/exercice.typ": feuille, exercice, question, partie
 
 #let meta = (titre: "Points par question", chapitres: (), difficulte: 1)
@@ -11,7 +12,7 @@
 #let second = exercice(meta: meta, contenu: (
   question([Question C], bareme: 1.5, solution: [Réponse C]),
 ))
-#let corrige = sys.inputs.at("corrige", default: "false") == "true"
+#let corrige = est-corrige()
 #show: feuille.with(type: "devoir", titre: "Devoir : barème par question",
   exercices: (second, premier), corrige: corrige)
 

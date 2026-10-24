@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
 #import "/load.typ": cours-et-presentation, solution, taille-presentation, article-only, item-by-item, only, pause, slides-only
 #import "/load.typ": automate, theoremes, completer
@@ -451,9 +452,9 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
     ([Langage d'une expression régulière], [$LL(e)$], [${a b^n | n ∈ ℕ}$], [$Lreg(Σ)$]),
     ([Ensemble des langages réguliers], [$Lreg$], [$Lreg$], [$cal(P)(cal(P)(Σ^*))$]),
   )
-  let reponse(contenu) = if sys.inputs.at("format", default: "cours") == "presentation" {
+  let reponse(contenu) = if est-presentation() {
     [#pause #contenu]
-  } else if sys.inputs.at("corrige", default: "false") == "true" {
+  } else if est-corrige() {
     contenu
   } else {
     completer()
@@ -524,7 +525,7 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
     ]
   ],
   [
-    #if sys.inputs.at("format", default: "cours") == "presentation" { slide() }
+    #if est-presentation() { slide() }
     #theoreme[
       Soit $cal(P)(e)$ une propriété sur $e ∈ cal(R)(Σ)$ telle que :
       - $cal(P)(∅)$, $cal(P)(ε)$ et $cal(P)(a)$ sont vraies pour $a ∈ Σ$

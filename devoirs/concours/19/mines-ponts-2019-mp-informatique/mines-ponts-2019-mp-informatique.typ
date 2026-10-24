@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": code
 #import code: code-extrait
 #import "/load.typ": automate
@@ -752,5 +753,5 @@
   niveau: ex.meta.niveaux.join(" / "),
   concours: ex.meta.concours,
   exercices: sujet.exercices,
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
 )

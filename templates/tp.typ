@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": exercice, feuille, question
 
 #let sujet = exercice(
@@ -18,5 +19,5 @@
     squelette: ((source: "main.ml"),),
     corrige: ((source: "corrige.ml"),),
   ),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
 )

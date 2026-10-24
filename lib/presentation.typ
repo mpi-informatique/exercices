@@ -1,3 +1,4 @@
+#import "options.typ": est-presentation
 #import "@preview/touying:0.8.0" as touying
 #import touying: article-only, item-by-item, only, pause, slide, slides-only, uncover
 #import "cours.typ": cours, espace-reponse
@@ -13,7 +14,7 @@
 })
 
 #let taille-presentation(taille, body) = {
-  if sys.inputs.at("format", default: "cours") == "presentation" {
+  if est-presentation() {
     text(size: taille, body)
   } else {
     body
@@ -21,7 +22,7 @@
 }
 
 /// Formule en bloc dans la présentation, en ligne dans le cours et le corrigé.
-#let equation-slide(body) = math.equation(block: sys.inputs.at("format", default: "cours") == "presentation", body)
+#let equation-slide(body) = math.equation(block: est-presentation(), body)
 
 #let couleurs-blocs = (
   theorem: rgb("#233e6a"),

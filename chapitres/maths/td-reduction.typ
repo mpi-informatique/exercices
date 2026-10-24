@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": feuille
 #import "reduction/spectre-endomorphisme-suites.typ": ex as ex1
 #import "reduction/commutation-stabilite-sous-espaces-propres.typ": ex as ex2
@@ -11,6 +12,6 @@
   titre: "Réduction",
   niveau: "MP",
   exercices: (ex1, ex2, ex3, ex4, ex5, ex6),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
   nouvelle-page: false,
 )

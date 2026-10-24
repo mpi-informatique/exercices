@@ -1,3 +1,4 @@
+#import "/load.typ": est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
   article-only, automate, colonnes-cours, cours-et-presentation, pause, completer, sep, slides-only, solution, theoremes,
@@ -126,7 +127,7 @@
 #slide()
 #exercice[Déterminer les langages reconnus par les automates suivants.]
 #grid(
-  columns: if sys.inputs.at("format", default: "cours") == "presentation" { (auto, 1fr) } else { (1fr, 1fr) },
+  columns: if est-presentation() { (auto, 1fr) } else { (1fr, 1fr) },
   column-gutter: 1.5em,
   align: horizon,
   figure(impair, numbering: none, gap: 0.4em, caption: [$A_1$]),

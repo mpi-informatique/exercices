@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": feuille, sujet-colle
 #import "/templates/exercice.typ": ex
 
@@ -7,7 +8,7 @@
   (ex,), // Sujet 2
   (ex,), // Sujet 3
 )
-#let corrige = sys.inputs.at("corrige", default: "false") == "true"
+#let corrige = est-corrige()
 
 #show: feuille.with(
   type: "colle",

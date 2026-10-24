@@ -1,3 +1,4 @@
+#import "lib/options.typ": est-presentation, est-corrige
 #import "lib/exercice.typ": *
 #import "lib/document.typ": sep, completer, liste-a-completer, widetilde
 #import "lib/blocs.typ": epaisseur-trait

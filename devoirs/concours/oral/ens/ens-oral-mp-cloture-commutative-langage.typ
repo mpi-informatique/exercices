@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": exercice, partie, question
 #import "/load.typ": sep
 #let ex = exercice(
@@ -166,5 +167,5 @@
   niveau: ex.meta.niveaux.join(" / "),
   concours: ex.meta.concours,
   exercices: (ex,),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
 )

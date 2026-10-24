@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": exercice, feuille, question, code, automate
 #import automate: dessiner-automate
 #import code: code-extrait
@@ -98,5 +99,5 @@
     squelette: ((source: "tp2.ml"),),
     corrige: ((source: "corrige.ml"),),
   ),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
 )

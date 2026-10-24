@@ -1,6 +1,7 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": exercice, question, feuille, sujet-colle
 
-#let corrige = sys.inputs.at("corrige", default: "false") == "true"
+#let corrige = est-corrige()
 #let mode = sys.inputs.at("mode", default: "feuille")
 #let exercices = range(3).map(i => exercice(
   meta: (titre: "Exercice " + str(i), chapitres: (), difficulte: 1),

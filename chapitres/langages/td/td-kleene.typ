@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": feuille
 #import "/chapitres/langages/exercices/langages-locaux-glushkov.typ": ex as locaux
 #import "/devoirs/concours/oral/ccinp/ccinp-oral-langages-automates.typ": ex as ccp
@@ -10,5 +11,5 @@
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (locaux, ccp, stabilite, dynamique, residuels),
-  corrige: sys.inputs.at("corrige", default: "true") == "true",
+  corrige: est-corrige(defaut: true),
 )

@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 #import "/load.typ": feuille
 #import "/templates/exercice.typ": ex
 
@@ -8,6 +9,6 @@
   duree: (4, 0),
   // concours: (nom: "ENS", annee: 2019, filiere: "MPI", oral: false),
   exercices: (ex,),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
   nouvelle-page: false,
 )

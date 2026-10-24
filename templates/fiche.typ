@@ -1,3 +1,4 @@
+#import "/load.typ": est-corrige
 // Aperçu autonome d'un exercice exportant ex, quel que soit son emplacement.
 #import "/load.typ": auteur-par-defaut, feuille
 #let chemin = sys.inputs.at("exercice", default: "/templates/exercice.typ")
@@ -9,5 +10,5 @@
   auteur: ex.meta.at("auteur", default: auteur-par-defaut),
   concours: ex.meta.concours,
   exercices: (ex,),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
 )
