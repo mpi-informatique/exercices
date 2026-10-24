@@ -1,8 +1,18 @@
 #import "@preview/touying:0.8.0" as touying
 
+#let slide-madrid(config: (:), ..args) = touying.touying-slide-wrapper(self => {
+  let sans-titre = args.pos().any(body => type(body) == content and touying.utils.tree.find-in-tree(body, it => it.func() == metadata and it.value == "diapositive-sans-titre") != none)
+  touying.touying-slide(
+    self: self,
+    config: if sans-titre {
+      touying.utils.merge-dicts(config, touying.config-page(header: none, margin: (top: 0pt)))
+    } else { config },
+    ..args,
+  )
+})
+
 #let theme-madrid(aspect-ratio: "16-9", couleur: rgb("#233e6a"), taille: 22pt, police: ("New Computer Modern", "New Computer Modern"), style: body => body, ..configurations, body) = {
   let bandeau(self) = context {
-    if query(metadata.where(value: "diapositive-sans-titre")).any(it => it.location().page() == here().page()) { return [] }
     set text(fill: white, top-edge: "bounds", bottom-edge: "bounds")
     block(
       width: 100%, height: 44pt, fill: couleur, above: 0pt, below: 0pt,
@@ -19,6 +29,7 @@
     ),
     touying.config-colors(primary: couleur),
     touying.config-common(
+      slide-fn: slide-madrid,
       slide-level: 2,
       new-section-slide-fn: none,
       zero-margin-header: true,
