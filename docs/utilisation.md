@@ -78,6 +78,8 @@ Pour disposer des contenus en colonnes dans le cours et les afficher à la suite
 )
 ```
 
+Passer `saut-slide: true` pour séparer les contenus par un saut de diapositive. Par défaut, ils restent sur la même diapositive.
+
 Pour placer les deux contenus dans un même cadre, ajouter `encadrer: theoremes.exercice` à `colonnes-cours(...)`, plutôt que placer cet appel à l'intérieur du cadre : Touying doit résoudre les variantes avant le rendu du cadre.
 
 Les fonctions des cadres utilisent des noms français (`theoreme`, `lemme`, `corollaire`, `propriete`, `exemple`, `exercice`, `probleme`, `algorithme`). Un titre se passe avec `titre: [Texte]`. Les variantes sans numéro portent le suffixe `-sans-numero`.

@@ -131,10 +131,15 @@
 /// - columns (int, array): Colonnes de la grille du cours, deux par défaut.
 /// - column-gutter (relative): Espacement entre les colonnes du cours.
 /// - align (alignment, array, auto): Alignement des cellules dans le cours.
-/// - encadrer (function): Fonction appliquée à l'ensemble dans chaque format, par exemple `theoremes.exercice`.
+/// - saut-slide (bool): Séparer les contenus par une nouvelle diapositive, défaut false.
+/// - encadrer (function): Cadre commun dans le cours ; dans la présentation, cadre commun ou par contenu si `saut-slide` vaut true.
 /// - ..contenus (arguments): Contenus dans l'ordre de lecture ; options supplémentaires de `grid`.
 /// -> content
-#let colonnes-cours(columns: (1fr, 1fr), column-gutter: 1.5em, align: top, encadrer: body => body, ..contenus) = {
+#let colonnes-cours(columns: (1fr, 1fr), column-gutter: 1.5em, align: top, saut-slide: false, encadrer: body => body, ..contenus) = {
   article-only(encadrer(grid(columns: columns, column-gutter: column-gutter, align: align, ..contenus)))
-  slides-only(encadrer(contenus.pos().join(parbreak())))
+  slides-only(if saut-slide {
+    contenus.pos().map(encadrer).join(slide() + parbreak())
+  } else {
+    encadrer(contenus.pos().join(parbreak()))
+  })
 }
