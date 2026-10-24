@@ -65,6 +65,8 @@ Les titres `=` structurent les grandes parties. Les titres `==` ouvrent les diap
 Contenu commun aux deux formats.
 ```
 
+`#slide()` ouvre une nouvelle diapositive en conservant le titre courant. Utiliser `#slide(afficher-titre: false)` pour masquer le bandeau de titre sur cette seule diapositive. Ces appels ne provoquent aucun saut dans le cours.
+
 Utiliser `article-only[...]` pour les détails destinés au polycopié, et `slides-only[...]` pour les compléments projetés.
 Ces commandes peuvent aussi entourer une section entière.
 

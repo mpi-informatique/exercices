@@ -2,6 +2,7 @@
 
 #let theme-madrid(aspect-ratio: "16-9", couleur: rgb("#233e6a"), taille: 22pt, police: ("New Computer Modern", "New Computer Modern"), style: body => body, ..configurations, body) = {
   let bandeau(self) = context {
+    if query(metadata.where(value: "diapositive-sans-titre")).any(it => it.location().page() == here().page()) { return [] }
     set text(fill: white, top-edge: "bounds", bottom-edge: "bounds")
     block(
       width: 100%, height: 44pt, fill: couleur, above: 0pt, below: 0pt,
