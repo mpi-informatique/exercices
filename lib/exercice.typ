@@ -1,6 +1,3 @@
-/// API commune des exercices, feuilles et sujets de concours.
-/// Guide de rédaction : docs/creation-exercices.md. Documentation générée : just docs.
-
 #import "blocs.typ": bloc-solution
 #import "meta.typ": (
   algorithmes-programme, chapitres-programme, concours-possibles, filieres-possibles, langages-possibles,
@@ -9,14 +6,6 @@
 #import "document.typ": auteur-par-defaut, document-pedagogique, texte-duree
 
 // Les exercices sont des données Typst ordinaires.
-/// Construit une question ; son énoncé reste visible dans le corrigé.
-/// - enonce (content): Énoncé, éventuellement avec sous-questions.
-/// - jury (content, none): Observation du jury, en italique avant la solution uniquement dans le corrigé.
-/// - solution (content, none): Solution ; `none` affiche « Corrigé à compléter ».
-/// - bareme (float, int, none): Barème de la question, affiché en marge du corrigé ; `none` masque les points.
-/// - notation (content, none): Consignes concises de notation (pourcentages, pénalités, tolérances), jamais affichées.
-/// - label (label, none): Étiquette stable pour un renvoi natif `@etiquette`, avec numéro automatique.
-/// -> dictionary
 #let question(enonce, jury: none, solution: none, bareme: none, notation: none, label: none) = {
   assert(label == none or type(label) == std.label, message: "label doit être une étiquette Typst ou none")
   assert(jury == none or type(jury) == content, message: "jury doit être un contenu Typst ou none")
@@ -28,11 +17,6 @@
   (type: "question", enonce: enonce, jury: jury, solution: solution, bareme: bareme, notation: notation, label: label)
 }
 
-/// Associe une question à son numéro courant sans changer sa mise en page.
-/// - q (dictionary): Question construite avec `question`.
-/// - numero (int): Numéro affiché dans le document.
-/// - body (content): Énoncé mis en forme par le document ou la copie.
-/// -> content
 #let cible-question(q, numero, body) = {
   let etiquette = q.at("label", default: none)
   if etiquette == none { return body }
@@ -82,14 +66,7 @@
 }
 
 // Le contexte contient les rappels à ajouter dans un exercice autonome.
-/// Regroupe des textes, questions et sous-parties sans réinitialiser la numérotation.
-/// - numero (str): Numéro explicite, par exemple `"I.A"`.
-/// - titre (str): Titre non vide.
-/// - contenu (array): Textes Typst, questions et parties dans l'ordre.
-/// - contexte (array): Textes de rappel à reprendre explicitement dans un extrait autonome ; non insérés automatiquement.
-/// - meta (dictionary): Métadonnées de réutilisation de la partie ; non validées ici.
-/// - jury (content, none): Observation du jury affichée dans le corrigé après le titre.
-/// -> dictionary
+/// `contexte` est conservé pour les extraits autonomes, sans insertion automatique.
 #let partie(numero, titre, contenu: (), contexte: (), meta: (:), jury: none) = {
   assert(type(numero) == str and numero != "", message: "Numéro de partie vide")
   assert(type(titre) == str and titre != "", message: "Titre de partie vide")
@@ -133,17 +110,8 @@
   }
 }
 
-/// Construit et valide un exercice ou un sujet, exporté sous le nom `ex`.
-/// L'identifiant est le nom du fichier, jamais un champ de `meta`.
-/// Les vocabulaires autorisés sont exportés par `lib/meta.typ` ; `chapitres` couvre informatique et mathématiques.
-/// - meta (dictionary): Champs obligatoires : `titre` (chaîne non vide), `chapitres` (tableau de chaînes), `difficulte` (entier de 1 à 5). Champs facultatifs : `algorithmes`, `structures`, `langages`, `niveaux` (tableaux, défaut `()`), `duree` (couple heures/minutes positif, minutes < 60, ou `none`), `concours` (dictionnaire ou `none`). Concours : `nom`, `annee` (entier positif), `filiere`, `oral` (booléen), tous facultatifs ; aucune filière ajoutée implicitement. Champs supplémentaires libres ; `id` et `reference` interdits.
-/// - contenu (array): Textes libres `[...]`, `question(...)` et `partie(...)` ; au moins une question.
-/// - colonnes (int): Nombre de colonnes des questions dans l'énoncé ; le corrigé reste sur une colonne.
-/// - jury (content, none): Commentaires généraux du jury, en italique au début du corrigé.
-/// - corrections (content, none): Liste des corrections éditoriales conservée dans les données, jamais affichée.
-/// - notation (content, none): Consignes concises de notation communes à l'exercice ou à l'épreuve, jamais affichées.
-/// - bareme (array, none): Ancien barème global, conservé pour compatibilité. Préférer `bareme` dans chaque `question`.
-/// -> dictionary
+/// `corrections` et `notation` sont conservées dans les données, sans affichage.
+/// Le barème global est conservé pour compatibilité ; préférer celui de chaque question.
 #let exercice(meta: (:), contenu: (), colonnes: 1, jury: none, corrections: none, notation: none, bareme: none) = {
   assert(type(colonnes) == int and colonnes > 0, message: "colonnes doit être un entier strictement positif")
   let champs = ("titre", "chapitres", "difficulte")
@@ -267,16 +235,6 @@
   body
 }))
 
-/// Affiche un objet construit avec `exercice` et publie ses métadonnées pour le catalogue.
-/// - ex (dictionary): Exercice à afficher.
-/// - numero (int, none): Numéro romain du titre ; `none` utilise I.
-/// - corrige (bool): Afficher solutions et observations du jury.
-/// - bareme (array, none): Barème remplaçant celui de l'exercice ; `none` utilise `ex.bareme`.
-/// - afficher-titre (bool): Afficher le titre de l'exercice.
-///   Pour un exercice de concours, l'attribution s'affiche à droite à la place de la durée.
-/// - afficher-contexte (bool): Conserver les textes libres dans le corrigé, défaut true. Les questions et leurs figures restent toujours visibles.
-/// - espacement (relative, auto): Espacement vertical des textes et questions, automatique par défaut.
-/// -> content
 #let afficher-exercice(
   ex,
   numero: none,
@@ -351,11 +309,6 @@
   if questions.len() > 0 { afficher-questions(questions) }
 }
 
-/// Commence un sujet de colle sur une nouvelle page, enchaîne ses exercices et identifie ses pages pour l'en-tête répété de `feuille`.
-/// - numero (int): Numéro du sujet.
-/// - exercices (array): Exercices du sujet, renumérotés à partir de I.
-/// - corrige (bool): Afficher les solutions.
-/// -> content
 #let sujet-colle(numero, exercices, corrige: false) = {
   pagebreak(weak: true)
   counter(heading).update(0)
@@ -365,23 +318,8 @@
   }
 }
 
-/// Compose tout type de document dans l'ordre du tableau `exercices`.
-/// À utiliser avec `#show: feuille.with(...)` ; le type ne dépend pas du dossier.
-/// - type (str): Type libre : `"td"`, `"devoir"`, `"colle"` ou un type personnalisé. `"concours"` reste un alias de présentation de `"devoir"`.
-/// - titre (str): Titre de la feuille.
-/// - niveau (str, none): Niveau affiché dans l'en-tête ; remplacé par la filière lorsqu'un concours est renseigné.
-/// - auteur (str, none): Auteur lié au site dans l'en-tête, défaut « Q. Fortier » ; `none` le masque.
-/// - duree (array, none): Durée (heures, minutes) après le titre, uniquement pour un devoir/concours ; `none` reprend celle du sujet unique.
-/// - concours (dictionary, none): Filière affichée à gauche, autres informations à la place de l'auteur ; mêmes champs que `exercice.meta.concours`. Un concours utilise la base `type: "devoir"`. Dans un devoir/concours écrit (`oral` absent ou false), les textes libres du contexte sont masqués dans le corrigé ; les exercices affichés seuls ou dans un TD les conservent.
-/// - exercices (array): Objets `ex` importés, dans l'ordre ; `()` crée une feuille vide.
-/// - tp (dictionary, none): Ressources d'un TP, relatives au fichier source : `ouvrir`, `squelette`, `ressources` et `corrige`. Chaque fichier déclare `source`, éventuellement `destination` et, pour un ZIP, `extraire`. Exporté dans les métadonnées, sans effet sur le PDF.
-/// - corrige (bool): Afficher les corrigés ; brancher sur `sys.inputs.at("corrige", default: "false") == "true"`.
-/// - bareme (array, none): Points dans l'ordre de toutes les questions de la feuille ; remplace les barèmes des exercices. `none` conserve ceux des exercices ; une entrée `none` masque les points de cette question.
-/// - nouvelle-page (bool): Commencer chaque exercice après le premier sur une nouvelle page, hors colles. En colle, les exercices s'enchaînent ; `sujet-colle` gère le saut entre les sujets.
-/// - espacement (relative, auto): Espacement vertical des textes et questions
-/// - afficher-exercices (bool): Composer automatiquement le tableau d'exercices ; false permet une composition personnalisée dans body.
-/// - body (content): Contenu placé avant les exercices, fourni par la règle show.
-/// -> content
+/// Les ressources `tp` sont relatives au fichier source et exportées sans effet sur le PDF.
+/// Le barème de la feuille remplace ceux des exercices ; une entrée `none` masque les points.
 #let feuille(
   type: "td",
   titre: "Feuille d'exercices",

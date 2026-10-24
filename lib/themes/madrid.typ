@@ -1,15 +1,5 @@
-/// Thème Touying sobre : bandeau Madrid, fond blanc et aucune navigation.
 #import "@preview/touying:0.8.0" as touying
 
-/// Configure le thème ; les configurations Touying positionnelles restent surchargeables.
-/// - aspect-ratio (str): Format des diapositives.
-/// - couleur (color): Couleur du bandeau et des titres.
-/// - taille (length): Taille du texte courant.
-/// - police (str, array): Police du texte, avec repli sur la police intégrée à Typst.
-/// - style (function): Règles supplémentaires appliquées aux diapositives uniquement.
-/// - ..configurations (arguments): Configurations Touying supplémentaires.
-/// - body (content): Contenu de la présentation.
-/// -> content
 #let theme-madrid(aspect-ratio: "16-9", couleur: rgb("#233e6a"), taille: 22pt, police: ("New Computer Modern", "New Computer Modern"), style: body => body, ..configurations, body) = {
   let bandeau(self) = context {
     set text(fill: white, top-edge: "bounds", bottom-edge: "bounds")
@@ -46,7 +36,6 @@
   body
 }
 
-/// Page de titre sans bandeau courant.
 #let titre-madrid(titre, niveau: none, auteur: none, couleur: rgb("#233e6a")) = touying.slide(
   config: touying.utils.merge-dicts(
     touying.config-page(header: none, margin: (x: 60pt, y: 40pt)),

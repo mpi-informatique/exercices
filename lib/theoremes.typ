@@ -1,4 +1,3 @@
-/// Environnements Theorion : cadres imprimés ou blocs colorés en présentation.
 #import "@preview/theorion:0.6.0" as theorion
 #import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils
 #import theorion.cosmos.fancy: (
@@ -208,11 +207,6 @@
 #let (compteur-probleme, probleme, probleme-sans-numero, afficher-probleme) = creer-environnement("problem")
 #let (compteur-algorithme, algorithme, algorithme-sans-numero, afficher-algorithme) = creer-environnement("algorithm")
 
-/// Active les règles Theorion ; `palette: none` conserve les cadres noirs imprimables.
-/// - espacement (length, none): Espacement supplémentaire autour des cadres.
-/// - palette (dictionary, none): Couleurs des environnements, indexées par leur nom anglais.
-/// - body (content): Document à mettre en forme.
-/// -> content
 #let configurer-theoremes(espacement: none, palette: none, body) = {
   espacement-cadres.update(espacement)
   style-cadres.update(palette)

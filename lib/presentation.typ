@@ -1,4 +1,3 @@
-/// Présentations Touying et cours issus d'une même source.
 #import "@preview/touying:0.8.0" as touying
 #import touying: article-only, item-by-item, only, pause, slide, slides-only, uncover
 #import "cours.typ": cours, espace-reponse
@@ -7,14 +6,9 @@
 #import "code.typ": configurer-code
 #import "themes/madrid.typ": theme-madrid, titre-madrid
 
-/// Commence une nouvelle diapositive en conservant le titre courant, sans saut dans le cours.
-/// -> content
+/// Conserve le titre courant et ne provoque aucun saut dans le cours.
 #let slide() = slides-only(pagebreak())
 
-/// Modifie la taille du texte uniquement dans la présentation d'une source commune.
-/// - taille (relative): Taille utilisée lorsque l'entrée `format` vaut "presentation".
-/// - body (content): Contenu conservé à sa taille normale dans le cours et le corrigé.
-/// -> content
 #let taille-presentation(taille, body) = {
   if sys.inputs.at("format", default: "cours") == "presentation" {
     text(size: taille, body)
@@ -23,12 +17,9 @@
   }
 }
 
-/// Affiche une formule en bloc dans la présentation et en ligne dans le cours et le corrigé.
-/// - body (content): Formule mathématique.
-/// -> content
+/// Formule en bloc dans la présentation, en ligne dans le cours et le corrigé.
 #let equation-slide(body) = math.equation(block: sys.inputs.at("format", default: "cours") == "presentation", body)
 
-/// Couleurs sémantiques des blocs projetés, surchargeables dans `presentation`.
 #let couleurs-blocs = (
   theorem: rgb("#233e6a"),
   lemma: rgb("#233e6a"),
@@ -48,20 +39,7 @@
   note: rgb("#586475"),
 )
 
-/// Compose une présentation Touying Madrid, ou sa version article avec le thème du dépôt.
-/// Bandeau de titre et blocs colorés, sans pied de page ni navigation ; cadres noirs en article.
-/// - titre (str): Titre du document.
-/// - niveau (str, none): Classe.
-/// - auteur (str, none): Auteur, défaut « Q. Fortier » ; `none` le masque.
-/// - aspect-ratio (str): Format Touying, défaut "16-9".
-/// - taille (length): Taille du texte des diapositives, défaut 22pt.
-/// - couleur (color): Couleur des titres, défaut bleu foncé.
-/// - palette (dictionary): Surcharges des couleurs de `couleurs-blocs`, indexées par nom d'environnement.
-/// - police (str, array): Police des diapositives, défaut New Computer Modern Sans avec repli New Computer Modern.
-/// - animations (bool): Produire toutes les étapes, défaut true.
-/// - article (bool): Utiliser le thème A4, défaut false.
-/// - body (content): Titres de section `=`, titres de diapositive `==` et contenu partagé.
-/// -> content
+/// Titres de section `=`, titres de diapositive `==`.
 #let presentation(
   titre: "Présentation",
   niveau: none,
@@ -117,24 +95,12 @@
   body
 }
 
-/// Génère le cours A4 ou la présentation à partir du même contenu.
-/// - format (str): "cours" ou "presentation", choisi par `--input format=...` (défaut "cours").
-/// - ..args (arguments): Options de `presentation`, dont `titre`, `niveau` et `auteur`.
-/// - body (content): Contenu commun, avec `pause`, `article-only` et `slides-only` si nécessaire.
-/// -> content
 #let cours-et-presentation(format: sys.inputs.at("format", default: "cours"), ..args, body) = {
   assert(format in ("cours", "presentation"), message: "format doit valoir cours ou presentation")
   presentation(..args, article: format == "cours", body)
 }
 
-/// Dispose les contenus en colonnes dans le cours et à la suite dans la présentation.
-/// - columns (int, array): Colonnes de la grille du cours, deux par défaut.
-/// - column-gutter (relative): Espacement entre les colonnes du cours.
-/// - align (alignment, array, auto): Alignement des cellules dans le cours.
-/// - saut-slide (bool): Séparer les contenus par une nouvelle diapositive, défaut false.
-/// - encadrer (function): Cadre commun dans le cours ; dans la présentation, cadre commun ou par contenu si `saut-slide` vaut true.
-/// - ..contenus (arguments): Contenus dans l'ordre de lecture ; options supplémentaires de `grid`.
-/// -> content
+/// `encadrer` crée un cadre par contenu si `saut-slide` vaut true, un cadre commun sinon.
 #let colonnes-cours(columns: (1fr, 1fr), column-gutter: 1.5em, align: top, saut-slide: false, encadrer: body => body, ..contenus) = {
   article-only(encadrer(grid(columns: columns, column-gutter: column-gutter, align: align, ..contenus)))
   slides-only(if saut-slide {

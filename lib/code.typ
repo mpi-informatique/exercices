@@ -1,9 +1,5 @@
 #import "blocs.typ": epaisseur-trait
 
-/// Style des blocs de code, commun aux exercices, cours et présentations.
-/// Le langage déclaré dans le bloc s'affiche sur le filet supérieur, à droite.
-/// - body (content): Document à mettre en forme.
-/// -> content
 #let configurer-code(body) = {
   let noms = (ocaml: "OCaml", c: "C", cpp: "C++", python: "Python", sql: "SQL", sh: "Shell", typ: "Typst", typst: "Typst")
   show raw.where(block: true): it => block(

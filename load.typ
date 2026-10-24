@@ -1,4 +1,3 @@
-/// API et contenus du package mpi-informatique/exercices.
 #import "lib/exercice.typ": *
 #import "lib/document.typ": sep, completer, liste-a-completer, widetilde
 #import "lib/blocs.typ": epaisseur-trait
@@ -9,9 +8,6 @@
 #import "lib/cours.typ": cours, espace-reponse, solution
 #import "lib/presentation.typ": presentation, cours-et-presentation, slide, colonnes-cours, taille-presentation, equation-slide, item-by-item, pause, uncover, only, article-only, slides-only
 
-/// Importe un exercice ou un sujet depuis le package.
-/// - chemin (str): Chemin relatif à la banque, par exemple "devoirs/concours/19/mines-ponts-2019-mp-informatique/mines-ponts-2019-mp-informatique.typ".
-/// -> module
 #let public(chemin) = {
   import chemin as source
   source

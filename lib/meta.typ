@@ -1,6 +1,4 @@
 // Voir docs/programme.md. Les concepts de langages vont dans chapitres.
-/// Chapitres d'informatique (MP2I–MPI).
-/// -> array
 #let chapitres-informatique = (
   // § 1–2, p. 5–7
   "methodes-de-programmation", "recursivite-et-induction",
@@ -16,8 +14,6 @@
   "decidabilite-et-classes-de-complexite",
 )
 
-/// Chapitres de mathématiques (MPSI–MP2I et MP–MPI, acquis de première année inclus).
-/// -> array
 #let chapitres-maths = (
   // MPSI–MP2I, premier semestre, p. 6–20
   "raisonnement-et-vocabulaire-ensembliste", "calcul-algebrique-et-trigonometrie",
@@ -40,14 +36,8 @@
   "calcul-differentiel-et-optimisation",
 )
 
-/// Chapitres autorisés dans meta.chapitres, pour les deux matières.
-/// Les acquis de première année restent autorisés en deuxième année.
-/// -> array
 #let chapitres-programme = chapitres-informatique + chapitres-maths
 
-/// Niveaux compatibles avec chaque chapitre de meta.chapitres.
-/// Les chapitres communs de première année restent utilisables en MP et MPI.
-/// -> dictionary
 #let niveaux-par-chapitre = {
   let premiere-annee-maths = (
     "raisonnement-et-vocabulaire-ensembliste", "calcul-algebrique-et-trigonometrie",
@@ -75,8 +65,6 @@
   resultat
 }
 
-/// Structures autorisées dans meta.structures.
-/// -> array
 #let structures-programme = (
   // § 3.1–3.2, p. 8
   "tableau", "liste", "liste-chainee", "pile", "file",
@@ -87,8 +75,6 @@
   // § 3.4, p. 9
   "graphe",
 )
-/// Algorithmes autorisés dans meta.algorithmes.
-/// -> array
 #let algorithmes-programme = (
   // § 3.3, p. 9
   "parcours-prefixe", "parcours-infixe", "parcours-postfixe", "tri-par-tas",
@@ -105,8 +91,6 @@
 )
 
 // Valeurs autorisées pour les métadonnées de concours.
-/// Noms autorisés dans meta.concours.nom.
-/// -> array
 #let concours-possibles = (
   "Centrale",
   "Mines-Ponts",
@@ -117,8 +101,6 @@
   "X-ENS",
 )
 
-/// Filières autorisées dans meta.concours.filiere.
-/// -> array
 #let filieres-possibles = (
   "MP2I",
   "MPI",
@@ -128,7 +110,4 @@
   "PT",
 )
 
-/// Langages proposés dans la banque et autorisés en MP2I–MPI, SQL inclus.
-/// Utiliser un tableau vide pour le pseudocode seul ; renseigner les langages de l'énoncé et du corrigé.
-/// -> array
 #let langages-possibles = ("C", "OCaml", "Python", "SQL")

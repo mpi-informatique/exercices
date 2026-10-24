@@ -1,5 +1,3 @@
-/// Notation de l’ensemble des langages réguliers.
-/// -> content
 #let LL = $cal(L)$
 #let Lreg = $LL_("reg")$
 
@@ -16,14 +14,9 @@
 #import "@preview/cetz:0.4.2" as cetz
 #import "@preview/finite:0.5.1" as finite
 
-/// Dessine un automate centré à partir de ses états et arcs explicites.
-/// - etats (array): Entrées `(nom, position, initial, final)` ; `nom` est une chaîne mathématique Typst.
-///   `initial` est un booléen ou un alignement indiquant le côté de la flèche entrante.
-/// - arcs (array): Entrées `(départ, arrivée, étiquette, style)` ; étiquette mathématique et style finite.
-///   Les étiquettes des transitions droites sont placées au-dessus par défaut, celles des arcs courbes à l'extérieur. `inverser: true` place l'étiquette de l'autre côté ; `label: (dist: ...)` permet de régler sa distance explicitement.
-/// - echelle (array): Facteurs horizontal et vertical des positions, défaut `(1, 1)`.
-/// - rayon (function): Rayon d'un état selon son nom, dans l'unité commune.
-/// -> content
+/// États : `(nom, position, initial, final)` ; arcs : `(départ, arrivée, étiquette, style)`.
+/// Noms et étiquettes en syntaxe mathématique Typst ; `initial` accepte un booléen ou un alignement.
+/// Le style `inverser: true` change le côté de l’étiquette ; `label: (dist: ...)` règle sa distance.
 #let dessiner-automate(etats, arcs, echelle: (1, 1), rayon: nom => rayon-etat) = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
   cetz.draw.set-style(..style-automates)
