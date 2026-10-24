@@ -7,9 +7,9 @@
 #import "themes/madrid.typ": theme-madrid, titre-madrid
 
 /// Conserve le titre courant et ne provoque aucun saut dans le cours.
-#let slide(afficher-titre: true) = slides-only({
-  pagebreak()
-  if not afficher-titre { metadata("diapositive-sans-titre") }
+#let slide(titre: true, saut: true) = slides-only({
+  if saut { pagebreak() }
+  if not titre { metadata("diapositive-sans-titre") }
 })
 
 #let taille-presentation(taille, body) = {
