@@ -284,29 +284,32 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
 
 == Implémentation déterministe complet
 
-En codant chaque lettre par un entier :
+En codant chaque lettre par un entier, le mot est un tableau de $n$ entiers et `finaux[q]` indique si l'état `q` est final :
 #grid(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
   align: top,
   [
-```ocaml
-type adc = {
-  initial : int;
-  finaux : int list;
-  delta : int array array; (* delta.(q).(a) = q' *)
-}
-```
+    ```c
+    #include <stdbool.h>
+
+    typedef struct {
+      int initial;
+      bool *finaux; // finaux[q] : q est final
+      int **delta; // delta[q][a] = q'
+    } adc;
+    ```
   ],
   [
-```ocaml
-let accepte a m =
-  let etat = ref a.initial in
-  for i = 0 to String.length m - 1 do
-    etat := a.delta.(!etat).(m.[i])
-  done;
-  List.mem !etat a.finaux
-```
+    ```c
+    bool accepte(const adc *a, const int m[], int n) {
+      int etat = a->initial;
+      for (int i = 0; i < n; i++) {
+        etat = a->delta[etat][m[i]];
+      }
+      return a->finaux[etat];
+    }
+    ```
   ],
 )
 #underline[Complexité] : #completer()
