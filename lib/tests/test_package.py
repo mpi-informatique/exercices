@@ -22,9 +22,14 @@ with TemporaryDirectory() as dossier:
     (package / 'lib/tests/ancien.typ').write_text('Ancien test')
     (package / 'ressources').mkdir()
     (package / 'ressources/ancien.ml').write_text('Ancienne ressource')
+    # Les installations provenant du store Nix ont des dossiers en lecture seule.
+    for dossier in (package, *package.rglob('*')):
+        if dossier.is_dir() and not dossier.is_symlink():
+            dossier.chmod(dossier.stat().st_mode & ~0o222)
     installer(racine / 'packages')
     assert not (package / 'lib/tests').exists()
     assert not (package / 'ressources').exists()
+    assert all(dossier.stat().st_mode & 0o200 for dossier in package.rglob('*') if dossier.is_dir() and not dossier.is_symlink())
     source = racine / 'document.typ'
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, theoremes, exercice, question, partie, afficher-exercice
 #let sujet = public("devoirs/concours/19/mines-ponts-2019-mp-informatique/mines-ponts-2019-mp-informatique.typ").sujet

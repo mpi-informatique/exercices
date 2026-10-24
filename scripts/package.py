@@ -21,6 +21,12 @@ def ignorer(dossier, noms):
     return exclus
 
 
+def rendre_modifiable(arbre):
+    for chemin in (arbre, *arbre.rglob('*')):
+        if chemin.is_dir() and not chemin.is_symlink():
+            chemin.chmod(chemin.stat().st_mode | 0o200)
+
+
 def installer(destination):
     manifeste = tomllib.loads((ROOT / 'typst.toml').read_text())['package']
     cible = Path(destination) / NAMESPACE / manifeste['name'] / manifeste['version']
@@ -33,9 +39,13 @@ def installer(destination):
             source = ROOT / nom
             if source.is_dir():
                 shutil.copytree(source, copie / nom, ignore=ignorer)
+                rendre_modifiable(copie / nom)
             elif source.is_file():
                 shutil.copy2(source, copie / nom)
-        if cible.exists():
+        if cible.is_symlink():
+            cible.unlink()
+        elif cible.exists():
+            rendre_modifiable(cible)
             shutil.rmtree(cible)
         copie.rename(cible)
     # Les packages hors de Typst Universe doivent aussi fonctionner hors de Nix.
@@ -48,9 +58,7 @@ def installer(destination):
         paquet = Path(destination) / relatif
         shutil.copytree(source, paquet, dirs_exist_ok=True, copy_function=shutil.copyfile)
         # Le store Nix est en lecture seule, mais la copie doit rester réinstallable.
-        for dossier in (paquet, *paquet.rglob('*')):
-            if dossier.is_dir():
-                dossier.chmod(dossier.stat().st_mode | 0o200)
+        rendre_modifiable(paquet)
     return cible
 
 
