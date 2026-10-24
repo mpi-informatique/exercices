@@ -241,6 +241,25 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
 #theoreme[$∀q ∈ Q, u, v ∈ Σ^* : #sep δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-delta-etoile>
 
 #slide()
+#exercice(titre: [Automates à permutations])[
+  Soit $A$ un ADC sur un alphabet non vide $Σ$. Pour $a ∈ Σ$, on note $δ_a(q) = δ(q, a)$.
+  On dit que $A$ est un _automate à permutations_ si chaque $δ_a$ est bijective.
+  + Peut-on remplacer « bijective » par « injective » ou « surjective » dans cette définition ?
+  + On suppose que $A$ est à permutations. Montrer que, pour tout $u ∈ Σ^*$, l'application $q ⟼ δ^*(q, u)$ est une permutation de $Q$, puis que pour tout $q ∈ Q$, il existe $k ≥ 1$ tel que $δ^*(q, u^k) = q$.
+  + Un automate à permutations peut-il reconnaître $Σ^* a Σ^*$, pour une lettre $a ∈ Σ$ ?
+]
+#solution[
+  + Oui : une application de l'ensemble fini $Q$ dans lui-même est injective si et seulement si elle est surjective, donc bijective.
+  + Posons $f_u(q) = δ^*(q, u)$. On a $f_ε = id_Q$ et $f_(v a) = δ_a ∘ f_v$.
+    Par récurrence sur la taille de $u$, $f_u$ est donc une permutation.
+    Pour $q ∈ Q$, la finitude de $Q$ donne $i < j$ tels que $f_u^i(q) = f_u^j(q)$.
+    Comme $f_u^i$ est injective, $q = f_u^(j - i)(q) = δ^*(q, u^(j - i))$.
+  + Non. Supposons $cal(L)(A) = Σ^* a Σ^*$. Comme $ε ∉ cal(L)(A)$, l'état initial $q_0$ n'est pas final.
+    La question précédente donne $k ≥ 1$ tel que $δ^*(q_0, a^k) = q_0$.
+    Le mot $a^k$ est donc refusé, alors qu'il appartient à $Σ^* a Σ^*$ : contradiction.
+]
+
+#slide()
 #exercice[
   Soit $A$ un automate déterministe complet à $n$ états sur un alphabet $Σ$.
   Montrer que si $A$ accepte tous les mots de taille strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
