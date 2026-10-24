@@ -126,7 +126,7 @@
 #slide()
 #exercice[Déterminer les langages reconnus par les automates suivants.]
 #grid(
-  columns: (auto, 1fr),
+  columns: if sys.inputs.at("format", default: "cours") == "presentation" { (auto, 1fr) } else { (1fr, 1fr) },
   column-gutter: 1.5em,
   align: horizon,
   figure(impair, numbering: none, gap: 0.4em, caption: [$A_1$]),
