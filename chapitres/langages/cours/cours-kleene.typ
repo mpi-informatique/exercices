@@ -5,39 +5,6 @@
 
 #show: cours-et-presentation.with(titre: "Théorème de Kleene", niveau: "MPI")
 
-#let epsilon = dessiner-automate(
-  (
-    ("0", (0, 0), true, false),
-    ("1", (3, 0), false, false),
-    ("2", (6, 2), false, false),
-    ("3", (6, -2), false, false),
-    ("4", (9, 0), false, true),
-  ),
-  (
-    ("0", "1", "a", (:)),
-    ("0", "3", "ε", (curve: -0.5)),
-    ("1", "2", "ε", (:)),
-    ("1", "3", "a", (:)),
-    ("2", "4", "c", (:)),
-    ("3", "4", "b", (curve: 0.4)),
-    ("3", "4", "ε", (curve: -0.4)),
-  ),
-)
-#let elimination-etats = (
-  ("1", (0, 1.5), true, false),
-  ("2", (3, 1.5), false, true),
-  ("3", (0, -1.5), false, false),
-  ("4", (3, -1.5), false, false),
-)
-#let elimination-arcs = (
-  ("1", "2", "a", (:)),
-  ("1", "3", "a", (:)),
-  ("2", "4", "a", (:)),
-  ("3", "4", "b", (:)),
-  ("4", "1", "b", (:)),
-  ("4", "4", "b", (:)),
-)
-
 #slide()
 On va montrer qu'un langage est régulier si et seulement s'il est reconnaissable.
 
@@ -191,6 +158,25 @@ On peut autoriser des transitions étiquetées par $ε$. Leur parcours ne consom
 Un automate possédant de telles transitions n'est pas déterministe au sens du cours.
 
 #slide()
+#let epsilon = dessiner-automate(
+  (
+    ("0", (0, 0), true, false),
+    ("1", (3, 0), false, false),
+    ("2", (6, 2), false, false),
+    ("3", (6, -2), false, false),
+    ("4", (9, 0), false, true),
+  ),
+  (
+    ("0", "1", "a", (:)),
+    ("0", "3", "ε", (curve: -0.5)),
+    ("1", "2", "ε", (:)),
+    ("1", "3", "a", (:)),
+    ("2", "4", "c", (:)),
+    ("3", "4", "b", (curve: 0.4)),
+    ("3", "4", "ε", (curve: -0.4)),
+  ),
+)
+
 #epsilon
 Cet automate reconnaît ${ε, b, a c, a a, a a b}$.
 
@@ -271,6 +257,21 @@ Chaque élimination conserve le langage. À la fin, l'étiquette restante décri
 
 #slide()
 #exercice[Donner une expression régulière pour l'automate suivant par élimination des états.]
+#let elimination-etats = (
+  ("1", (0, 1.5), true, false),
+  ("2", (3, 1.5), false, true),
+  ("3", (0, -1.5), false, false),
+  ("4", (3, -1.5), false, false),
+)
+#let elimination-arcs = (
+  ("1", "2", "a", (:)),
+  ("1", "3", "a", (:)),
+  ("2", "4", "a", (:)),
+  ("3", "4", "b", (:)),
+  ("4", "1", "b", (:)),
+  ("4", "4", "b", (:)),
+)
+
 #dessiner-automate(elimination-etats, elimination-arcs)
 
 #solution[

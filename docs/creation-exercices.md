@@ -170,6 +170,7 @@ question([Justifier la complexité.], solution: [ ... ], bareme: 1.5)
 
 - Générer les figures (automates, arbres, graphes, schémas…) en Typst avec [CeTZ](https://typst.app/universe/package/cetz/), [finite](https://typst.app/universe/package/finite/) pour les automates, ou un autre paquet adapté.
 - Conserver le code des figures dans le même fichier si possible.
+- Écrire les figures et les automates directement à leur emplacement d'utilisation. Ne définir une variable que si le dessin est utilisé plusieurs fois ; la placer près de sa première utilisation.
 - Pour les automates, utiliser l'échelle et le style communs de `lib/automate.typ`. Placer les boucles, arcs de retour et étiquettes vers l'extérieur lorsqu'il y a le choix, et éviter les croisements.
 - Fixer les versions des paquets dans les imports. Préserver les informations de la figure : étiquettes, transitions, états initiaux et finaux, structure des arbres.
 

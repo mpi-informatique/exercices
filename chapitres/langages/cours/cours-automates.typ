@@ -12,40 +12,6 @@
 
 #let colonnes-definition = (1.3fr, 1fr)
 
-#let exemple = dessiner-automate(
-  (("0", (0, 0), true, false), ("1", (3, 0), false, false), ("2", (6, 0), false, true)),
-  (
-    ("0", "0", "a", (:)),
-    ("0", "1", "b", (curve: 0.4)),
-    ("1", "0", "a", (curve: 0.4)),
-    ("1", "2", "a", (curve: 0)),
-    ("2", "2", "b", (:)),
-  ),
-)
-#let impair = dessiner-automate(
-  (("0", (0, 0), true, false), ("1", (3, 0), false, true)),
-  (("0", "0", "b", (:)), ("1", "1", "b", (:)), ("0", "1", "a", (curve: 0.5)), ("1", "0", "a", (curve: 0.5))),
-)
-#let deux-initiaux = dessiner-automate(
-  (("0", (0, 0), true, false), ("1", (6, 0), right, false), ("2", (3, 0), false, true)),
-  (
-    ("0", "0", "a", (:)),
-    ("1", "1", "b", (:)),
-    ("0", "2", "b", (curve: 0)),
-    ("1", "2", "a", (curve: 0)),
-  ),
-)
-#let facteur = dessiner-automate(
-  (("0", (0, 0), true, false), ("1", (3, 0), false, false), ("2", (6, 0), false, false), ("3", (9, 0), false, true)),
-  (
-    ("0", "0", "a, b", (:)),
-    ("0", "1", "a", (curve: 0)),
-    ("1", "2", "b", (curve: 0)),
-    ("2", "3", "b", (curve: 0)),
-    ("3", "3", "a, b", (:)),
-  ),
-)
-
 = Automate non déterministe
 #slide(titre: false, saut: false)
 
@@ -58,15 +24,26 @@
   - $T ⊂ Q × Σ × Q$ est l'ensemble des _transitions_.
 ]
 
-#let exemple-automate = figure(exemple, numbering: none, caption: [
-  $Σ = {a, b}, Q = {0, 1, 2}, I = {0}, F = {2}$\
-  $T = {(0, a, 0), (0, b, 1), (1, a, 0), (1, a, 2), (2, b, 2)}$
-])
-
 #colonnes-cours(
   columns: colonnes-definition,
   definition-automate,
-  exemple-automate,
+  figure(
+    dessiner-automate(
+      (("0", (0, 0), true, false), ("1", (3, 0), false, false), ("2", (6, 0), false, true)),
+      (
+        ("0", "0", "a", (:)),
+        ("0", "1", "b", (curve: 0.4)),
+        ("1", "0", "a", (curve: 0.4)),
+        ("1", "2", "a", (curve: 0)),
+        ("2", "2", "b", (:)),
+      ),
+    ),
+    numbering: none,
+    caption: [
+      $Σ = {a, b}, Q = {0, 1, 2}, I = {0}, F = {2}$\
+      $T = {(0, a, 0), (0, b, 1), (1, a, 0), (1, a, 2), (2, b, 2)}$
+    ],
+  ),
 )
 
 #slide()
@@ -82,21 +59,19 @@
     $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T}. $
   ]
 ]
-#let exercice-transition = align(center, figure(
-  table(
-    columns: (auto, ..(4em,) * 3),
-    rows: 1.75em,
-    table.header($q$, ..range(0, 3).map(str)),
-    [$δ(q, a)$], ..(completer(),) * 3,
-    [$δ(q, b)$], ..(completer(),) * 3,
-  ),
-  caption: none,
-))
-
 #colonnes-cours(
   columns: colonnes-definition,
   definition-transition,
-  exercice-transition,
+  align(center, figure(
+    table(
+      columns: (auto, ..(4em,) * 3),
+      rows: 1.75em,
+      table.header($q$, ..range(0, 3).map(str)),
+      [$δ(q, a)$], ..(completer(),) * 3,
+      [$δ(q, b)$], ..(completer(),) * 3,
+    ),
+    caption: none,
+  )),
 )
 Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ a$.
 
@@ -202,7 +177,27 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   columns: if est-presentation() { (auto, 1fr) } else { (1fr, 1fr) },
   column-gutter: 1em,
   align: horizon,
-  figure(impair, numbering: none, caption: [$A_1$]), figure(deux-initiaux, numbering: none, caption: [$A_2$]),
+  figure(
+    dessiner-automate(
+      (("0", (0, 0), true, false), ("1", (3, 0), false, true)),
+      (("0", "0", "b", (:)), ("1", "1", "b", (:)), ("0", "1", "a", (curve: 0.5)), ("1", "0", "a", (curve: 0.5))),
+    ),
+    numbering: none,
+    caption: [$A_1$],
+  ),
+  figure(
+    dessiner-automate(
+      (("0", (0, 0), true, false), ("1", (6, 0), right, false), ("2", (3, 0), false, true)),
+      (
+        ("0", "0", "a", (:)),
+        ("1", "1", "b", (:)),
+        ("0", "2", "b", (curve: 0)),
+        ("1", "2", "a", (curve: 0)),
+      ),
+    ),
+    numbering: none,
+    caption: [$A_2$],
+  ),
 )
 
 #slides-only[
@@ -407,6 +402,17 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$)
 ]
 #slide()
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire que les états accessibles. L'ensemble vide joue le rôle d'un puits.
+
+#let facteur = dessiner-automate(
+  (("0", (0, 0), true, false), ("1", (3, 0), false, false), ("2", (6, 0), false, false), ("3", (9, 0), false, true)),
+  (
+    ("0", "0", "a, b", (:)),
+    ("0", "1", "a", (curve: 0)),
+    ("1", "2", "b", (curve: 0)),
+    ("2", "3", "b", (curve: 0)),
+    ("3", "3", "a, b", (:)),
+  ),
+)
 
 #colonnes-cours(
   columns: colonnes-definition,
