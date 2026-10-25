@@ -382,7 +382,9 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$)
   coeur: true,
 )[Soit $A = (Σ, Q, I, F, δ)$ un automate. Alors $A$ est équivalent à un automate déterministe complet.]
 #solution(cours: true)[
-  Soit $A' = (Σ, cal(P)(Q), {I}, F', δ')$, où $F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}$ et $δ'(X, a) = display(union.big_(q ∈ X)) δ(q, a).$\
+  Soit $A' = (Σ, cal(P)(Q), {I}, F', δ')$ l'_automate des parties_, défini par :
+  $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅} quad "et" quad δ'(X, a) = union.big_(q ∈ X) δ(q, a) $
+  $ δ' : cal(P)(Q) × Σ ⟶ cal(P)(Q) $
   Pour $u = u_1 … u_n$, on montre l'invariant : $δ'^*({I}, u) = {δ^*(q, u) ∣ q ∈ I}$. Donc $u ∈ cal(L)(A) <==> δ'^*({I}, u) ∩ F ≠ ∅ <==> u ∈ cal(L)(A')$.
 ]
 
