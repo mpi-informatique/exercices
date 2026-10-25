@@ -130,8 +130,10 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   columns: colonnes-definition,
   column-gutter: 1.5em,
   align: center + horizon,
-  definition[
-    On peut aussi étendre $δ^*$ à un ensemble d'états $Q' ⊂ Q$ : $ δ^*(Q', m) = display(⋃_(q ∈ Q')) δ^*(q, m) $
+  [
+    #definition[Fonction de transition sur un ensemble][
+      On peut aussi étendre $δ$ et $δ^*$ à un ensemble d'états $X ⊂ Q$ : $ δ(X, a) = display(⋃_(q ∈ X)) δ(q, a) quad "et" quad δ^*(X, m) = display(⋃_(q ∈ X)) δ^*(q, m) $
+    ] <def-delta-ens>
   ],
   figure(
     cetz.canvas(length: unite-automates, {
