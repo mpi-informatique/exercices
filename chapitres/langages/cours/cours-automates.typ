@@ -409,7 +409,7 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$)
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire que les états accessibles. L'ensemble vide joue le rôle d'un puits.
 
 #colonnes-cours(
-  columns: (1fr, 1.5fr),
+  columns: colonnes-definition,
   exercice(coeur: true)[Déterminiser l'automate suivant.],
   facteur,
 )
