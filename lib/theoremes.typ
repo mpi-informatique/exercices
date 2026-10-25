@@ -89,9 +89,10 @@
     })
   }
   if nom == "algorithm" {
-    body = pseudocode-list(
+    body = context pseudocode-list(
       indentation: 1.5em,
-      line-gap: 0.3em,
+      line-gap: par.leading,
+      line-numbering: none,
       stroke: epaisseur-trait + luma(65%),
       line-number-supplement: [Ligne],
       body,

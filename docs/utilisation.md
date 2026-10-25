@@ -122,7 +122,7 @@ Ce contenu est masqué dans le cours normal et dans la présentation. Il est aff
 
 ## Algorithmes
 
-L'environnement `algorithme` utilise Lovelace pour présenter le pseudocode. Chaque élément de liste correspond à une instruction ; les listes imbriquées forment les blocs indentés. Utiliser `+` pour numéroter les lignes, `-` pour les laisser sans numéro et mettre les mots-clés en gras :
+L'environnement `algorithme` utilise Lovelace pour présenter le pseudocode. Chaque élément de liste correspond à une instruction ; les listes imbriquées forment les blocs indentés. Écrire les instructions avec `+` ou `-` et mettre les mots-clés en gras. Les lignes ne sont pas numérotées et leur espacement suit celui des listes classiques (`par.leading`) :
 
 ```typst
 #algorithme[

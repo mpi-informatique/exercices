@@ -405,9 +405,9 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$)
         + Ajouter $X'$ à $D$ et l'enfiler dans $f$.
   + $F' ← {X ∈ D ∣ X ∩ F ≠ ∅}$
 ]
+#slide()
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire que les états accessibles. L'ensemble vide joue le rôle d'un puits.
 
-#slide()
 #exercice(coeur: true)[Déterminiser l'automate suivant.]
 #facteur
 #solution[
