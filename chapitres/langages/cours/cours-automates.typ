@@ -1,4 +1,4 @@
-#import "/load.typ": est-presentation
+#import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
   article-only, automate, colonnes-cours, completer, cours-et-presentation, pause, sep, slides-only, solution,
@@ -502,17 +502,18 @@ $ δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)). $
 
 #slide()
 Le produit simule les deux lectures en parallèle. Compléter l'ensemble des états finaux :
-#solution[
-  - Pour $L_1 ∩ L_2$ : $F_1 × F_2$.
-  - Pour $L_1 ∪ L_2$ : $(F_1 × Q_2) ∪ (Q_1 × F_2)$.
-  - Pour $L_1 ∖ L_2$ : $F_1 × (Q_2 ∖ F_2)$.
-]
-#article-only[
-  - Pour $L_1 ∩ L_2$ : $F =$ #completer()
-  - Pour $L_1 ∪ L_2$ : $F =$ #completer()
-  - Pour $L_1 ∖ L_2$ : $F =$ #completer()
-]
-
+#table(
+  columns: (auto, 1fr, 1.5fr, 1.3fr),
+  align: center + horizon,
+  inset: (x: 0.5em, y: 0.7em),
+  table.header([Langage], $L_1 ∩ L_2$, $L_1 ∪ L_2$, $L_1 ∖ L_2$),
+  $F$,
+  ..(
+    $F_1 × F_2$,
+    $(F_1 × Q_2) ∪ (Q_1 × F_2)$,
+    $F_1 × (Q_2 ∖ F_2)$,
+  ).map(reponse => if est-corrige() { reponse } else { completer() }),
+)
 #article-only[
   Si les alphabets diffèrent, compléter les deux automates sur leur union.
   Ces résultats se généralisent aux unions et intersections finies.
