@@ -478,7 +478,9 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 = Stabilité des langages reconnaissables
 
 == Complémentaire
-#theoreme(coeur: true)[Si $L ⊂ Σ^*$ est reconnaissable, $Σ^* ∖ L$ est reconnaissable.]
+#theoreme(coeur: true, titre: [Stabilité par complémentaire])[
+  Si $L ⊂ Σ^*$ est reconnaissable, $Σ^* ∖ L$ est reconnaissable.
+] <thm-complementaire>
 #article-only[*Preuve* :]
 #solution[
   #pause
