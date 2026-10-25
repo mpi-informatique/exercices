@@ -10,6 +10,8 @@
 
 #show: cours-et-presentation.with(titre: "Automates", niveau: "MPI")
 
+#let colonnes-definition = (1.3fr, 1fr)
+
 #let exemple = dessiner-automate(
   (("0", (0, 0), true, false), ("1", (3, 0), false, false), ("2", (6, 0), false, true)),
   (
@@ -62,7 +64,7 @@
 ])
 
 #colonnes-cours(
-  columns: (1.2fr, 1fr),
+  columns: colonnes-definition,
   definition-automate,
   exemple-automate,
 )
@@ -92,7 +94,7 @@
 ))
 
 #colonnes-cours(
-  columns: (1.2fr, 1fr),
+  columns: colonnes-definition,
   definition-transition,
   exercice-transition,
 )
@@ -114,7 +116,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 ]
 #slide()
 #grid(
-  columns: (1.3fr, 1fr),
+  columns: colonnes-definition,
   column-gutter: 1.5em,
   align: center + horizon,
   definition[
@@ -235,7 +237,7 @@ Alors $m ∈ cal(L)(A) <==> Q_n ∩ F ≠ ∅$.
 = Automate déterministe (AD)
 
 #grid(
-  columns: (1.6fr, 1fr),
+  columns: colonnes-definition,
   column-gutter: 1.5em,
   align: horizon,
   definition(coeur: true, marge-haute: false)[
