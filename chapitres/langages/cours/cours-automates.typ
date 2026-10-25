@@ -167,7 +167,13 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 #lemme[Concaténation de chemins][
   Avec $u, v ∈ Σ^*$, $Q' ⊂ Q$ et en notant $⋅$ au lieu de $δ^*$ :
   $ Q' ⋅ u v = Q' ⋅ u ⋅ v $
-  #align(center)[Cas particulier $Q' = {q}$ : $q ⋅ u v = q ⋅ u ⋅ v$]
+  #grid(
+    columns: (1fr, auto, 1fr),
+    align: left + horizon,
+    [Cas particulier $Q' = {q}$ :],
+    [$q ⋅ u v = q ⋅ u ⋅ v$],
+    [],
+  )
 ]
 
 = Langage reconnaissable
