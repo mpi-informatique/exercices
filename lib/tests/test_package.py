@@ -61,6 +61,7 @@ Voir @question-mobile avant son énoncé.
                         str(source), str(racine / (variante + '.pdf'))], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, taille-presentation, pause, article-only, slides-only, solution, theoremes
 #show: cours-et-presentation.with(titre: "Cours externe", niveau: "MPI")
+#show text.where(text: "♡"): it => [#metadata("coeur") <coeur-solution-test>#it]
 = Section
 == Notion
 #text(size: 20pt)[#taille-presentation(0.5em)[#context {
@@ -95,7 +96,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   }
 }
 #article-only[Un détail du polycopié.]
-#solution(presentation: true)[
+#solution(presentation: true, coeur: true)[
   #slides-only[== Solution projetée]
   #metadata("solution") <solution-cours-test> Une solution réservée au corrigé et aux diapositives.
   #pause
@@ -110,7 +111,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 ]
 #solution(presentation: false)[#metadata("solution") <solution-non-projetee-test> Une autre solution réservée au corrigé.]
 #solution(cours: true)[#metadata("solution") <solution-cours-force-test> Une solution visible dans les deux cours.]
-#solution(cours: true, presentation: true)[#metadata("solution") <solution-partout-test> Une solution visible partout.]
+#solution(cours: true, presentation: true, coeur: true)[#metadata("solution") <solution-partout-test> Une solution visible partout.]
 #context {
   let corrige = sys.inputs.at("corrige", default: "false") == "true"
   for cible in (<solution-masquee-test>, <solution-non-projetee-test>) {
@@ -120,6 +121,12 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   assert((query(<solution-cours-test>).len() > 0) == visible)
   assert(query(<solution-cours-force-test>).len() == if sys.inputs.at("format") == "cours" { 1 } else { 0 })
   assert(query(<solution-partout-test>).len() > 0)
+  let coeurs = query(<coeur-solution-test>)
+  if sys.inputs.at("format") == "presentation" {
+    assert(coeurs.len() >= 2)
+  } else {
+    assert(coeurs.len() == if corrige { 2 } else { 1 })
+  }
 }
 == Colonnes du cours
 #colonnes-cours(
@@ -150,7 +157,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 #show: cours.with(titre: "Cours sans présentation")
 Un énoncé.
 #solution[#metadata("solution") <solution-simple-test> Une solution.]
-#solution(cours: true)[#metadata("solution") <solution-simple-force-test> Une solution toujours imprimée.]
+#solution(cours: true, coeur: true)[#metadata("solution") <solution-simple-force-test> Une solution toujours imprimée.]
 #context {
   let corrige = sys.inputs.at("corrige", default: "false") == "true"
   assert(query(<solution-simple-test>).len() == if corrige { 1 } else { 0 })

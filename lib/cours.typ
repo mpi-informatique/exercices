@@ -1,10 +1,18 @@
 #import "options.typ": est-corrige
-#import "blocs.typ": bloc-solution, epaisseur-trait
+#import "blocs.typ": bloc-solution, coeur-en-marge, epaisseur-trait
 #import "@preview/touying:0.8.0": slides-only, touying-fn-wrapper-raw, utils
 #import "document.typ": auteur-par-defaut, document-pedagogique
 
 // Touying résout les marques imbriquées avant d'appliquer la mise en forme commune.
-#let composer-solution(body, self: none) = bloc-solution(body)
+#let composer-solution(body, self: none, coeur: false, encadrer: true) = {
+  if self != none {
+    let article = self.at("article-mode", default: false)
+    body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
+      if (marque.kind == "touying-article-only") == article { marque.body } else { [] }
+    })
+  }
+  if encadrer { bloc-solution(body, coeur: coeur) } else { coeur-en-marge(body) }
+}
 
 #let cours(titre: "Cours", niveau: none, auteur: auteur-par-defaut, taille: 10pt, body) = {
   let corrige = est-corrige()
@@ -32,14 +40,14 @@
   }
 }
 
-#let solution(cours: false, presentation: false, body) = {
+#let solution(cours: false, presentation: false, coeur: false, body) = {
   if est-corrige() or (cours and sys.inputs.at("format", default: "cours") == "cours") {
     // Le filtre article de Touying ne descend pas dans les arguments des fonctions différées.
     body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
       if marque.kind == "touying-slides-only" { [] } else { marque.body }
     })
-    touying-fn-wrapper-raw(composer-solution, body)
+    touying-fn-wrapper-raw(composer-solution, coeur: coeur, body)
   } else if presentation {
-    slides-only(body)
+    slides-only(if coeur { touying-fn-wrapper-raw(composer-solution, coeur: true, encadrer: false, body) } else { body })
   }
 }

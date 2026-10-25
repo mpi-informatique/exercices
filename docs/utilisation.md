@@ -118,7 +118,7 @@ Placer les réponses et preuves dans `solution[...]`, importé depuis `/load.typ
 ]
 ```
 
-Ce contenu est masqué dans le cours normal et dans la présentation. Il est affiché après l'énoncé dans le cours corrigé avec le même environnement que les solutions des feuilles (`bloc-solution`). Pour afficher une solution aussi dans le cours non corrigé, écrire `#solution(cours: true)[…]` ; pour l'afficher aussi dans la présentation, écrire `#solution(presentation: true)[…]`. Les deux options peuvent se combiner. Les pauses et titres propres à la projection peuvent rester dans `slides-only[...]` à l'intérieur de la solution. Les cours ne renseignent pas automatiquement les solutions manquantes.
+Ce contenu est masqué dans le cours normal et dans la présentation. Il est affiché après l'énoncé dans le cours corrigé avec le même environnement que les solutions des feuilles (`bloc-solution`). Pour afficher une solution aussi dans le cours non corrigé, écrire `#solution(cours: true)[…]` ; pour l'afficher aussi dans la présentation, écrire `#solution(presentation: true)[…]`. Les deux options peuvent se combiner. Pour ajouter un cœur dans la marge gauche, centré verticalement sur la solution, écrire `#solution(coeur: true)[…]`. Cette option se combine aussi avec `cours` et `presentation`. Les pauses et titres propres à la projection peuvent rester dans `slides-only[...]` à l'intérieur de la solution. Les cours ne renseignent pas automatiquement les solutions manquantes.
 
 ## Renvois aux blocs et aux questions
 
