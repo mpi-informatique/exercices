@@ -44,7 +44,7 @@
   show heading.where(level: 3): set text(size: taille)
   set page(paper: "a4", margin: 10mm, header: none, footer: none, numbering: none)
   let entete = if contenu-entete != none { contenu-entete } else {
-    context block(above: 0pt, below: 1em, sticky: true, {
+    context block(above: 0pt, below: 0.5em, sticky: true, {
       set block(above: 0pt, below: 0pt)
       stack(
         dir: ttb,
