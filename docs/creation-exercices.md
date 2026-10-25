@@ -37,7 +37,7 @@ Pour les modules spécialisés, écrire par exemple :
 
 Pour afficher du code testé, extraire les déclarations par leur nom avec `code-extrait(read("corrige.ml"), "fonction")`. Un tuple de noms réunit plusieurs déclarations dans le même bloc, par exemple `code-extrait(read("corrige.ml"), ("regle", "grammaire"))`. Pour le C, ajouter `language: "c"`. `code-texte` renvoie uniquement le texte. Le package externe `code-extract` est verrouillé dans `flake.lock` et fourni par l'environnement Nix, l'installation locale et le site.
 
-Conserver les ressources propres au sujet (images, code, tests) à côté de celui-ci et les référencer par des chemins relatifs. Lors d'un passage du privé au public demandé par l'utilisateur, déplacer le fichier ou son dossier complet : l'import de l'API commune reste identique. Vérifier les autres imports de contenus, adapter les chemins des feuilles qui réutilisent le sujet, puis lancer `just check` dans les deux dépôts. Les copies nominatives, évaluations et scans restent privés.
+Conserver les ressources propres au sujet (images, code, tests) à côté de celui-ci et les référencer par des chemins relatifs. Lors d'un passage du privé au public demandé par l'utilisateur, déplacer le fichier ou son dossier complet : l'import de l'API commune reste identique. Vérifier les autres imports de contenus, adapter les chemins des feuilles qui réutilisent le sujet, puis compiler les variantes des documents concernés dans les deux dépôts. Les copies nominatives, évaluations et scans restent privés.
 
 ## Métadonnées
 
@@ -181,7 +181,7 @@ nix develop . -c just c chapitres/langages/exercices/residuels-minimisation.typ
 nix develop . -c just docs
 ```
 
-Lancer `just check` avant livraison. Utiliser `just w <chemin> corrige` pour travailler sur un corrigé, ou `enonce` pour son énoncé. Les commandes directes sont décrites dans [scripts/README.md](../scripts/README.md).
+Choisir les vérifications selon la portée de la modification, conformément à la section [Vérification et livraison d'AGENTS.md](../AGENTS.md#vérification-et-livraison). Utiliser `just w <chemin> corrige` pour travailler sur un corrigé, ou `enonce` pour son énoncé. Les commandes directes sont décrites dans [scripts/README.md](../scripts/README.md).
 
 Conserver les exercices simples dans un fichier `.typ`. Pour un exercice ou sujet avec des fichiers associés, créer un dossier `<identifiant>/` dans `chapitres/<chapitre>/exercices/` ou `devoirs/concours/`, en conservant le nom `<identifiant>.typ` : son nom reste l'identifiant de l'exercice. Placer le code et ses tests à côté et afficher ce même code dans le corrigé. Ajouter une vérification ciblée à `just check` si les lanceurs habituels ne la couvrent pas. Une dizaine de tests ciblés suffit.
 

@@ -30,8 +30,8 @@ Voir le [guide du site](web/README.md) pour les autres options web et la [docume
 ## Vérification et livraison
 
 - Réserver la vérification dans le navigateur aux changements du site, de l'export des ressources ou de la compilation dans le navigateur. Pour ces changements, arrêter puis relancer le serveur local avec les recettes `web-stop` et `web`, et ouvrir son URL locale dans le navigateur intégré de Codex. Conserver si possible l'exercice et la variante affichés et vérifier le comportement modifié avant de livrer.
-- Pour une simple modification du contenu Typst, compiler les variantes concernées. Il n'est pas nécessaire de relancer le serveur ni de tester le site dans le navigateur.
-- Lancer `nix develop . -c just check` et annoncer les vérifications réellement effectuées.
+- Pour une modification locale d'un exercice, d'un cours ou d'un sujet, compiler uniquement les variantes concernées et exécuter les éventuels tests du code modifié. Il n'est pas nécessaire de relancer le serveur ni de tester le site dans le navigateur.
+- Réserver `nix develop . -c just check` aux modifications de la bibliothèque (`lib/`). Une modification locale de contenu ou d'instructions ne nécessite pas de vérification du dépôt entier. Annoncer les vérifications réellement effectuées.
 - N'inspecter les PDF générés que si c'est vraiment utile.
 - Communiquer les fichiers modifiés et les corrections, avec des liens cliquables vers les PDF d'énoncé et de corrigé lorsqu'ils ont été générés.
 - Pour chaque modification, faire un commit directement sur la branche principale, puis synchroniser avec le dépôt distant : récupérer et intégrer les éventuels commits distants, puis pousser les commits locaux, sans push forcé.
