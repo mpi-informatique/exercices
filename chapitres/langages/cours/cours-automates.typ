@@ -126,16 +126,16 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
     cetz.canvas(length: unite-automates, {
       import cetz.draw: circle, content, line, set-style
       import finite.draw: state
-      set-style(..style-automates, state: (radius: 0.4))
+      set-style(..style-automates, state: (radius: 0.2))
       circle((0, 0), radius: (0.85, 1.35), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
       circle((4, 0), radius: (0.85, 1.95), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
       content((0, 1.75), $Q'$)
       content((4, 2.35), $δ^*(Q', m)$)
-      state((0, 0.7), "q1", label: $q_1$)
-      state((0, -0.7), "q2", label: $q_2$)
-      state((4, 1.3), "r1", label: $r_1$)
-      state((4, 0), "r2", label: $r_2$)
-      state((4, -1.3), "r3", label: $r_3$)
+      state((0, 0.7), "q1", label: none)
+      state((0, -0.7), "q2", label: none)
+      state((4, 1.3), "r1", label: none)
+      state((4, 0), "r2", label: none)
+      state((4, -1.3), "r3", label: none)
       for (depart, arrivee, hauteur) in (("q1", "r1", 1), ("q1", "r2", 0.35), ("q2", "r2", -0.35), ("q2", "r3", -1)) {
         cetz.decorations.wave(
           line(depart + ".state.east", arrivee + ".state.west"),
