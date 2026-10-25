@@ -502,7 +502,7 @@ $ δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)). $
 
 #slide()
 Le produit simule les deux lectures en parallèle. Compléter l'ensemble des états finaux :
-#table(
+#align(center, table(
   columns: (auto, 6em, 12em, 9em),
   align: center + horizon,
   inset: (x: 0.5em, y: 0.7em),
@@ -513,7 +513,7 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
     $(F_1 × Q_2) ∪ (Q_1 × F_2)$,
     $F_1 × (Q_2 ∖ F_2)$,
   ).map(reponse => if est-corrige() { reponse } else { completer() }),
-)
+))
 #article-only[
   Si les alphabets diffèrent, compléter les deux automates sur leur union.
   Ces résultats se généralisent aux unions et intersections finies.
