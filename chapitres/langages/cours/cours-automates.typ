@@ -326,18 +326,20 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
 
 #slide()
 #exercice(titre: [Automates à permutations])[
-  Soit $A$ un ADC sur un alphabet non vide $Σ$. Pour $a ∈ Σ$, on note $δ_a (q) = δ(q, a)$.
-  On dit que $A$ est un _automate à permutations_ si chaque $δ_a$ est bijective.
+  Soit $A = (Q, Σ, q_0, F, δ)$ un ADC. Pour $a ∈ Σ$, on note $δ_a (q) = δ(q, a)$.\
+  On suppose que $A$ est un _automate à permutations_, c'est-à-dire que chaque $δ_a$ est bijective.
   + Peut-on remplacer « bijective » par « injective » ou « surjective » dans cette définition ?
-  + On suppose que $A$ est à permutations. Montrer que, pour tout $u ∈ Σ^*$, l'application $q ⟼ δ^*(q, u)$ est une permutation de $Q$, puis que pour tout $q ∈ Q$, il existe $k ≥ 1$ tel que $δ^*(q, u^k) = q$.
-  + Un automate à permutations peut-il reconnaître $Σ^* a Σ^*$, pour une lettre $a ∈ Σ$ ?
+  + Soit $u ∈ Σ^*$. Montrer que $δ^*(⋅, u)$ est une permutation de $Q$.
+  + En déduire : $∀q ∈ Q, ∃k ≥ 1, #sep δ^*(q, u^k) = q$.
+  + Soit $a ∈ Σ$. $Σ^* a Σ^*$ est-il reconnaissable par un automate à permutations ?
 ]
 #solution[
   + Oui : une application de l'ensemble fini $Q$ dans lui-même est injective si et seulement si elle est surjective, donc bijective.
-  + Soit $f_u (q) = δ^*(q, u)$. On a $f_ε = id_Q$ et $f_(v a) = δ_a ∘ f_v$.
-    $f_u$ est donc une permutation, car composée de permutations.
-    Pour $q ∈ Q$, la finitude de $Q$ donne $i < j$ tels que $f_u^i (q) = f_u^j (q)$.
-    Comme $f_u^i$ est injective, $q = f_u^(j - i) (q) = δ^*(q, u^(j - i))$.
+  + Notons $f_u = δ^*(⋅, u)$. On a $f_ε = id_Q$ et $f_(v a) = δ_a ∘ f_v$.
+    Par récurrence sur la taille de $u$, $f_u$ est une permutation de $Q$, car composée de permutations.
+  + Soit $q ∈ Q$. La finitude de $Q$ donne $0 ≤ i < j$ tels que $f_u^i (q) = f_u^j (q)$.
+    Comme $f_u^i$ est injective, $f_u^(j - i) (q) = q$.
+    D'après @lem-delta-etoile, $f_u^k (q) = δ^*(q, u^k)$ pour tout $k ∈ ℕ$. Prendre $k = j - i ≥ 1$.
   + Non. Supposons $cal(L)(A) = Σ^* a Σ^*$. Comme $ε ∉ cal(L)(A)$, l'état initial $q_0$ n'est pas final.
     La question précédente donne $k ≥ 1$ tel que $δ^*(q_0, a^k) = q_0$.
     Le mot $a^k$ est donc refusé, alors qu'il appartient à $Σ^* a Σ^*$ : contradiction.
