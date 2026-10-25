@@ -157,7 +157,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 
 #definition[Chemin acceptant][
   Un _chemin_ $C$ dans un automate $A$ est une suite de transitions consécutives :
-  $q_0 limits(arrow.long)^(a_1) q_1 limits(arrow.long)^(a_2) … limits(arrow.long)^(a_n) q_n.$\
+  $q_0 limits(⟶)^(a_1) q_1 limits(⟶)^(a_2) … limits(⟶)^(a_n) q_n.$\
   L'_étiquette_ de $C$ est le mot $a_1 … a_n$.
   On dit que $C$ est _acceptant_ si $q_0 ∈ I$ et $q_n ∈ F$.
 ]
