@@ -503,7 +503,7 @@ $ δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)). $
 #slide()
 Le produit simule les deux lectures en parallèle. Compléter l'ensemble des états finaux :
 #table(
-  columns: (auto, 1fr, 1.5fr, 1.3fr),
+  columns: (auto, 6em, 12em, 9em),
   align: center + horizon,
   inset: (x: 0.5em, y: 0.7em),
   table.header([Langage], $L_1 ∩ L_2$, $L_1 ∪ L_2$, $L_1 ∖ L_2$),
