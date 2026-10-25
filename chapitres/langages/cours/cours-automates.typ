@@ -520,6 +520,12 @@ Le produit simule les deux lectures en parallèle. Compléter l'ensemble des ét
   Pour une union, on peut aussi prendre l'union disjointe de deux automates non déterministes.
 ]
 #slide()
+#underline[Remarque] : en supposant $Q_1 ∩ Q_2 = ∅$ (quitte à renommer les états), $L_1 ∪ L_2$ est aussi reconnu par l'automate non déterministe $(Q_1 ∪ Q_2, Σ, {i_1, i_2}, F_1 ∪ F_2, δ)$, où :
+$ δ(q, a) = cases(
+  {δ_1(q, a)} & "si" q ∈ Q_1,
+  {δ_2(q, a)} & "si" q ∈ Q_2,
+) $
+
 #exercice[
   + La construction fonctionne-t-elle sans les hypothèses de déterminisme et de complétude ? Examiner chaque opération.
   + Construire un automate reconnaissant les mots sur ${a, b}$ contenant un nombre pair de $a$ et un nombre de $b$ congru à $2$ modulo $3$.
