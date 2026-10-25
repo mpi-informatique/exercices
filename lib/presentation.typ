@@ -79,7 +79,11 @@
       export-mode: if article { "article" } else if animations { "presentation" } else { "handout" },
       article-theme: body => {
         // Touying encadre les paragraphes vides entre titres : leurs marges s'ajouteraient à celles des titres.
-        show block.where(body: parbreak()): it => []
+        show block: it => {
+          if type(it.body) != content { return it }
+          let enfants = it.body.fields().at("children", default: (it.body,))
+          if enfants.len() > 0 and enfants.all(enfant => enfant == parbreak() or enfant == [ ]) { [] } else { it }
+        }
         cours(titre: titre, niveau: niveau, auteur: auteur, body)
       },
       breakable: false,
