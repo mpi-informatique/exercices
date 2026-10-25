@@ -110,10 +110,21 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 
 #slides-only[== Fonction de transition étendue]
 
-#definition[Fonction de transition étendue $δ^*$][
-  On peut définir récursivement l'ensemble $δ^*(q, m)$ des états atteignables après lecture de $m ∈ Σ^*$ depuis $q ∈ Q$ :
-  $ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a u) = ⋃_(q' ∈ δ(q, a)) δ^*(q', u) $
-]
+#grid(
+  columns: colonnes-definition,
+  column-gutter: 1.5em,
+  align: center + horizon,
+  definition[Fonction de transition étendue $δ^*$][
+    On peut définir récursivement l'ensemble $δ^*(q, m)$ des états atteignables après lecture de $m ∈ Σ^*$ depuis $q ∈ Q$ :
+    #text(size: 0.9em)[$ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a u) = ⋃_(q' ∈ δ(q, a)) δ^*(q', u) $]
+  ],
+  [
+    #exercice[Pour l'automate d'exemple, calculer $δ^*(1, a b)$.]
+    #solution[
+      $δ(1, a) = {0, 2}$, donc $δ^*(1, a b) = δ(0, b) ∪ δ(2, b) = {1, 2}$.
+    ]
+  ],
+)
 #slide()
 #grid(
   columns: colonnes-definition,
