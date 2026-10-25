@@ -497,7 +497,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 #theoreme(
   coeur: true,
 )[Les langages reconnaissables sur un même alphabet sont stables par intersection, union et différence.]
-Pour deux automates déterministes complets $A_1$, $A_2$, utiliser les états $Q_1 × Q_2$, l'état initial $(i_1, i_2)$ et :
+Pour deux automates déterministes complets $A_1$, $A_2$, leur produit $A_1 thin class("normal", ×) thin A_2$ utilise les états $Q_1 × Q_2$, l'état initial $(i_1, i_2)$ et :
 $ δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)). $
 
 #slide()
