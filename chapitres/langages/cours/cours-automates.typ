@@ -68,19 +68,21 @@
 )
 
 #slide()
-// #exercice[
-//   En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ?
-// ]
+#exercice[
+  En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ?
+]
+
+== Fonction de transition
 
 #let definition-transition = [
-  #definition(marge-haute: false, [Fonction de transition])[
+  #definition(marge-haute: false, [Fonction de transition $δ$])[
     On peut remplacer $T$ par  $δ : Q × Σ → cal(P)(Q)$ tel que :
     $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T}. $
   ]
 ]
 #let exercice-transition = align(center, figure(
   table(
-    columns: (auto, ..(3em,) * 3),
+    columns: (auto, ..(4em,) * 3),
     rows: 1.75em,
     table.header($q$, ..range(0, 3).map(str)),
     [$δ(q, a)$], ..(completer(),) * 3,
@@ -104,7 +106,42 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   3. Proposer deux implémentations de ces structures de données.
 ]
 
-On peut étendre $δ$ à un ensemble d'états $Q' ⊂ Q$ : $δ(Q', a) = ⋃_(q ∈ Q') δ(q, a)$
+#slides-only[== Fonction de transition étendue]
+
+#definition[Fonction de transition étendue $δ^*$][
+  On peut définir récursivement l'ensemble $δ^*(q, m)$ des états atteignables après lecture de $m ∈ Σ^*$ depuis $q ∈ Q$ :
+  $ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a u) = ⋃_(q' ∈ δ(q, a)) δ^*(q', u) $
+]
+#slide()
+#grid(
+  columns: (1.3fr, 1fr),
+  column-gutter: 1.5em,
+  align: center + horizon,
+  definition[
+    On peut aussi étendre $δ^*$ à un ensemble d'états $Q' ⊂ Q$ : $ δ^*(Q', m) = display(⋃_(q ∈ Q')) δ^*(q, m) $
+  ],
+  figure(
+    cetz.canvas(length: unite-automates, {
+      import cetz.draw: circle, content, set-style
+      import finite.draw: state, transition
+      set-style(..style-automates, state: (radius: 0.4))
+      circle((0, 0), radius: (0.85, 1.35), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
+      circle((4, 0), radius: (0.85, 1.95), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
+      content((0, 1.75), $Q'$)
+      content((4, 2.35), $δ^*(Q', m)$)
+      state((0, 0.7), "q1", label: $q_1$)
+      state((0, -0.7), "q2", label: $q_2$)
+      state((4, 1.3), "r1", label: $r_1$)
+      state((4, 0), "r2", label: $r_2$)
+      state((4, -1.3), "r3", label: $r_3$)
+      for (depart, arrivee) in (("q1", "r1"), ("q1", "r2"), ("q2", "r2"), ("q2", "r3")) {
+        transition(depart, arrivee, curve: 0, label: (text: $m$, dist: -0.25), stroke: (dash: "dashed"))
+      }
+    }),
+    numbering: none,
+    caption: [Les flèches représentent des chemins d'étiquette $m$.],
+  ),
+)
 
 = Langage reconnaissable
 
