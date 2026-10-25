@@ -49,7 +49,7 @@
 = Automate non déterministe
 #slide(titre: false, saut: false)
 
-#let definition-automate = definition(marge-haute: false, [Automate non déterministe])[
+#let definition-automate = definition(marge: false, [Automate non déterministe])[
   Un _automate_ est un $5$-uplet $A = (Σ, Q, I, F, T)$ où :
   - $Σ$ est un alphabet.
   - $Q$ est un ensemble fini d'_états_.
@@ -77,7 +77,7 @@
 == Fonction de transition
 
 #let definition-transition = [
-  #definition(marge-haute: false, [Fonction de transition $δ$])[
+  #definition(marge: false, [Fonction de transition $δ$])[
     On peut remplacer $T$ par  $δ : Q × Σ → cal(P)(Q)$ tel que :
     $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T}. $
   ]
@@ -240,7 +240,7 @@ Alors $m ∈ cal(L)(A) <==> Q_n ∩ F ≠ ∅$.
   columns: colonnes-definition,
   column-gutter: 1.5em,
   align: horizon,
-  definition(coeur: true, marge-haute: false)[
+  definition(coeur: true, marge: false)[
     Un automate est déterministe si :
     + Il possède un unique état initial.
     + $(q, a, q_1) ∈ T ∧ (q, a, q_2) ∈ T ==> q_1 = q_2$

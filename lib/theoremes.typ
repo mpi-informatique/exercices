@@ -78,7 +78,7 @@
   title: "",
   full-title: auto,
   coeur: false,
-  marge-haute: true,
+  marge: true,
   ..args,
 ) = {
   if self != none {
@@ -139,7 +139,7 @@
     let espacement = espacement-cadres.get()
     if espacement != none {
       v(espacement, weak: true)
-    } else if palette == none and marge-haute {
+    } else if palette == none and marge {
       // Garder une marge en tête des fragments produits par Touying en mode article.
       v(0.5em)
     }
