@@ -298,11 +298,9 @@
       if q.jury != none {
         block(width: 100%, above: espacement, below: espacement, text(style: "italic", q.jury))
       }
-      bloc-solution(
-        if q.solution == none { emph[Corrigé à compléter.] } else { q.solution },
-        above: espacement,
-        below: espacement,
-      )
+      if q.solution != none {
+        bloc-solution(q.solution, above: espacement, below: espacement)
+      }
     }
     i += 1
   }
