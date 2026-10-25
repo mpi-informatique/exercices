@@ -533,13 +533,16 @@ $ δ(q, a) = cases(
 
 = Accessibilité et émondage
 
-#definition[
-  - Un état est accessible s'il existe un chemin depuis un état initial vers cet état.
-  - Il est co-accessible s'il existe un chemin depuis cet état vers un état final.
-  - Un automate est émondé si tous ses états sont accessibles et co-accessibles.
-]
-#slide()
-#exercice[Décrire un algorithme de coût $O(abs(Q) + abs(T))$ déterminant ces deux ensembles.]
+#colonnes-cours(
+  columns: colonnes-definition,
+  definition[
+    Soit $A = (Σ, Q, I, F, δ)$ un automate et $q ∈ Q$.
+    - $q$ est _accessible_ s'il existe un chemin de $I$ à $q$ dans $A$.
+    - $q$ est _co-accessible_ s'il existe un chemin de $q$ à $F$ dans $A$.
+    - $A$ est _émondé_ si tous ses états sont accessibles et co-accessibles.
+  ],
+  exercice[Décrire un algorithme de coût $O(abs(Q) + abs(T))$ déterminant ces deux ensembles.],
+)
 #solution[#pause Parcourir le graphe depuis $I$, puis le graphe transposé depuis $F$.]
 #slide()
 #theoreme[Tout automate est équivalent à un automate émondé.]
