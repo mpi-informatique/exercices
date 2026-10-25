@@ -122,8 +122,8 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   ],
   figure(
     cetz.canvas(length: unite-automates, {
-      import cetz.draw: circle, content, set-style
-      import finite.draw: state, transition
+      import cetz.draw: circle, content, line, set-style
+      import finite.draw: state
       set-style(..style-automates, state: (radius: 0.4))
       circle((0, 0), radius: (0.85, 1.35), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
       circle((4, 0), radius: (0.85, 1.95), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
@@ -134,8 +134,16 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
       state((4, 1.3), "r1", label: $r_1$)
       state((4, 0), "r2", label: $r_2$)
       state((4, -1.3), "r3", label: $r_3$)
-      for (depart, arrivee) in (("q1", "r1"), ("q1", "r2"), ("q2", "r2"), ("q2", "r3")) {
-        transition(depart, arrivee, curve: 0, label: (text: $m$, dist: -0.25), stroke: (dash: "dashed"))
+      for (depart, arrivee, hauteur) in (("q1", "r1", 1), ("q1", "r2", 0.35), ("q2", "r2", -0.35), ("q2", "r3", -1)) {
+        cetz.decorations.wave(
+          line(depart + ".state.east", arrivee + ".state.west"),
+          amplitude: 0.16,
+          segments: 7,
+          start: 5%,
+          stop: 90%,
+          mark: (end: ">", fill: black),
+        )
+        content((2, hauteur + 0.35), $m$)
       }
     }),
     numbering: none,
