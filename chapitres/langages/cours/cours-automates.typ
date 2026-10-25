@@ -174,7 +174,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
     [$q ⋅ u v = q ⋅ u ⋅ v$],
     [],
   )
-]
+] <lem-delta-etoile>
 
 = Langage reconnaissable
 
@@ -314,7 +314,7 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
   $δ^*(q_0, x) = δ^*(q_0, x y).$
-  @thm-delta-etoile donne $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
+  @lem-delta-etoile donne $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
   Donc $x z ∉ cal(L)(A)$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
 
   #slide()

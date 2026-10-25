@@ -298,9 +298,7 @@
       if q.jury != none {
         block(width: 100%, above: espacement, below: espacement, text(style: "italic", q.jury))
       }
-      if q.solution != none {
-        bloc-solution(q.solution, above: espacement, below: espacement)
-      }
+      bloc-solution(q.solution, above: espacement, below: espacement)
     }
     i += 1
   }
