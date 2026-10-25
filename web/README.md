@@ -81,7 +81,7 @@ Le compilateur typst.ts est fixé à `0.8.0-rc3` : cette préversion intègre Ty
 
 ## Lecteur intégrable
 
-La route `/apercu/<id>/` affiche uniquement le lecteur PDF et ses variantes, sans recherche ni éditeur. Par exemple : `/apercu/cours-langages-reguliers/`. Elle charge directement le PDF publié et conserve les commandes de navigation, zoom et téléchargement. La présentation est choisie par défaut si elle existe ; `?vue=enonce`, `?vue=corrige` ou `?vue=presentation` choisit la version initiale. `cor=0` retire le corrigé des onglets, sans restreindre l'accès à la ressource publique.
+La route `/apercu/<id>/` affiche uniquement le lecteur PDF et ses variantes, sans recherche ni éditeur. Par exemple : `/apercu/cours-langages/`. Elle charge directement le PDF publié et conserve les commandes de navigation, zoom et téléchargement. La présentation est choisie par défaut si elle existe ; `?vue=enonce`, `?vue=corrige` ou `?vue=presentation` choisit la version initiale. `cor=0` retire le corrigé des onglets, sans restreindre l'accès à la ressource publique.
 
 `prepare:data` sélectionne uniquement les ressources de `cours/pages-typst.md` : énoncé/cours, présentation si disponible et corrigé uniquement pour les entrées `: cor`. Les liens `doc:` et HTTP(S) sont ignorés. Le menu est lu dans le dépôt voisin `../cours`, ou sur la branche `main` de `mpi-informatique/cours` pour un clone autonome. `COURS_PAGES_TYPST` permet de fournir un chemin explicite. Le catalogue et les sources de toute la banque restent disponibles dans l’éditeur ; seules les ressources ayant des PDF publiés disposent d’une route `/apercu/<id>/`.
 
@@ -93,7 +93,7 @@ Les PDF sont compilés avec le cache de `scripts/build.py`, puis les exporte dan
 
 Le bouton **Présenter en plein écran**, commun à la banque et au lecteur intégrable, affiche une page à la fois et l'ajuste à la largeur et à la hauteur disponibles. La barre d'outils est masquée pendant la présentation. Sur écran tactile, balayer vers la gauche ou le haut avance d'une page ; vers la droite ou le bas revient à la précédente. Les flèches gauche/droite, Espace, Page précédente/suivante, Début et Fin permettent de présenter ; Échap quitte le plein écran. Une iframe doit autoriser le plein écran (`allow="fullscreen"`). Les commandes de zoom sont masquées dans la barre d'outils lorsque le lecteur mesure au plus 600 px de large, y compris dans le site de cours.
 
-Cette route peut être chargée dans une iframe sur le site de cours. Avec GitHub Pages, son adresse est `https://mpi-informatique.github.io/exercices/apercu/cours-langages-reguliers/`. Le navigateur charge PDF.js et le PDF sélectionné.
+Cette route peut être chargée dans une iframe sur le site de cours. Avec GitHub Pages, son adresse est `https://mpi-informatique.github.io/exercices/apercu/cours-langages/`. Le navigateur charge PDF.js et le PDF sélectionné.
 
 ## Organisation
 
