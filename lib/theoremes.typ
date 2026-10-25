@@ -1,3 +1,4 @@
+#import "@preview/lovelace:0.3.1": pseudocode-list
 #import "@preview/theorion:0.6.0" as theorion
 #import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils
 #import theorion.cosmos.fancy: (
@@ -86,6 +87,15 @@
     body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
       if (marque.kind == "touying-article-only") == article { marque.body } else { [] }
     })
+  }
+  if nom == "algorithm" {
+    body = pseudocode-list(
+      indentation: 1.5em,
+      line-gap: 0.3em,
+      stroke: epaisseur-trait + luma(65%),
+      line-number-supplement: [Ligne],
+      body,
+    )
   }
   context {
     let palette = style-cadres.get()

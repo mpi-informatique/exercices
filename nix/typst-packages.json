@@ -20,6 +20,11 @@
     "hash": "sha256-qm+YWpliV3QICQCwvCssTZlFBQeuqGXU+ptc8iLH2qU="
   },
   {
+    "name": "lovelace",
+    "version": "0.3.1",
+    "hash": "sha256-R0kFZrQtEHRyEqL8Gh6C8I33ZlYOC56QuJeSTrLyNtE="
+  },
+  {
     "name": "meander",
     "version": "0.4.4",
     "hash": "sha256-AhHfssbVmLbX/74YwMRCJaIiJtjOtiaQVxg11czUDYo="

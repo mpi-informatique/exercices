@@ -73,7 +73,13 @@ Voir @question-mobile avant son énoncé.
   - Un détail révélé ensuite.
 ] <definition-commune>
 #pause
-#theoremes.algorithme[Un algorithme commun.]
+#theoremes.algorithme[
+  + Initialiser $s ← 0$.
+  #pause
+  + *Pour chaque* $x ∈ X$ :
+    + $s ← s + x$
+  + *Renvoyer* $s$.
+]
 == Application
 #theoremes.exercice(titre: [Monoïdes et taille])[
   Un exercice. #slides-only[#linebreak()#metadata("presentation") <retour-exercice-test>]

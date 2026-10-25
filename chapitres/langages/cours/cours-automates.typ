@@ -394,11 +394,16 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$)
 #underline[Invariant] : après lecture d'un mot $u$, l'état atteint dans $A'$ est l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
 
 #slide()
-#algorithme(coeur: true)[
-  + Initialiser la liste d'attente à ${I}$.
-  + Tant que la liste n'est pas vide, extraire un ensemble $X$.
-  + Pour chaque $a ∈ Σ$, calculer $X' = union.big_(q ∈ X) δ(q, a)$, mettre $X'$ dans $δ(q, X)$ et ajouter $X'$ s'il est nouveau.
-  + Marquer finaux les ensembles rencontrant $F$.
+#algorithme[
+  + $D ← {I}$ ; initialiser une file $f$ contenant $I$.
+  + *Tant que* $f$ n'est pas vide :
+    + Défiler un ensemble $X$ de $f$.
+    + *Pour chaque* $a ∈ Σ$ :
+      + $X' ← δ(X, a)$
+      + $δ'(X, a) ← X'$
+      + *Si* $X' ∉ D$ :
+        + Ajouter $X'$ à $D$ et l'enfiler dans $f$.
+  + $F' ← {X ∈ D ∣ X ∩ F ≠ ∅}$
 ]
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire que les états accessibles. L'ensemble vide joue le rôle d'un puits.
 
