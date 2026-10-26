@@ -1,16 +1,17 @@
-import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { availableVariants } from '../../shared/src/index.ts';
-import { engine, resources, source } from './compiler-fixture.ts';
+import { fileURLToPath } from 'node:url';
+import { promisify } from 'node:util';
+import type { Resource } from '../../shared/src/index.ts';
 
-// Un processus distinct libère la mémoire WASM après la compilation exhaustive de la banque.
-test('toute la banque compile avec le moteur WASM du navigateur dans ses formats disponibles', async () => {
+const compile = promisify(execFile);
+const runner = fileURLToPath(new URL('./compile-resource.ts', import.meta.url));
+const resources: Resource[] = JSON.parse(await readFile(new URL('../src/generated/catalogue.json', import.meta.url), 'utf8'));
+
+// Libérer l'instance WASM entre les ressources, y compris ses caches globaux.
+test('toute la banque compile avec le moteur WASM du navigateur dans ses formats disponibles', async t => {
   for (const resource of resources) {
-    const code = await source(resource);
-    for (const variant of availableVariants(resource.type)) {
-      const result = await engine.compile(resource, code, variant);
-      assert.equal(new TextDecoder().decode(result.pdf.slice(0, 5)), '%PDF-', `${resource.id} / ${variant}`);
-      assert.ok(result.pdf.length > 1000, `${resource.id} / ${variant}`);
-    }
+    await t.test(resource.id, () => compile(process.execPath, ['--experimental-strip-types', runner, resource.id]));
   }
 });
