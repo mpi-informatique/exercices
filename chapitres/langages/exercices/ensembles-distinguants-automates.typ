@@ -1,4 +1,4 @@
-#import "/load.typ": automate, exercice, partie, question, sep
+#import "/load.typ": automate, exercice, partie, question, sep, widetilde
 #import automate: style-automates, unite-automates
 #import "@preview/finite:0.5.1" as finite
 #import "@preview/cetz:0.4.2" as cetz
@@ -31,9 +31,17 @@
           Montrer que ${ε, a, b}$ est un ensemble distinguant pour $L_1$ en donnant un suffixe distinguant pour chaque paire.
         ],
         solution: [
-          - $b$ distingue $ε$ et $a$ : $b ∉ L_1$ et $a b ∈ L_1$.
-          - $ε$ distingue $ε$ et $b$ : $ε ∈ L_1$ et $b ∉ L_1$.
-          - $b$ distingue $a$ et $b$ : $a b ∈ L_1$ et $b b ∉ L_1$.
+          Chaque case donne un suffixe distinguant pour les mots de sa ligne et de sa colonne.
+          #align(center, table(
+            columns: 3,
+            align: center,
+            stroke: none,
+            inset: (x: 1em, y: 0.4em),
+            [], [$ε$], [$a$],
+            [$a$], table.cell(stroke: 0.5pt)[$b$], [],
+            [$b$], table.cell(stroke: 0.5pt)[$ε$], table.cell(stroke: 0.5pt)[$b$],
+          ))
+          En effet, $ε, a b ∈ L_1$ tandis que $b, b b ∉ L_1$.
         ],
         label: <distinguants-exemple-ab>,
       ),
@@ -201,7 +209,7 @@
     partie("III", "Distinguer par des préfixes et des contextes", contenu: (
       [
         Dans chacune des deux questions suivantes, $D ⊂ Σ^*$ est un ensemble infini.
-        Pour un mot $u$, on note $u^R$ son miroir et $L^R = {u^R | u ∈ L}$.
+        Pour un mot $u$, on note $widetilde(u)$ son miroir et $widetilde(L) = {widetilde(u) | u ∈ L}$.
         On rappelle que le miroir d'un langage régulier est régulier.
       ],
       question(
@@ -209,12 +217,12 @@
           Montrer que $L$ n'est pas régulier si, pour tous mots distincts $u, v ∈ D$, il existe un _préfixe distinguant_ $x ∈ Σ^*$ tel qu'exactement l'un des mots $x u$ et $x v$ appartient à $L$.
         ],
         solution: [
-          L'ensemble $D^R = {u^R | u ∈ D}$ est infini, car l'application miroir est bijective.
-          Si $u, v ∈ D$ sont distincts, un préfixe distinguant $x$ pour $u$ et $v$ fournit un suffixe distinguant $x^R$ pour $u^R$ et $v^R$ relativement à $L^R$ :
-          $ (x u)^R = u^R x^R quad "et" quad (x v)^R = v^R x^R. $
-          Donc $D^R$ est distinguant pour $L^R$.
-          La @distinguants-myhill-nerode montre que $L^R$ n'est pas régulier.
-          Si $L$ était régulier, $L^R$ le serait aussi, d'où une contradiction.
+          L'ensemble $widetilde(D) = {widetilde(u) | u ∈ D}$ est infini, car l'application miroir est bijective.
+          Si $u, v ∈ D$ sont distincts, un préfixe distinguant $x$ pour $u$ et $v$ fournit un suffixe distinguant $widetilde(x)$ pour $widetilde(u)$ et $widetilde(v)$ relativement à $widetilde(L)$ :
+          $ widetilde(x u) = widetilde(u) widetilde(x) quad "et" quad widetilde(x v) = widetilde(v) widetilde(x). $
+          Donc $widetilde(D)$ est distinguant pour $widetilde(L)$.
+          La @distinguants-myhill-nerode montre que $widetilde(L)$ n'est pas régulier.
+          Si $L$ était régulier, $widetilde(L)$ le serait aussi, d'où une contradiction.
         ],
       ),
       question(
