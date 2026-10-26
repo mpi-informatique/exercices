@@ -4,11 +4,22 @@ Banque publique d'exercices, sujets, TD, TP, cours et présentations en Typst po
 
 ## Démarrer
 
-Installer Nix avec `nix-command` et `flakes`, puis compiler une ressource :
+Installer Nix avec `nix-command` et `flakes`, puis ouvrir un terminal à la racine du dépôt :
 
 ```sh
-nix develop . -c just c chapitres/langages/exercices/residuels-minimisation.typ
+nix develop .
 ```
+
+| Commande | Usage |
+| --- | --- |
+| `just install` | Installer le package pour Tinymist et les outils hors de Nix. |
+| `just c chemin.typ` | Compiler les variantes d'une ressource. |
+| `just w chemin.typ corrige` | Surveiller une variante : `enonce`, `corrige`, `cours` ou `presentation`. |
+| `just test` / `just check` | Tester le code et l'API / tout compiler et vérifier. |
+| `just docs` | Générer la référence de l'API dans `build/docs/api.pdf`. |
+| `just web-install` | Installer ou actualiser les dépendances du site. |
+| `just web --open` / `just web-stop` | Lancer / arrêter le site local. |
+| `just --list` | Afficher toutes les commandes. |
 
 | Besoin | Référence |
 | --- | --- |

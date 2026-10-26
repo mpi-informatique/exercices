@@ -1,6 +1,6 @@
 # Scripts Python
 
-Depuis la racine, `python3 scripts/build.py <action>` remplace `just <action>` ; Nix fournit les outils verrouillés :
+Pour compiler sans Just, lancer `build.py` depuis la racine dans l'environnement Nix :
 
 ```sh
 nix develop . -c python3 scripts/build.py c chemin.typ

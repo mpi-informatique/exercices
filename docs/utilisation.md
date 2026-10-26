@@ -2,16 +2,7 @@
 
 ## Démarrage
 
-Installer Nix avec `nix-command` et `flakes`, puis ouvrir `nix develop .`. Les versions des outils et packages Typst sont verrouillées par `flake.lock`.
-
-| Commande | Usage |
-| --- | --- |
-| `just c chemin.typ` | Compiler les variantes dans `build/<chemin-sans-extension>/`. |
-| `just w chemin.typ corrige` | Surveiller une variante : `enonce`, `corrige`, `cours` ou `presentation`. |
-| `just docs` | Générer `build/docs/api.pdf` depuis les commentaires de `lib/`. |
-| `just check` | Vérifier toute la banque, les modèles et les tests. |
-| `just web --open` / `just web-stop` | Lancer / arrêter le site local. |
-| `just --list` | Afficher les autres recettes. |
+Les [commandes essentielles](../README.md#démarrer) se lancent depuis la racine, dans `nix develop .`. `flake.lock` verrouille les outils et les packages Typst.
 
 Sans ouvrir le terminal Nix, préfixer la commande par `nix develop . -c`. Les [scripts Python](../scripts/README.md) fonctionnent aussi sans Just. Hors de Nix, installer Typst, Python 3.11+, OCaml et, facultativement, Just.
 
