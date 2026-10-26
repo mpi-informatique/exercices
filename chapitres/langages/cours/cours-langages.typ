@@ -306,8 +306,10 @@ En particulier :
 #slide()
 
 #exercice[
+  #set par(justify: false)
   Montrer que les langages suivants sont réguliers sur $Σ = {a, b}$ :
   #colonnes-cours(
+    align: left + horizon,
     [
       + Mots commençant par $a$.
       + Mots commençant par $a$ et finissant par $b$.
@@ -384,8 +386,10 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
 #slide()
 
 #exercice[
+  #set par(justify: false)
   Donner une expression régulière pour les langages suivants sur $Σ = {a, b}$ :
   #colonnes-cours(
+    align: left + horizon,
     [
       + Mots contenant au plus un $a$.
       + Mots dont la taille est congrue à $1$ modulo $3$.
