@@ -47,7 +47,7 @@
 ]
 
 #underline[Remarque] :
-- $(Σ^*, ⋅)$ est un monoïde : la concaténation est associative et $ε$ est élément neutre.
+- $Σ^*$ muni de la concaténation est un _monoïde_ : la concaténation est associative et $ε$ est élément neutre.
 - $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$.
 
 #slide()

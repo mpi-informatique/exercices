@@ -21,7 +21,7 @@ nix develop .
 | `just web --open` / `just web-stop` | Lancer / arrêter le site local. |
 | `just --list` | Afficher toutes les commandes. |
 
-| Besoin | Référence |
+| Action | Référence |
 | --- | --- |
 | Compiler, surveiller, utiliser le package | [Guide utilisateur](docs/utilisation.md) |
 | Créer ou reformuler un sujet | [Consignes de rédaction](docs/creation-exercices.md) |
@@ -34,11 +34,9 @@ nix develop .
 ## Organisation
 
 - `chapitres/` : contenus par chapitre ; `devoirs/concours/` : sujets écrits et oraux avec leurs ressources.
-- `lib/`, `load.typ`, `templates/` : API et modèles Typst.
+- `lib/`, `load.typ`, `templates/` : API et templates Typst.
 - `scripts/`, `nix/`, `lib/tests/` : compilation, dépendances verrouillées et tests.
 - `web/`, `shared/`, `worker/` : site, socle commun avec VS Code et connexion GitHub.
 - `build/` : sorties générées, exclues de Git.
 
-Le dépôt fournit `@mpi-informatique/exercices:0.1.0`. L'extension [Exercices MPI](https://github.com/mpi-informatique/vscode-mpi-exercices) et Tinymist permettent de travailler dans VS Code ; [Codespaces](.devcontainer/devcontainer.json) prépare l'environnement.
-
-Les copies nominatives et les évaluations restent dans le dépôt privé `exercices-prive`.
+Le dépôt fournit `@mpi-informatique/exercices:0.1.0`. L'extension [Exercices MPI](https://github.com/mpi-informatique/vscode-mpi-exercices) et Tinymist permettent de travailler dans VS Code. [Codespaces](.devcontainer/devcontainer.json) prépare l'environnement.

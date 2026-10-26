@@ -28,9 +28,9 @@ Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le doss
 
 ## Métadonnées et concours
 
-- Consulter le [programme](programme.md). Retenir seulement les outils effectivement utilisés ; choisir les niveaux selon les connaissances nécessaires. Le pseudocode seul ne justifie aucun langage de programmation.
-- Pour les mathématiques, renseigner `matiere: "mathématiques"`. N'inventer ni année ni attribution de concours ; renseigner la filière connue. Ne pas ajouter de références de provenance aux exercices ou à leur documentation.
-- Pour un sujet de concours, conserver questions, définitions et figures ensemble. Comparer le corrigé à l'original ; corriger les erreurs importantes et les expliquer brièvement dans `corrections`, avec les parties ou questions concernées.
+- Consulter le [programme](programme.md). 
+- Pour les mathématiques, renseigner `matiere: "mathématiques"`. 
+- Pour un sujet de concours, conserver questions, définitions et figures ensemble. Comparer le corrigé à l'original, corriger les erreurs importantes et les expliquer brièvement dans `corrections`, avec les parties ou questions concernées.
 - Placer les observations du jury dans `jury`, au niveau le plus précis. Réserver `notation` aux consignes utiles au correcteur : critères, pourcentages, pénalités et tolérances, sans répéter le corrigé. Garder les décisions nominatives dans les copies privées.
 
 ## Construction et rédaction
