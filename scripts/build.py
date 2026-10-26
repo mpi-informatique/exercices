@@ -69,7 +69,7 @@ def documents(selection, signature, categorie=None):
 
 
 def tests(signature):
-    for script in ('test_package.py', 'test_sources.py'):
+    for script in ('test_package.py', 'test_sources.py', 'test_ci.py'):
         run([sys.executable, ROOT / 'lib/tests' / script])
     for mode in ('feuille', 'sujet'):
         for corrige in (False, True):

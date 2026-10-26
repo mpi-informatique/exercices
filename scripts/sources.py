@@ -10,8 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 IGNORED = {"build", "lib", "templates", "ressources", "docs", "scripts", "tmp", "node_modules", "web", "shared"}
 
 
-def mask(text):
-    """Ignorer commentaires, chaînes et code brut sans déplacer les lignes."""
+def mask(text, strings=True):
+    """Ignorer commentaires et code brut, et par défaut les chaînes, sans déplacer les lignes."""
     result = list(text)
     i = 0
     while i < len(text):
@@ -47,6 +47,8 @@ def mask(text):
                     break
                 else:
                     i += 1
+            if not strings:
+                continue
         else:
             i += 1
             continue

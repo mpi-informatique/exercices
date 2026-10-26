@@ -18,6 +18,7 @@ Sans ouvrir l'environnement : `nix develop . -c python3 scripts/build.py c chemi
 | --- | --- |
 | [build.py](build.py) | Point d'entrée : compiler, générer le catalogue et la documentation, lancer les tests, nettoyer les sorties. |
 | [sources.py](sources.py) | Découverte, compilation et surveillance des sources. |
+| [ci.py](ci.py) | Sélection des ressources affectées par un changement Git et vérifications natives ciblées pour la CI. |
 | [catalogue.py](catalogue.py) | Évaluation des métadonnées et export du catalogue JSON. |
 | [package.py](package.py) | Copier l'API, les modèles et les contenus dans le répertoire des packages Typst. Utilisé aussi par Nix pour construire le package. |
 

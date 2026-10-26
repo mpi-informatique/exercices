@@ -9,14 +9,36 @@ permissions:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+env:
+  CI_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
 jobs:
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      native_full: ${{ steps.scope.outputs.native_full }}
+      wasm_full: ${{ steps.scope.outputs.wasm_full }}
+      resources: ${{ steps.scope.outputs.resources }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - run: python3 lib/tests/test_ci.py
+      - id: scope
+        run: python3 scripts/ci.py plan
   check:
+    needs: scope
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
       - uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31.11.1
       - run: nix flake check path:.
+        if: needs.scope.outputs.native_full == 'true'
+      - run: nix develop . -c python3 scripts/ci.py native
+        if: needs.scope.outputs.native_full != 'true'
   web:
+    needs: scope
     permissions:
       contents: read
       pages: read
@@ -38,6 +60,9 @@ jobs:
           SITE_URL: ${{ steps.pages.outputs.origin || 'https://mpi-informatique.github.io' }}
           PUBLIC_GITHUB_AUTH_URL: ${{ vars.PUBLIC_GITHUB_AUTH_URL }}
       - run: nix develop ..#web -c npm test
+        env:
+          CI_RESOURCES: ${{ needs.scope.outputs.resources }}
+          CI_FULL_WASM: ${{ needs.scope.outputs.wasm_full }}
       - name: Préparer le site à publier
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
