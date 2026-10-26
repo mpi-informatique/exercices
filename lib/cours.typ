@@ -3,7 +3,14 @@
 #import "@preview/touying:0.8.0": slides-only, touying-fn-wrapper-raw, utils
 #import "document.typ": auteur-par-defaut, document-pedagogique
 
-// Touying résout les marques imbriquées avant d'appliquer la mise en forme commune.
+/// Résout les marques Touying puis compose le bloc de solution.
+/// Utilitaire de rendu différé, appelé par `solution`.
+///
+/// - body (content): Solution.
+/// - self (dictionary, none): Contexte Touying, s'il existe.
+/// - coeur (bool): Ajouter un cœur dans la marge.
+/// - encadrer (bool): Utiliser le cadre commun ; sinon, conserver seulement le cœur.
+/// -> content
 #let composer-solution(body, self: none, coeur: false, encadrer: true) = {
   if self != none {
     let article = self.at("article-mode", default: false)
@@ -14,6 +21,15 @@
   if encadrer { bloc-solution(body, coeur: coeur) } else { coeur-en-marge(body) }
 }
 
+/// Applique la mise en page d'un cours A4 et publie `<document-meta>`.
+/// L'entrée système `corrige=true` active le corrigé et complète le titre.
+///
+/// - titre (str): Titre du cours.
+/// - niveau (str, none): Niveau affiché.
+/// - auteur (str, none): Auteur.
+/// - taille (length): Taille du texte.
+/// - body (content): Contenu du cours.
+/// -> content
 #let cours(titre: "Cours", niveau: none, auteur: auteur-par-defaut, taille: 10pt, body) = {
   let corrige = est-corrige()
   show: document-pedagogique.with(
@@ -32,7 +48,10 @@
   body
 }
 
-/// Dans une source commune, entourer l’appel de `article-only[...]`.
+/// Trace des lignes de réponse. Dans une source commune, entourer l'appel de `article-only[...]`.
+///
+/// - lignes (int): Nombre de lignes, positif ou nul.
+/// -> content
 #let espace-reponse(lignes) = {
   assert(type(lignes) == int and lignes >= 0)
   for _ in range(lignes) {
@@ -40,6 +59,14 @@
   }
 }
 
+/// Affiche la solution dans le corrigé et, sur demande, dans les autres sorties.
+/// Les marques `article-only` et `slides-only` restent utilisables dans son contenu.
+///
+/// - cours (bool): Afficher aussi dans le cours non corrigé.
+/// - presentation (bool): Afficher aussi dans les diapositives.
+/// - coeur (bool): Ajouter un cœur à gauche, centré sur la solution.
+/// - body (content): Solution ou preuve.
+/// -> content, none
 #let solution(cours: false, presentation: false, coeur: false, body) = {
   if est-corrige() or (cours and sys.inputs.at("format", default: "cours") == "cours") {
     // Le filtre article de Touying ne descend pas dans les arguments des fonctions différées.

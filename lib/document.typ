@@ -4,14 +4,30 @@
 
 #let sep = h(0.5em)
 
+/// Trace des pointillés sur la largeur restante de la ligne.
+///
+/// -> content
 #let completer() = box(width: 1fr, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 25%), repeat[.])))
 
+/// Construit une liste numérotée avec des pointillés après chaque élément.
+///
+/// - start (int): Premier numéro.
+/// - ..items (arguments): Contenus des éléments.
+/// -> content
 #let liste-a-completer(start: 1, ..items) = enum(start: start, ..items.pos().map(item => [#item #completer()]))
 
+/// Place un tilde large au-dessus du contenu mathématique, notamment pour le miroir.
+///
+/// - body (content): Mot, langage ou autre expression à accentuer.
+/// -> content
 #let widetilde(body) = math.accent(body, sym.tilde, size: 150%)
 
 #let auteur-par-defaut = "Q. Fortier"
 
+/// Formate le couple `(heures, minutes)` en durée lisible.
+///
+/// - duree (array): Couple de deux entiers.
+/// -> str
 #let texte-duree(duree) = {
   let (heures, minutes) = duree
   if heures == 0 { str(minutes) + " min" } else if minutes == 0 { str(heures) + " h" } else {
@@ -19,6 +35,20 @@
   }
 }
 
+/// Applique la mise en page A4 commune, les styles de code et de cadres.
+/// À utiliser comme règle `show` ; les modèles spécialisés ajoutent leurs métadonnées.
+///
+/// - titre (str): Titre du document et des métadonnées PDF.
+/// - niveau (str, none): Niveau affiché à gauche de l'en-tête.
+/// - auteur (str, none): Auteur du PDF et attribution de secours.
+/// - duree (array, none): Couple `(heures, minutes)` affiché après le titre.
+/// - attribution (content, str, none): Attribution remplaçant l'auteur dans l'en-tête.
+/// - titre-entete (content, str, none): Titre affiché à la place de `titre`.
+/// - contenu-entete (content, none): En-tête complet remplaçant sa composition standard.
+/// - repeter-entete (bool): Répéter l'en-tête sur chaque page, notamment pour les colles.
+/// - taille (length): Taille du texte.
+/// - body (content): Corps du document.
+/// -> content
 #let document-pedagogique(
   titre: "Document",
   niveau: none,

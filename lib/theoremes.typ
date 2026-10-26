@@ -1,3 +1,14 @@
+/// Cadres disponibles : `theoreme`, `lemme`, `corollaire`, `axiome`, `postulat`,
+/// `definition`, `proposition`, `hypothese`, `propriete`, `conjecture`, `remarque`,
+/// `note`, `exemple`, `exercice`, `probleme` et `algorithme`.
+///
+/// Chaque famille expose `compteur-<nom>`, `<nom>`, `<nom>-sans-numero` et
+/// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
+/// Les appels acceptent un contenu et les options communes `titre`, `coeur` et
+/// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
+/// Les références `@etiquette` suivent le type et le numéro, y compris pendant
+/// les animations. Dans `algorithme`, les listes imbriquées décrivent le pseudocode.
+
 #import "@preview/lovelace:0.3.1": pseudocode-list
 #import "@preview/theorion:0.6.0" as theorion
 #import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils
@@ -13,8 +24,11 @@
 #let espacement-cadres = state("exercices-espacement-cadres", none)
 #let style-cadres = state("exercices-style-cadres", none)
 
-// Compter une seule fois les cadres répétés par les animations de Touying.
-// Sans marqueurs Touying (cours et feuilles), les étapes sont simplement cumulées.
+/// Crée un compteur indépendant qui compte une seule fois les cadres animés.
+/// Expose `step`, `update`, `at`, `get` et `final` pour le rendu et les renvois.
+///
+/// - nom (str): Identifiant du type de cadre.
+/// -> dictionary
 #let compteur-cadres(nom) = {
   let marqueur = label("exercices-compteur-" + nom)
   let at(lieu) = {
@@ -54,7 +68,12 @@
   )
 }
 
-// Superposer le titre à la bordure, avec un fond blanc mais sans cartouche.
+/// Rend le titre d'un exercice sur sa bordure avec un fond blanc.
+///
+/// - body (content): Énoncé.
+/// - full-title (content, str, auto): Titre complet fourni par Theorion.
+/// - ..args (arguments): Options du cadre Theorion.
+/// -> content
 #let rendre-exercice(body, full-title: auto, ..args) = context {
   let frame = args.named().frame
   let titre = box(fill: white, inset: (x: frame.title-inset.x), text(weight: "semibold", full-title))
@@ -70,7 +89,19 @@
   })
 }
 
-// Conserver les mêmes environnements, références et compteurs dans les deux formats.
+/// Compose le cadre A4 ou coloré après résolution des marques Touying.
+/// Les listes des algorithmes sont rendues par Lovelace.
+///
+/// - body (content): Corps du cadre.
+/// - nom (str, none): Type anglais du cadre.
+/// - self (dictionary, none): Contexte Touying éventuel.
+/// - prefix (content, str, none): Préfixe numéroté.
+/// - title (content, str): Titre court.
+/// - full-title (content, str, auto): Titre complet ou composition automatique.
+/// - coeur (bool): Signaler un résultat à connaître.
+/// - marge (bool): Ajouter la marge supérieure du cadre A4.
+/// - ..args (arguments): Options transmises à Theorion.
+/// -> content
 #let composer-cadre(
   body,
   nom: none,
@@ -168,7 +199,12 @@
   }
 }
 
-// Touying traite le contenu du cadre avant son rendu contextuel.
+/// Diffère le rendu seulement si le contenu porte des marques Touying.
+///
+/// - nom (str): Type du cadre.
+/// - body (content): Contenu à résoudre.
+/// - ..options (arguments): Options de `composer-cadre`.
+/// -> content
 #let rendre-cadre(nom, body, ..options) = {
   if not utils.tree.has-touying-mark(body) {
     composer-cadre(body, nom: nom, ..options)
@@ -177,13 +213,21 @@
   }
 }
 
-// Séparer le titre du préfixe numéroté par deux-points, sans parenthèses.
+/// Réunit le préfixe et le titre par deux-points lorsque le titre est non vide.
+///
+/// - prefix (content, str): Nom et numéro du cadre.
+/// - title (content, str): Titre facultatif.
+/// -> content
 #let titre-cadre(prefix, title) = {
   let avec-titre = (type(title) == str and title != "") or (type(title) == content and title != [] and title != [#""])
   [#prefix#if avec-titre { [ : #title] }]
 }
 
-// Chaque type possède un compteur indépendant, sans héritage des sections.
+/// Crée une famille `(compteur, numerote, sans-numero, afficher)` avec titre français.
+/// Les familles exportées et leurs options communes sont décrites en tête du module.
+///
+/// - nom (str): Type anglais reconnu par Theorion.
+/// -> array
 #let creer-environnement(nom) = {
   let (compteur, sans-numero, numerote, afficher) = theorion.make-frame(
     nom,
@@ -218,6 +262,13 @@
 #let (compteur-probleme, probleme, probleme-sans-numero, afficher-probleme) = creer-environnement("problem")
 #let (compteur-algorithme, algorithme, algorithme-sans-numero, afficher-algorithme) = creer-environnement("algorithm")
 
+/// Installe les rendus et les compteurs des cadres dans le document.
+/// À utiliser comme règle `show`.
+///
+/// - espacement (length, none): Espacement commun ; `none` conserve celui du rendu.
+/// - palette (dictionary, none): Couleurs par type anglais ; `none` utilise les cadres A4 monochromes.
+/// - body (content): Document contenant les cadres.
+/// -> content
 #let configurer-theoremes(espacement: none, palette: none, body) = {
   espacement-cadres.update(espacement)
   style-cadres.update(palette)

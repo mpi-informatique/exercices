@@ -1,6 +1,9 @@
 #let epaisseur-trait = 0.4pt
 
-// Le cœur reste hors de la largeur réservée au texte.
+/// Ajoute un cœur centré à gauche sans réduire la largeur du texte.
+///
+/// - body (content): Contenu à signaler.
+/// -> content
 #let coeur-en-marge(body) = grid(
   columns: (0pt, 1fr),
   column-gutter: 0pt,
@@ -9,6 +12,13 @@
   body,
 )
 
+/// Compose une solution sécable avec un trait à gauche ; `none` n'affiche rien.
+///
+/// - body (content, none): Solution.
+/// - coeur (bool): Ajouter un cœur dans la marge.
+/// - above (length, auto): Espacement supérieur.
+/// - below (length, auto): Espacement inférieur.
+/// -> content, none
 #let bloc-solution(body, coeur: false, above: auto, below: auto) = {
   if body != none {
     let cadre = block(

@@ -1,7 +1,6 @@
-# Programmes d'informatique et de mathématiques : référentiel pour les IA
+# Programmes d'informatique et de mathématiques
 
-Synthèse de périmètre, sans cours ni démonstrations. En cas de doute, les programmes font foi.
-Consulter [lib/meta.typ](../lib/meta.typ) pour les étiquettes. Mobiliser les acquis de première année en deuxième année lorsque le raisonnement le nécessite.
+Synthèse du périmètre : les programmes font foi. Les étiquettes disponibles sont dans [lib/meta.typ](../lib/meta.typ) ; les acquis de première année restent mobilisables en deuxième année.
 
 ## Mathématiques MPSI–MP2I
 
@@ -35,8 +34,6 @@ n'est pas exigible ; la pratique de la trigonalisation n'est pas un objectif.
 La topologie couvre compacité et connexité par arcs ; l'intégration inclut convergence dominée et intégrales à paramètre. Les probabilités utilisent notamment les séries
 génératrices. Les équations différentielles étudiées sont linéaires.
 Les déterminants triangulaires par blocs et les transvections par blocs prolongent le chapitre `determinants` de première année.
-
-Les étiquettes classent les outils utilisés ; elles ne certifient pas qu'un exercice convient à tous les niveaux. Conserver les niveaux pertinents dans `meta.niveaux`.
 
 ## Informatique MP2I–MPI
 
@@ -102,5 +99,5 @@ La permission d'utiliser Python dans cette banque est une **convention locale**,
 ### Application à cette banque
 
 - Consulter ce fichier avant de choisir un outil ; citer section/page lors d'une extension de [lib/meta.typ](../lib/meta.typ). Ce fichier Typst contient un vocabulaire initial, pas tout le programme. Ne pas ajouter automatiquement toutes les notions ci-dessus aux étiquettes.
-- Métadonnées : ne retenir que les outils effectivement utilisés. Un appel récursif seul ne justifie pas l'étiquette 'pile'. Les langages formels vont dans 'chapitres' ; les langages de programmation dans 'langages'.
+- Un appel récursif seul ne justifie pas l'étiquette 'pile'. Les langages formels vont dans 'chapitres' ; les langages de programmation dans 'langages'. Les niveaux dépendent des connaissances nécessaires, pas des seules étiquettes.
 - Classement : 'graphes' (§3.4/4.5), 'langages-reguliers' pour les mots et expressions (§8.1), 'recursivite-et-induction' pour l'induction structurelle (§2). Ne pas inventer d'étiquette décrivant simplement une tâche.

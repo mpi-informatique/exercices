@@ -7,29 +7,27 @@
 = API des ressources pédagogiques
 Guide utilisateur : `docs/utilisation.md`. Cette référence est générée depuis les commentaires du code.
 
-== Fonctions publiques
-#let api = tidy.parse-module(read("/lib/exercice.typ"), old-syntax: true)
-#tidy.show-module(api, style: tidy.styles.default)
-
-== Base A4 commune
-#let document = tidy.parse-module(read("/lib/document.typ"), old-syntax: true)
-#tidy.show-module(document, style: tidy.styles.default)
-
-== Cours A4
-#let cours = tidy.parse-module(read("/lib/cours.typ"), old-syntax: true)
-#tidy.show-module(cours, style: tidy.styles.default)
-
-== Présentations et source commune
-#let presentation = tidy.parse-module(read("/lib/presentation.typ"), old-syntax: true)
-#tidy.show-module(presentation, style: tidy.styles.default)
-
-== Chargement depuis le package local
-#let paquet = tidy.parse-module(read("/load.typ"), old-syntax: true)
-#tidy.show-module(paquet, style: tidy.styles.default)
+#for (titre, fichier) in (
+  ("Exercices et feuilles", "/lib/exercice.typ"),
+  ("Document A4 et compléments", "/lib/document.typ"),
+  ("Cours et solutions", "/lib/cours.typ"),
+  ("Présentations et source commune", "/lib/presentation.typ"),
+  ("Cadres de théorèmes", "/lib/theoremes.typ"),
+  ("Blocs de solution", "/lib/blocs.typ"),
+  ("Code et extraction", "/lib/code.typ"),
+  ("Automates", "/lib/automate.typ"),
+  ("Options de compilation", "/lib/options.typ"),
+  ("Thème Madrid", "/lib/themes/madrid.typ"),
+  ("Chargement du package", "/load.typ"),
+) {
+  heading(level: 2, titre)
+  let api = tidy.parse-module(read(fichier), old-syntax: true, label-prefix: fichier + "-")
+  if api.description != none { eval(api.description, mode: "markup") }
+  tidy.show-module(api, style: tidy.styles.default)
+}
 
 == Métadonnées : vocabulaires autorisés
-#let vocabulaires = tidy.parse-module(read("/lib/meta.typ"), old-syntax: true)
-#tidy.show-module(vocabulaires, style: tidy.styles.default)
+Les valeurs de `lib/meta.typ` classent les contenus et valident leurs métadonnées.
 
 // Les valeurs sont lues dans le module, jamais recopiées dans la documentation.
 #for (nom, valeurs) in (

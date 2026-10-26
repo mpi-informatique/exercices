@@ -14,9 +14,14 @@
 #import "@preview/cetz:0.4.2" as cetz
 #import "@preview/finite:0.5.1" as finite
 
-/// États : `(nom, position, initial, final)` ; arcs : `(départ, arrivée, étiquette, style)`.
-/// Noms et étiquettes en syntaxe mathématique Typst ; `initial` accepte un booléen ou un alignement.
-/// Le style `inverser: true` change le côté de l’étiquette ; `label: (dist: ...)` règle sa distance.
+/// Dessine un automate centré avec le style commun CeTZ/finite.
+/// Noms et étiquettes utilisent la syntaxe mathématique Typst.
+///
+/// - etats (array): Tuples `(nom, position, initial, final)` ; `initial` accepte un booléen ou un alignement.
+/// - arcs (array): Tuples `(départ, arrivée, étiquette, style)` ; `inverser: true` change le côté de l'étiquette et `label: (dist: ...)` sa distance.
+/// - echelle (array): Facteurs horizontal et vertical des positions, sans changer les rayons.
+/// - rayon (function): Rayon de chaque état à partir de son nom.
+/// -> content
 #let dessiner-automate(etats, arcs, echelle: (1, 1), rayon: nom => rayon-etat) = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition
   cetz.draw.set-style(..style-automates)

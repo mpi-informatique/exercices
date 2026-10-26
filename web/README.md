@@ -1,18 +1,12 @@
-# Banque d'exercices web
+# Banque web
 
-Application statique Astro + React + TypeScript, Tailwind CSS 4 et daisyUI. MiniSearch indexe les métadonnées de la banque, CodeMirror fournit l'éditeur Typst et PDF.js affiche les PDF compilés par typst.ts dans un Web Worker.
+[Site public](https://mpi-informatique.github.io/exercices/) en Astro, React et TypeScript. MiniSearch assure la recherche, CodeMirror l'édition et PDF.js l'aperçu ; Typst compile dans un Web Worker.
 
-## Lancer
+## Développement
 
-Depuis la racine du dépôt `exercices/` :
+Depuis la racine : `just web --open`, puis `just web-stop`. La première commande installe les dépendances ; `just web-install` les actualise. Si Just manque, préfixer par `nix develop . -c`. Les options, comme `--port 4322`, sont transmises à Astro.
 
-```sh
-just web
-```
-
-La commande entre dans l'environnement Nix du site et installe les dépendances npm au premier lancement. Si Just n'est pas déjà disponible, utiliser `nix develop . -c just web`. Astro lance le serveur en arrière-plan ; `just web-stop` l'arrête. Les arguments sont transmis à Astro, par exemple `just web --port 4322 --open`. Après une modification des dépendances, lancer `just web-install`.
-
-Pour travailler directement depuis `exercices/web/` :
+Pour travailler depuis `web/` :
 
 ```sh
 nix develop ..#web
@@ -20,139 +14,64 @@ npm ci
 npm run dev
 ```
 
-Ouvrir l'adresse locale indiquée par Astro (par défaut `http://127.0.0.1:4321`). L'environnement Nix fournit Node.js, Typst, les dépendances Typst verrouillées et les polices. Le démarrage exporte le catalogue et les ressources publiques avant de lancer Astro. Après une modification de la banque, relancer `npm run prepare:data` pour actualiser cet export.
+`npm run prepare:data` actualise la banque exportée après modification des sources. `npm run build` prépare les ressources, vérifie les types et génère `dist/` ; `npm test` vérifie le site et compile la banque en WASM dans ses variantes disponibles. `npm run preview` sert le résultat.
 
-```sh
-npm run build
-npm test
-npm run preview
-```
+## Recherche et édition
 
-`build` régénère les ressources, vérifie les types et construit `dist/`, prêt à servir sur un hébergement statique. Les tests compilent toute la banque en WASM, dans les deux variantes, puis vérifient recherche, filtres et copie des ressources. Aucun serveur de compilation n'est nécessaire en production.
+- Rechercher par texte et métadonnées : `concours:CCINP année:2022`, `difficulté:2,4`, `type:td`, `chapitre:"automates finis"`. Les critères se cumulent ; plusieurs valeurs d'un critère sont réunies par « ou ».
+- `/` rejoint la recherche ; Entrée ouvre le premier résultat. `⌘K` / `Ctrl+K` ouvre la palette ; `>` limite la recherche aux commandes.
+- Une ressource est accessible par son nom sans `.typ`, par exemple `/residuels-minimisation/?vue=corrige`, sous le préfixe `/exercices/` sur GitHub Pages.
+- L'éditeur compile automatiquement et conserve le dernier aperçu valide en cas d'erreur. Les codes associés sont consultables depuis le sélecteur de fichiers ou leurs liens dans la source.
+- Les brouillons publics restent dans ce navigateur sans modifier GitHub. Télécharger le `.typ` pour les emporter. Le bouton de contribution crée une branche ou un fork puis ouvre la comparaison avant soumission de la PR ; un changement distant de la source bloque l'envoi.
 
-Pour servir le site sous un préfixe, utiliser le même `BASE_PATH` pour construire et prévisualiser :
-
-```sh
-BASE_PATH=/exercices npm run build
-BASE_PATH=/exercices npm run preview
-```
-
-Le serveur doit servir les `index.html` des répertoires et les `.wasm` avec le type `application/wasm`. Activer sa compression HTTP pour les fichiers JSON, JS et WASM. Les fichiers publics générés, les dépendances npm et `dist/` sont exclus de Git.
+Les PDF proposent les variantes du document, la navigation, le zoom, le téléchargement et le plein écran. Dans l'aperçu : ← / → change de page, + / − zoome, 0 ajuste à la largeur ; Échap quitte le plein écran. Le téléchargement conserve les couleurs originales, même en thème sombre.
 
 ## Publication GitHub Pages
 
-Le site est publié à l'adresse <https://mpi-informatique.github.io/exercices/> par le [workflow de vérification et publication](../.github/workflows/checks-and-deploy.yml). Chaque push sur `main` construit le site avec Nix et déploie `web/dist/` après réussite des vérifications. Les vérifications par compilation native et WebAssembly ciblent les ressources modifiées et les documents qui en dépendent, y compris par des imports indirects, des images ou des codes associés. Une modification de la bibliothèque, des modèles ou de l'outillage commun déclenche une vérification complète. Une modification du moteur ou des dépendances web déclenche toutes les compilations WebAssembly. Sans base Git disponible, notamment lors d'un lancement manuel, la vérification est complète. La construction du site, l'export des PDF publiés et les autres tests du site restent systématiques. Les pull requests construisent et testent le site sans le publier.
+Le [workflow](../.github/workflows/checks-and-deploy.yml) publie `web/dist/` après vérification des pushes sur `main`. Les PR sont vérifiées sans publication.
 
-Dans **Settings → Pages → Build and deployment**, la source doit être **GitHub Actions**. Aucun secret supplémentaire n'est nécessaire. `configure-pages` fournit le préfixe et l'origine du site à Astro (`BASE_PATH` et `SITE_URL`) ; les routes, fichiers publics, workers et modules WASM utilisent ce préfixe. Un domaine personnalisé se configure dans ces mêmes réglages.
+Les compilations de vérification ciblent les ressources modifiées et leurs dépendants. La bibliothèque, les modèles ou l'outillage commun déclenchent une vérification complète ; le moteur et les dépendances web déclenchent toutes les compilations WASM. Sans base Git, la vérification est complète. La construction du site, l'export des PDF publiés et les autres tests restent systématiques.
 
-Pour reproduire la construction Pages localement depuis `web/` :
+Dans **Settings → Pages**, choisir **GitHub Actions**. Pour reproduire la construction depuis `web/` :
 
 ```sh
 BASE_PATH=/exercices SITE_URL=https://mpi-informatique.github.io nix develop ..#web -c npm run build
 BASE_PATH=/exercices SITE_URL=https://mpi-informatique.github.io nix develop ..#web -c npm run preview
 ```
 
-## Utilisation
-
-- Dans le menu Type, cocher Concours affiche une plage d'années sous cette case. Déplacer ses deux curseurs au clavier ou à la souris, ou saisir les bornes puis valider avec Entrée ou Tab. Les bornes inclusives s'adaptent aux concours sélectionnés. La plage filtre seulement les concours et laisse visibles les autres types cochés ; les concours sans année sont conservés tant qu'aucune plage n'est appliquée. Décocher Concours ou effacer la plage rétablit toutes les années.
-- Le menu Difficulté permet de cocher plusieurs niveaux précis, par exemple 2 et 4. Les niveaux sont réunis par « ou » ; ils ne représentent plus une difficulté maximale. Le même filtre s'écrit `difficulté:2,4` dans la recherche.
-- Dans le menu Chapitres, cocher une matière sélectionne tous ses chapitres présents dans la banque. Les cases Informatique et Mathématiques indiquent aussi les sélections partielles ; les matières se combinent entre elles et avec les autres filtres. Le classement provient de `lib/meta.typ`. Les résultats et la palette affichent le nom, l'année et la filière des concours lorsqu'ils sont renseignés.
-- Rechercher par titre, nom de fichier, chapitre, concours, année ou autre métadonnée. `/` place le curseur dans la recherche hors des champs d'édition ; Entrée ouvre le premier résultat. Les filtres se cumulent ; plusieurs valeurs dans un filtre sont réunies par « ou ». Les cases à cocher acceptent Tab, Espace et Échap. Les critères peuvent aussi être saisis dans la recherche, par exemple `concours:CCINP année:2022`, `concours:CCINP,ENS`, `type:td` ou `chapitre:"automates finis"`. Répéter un critère ajoute une valeur ; les noms acceptent le singulier, le pluriel et les accents. Les filtres du panneau et du texte se cumulent ; la recherche ignore la casse et les accents et tolère les préfixes et petites fautes. Les filtres supplémentaires restent repliés par défaut.
-- `⌘K` / `Ctrl+K` ouvre la palette, y compris depuis CodeMirror. Chercher une action ou un exercice, utiliser ↑ / ↓ puis Entrée ; Échap ferme la palette et restitue le focus. Préfixer la recherche par `>` pour limiter la liste aux commandes. La palette permet notamment de changer de panneau, de variante ou de thème, et de télécharger les fichiers.
-- Dans la recherche, ↓ / ↑ rejoint le premier / dernier résultat. Dans les résultats, ↑ / ↓, Début et Fin déplacent le focus ; Entrée ouvre la ressource. Un seul résultat participe à la navigation par Tab, pour éviter de traverser toute la banque. Les onglets Énoncé / Corrigé acceptent ← / →, Début et Fin.
-- Ouvrir directement `/residuels-minimisation/` ou `/residuels-minimisation/?vue=corrige` en local, et `/exercices/residuels-minimisation/` sur GitHub Pages. L'identifiant reste le nom du fichier sans `.typ`, y compris pour les documents composés. L'export refuse les doublons.
-- Les oraux sont découverts dans `devoirs/concours/oral/<concours>/`, y compris dans les sous-dossiers de ressources. Après un déplacement ou un renommage, régénérer l'export : les URL suivent le nouveau nom du fichier, par exemple `/ens-oral-mp-automates-monoides/` en local, sous le préfixe `/exercices/` sur GitHub Pages. Les filtres utilisent toujours les métadonnées du sujet.
-- Les commandes de l’application sont regroupées sous forme d’icônes en haut du panneau latéral. Déplacer les séparateurs ou les sélectionner au clavier et utiliser les flèches, Début ou Fin. Les boutons de recherche et de code replient les panneaux ; les commandes restent accessibles dans une colonne d’icônes lorsque la recherche est repliée. Sur petit écran, le code et le PDF alternent dans le panneau principal.
-- Modifier le code : la compilation démarre après 450 ms d'inactivité. Une seule compilation s'exécute à la fois ; les modifications intermédiaires sont regroupées. Une erreur conserve le dernier aperçu valide et désactive le téléchargement PDF jusqu'à correction. Le worker est interrompu après 120 secondes et peut être relancé.
-- Les sources `cours-et-presentation` proposent les boutons **Cours / Cours corrigé / Présentation**, comme dans l’extension VS Code. La palette utilise les mêmes libellés et le téléchargement produit `cours-kleene.pdf`, `cours-kleene-cor.pdf` ou `presentation-kleene.pdf` pour `cours-kleene.typ`. Un cours sans présentation propose **Cours / Cours corrigé**. Une présentation seule affiche un seul onglet. Le filtre Type permet de retrouver ces documents.
-- Choisir Énoncé ou Corrigé, naviguer dans les pages, zoomer et télécharger le PDF affiché. Dans l'aperçu ayant le focus, ← / → change de page, + / − zoome et 0 ajuste à la largeur ; les touches de défilement habituelles fonctionnent aussi. Le texte du PDF est sélectionnable. Les pages sont rendues à proximité de la zone visible. Le thème sombre adapte aussi le papier et le texte du PDF ; le téléchargement conserve les couleurs originales.
-- À 100 %, le PDF occupe la largeur disponible du lecteur, marges comprises, et s'adapte au redimensionnement des panneaux ou de la fenêtre. Le zoom est relatif à cette largeur ; le bouton du pourcentage ou la touche 0 rétablit l'ajustement à la largeur.
-- Le sélecteur de fichiers de l’éditeur permet d’ouvrir les codes associés à la feuille ou à ses exercices importés dans CodeMirror en lecture seule, avec coloration syntaxique pour C, OCaml, Python et SQL. Il permet aussi de retrouver le `.typ` ; la croix revient à la source Typst. Le téléchargement porte sur le fichier affiché. La feuille, son brouillon et l’aperçu PDF sont conservés.
-- Dans CodeMirror, cliquer sur un chemin de code souligné l'ouvre dans le même panneau ; Alt+Entrée fonctionne aussi. Pour les autres fichiers, Ctrl/Cmd+clic ou Alt+Entrée ouvre les exercices et documents dans le site, les ressources publiques associées dans un nouvel onglet. Les codes du dépôt privé chargé s'ouvrent également dans CodeMirror, sans requête vers la banque publique. Les longues lignes reviennent automatiquement à la ligne dans tous les fichiers, sans modifier leur contenu. Tab indente ; Échap puis Tab permet de quitter l'éditeur au clavier. La palette offre aussi des commandes pour ouvrir les codes associés et placer le focus dans la recherche, le code ou le PDF.
-- Dans la barre de l'éditeur, le logo GitHub ouvre le fichier affiché dans son dépôt et le bouton d'issue permet de signaler un problème, avec le titre de la ressource et un lien vers le fichier préremplis. Ces liens suivent le fichier Typst ou le code associé sélectionné, ainsi que le dépôt et la branche de la banque privée le cas échéant.
-- Le bouton de pull request dans la barre de l'éditeur propose le contenu modifié dans CodeMirror : après connexion à GitHub, une nouvelle branche contient le brouillon et GitHub affiche les différences avant l'envoi de la PR. Un fork personnel est créé si nécessaire. Le brouillon reste enregistré dans le navigateur. La [configuration du Worker OAuth](../worker/README.md) active ce parcours ; sans cette configuration, le bouton copie le brouillon et ouvre l'éditeur GitHub pour le coller manuellement. Si le fichier n'est pas modifié, le bouton ouvre directement l'éditeur GitHub.
-- Les brouillons, le thème et les largeurs sont conservés dans `localStorage`. Les brouillons sont propres à ce navigateur et ne modifient pas le dépôt. Télécharger le fichier `.typ` pour l'emporter, ou réinitialiser le code pour retrouver la banque. La réinitialisation est annulable dans CodeMirror. Si la source publiée a changé depuis le brouillon, un message le signale.
-
-Le premier aperçu charge le compilateur WASM (environ 27 Mo non compressés), les polices et la banque. Les éditions suivantes réutilisent le moteur et les ressources en mémoire. Le site n'utilise aucun CDN, compte ou service externe pour compiler. Une nouvelle dépendance Typst doit être ajoutée au manifeste Nix de la banque puis réexportée.
-
-Le package `code-extract`, fourni par le dépôt public `mpi-informatique/typst-code-extract`, est verrouillé dans `flake.lock`. L'export inclut son namespace `local`, son interface Typst et son module WASM. L'extraction des déclarations C et OCaml s'exécute ainsi dans le navigateur, avec les mêmes appels que les PDF compilés en ligne de commande.
-
-Le compilateur typst.ts est fixé à `0.8.0-rc3` : cette préversion intègre Typst 0.15, nécessaire aux imports de l'API commune et à Touying 0.8. L'export inclut le point d'entrée `load.typ` ; le test WASM compile toute la banque pour vérifier sa compatibilité.
+Sur un autre hébergement, servir les `index.html` des répertoires et les WASM avec `application/wasm`, en activant la compression HTTP. Conserver le même `BASE_PATH` à la construction et à la prévisualisation.
 
 ## Lecteur intégrable
 
-La route `/apercu/<id>/` affiche uniquement le lecteur PDF et ses variantes, sans recherche ni éditeur. Par exemple : `/apercu/cours-langages/`. Elle charge directement le PDF publié et conserve les commandes de navigation, zoom et téléchargement. La présentation est choisie par défaut si elle existe ; `?vue=enonce`, `?vue=corrige` ou `?vue=presentation` choisit la version initiale. `cor=0` retire le corrigé des onglets, sans restreindre l'accès à la ressource publique.
+`/apercu/<id>/` affiche les PDF publiés sans charger le compilateur ni l'éditeur. Exemple : `https://mpi-informatique.github.io/exercices/apercu/cours-langages/`. La présentation est sélectionnée si disponible ; `vue=enonce`, `vue=corrige` ou `vue=presentation` choisit la variante. `cor=0` masque l'onglet corrigé sans protéger la ressource publique. Une iframe doit autoriser `allow="fullscreen"`.
 
-`prepare:data` sélectionne uniquement les ressources de `cours/pages-typst.md` : énoncé/cours, présentation si disponible et corrigé uniquement pour les entrées `: cor`. Les liens `doc:` et HTTP(S) sont ignorés. Le menu est lu dans le dépôt voisin `../cours`, ou sur la branche `main` de `mpi-informatique/cours` pour un clone autonome. `COURS_PAGES_TYPST` permet de fournir un chemin explicite. Le catalogue et les sources de toute la banque restent disponibles dans l’éditeur ; seules les ressources ayant des PDF publiés disposent d’une route `/apercu/<id>/`.
+Les PDF publiés suivent `cours/pages-typst.md` du dépôt voisin, ou sa branche distante `main` pour un clone autonome. `COURS_PAGES_TYPST` choisit un autre fichier. Les entrées `: cor` autorisent le corrigé ; les liens `doc:` et HTTP(S) sont ignorés. Les TP sont toujours exportés. Les noms des PDF portent une empreinte pour renouveler leur cache ; le catalogue public fournit leurs titres et URL.
 
-Les PDF sont compilés avec le cache de `scripts/build.py`, puis les exporte dans `public/banque/pdf/`. Leur nom contient une empreinte des sources et dépendances pour renouveler le cache à chaque changement. Le lecteur intégré ne télécharge ni le compilateur WASM, ni la banque Typst, ni les polices du compilateur. En consultant le cours écrit, il précharge aussi le PDF de présentation en arrière-plan. L'éditeur de la banque conserve sa compilation dans le navigateur pour les modifications.
-
-`public/banque/catalogue.json` expose les métadonnées évaluées par Typst, dont les titres et les chemins des PDF. Le site de cours utilise ces titres pour sa sidebar.
-
-`theme=light` ou `theme=dark` choisit le thème initial. Pour suivre un site qui intègre le lecteur sans recharger le PDF, le parent envoie `{type: 'exercices:theme', theme: 'dark' | 'light'}` par `postMessage` à l'origine de la banque. Le lecteur accepte ces messages uniquement de sa fenêtre parente et de l'origine de son référent ; il annonce `{type: 'exercices:ready'}` lorsque son écouteur est prêt.
-
-Le bouton **Présenter en plein écran**, commun à la banque et au lecteur intégrable, affiche une page à la fois et l'ajuste à la largeur et à la hauteur disponibles. La barre d'outils est masquée pendant la présentation. Sur écran tactile, balayer vers la gauche ou le haut avance d'une page ; vers la droite ou le bas revient à la précédente. Les flèches gauche/droite, Espace, Page précédente/suivante, Début et Fin permettent de présenter ; Échap quitte le plein écran. Une iframe doit autoriser le plein écran (`allow="fullscreen"`). Les commandes de zoom sont masquées dans la barre d'outils lorsque le lecteur mesure au plus 600 px de large, y compris dans le site de cours.
-
-Cette route peut être chargée dans une iframe sur le site de cours. Avec GitHub Pages, son adresse est `https://mpi-informatique.github.io/exercices/apercu/cours-langages/`. Le navigateur charge PDF.js et le PDF sélectionné.
-
-## Organisation
-
-| Chemin | Rôle |
-| --- | --- |
-| `../shared/src/index.ts` | Types, identifiants, validation du catalogue et utilitaires communs au site et à l'extension VS Code. |
-| `scripts/prepare.py` | Réutilise `../scripts/catalogue.py` et la découverte publique ; interroge Typst pour les métadonnées des documents et de leurs exercices. |
-| `scripts/assets.mjs` | Copie les fichiers WASM et PDF.js depuis les versions npm verrouillées. |
-| `src/compiler/engine.ts` | Système de fichiers virtuel, packages verrouillés et compilation PDF ; également utilisé par les tests. |
-| `src/compiler/typst.worker.ts` | Chargement des ressources et protocole du worker. |
-| `src/hooks/useCompiler.ts` | Temporisation, file d'attente, résultats périmés, erreurs et délai maximal. |
-| `src/components/` | Recherche, éditeur, lecteur PDF, séparateurs et assemblage de l'interface. |
-| `src/pages/` | Accueil, routes statiques par identifiant et page 404. |
-
-La banque publique est exportée au build. Les sources privées facultatives sont chargées uniquement dans le navigateur après connexion GitHub. Les cours et présentations sont indexés avec les exercices et les autres documents, dans les banques publiques et privées.
-
-Les licences des packages Typst restent dans `public/banque/packages/`. Celles des polices New Computer Modern 8.1.1 et DejaVu 2.37 sont dans `public/licenses/` ; leurs fichiers sont distribués sans modification. La licence de PDF.js est copiée avec ses ressources.
-
-Le favicon reprend `../../vscode-mpi-exercices/media/mpi.png`. Pour les résultats Google, [une seule icône est associée à chaque nom d’hôte](https://developers.google.com/search/docs/appearance/favicon-in-search) : si ce site est déployé sous `/exercices/`, la page d’accueil du domaine doit aussi déclarer cette icône. Son affichage dépend ensuite de Google.
+`theme=light` ou `theme=dark` fixe le thème initial. Le parent peut ensuite envoyer `{type: 'exercices:theme', theme: 'dark' | 'light'}` à l'origine de la banque ; le lecteur annonce `{type: 'exercices:ready'}`. Les messages ne sont acceptés que depuis la fenêtre parente et l'origine de son référent.
 
 ## Banque privée
 
-L’icône de cadenas du panneau latéral ouvre le panneau **Exercices privés**. Après autorisation GitHub, sélectionner un dépôt privé et cliquer **Charger le dépôt**. Les exercices s’ajoutent aux résultats publics avec le badge **Privé** ; le filtre **Visibilité** et la recherche `tag:privé` permettent de les retrouver. Les doublons de noms entre banques sont conservés. Le dépôt est lu sur un commit fixe de sa branche par défaut.
+Le cadenas permet de se connecter à GitHub puis de charger un dépôt privé. Les ressources rejoignent la recherche avec le badge **Privé**, le filtre **Visibilité** et `tag:privé`.
 
-Le dépôt doit contenir des sources Typst compatibles avec l’API de cette banque : exercices exportant `ex`, documents utilisant `feuille`, ainsi que leurs dépendances locales. Les métadonnées sont évaluées par Typst dans le navigateur ; aucun catalogue préexporté n’est nécessaire. Les fichiers `lib/`, `templates/` et `load.typ` du dépôt choisi remplacent les équivalents publics uniquement dans son moteur privé. En leur absence, le moteur utilise les modèles publics. Le package public `@mpi-informatique/exercices:0.1.0` est disponible à la révision du site, ainsi que ses dépendances Typst verrouillées. Le verrou Nix du dépôt privé ne change pas cette révision dans le navigateur. Le dossier `corrections/` des copies et notes est exclu du chargement et de l’indexation. Les fichiers non indexables sont signalés dans le panneau. Les arbres GitHub tronqués et les ressources dépassant 50 Mo sont refusés explicitement.
+Le dépôt doit contenir des sources compatibles avec l'API : exercices exportant `ex`, documents utilisant `feuille` et dépendances locales. Ses `lib/`, `templates/` et `load.typ` remplacent les versions publiques dans son moteur ; sinon, le moteur utilise l'API du site. Le verrou Nix privé ne change pas la révision du package public disponible dans le navigateur. `corrections/` est exclu ; les arbres tronqués et ressources de plus de 50 Mo sont refusés.
 
-Les exercices privés proposent le même éditeur, les variantes et les téléchargements. Leurs brouillons restent en mémoire, sans `localStorage`. **Se déconnecter**, retirer le dépôt ou recharger la page retire les fichiers privés de l’onglet ; télécharger les modifications souhaitées avant cette opération. La déconnexion locale ne révoque pas l’autorisation de l’application sur GitHub. Le bouton de contribution à la banque publique est masqué pour les ressources privées.
+Les fichiers, brouillons et PDF privés restent en mémoire. Déconnexion, retrait du dépôt ou rechargement les effacent : télécharger les changements à conserver. **Créer un commit sur GitHub** enregistre la source sur la branche par défaut avec les droits du compte ; un changement distant bloque l'opération et conserve le brouillon. Aucune contribution publique n'est proposée pour ces fichiers.
 
-Le bouton **Créer un commit sur GitHub** dans la barre de CodeMirror enregistre le fichier modifié directement sur la branche par défaut du dépôt privé chargé. Il est désactivé sans modification et pendant l’enregistrement. Le compte connecté doit disposer du droit d’écriture ; GitHub applique les protections de branche. Si le fichier distant a changé, le commit est refusé et le brouillon conservé. Après réussite, la source enregistrée devient la nouvelle référence locale ; les éditions réalisées pendant l’enregistrement restent dans le brouillon.
+La connexion et les scopes sont décrits dans le [guide du Worker OAuth](../worker/README.md).
 
-La connexion utilise le [même Worker OAuth](../worker/README.md), sans nouvelle configuration serveur. Le scope OAuth `repo` couvre la lecture de la banque privée et l’enregistrement de ses modifications. Les autorisations d’organisation restent gérées par GitHub.
+## TP et Codespaces
 
+Le bouton **TP** ouvre ou reprend le Codespace `mpi-informatique/tp-environnement` ; sélectionner ensuite le document dans **TP MPI**. Pour publier un TP, partir de [templates/tp.typ](../templates/tp.typ) et déclarer ses ressources dans `feuille.with(type: "tp", tp: ...)`. Le contrat de `tp` est documenté dans [lib/exercice.typ](../lib/exercice.typ).
 
-## TP pour VS Code et Codespaces
+Le catalogue exporte `tp.ouvrir`, `tp.fichiers` et `tp.corrige`. L'extension suit le marqueur `: cor` du menu pour afficher les corrigés dans le cours, sans reconstruire la banque. Les fichiers publics restent accessibles sur GitHub.
 
-Le bouton **TP** de la barre du lecteur PDF, dans la banque et dans le lecteur intégrable, ouvre ou reprend le Codespace `mpi-informatique/tp-environnement` dans un nouvel onglet. Sélectionner ensuite le TP dans le panneau **TP MPI**. Ce bouton est réservé aux documents publics de type TP.
+## Code et licences
 
-Les documents `feuille.with(type: "tp", ...)` sont également publiés pour l'extension `tp-environnement/extension`. Partir de `templates/tp.typ`. Regrouper chaque TP et ses fichiers dans un même dossier, par exemple `chapitres/langages/tp/tp-exemple/tp-exemple.typ`. Déclarer les ressources directement dans la feuille :
+| Chemin | Rôle |
+| --- | --- |
+| `scripts/prepare.py`, `scripts/assets.mjs` | Export de la banque, des PDF, packages et ressources npm. |
+| `src/compiler/`, `src/hooks/useCompiler.ts` | Moteur WASM, worker et orchestration des compilations. |
+| `src/components/`, `src/pages/` | Interface et routes. |
+| `../shared/` | Types et lecteur PDF partagés avec les extensions VS Code. |
 
-```typst
-#show: feuille.with(
-  type: "tp",
-  titre: sujet.meta.titre,
-  exercices: (sujet,),
-  tp: (
-    ouvrir: "main.ml",
-    squelette: ((source: "main.ml"),),
-    ressources: (
-      (source: "graphes.zip", extraire: "donnees"),
-      (source: "annexe.pdf"),
-    ),
-    corrige: ((source: "corrige.ml"),),
-  ),
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
-)
-```
-
-Les chemins `source` sont relatifs au fichier `.typ`. `destination` permet de choisir le chemin dans le dossier de travail, sinon le nom source est conservé. `extraire` désigne le sous-dossier d'extraction d'un ZIP ; sans ce champ, l'archive reste compressée. Les fichiers déclarés sont copiés explicitement dans la banque publique, y compris les annexes PDF. Aucun `tp.json` source n'est nécessaire.
-
-Le catalogue ajoute `tp.ouvrir`, `tp.fichiers` et `tp.corrige` avec les URL publiques. Les deux PDF et les fichiers corrigés sont exportés pour tous les TP. L'extension décide de leur affichage en lisant la rubrique `- TP` du menu : corrigé autorisé hors du cours, et seulement avec `: cor` dans le cours. Modifier ce marqueur ne nécessite donc pas de reconstruire la banque. Les fichiers du dépôt public restent consultables sur GitHub : masquer un corrigé dans l'interface ne constitue pas une restriction d'accès.
-
-Le lecteur PDF des extensions et son script de préparation sont mutualisés dans `shared/viewer/`, `shared/src/pdf-viewer.ts` et `shared/build-viewer.mjs`.
+Les licences des packages, des polices et de PDF.js accompagnent les ressources exportées.

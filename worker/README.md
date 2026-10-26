@@ -1,14 +1,14 @@
-# Connexion GitHub pour les contributions
+# Connexion GitHub
 
-Le site reste statique sur GitHub Pages. Ce Worker échange uniquement le code OAuth contre un jeton utilisateur. Le navigateur utilise ensuite l'API GitHub pour enregistrer le brouillon dans une nouvelle branche et ouvrir la comparaison avant soumission de la PR. Un contributeur sans accès en écriture obtient un fork personnel. Le jeton n'est stocké ni dans le Worker, ni dans les stockages du navigateur.
+Le site statique utilise ce Worker uniquement pour échanger un code OAuth contre un jeton ; le navigateur accède ensuite directement à GitHub. Le jeton reste en mémoire, avec vérification de l'origine, du `state` et de PKCE S256.
 
-Worker de production : `https://exercices-github-auth.qpfortier.workers.dev`. L'application [Contributions Enseignement MPI](https://github.com/settings/applications/3927033) est administrée par `fortierq`. Son Client ID public est configuré dans `wrangler.jsonc` ; son secret reste dans Cloudflare.
+Production : `https://exercices-github-auth.qpfortier.workers.dev`. L'application [Contributions Enseignement MPI](https://github.com/settings/applications/3927033) est administrée par `fortierq`.
 
-## Configuration initiale
+## Configuration
 
-1. Créer une [OAuth App GitHub](https://github.com/settings/applications/new), avec la page d'accueil `https://mpi-informatique.github.io/exercices/` et le callback `https://mpi-informatique.github.io/exercices/contribution/`. Le flux demande seulement `public_repo` : GitHub ne propose pas de restriction par dépôt pour ce scope OAuth. La connexion facultative « Exercices privés » demande séparément `repo`, qui inclut aussi l’écriture des dépôts privés : GitHub OAuth ne propose pas de scope de lecture seule pour ceux-ci. Le choix de dépôt dans le site limite ce qui est chargé, pas la portée du jeton GitHub.
-2. Reporter son **Client ID** dans `vars.GITHUB_CLIENT_ID` de `wrangler.jsonc`. Le Client ID est public. Conserver `SITE_URL` avec le préfixe `/exercices/`.
-3. Installer et connecter Wrangler, depuis `worker/` :
+1. Créer une [OAuth App GitHub](https://github.com/settings/applications/new), avec l'accueil `https://mpi-informatique.github.io/exercices/` et le callback `https://mpi-informatique.github.io/exercices/contribution/`.
+2. Renseigner `GITHUB_CLIENT_ID` et `SITE_URL` dans [wrangler.jsonc](wrangler.jsonc), en conservant le préfixe `/exercices/`.
+3. Depuis `worker/`, installer, connecter et déployer :
 
    ```sh
    nix develop ..#web -c npm ci
@@ -17,25 +17,20 @@ Worker de production : `https://exercices-github-auth.qpfortier.workers.dev`. L'
    nix develop ..#web -c npx wrangler secret put GITHUB_CLIENT_SECRET
    ```
 
-   Saisir le secret GitHub uniquement à l'invite de Wrangler. Les secrets locaux `.dev.vars` et `.env` sont ignorés par Git. Garder l'offre Workers Free si aucun abonnement payant n'est souhaité.
+   Saisir le secret uniquement à l'invite ; `.dev.vars` et `.env` restent exclus de Git.
+4. Dans les variables GitHub Actions du dépôt, définir `PUBLIC_GITHUB_AUTH_URL` avec l'URL HTTPS du Worker sans barre finale, puis relancer **Vérifications et publication**.
+5. Tester la contribution avec un compte disposant de l'écriture et un compte nécessitant un fork.
 
-4. Dans le dépôt GitHub, **Settings → Secrets and variables → Actions → Variables**, créer `PUBLIC_GITHUB_AUTH_URL` avec l'URL HTTPS `workers.dev` annoncée au déploiement, sans barre finale. Ce n'est pas un secret. Relancer le workflow **Vérifications et publication** pour reconstruire le site avec cette variable.
-5. Sur le site, modifier un exercice puis utiliser le bouton de pull request. Autoriser l'application avec un compte GitHub, vérifier les différences et soumettre la PR. Vérifier aussi avec un compte qui n'a pas accès en écriture au dépôt.
+Le scope `public_repo` sert aux contributions publiques ; `repo` est demandé séparément pour les dépôts privés et autorise aussi leur écriture. GitHub OAuth ne propose pas de restriction par dépôt ni de scope privé en lecture seule. Les organisations peuvent exiger une autorisation supplémentaire.
 
-Les paramètres OAuth utilisent `state` et PKCE S256. Le callback est une page statique du site ; le Worker fixe cette adresse lors de l'échange et accepte uniquement l'origine du site. Les réponses sont non mises en cache. Le brouillon est conservé avant la redirection. Le site refuse de proposer une modification si la source a changé sur GitHub depuis son chargement. Les branches existantes du dépôt et des forks ne sont jamais modifiées.
+Sans `PUBLIC_GITHUB_AUTH_URL`, le site copie le brouillon et ouvre l'éditeur GitHub. La déconnexion locale efface les ressources en mémoire ; révoquer l'autorisation dans **GitHub → Settings → Applications → Authorized OAuth Apps**.
 
-Sans `PUBLIC_GITHUB_AUTH_URL`, le site conserve le bouton historique de copie du brouillon et d'ouverture de l'éditeur GitHub.
+## Développement
 
-## Développement local
+Créer une autre OAuth App avec le callback `http://127.0.0.1:4321/contribution/`. Placer ses identifiants et `SITE_URL=http://127.0.0.1:4321/` dans `worker/.dev.vars`. Lancer `npm run dev` dans `worker/`, puis, à la racine :
 
-Utiliser une **autre OAuth App** avec le callback `http://127.0.0.1:4321/contribution/`. Créer `worker/.dev.vars` avec `SITE_URL=http://127.0.0.1:4321/`, `GITHUB_CLIENT_ID` et `GITHUB_CLIENT_SECRET` de cette application. Lancer `npm run dev` dans `worker/`, puis le site avec `PUBLIC_GITHUB_AUTH_URL=http://127.0.0.1:8787 nix develop . -c just web`. Si un autre port ou préfixe est utilisé, adapter le callback et `SITE_URL` exactement.
+```sh
+PUBLIC_GITHUB_AUTH_URL=http://127.0.0.1:8787 nix develop . -c just web
+```
 
-Les tests du Worker et du parcours GitHub font partie de `npm test` dans `web/`. Ils simulent l'API et ne créent aucune ressource distante.
-
-## Exercices privés
-
-La même application OAuth, le même callback et ce même Worker servent à la connexion aux dépôts privés ; aucune variable ni aucun secret supplémentaire n’est nécessaire. Le Worker reste un relais d’échange OAuth et ne reçoit pas les fichiers privés. Le popup remet le jeton à son onglet d’origine par `postMessage`, avec vérification de l’origine, de la fenêtre émettrice et du `state`. Le jeton reste uniquement en mémoire ; recharger la page nécessite une nouvelle connexion.
-
-La lecture des dépôts et des blobs utilise directement l’API GitHub depuis le navigateur, sans cache applicatif. La banque privée, ses brouillons et ses PDF restent en mémoire dans l’onglet. La déconnexion interrompt les requêtes et les workers et retire ces ressources. Elle ne révoque pas l’autorisation GitHub : celle-ci se retire depuis **GitHub → Settings → Applications → Authorized OAuth Apps**.
-
-Les organisations peuvent exiger une autorisation supplémentaire pour rendre leurs dépôts privés accessibles. Le site affiche uniquement les dépôts privés que GitHub autorise pour ce compte et cette application. Il ne crée aucune PR à partir d’un fichier privé vers la banque publique.
+Adapter exactement le callback et `SITE_URL` si le port ou le préfixe change. Les tests simulant GitHub font partie de `npm test` dans `web/` et ne créent aucune ressource distante. Pour les parcours de contribution et de banque privée, voir le [guide du site](../web/README.md).

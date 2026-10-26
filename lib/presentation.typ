@@ -7,12 +7,22 @@
 #import "code.typ": configurer-code
 #import "themes/madrid.typ": theme-madrid, titre-madrid
 
-/// Conserve le titre courant et ne provoque aucun saut dans le cours.
+/// Ouvre une diapositive en conservant le titre courant ; sans effet dans le cours.
+/// Après un titre, `slide(titre: false, saut: false)` masque le bandeau sans créer de page vide.
+///
+/// - titre (bool): Conserver le bandeau du titre courant.
+/// - saut (bool): Commencer une nouvelle diapositive.
+/// -> content
 #let slide(titre: true, saut: true) = slides-only({
   if saut { pagebreak() }
   if not titre { metadata("diapositive-sans-titre") }
 })
 
+/// Change la taille du texte seulement lorsque l'entrée `format` vaut `presentation`.
+///
+/// - taille (length): Taille à appliquer.
+/// - body (content): Contenu concerné.
+/// -> content
 #let taille-presentation(taille, body) = {
   if est-presentation() {
     text(size: taille, body)
@@ -21,7 +31,10 @@
   }
 }
 
-/// Formule en bloc dans la présentation, en ligne dans le cours et le corrigé.
+/// Compose une formule en bloc dans la présentation et en ligne dans le cours.
+///
+/// - body (content): Expression mathématique.
+/// -> content
 #let equation-slide(body) = math.equation(block: est-presentation(), body)
 
 #let couleurs-blocs = (
@@ -43,7 +56,22 @@
   note: rgb("#586475"),
 )
 
-/// Titres de section `=`, titres de diapositive `==`.
+/// Compose des diapositives Touying avec le thème Madrid.
+/// Les titres `=` structurent les sections et `==` ouvre une diapositive.
+/// `pause`, `item-by-item`, `only`, `uncover`, `article-only` et `slides-only` sont réexportés de Touying.
+///
+/// - titre (str): Titre de la présentation.
+/// - niveau (str, none): Niveau sur la page de titre.
+/// - auteur (str, none): Auteur.
+/// - aspect-ratio (str): Format Touying, par exemple `16-9`.
+/// - taille (length): Taille du texte projeté.
+/// - couleur (color): Couleur principale et des résultats.
+/// - palette (dictionary): Surcharges des couleurs de cadres par nom anglais (`exercise`, `definition`…).
+/// - police (array, str): Police ou liste de polices de secours.
+/// - animations (bool): Conserver les étapes ; sinon produire le mode handout.
+/// - article (bool): Produire le cours A4 avec les règles de Touying.
+/// - body (content): Contenu commun ou projeté.
+/// -> content
 #let presentation(
   titre: "Présentation",
   niveau: none,
@@ -103,12 +131,27 @@
   body
 }
 
+/// Produit un cours et une présentation à partir de la même source.
+///
+/// - format (str): `cours` ou `presentation`, issu de l'entrée système si omis.
+/// - ..args (arguments): Options transmises à `presentation`.
+/// - body (content): Source commune.
+/// -> content
 #let cours-et-presentation(format: sys.inputs.at("format", default: "cours"), ..args, body) = {
   assert(format in ("cours", "presentation"), message: "format doit valoir cours ou presentation")
   presentation(..args, article: format == "cours", body)
 }
 
-/// `encadrer` crée un cadre par contenu si `saut-slide` vaut true, un cadre commun sinon.
+/// Dispose les contenus en colonnes dans le cours et à la suite dans la présentation.
+/// Passer le cadre via `encadrer`, plutôt qu'entourer l'appel, pour que Touying résolve les variantes.
+///
+/// - columns (array, int): Colonnes du cours, comme pour `grid`.
+/// - column-gutter (length): Espacement entre colonnes.
+/// - align (alignment): Alignement dans la grille.
+/// - saut-slide (bool): Séparer les contenus par des diapositives.
+/// - encadrer (function): Cadre commun, ou un cadre par contenu avec `saut-slide`.
+/// - ..contenus (arguments): Contenus à disposer.
+/// -> content
 #let colonnes-cours(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,

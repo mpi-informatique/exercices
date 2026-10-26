@@ -1,5 +1,15 @@
+/// `code-extrait` et `code-texte` sont réexportés du package `@local/code-extract`.
+/// Le premier affiche les déclarations nommées, le second renvoie leur texte.
+/// Exemple : `code-extrait(read("corrige.ml"), ("regle", "grammaire"))`.
+/// Ajouter `language: "c"` pour du C. Les versions sont verrouillées par Nix.
+
 #import "blocs.typ": epaisseur-trait
 
+/// Applique aux blocs de code les bordures communes et l'étiquette de langage.
+/// À utiliser comme règle `show`.
+///
+/// - body (content): Contenu dont les blocs `raw` sont à mettre en forme.
+/// -> content
 #let configurer-code(body) = {
   let noms = (ocaml: "OCaml", c: "C", cpp: "C++", python: "Python", sql: "SQL", sh: "Shell", typ: "Typst", typst: "Typst")
   show raw.where(block: true): it => block(

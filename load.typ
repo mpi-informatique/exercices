@@ -9,6 +9,10 @@
 #import "lib/cours.typ": cours, espace-reponse, solution
 #import "lib/presentation.typ": presentation, cours-et-presentation, slide, colonnes-cours, taille-presentation, equation-slide, item-by-item, pause, uncover, only, article-only, slides-only
 
+/// Charge un contenu de la banque et renvoie son module, notamment ses exports `ex` ou `sujet`.
+///
+/// - chemin (str): Chemin relatif à la racine du package public.
+/// -> module
 #let public(chemin) = {
   import chemin as source
   source
