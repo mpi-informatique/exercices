@@ -155,7 +155,7 @@
 #let colonnes-cours(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
-  align: center + horizon,
+  align: left + horizon,
   saut-slide: false,
   encadrer: body => body,
   ..contenus,

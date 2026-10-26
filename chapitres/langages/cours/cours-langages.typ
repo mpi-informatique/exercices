@@ -309,7 +309,6 @@ En particulier :
   #set par(justify: false)
   Montrer que les langages suivants sont réguliers sur $Σ = {a, b}$ :
   #colonnes-cours(
-    align: left + horizon,
     [
       + Mots commençant par $a$.
       + Mots commençant par $a$ et finissant par $b$.
@@ -337,13 +336,21 @@ En particulier :
 
 Les expressions régulières sont une notation plus concise pour représenter un langage régulier.
 
-#definition[
-  L'ensemble $cal(R)(Σ)$ des _expressions régulières_ sur $Σ$ est le plus petit ensemble vérifiant :
-  - $∀ a ∈ Σ, #sep a ∈ cal(R)(Σ)$
-  - $∅ ∈ cal(R)(Σ)$ et $ε ∈ cal(R)(Σ)$
-  - Si $e_1, e_2 ∈ cal(R)(Σ)$, alors $(e_1 | e_2) ∈ cal(R)(Σ)$ et $(e_1 e_2) ∈ cal(R)(Σ)$.
-  - Si $e ∈ cal(R)(Σ)$, alors $e^* ∈ cal(R)(Σ)$.
-]
+#colonnes-cours(
+  columns: (1fr, 2fr),
+  encadrer: regles => definition[
+    L'ensemble $cal(R)(Σ)$ des _expressions régulières_ sur $Σ$ est le plus petit ensemble vérifiant :
+    #regles
+  ],
+  [
+    - $∀ a ∈ Σ, #sep a ∈ cal(R)(Σ)$
+    - $∅ ∈ cal(R)(Σ)$ et $ε ∈ cal(R)(Σ)$
+  ],
+  [
+    - Si $e_1, e_2 ∈ cal(R)(Σ)$, alors $(e_1 | e_2) ∈ cal(R)(Σ)$ et $(e_1 e_2) ∈ cal(R)(Σ)$.
+    - Si $e ∈ cal(R)(Σ)$, alors $e^* ∈ cal(R)(Σ)$.
+  ],
+)
 
 #slide()
 
@@ -355,14 +362,21 @@ Les expressions régulières sont une notation plus concise pour représenter un
 
 #slide()
 
-#definition[
-  Le _langage_ $LL(e)$ dénoté par une expression régulière $e$ est défini récursivement :
-  - $LL(a) = {a}$ si $a ∈ Σ$.
-  - $LL(∅) = ∅$ et $LL(ε) = {ε}$
-  - $LL(e | e') = LL(e) ∪ LL(e')$
-  - $LL(e e') = LL(e) LL(e')$
-  - $LL(e^*) = LL(e)^*$
-]
+#colonnes-cours(
+  encadrer: regles => definition[
+    Le _langage_ $LL(e)$ dénoté par une expression régulière $e$ est défini récursivement :
+    #regles
+  ],
+  [
+    - $LL(a) = {a}$ si $a ∈ Σ$.
+    - $LL(∅) = ∅$ et $LL(ε) = {ε}$
+  ],
+  [
+    - $LL(e | e') = LL(e) ∪ LL(e')$
+    - $LL(e e') = LL(e) LL(e')$
+    - $LL(e^*) = LL(e)^*$
+  ],
+)
 
 #slide()
 
@@ -389,7 +403,6 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
   #set par(justify: false)
   Donner une expression régulière pour les langages suivants sur $Σ = {a, b}$ :
   #colonnes-cours(
-    align: left + horizon,
     [
       + Mots contenant au plus un $a$.
       + Mots dont la taille est congrue à $1$ modulo $3$.
@@ -428,7 +441,7 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
     + Écrire ```ocaml epsilon : 'a regexp -> bool``` qui teste $ε ∈ LL(e)$.
     + Écrire ```ocaml vide : 'a regexp -> bool``` qui teste $LL(e) = ∅$.
   ],
-  align(left, code-extrait(corrige-ocaml, "regexp")),
+  code-extrait(corrige-ocaml, "regexp"),
 )
 #solution[
   #slides-only[== Test du mot vide : corrigé]
