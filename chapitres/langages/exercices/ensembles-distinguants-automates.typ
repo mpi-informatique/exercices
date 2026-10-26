@@ -1,94 +1,247 @@
-#import "/load.typ": automate
-#import automate: rayon-etat, rayon-grand-etat, style-automates, unite-automates
-#import "/load.typ": exercice, question
+#import "/load.typ": automate, exercice, partie, question, sep
+#import automate: style-automates, unite-automates
 #import "@preview/finite:0.5.1" as finite
 #import "@preview/cetz:0.4.2" as cetz
 
 #let ex = exercice(
   meta: (
-    titre: "Ensemble distinguant",
+    titre: "Ensembles distinguants et théorème de Myhill-Nerode",
     chapitres: ("automates-finis", "langages-reguliers"),
-    difficulte: 2,
+    difficulte: 3,
     niveaux: ("MPI",),
   ),
-  corrections: [
-    - Définition : préciser que les paires de mots sont distinctes.
-    - Question 2 : poser la convention $"ind"(L)=∞$ lorsqu'aucun automate déterministe complet ne reconnaît $L$.
-  ],
   contenu: (
-    [Soient $L$ un langage sur un alphabet $Σ$ et $u,v∈Σ^*$.
-      Un mot $w∈Σ^*$ est un #emph[suffixe distinguant] pour $u$ et $v$ si exactement l'un des mots $u w$ et $v w$ appartient à $L$.
-      Un ensemble de mots $D$ est #emph[distinguant] pour $L$ si toute paire de mots distincts de $D$ a un suffixe distinguant.],
-    question(
-      [Soit $L_1$ le langage dénoté par $(a b)^*$. Montrer que ${ε,a,b}$ est un ensemble distinguant pour $L_1$.],
-      solution: [
-        - $b$ distingue $ε$ et $a$ : $b∉L_1$ mais $a b∈L_1$.
-        - $a b$ distingue $ε$ et $b$ : $a b∈L_1$ mais $b a b∉L_1$.
-        - $b$ distingue $a$ et $b$ : $a b∈L_1$ mais $b b∉L_1$.
-      ],
-    ),
-    question(
+    [
+      On fixe un alphabet fini non vide $Σ$ et un langage $L ⊂ Σ^*$.
+      Tous les automates considérés sont finis, déterministes et complets.
+      On note $δ^*(q, u)$ l'état atteint après lecture du mot $u$ depuis l'état $q$.
+      On rappelle que $δ^*(q, u v) = δ^*(δ^*(q, u), v)$.
+
+      Un mot $w ∈ Σ^*$ est un _suffixe distinguant_ pour $u, v ∈ Σ^*$ relativement à $L$ si exactement l'un des mots $u w$ et $v w$ appartient à $L$.
+      Un ensemble $D ⊂ Σ^*$ est _distinguant_ pour $L$ si toute paire de mots distincts de $D$ possède un suffixe distinguant.
+      Le suffixe $w$ peut dépendre de la paire choisie et peut être vide.
+      On n'impose pas $D ⊂ L$.
+
+      On note $"ind"(L)$ le nombre minimum d'états d'un automate reconnaissant $L$, avec $"ind"(L) = ∞$ si aucun n'existe.
+    ],
+    partie("I", "Compter les états à l'aide de suffixes", contenu: (
+      question(
+        [
+          Sur $Σ = {a, b}$, on considère $L_1 = cal(L)((a b)^*)$.
+          Montrer que ${ε, a, b}$ est un ensemble distinguant pour $L_1$ en donnant un suffixe distinguant pour chaque paire.
+        ],
+        solution: [
+          - $b$ distingue $ε$ et $a$ : $b ∉ L_1$ et $a b ∈ L_1$.
+          - $ε$ distingue $ε$ et $b$ : $ε ∈ L_1$ et $b ∉ L_1$.
+          - $b$ distingue $a$ et $b$ : $a b ∈ L_1$ et $b b ∉ L_1$.
+        ],
+        label: <distinguants-exemple-ab>,
+      ),
+      question(
+        [
+          Soit $A = (Q, Σ, q_0, F, δ)$ un automate reconnaissant $L$.
+          Montrer que deux mots conduisant au même état depuis $q_0$ n'ont aucun suffixe distinguant pour $L$.
+          En déduire que si $L$ possède un ensemble distinguant de taille $n$ alors $"ind"(L) ≥ n$.
+        ],
+        solution: [
+          Soient $u, v ∈ Σ^*$ tels que $δ^*(q_0, u) = δ^*(q_0, v)$.
+          Pour tout $w ∈ Σ^*$,
+          $ δ^*(q_0, u w) = δ^*(δ^*(q_0, u), w) = δ^*(δ^*(q_0, v), w) = δ^*(q_0, v w). $
+          Les mots $u w$ et $v w$ sont donc tous les deux acceptés ou tous les deux rejetés.
+
+          Si $D$ est distinguant, l'application $u ⟼ δ^*(q_0, u)$ est ainsi injective sur $D$.
+          Tout automate reconnaissant $L$ possède donc au moins $abs(D)$ états.
+          Si aucun automate ne reconnaît $L$, l'inégalité reste vraie avec la convention $"ind"(L) = ∞$.
+        ],
+        label: <distinguants-borne-etats>,
+      ),
+      question(
+        [Déterminer $"ind"(L_1)$ en construisant un automate et en justifiant sa minimalité.],
+        solution: [
+          D'après la @distinguants-exemple-ab et la @distinguants-borne-etats, $"ind"(L_1) ≥ 3$.
+          L'automate suivant reconnaît $L_1$ :
+          #align(center, cetz.canvas(length: unite-automates, {
+            import finite.draw: state, transition
+            cetz.draw.set-style(..style-automates)
+            state((0, 0), "0", label: $0$, initial: (label: none), final: true)
+            state((3, 0), "1", label: $1$)
+            state((0, -3), "2", label: $2$)
+            transition("0", "1", label: $a$, curve: 0.5)
+            transition("1", "0", label: (text: $b$, dist: -0.33), curve: 0)
+            transition("0", "2", label: (text: $b$, dist: -0.33), curve: 0)
+            transition("1", "2", label: $a$, curve: 0)
+            transition("2", "2", label: $a, b$, anchor: bottom)
+          }))
+          Les mots de $L_1$ conduisent à l'état $0$, ceux de $cal(L)((a b)^* a)$ à l'état $1$, et tous les autres à l'état puits $2$.
+          Ces derniers ne peuvent plus être complétés en un mot de $L_1$.
+          Ainsi $"ind"(L_1) = 3$.
+        ],
+      ),
+      question(
+        [
+          Sur $Σ = {a, b}$, soit $L_2$ le langage des mots contenant un nombre pair de $a$ et un nombre pair de $b$.
+          Déterminer $"ind"(L_2)$ en construisant un automate et un ensemble distinguant de même taille.
+        ],
+        solution: [
+          L'ensemble $D = {ε, a, b, a b}$ est distinguant : ses mots représentent les quatre couples de parités possibles.
+          Si $u, v ∈ D$ sont distincts, le suffixe $u$ les distingue : dans $u u$, les nombres de $a$ et de $b$ sont pairs, tandis que dans $v u$, au moins l'un de ces nombres est impair.
+          La @distinguants-borne-etats donne donc $"ind"(L_2) ≥ 4$.
+
+          L'automate suivant mémorise les deux parités.
+          Les états $0, 1, 2, 3$ représentent respectivement $(0, 0), (1, 0), (0, 1), (1, 1)$.
+          #align(center, cetz.canvas(length: unite-automates, {
+            import finite.draw: state, transition
+            cetz.draw.set-style(..style-automates)
+            state((0, 0), "0", label: $0$, initial: (label: none), final: true)
+            state((3, 0), "1", label: $1$)
+            state((0, -3), "2", label: $2$)
+            state((3, -3), "3", label: $3$)
+            transition("0", "1", label: $a$, curve: 0.5)
+            transition("1", "0", label: (text: $a$, dist: -0.33), curve: 0)
+            transition("2", "3", label: (text: $a$, dist: -0.33), curve: 0)
+            transition("3", "2", label: $a$, curve: 0.5)
+            transition("0", "2", label: (text: $b$, dist: -0.33), curve: 0)
+            transition("2", "0", label: $b$, curve: 0.5)
+            transition("1", "3", label: $b$, curve: 0.5)
+            transition("3", "1", label: (text: $b$, dist: -0.33), curve: 0)
+          }))
+          Seul l'état $0$ est final, donc cet automate reconnaît $L_2$.
+          Ainsi $"ind"(L_2) = 4$.
+        ],
+      ),
+    )),
+    partie("II", "Le théorème de Myhill-Nerode", contenu: (
       [
-        On note $"ind"(L)$ le nombre minimum d'états d'un automate déterministe complet reconnaissant $L$, avec $"ind"(L)=∞$ si aucun n'existe.
-        Montrer que si $L$ a un ensemble distinguant de taille $n$, alors $"ind"(L)≥n$.
+        On définit une relation sur $Σ^*$ par
+        $ u scripts(≡)_L v ⟺ ∀ w ∈ Σ^*, #sep (u w ∈ L ⟺ v w ∈ L). $
+        Ainsi $u scripts(≡)_L v$ signifie que $u$ et $v$ n'ont aucun suffixe distinguant pour $L$.
       ],
-      solution: [
-        S'il existe un automate déterministe complet $A$ à $k<n$ états reconnaissant $L$, deux mots distincts $u,v$ de l'ensemble distinguant mènent au même état, par le principe des tiroirs.
-        Pour tout suffixe $w$, $u w$ et $v w$ mènent alors au même état et ont le même statut d'acceptation, ce qui contredit l'existence d'un suffixe distinguant.
-        Si aucun automate n'existe, l'inégalité est immédiate avec la convention donnée.
+      question(
+        [
+          Montrer que $scripts(≡)_L$ est une relation d'équivalence et que, pour toute lettre $c ∈ Σ$, si $u scripts(≡)_L v$ alors $u c scripts(≡)_L v c$.
+          On note $[u]$ la classe de $u$ et $Q_L$ l'ensemble des classes.
+        ],
+        solution: [
+          La réflexivité et la symétrie sont immédiates.
+          Si $u scripts(≡)_L v$ et $v scripts(≡)_L t$, alors, pour tout $w ∈ Σ^*$,
+          $ u w ∈ L ⟺ v w ∈ L ⟺ t w ∈ L, $
+          d'où $u scripts(≡)_L t$.
+          La relation est donc une relation d'équivalence.
+
+          Si $u scripts(≡)_L v$ et $c ∈ Σ$, nous pouvons appliquer la définition au suffixe $c w$, pour tout $w ∈ Σ^*$ :
+          $ (u c) w ∈ L ⟺ u (c w) ∈ L ⟺ v (c w) ∈ L ⟺ (v c) w ∈ L. $
+          Ainsi $u c scripts(≡)_L v c$.
+        ],
+        label: <distinguants-equivalence>,
+      ),
+      question(
+        [
+          On suppose que $Q_L$ est fini.
+          Construire un automate reconnaissant $L$ dont l'ensemble des états est $Q_L$, de sorte que la lecture de tout mot $u$ depuis l'état initial conduise à $[u]$.
+          Justifier que les transitions et les états finaux ne dépendent pas des représentants choisis.
+          En déduire la valeur de $"ind"(L)$ en fonction de $abs(Q_L)$.
+        ],
+        solution: [
+          Prenons l'automate $A_L = (Q_L, Σ, [ε], F_L, δ_L)$ défini par
+          $ F_L = {[u] | u ∈ L} quad "et" quad δ_L ([u], c) = [u c]. $
+          La @distinguants-equivalence garantit que $δ_L$ est bien définie : si $[u] = [v]$ alors $[u c] = [v c]$.
+          En prenant le suffixe $ε$, nous obtenons aussi $u scripts(≡)_L v ==> (u ∈ L ⟺ v ∈ L)$.
+          Une classe est donc entièrement contenue dans $L$ ou disjointe de $L$, ce qui justifie la définition de $F_L$.
+          Comme $Q_L$ est fini, $A_L$ est bien un automate fini, déterministe et complet.
+
+          Montrons par récurrence sur la taille de $u$ que $δ_L^* ([ε], u) = [u]$.
+          C'est vrai pour $u = ε$.
+          Si c'est vrai pour $u$ et si $c ∈ Σ$, alors
+          $ δ_L^* ([ε], u c) = δ_L (δ_L^* ([ε], u), c) = δ_L ([u], c) = [u c]. $
+          Ainsi $u$ est accepté si et seulement si $[u] ∈ F_L$, c'est-à-dire si et seulement si $u ∈ L$.
+          L'automate $A_L$ reconnaît donc $L$ et possède $abs(Q_L)$ états.
+
+          Choisissons un représentant dans chaque classe.
+          Deux représentants de classes distinctes ont un suffixe distinguant par définition de $scripts(≡)_L$.
+          Ces représentants forment donc un ensemble distinguant de taille $abs(Q_L)$.
+          La @distinguants-borne-etats donne la borne inverse, d'où $"ind"(L) = abs(Q_L)$.
+        ],
+        label: <distinguants-automate-classes>,
+      ),
+      question(
+        [
+          Déduire des questions précédentes le _théorème de Myhill-Nerode_ : $L$ est régulier si et seulement si $Q_L$ est fini.
+          Montrer aussi que $L$ n'est pas régulier si et seulement s'il possède un ensemble distinguant infini.
+        ],
+        solution: [
+          Si $L$ est régulier, le théorème de Kleene assure qu'un automate déterministe complet à $n$ états le reconnaît.
+          Si $Q_L$ avait plus de $n$ classes, nous pourrions choisir $n + 1$ représentants de classes distinctes.
+          Ils formeraient un ensemble distinguant, en contradiction avec la @distinguants-borne-etats.
+          Donc $Q_L$ est fini.
+
+          Réciproquement, si $Q_L$ est fini, la @distinguants-automate-classes construit un automate reconnaissant $L$.
+          Par le théorème de Kleene, $L$ est régulier.
+
+          Si $L$ possède un ensemble distinguant infini, celui-ci contient des sous-ensembles distinguants de toute taille finie.
+          La @distinguants-borne-etats exclut donc l'existence d'un automate fini reconnaissant $L$.
+          Réciproquement, si $L$ n'est pas régulier, $Q_L$ est infini.
+          Choisissons un représentant dans chaque classe : ils forment un ensemble distinguant infini.
+        ],
+        label: <distinguants-myhill-nerode>,
+      ),
+      question(
+        [
+          Sur $Σ = {a, b}$, trouver un ensemble distinguant infini pour $K = {a^n b^n | n ∈ NN}$.
+          En déduire que $K$ n'est pas régulier.
+        ],
+        solution: [
+          Prenons $D = {a^n | n ∈ NN}$.
+          Si $i ≠ j$, le suffixe $b^i$ distingue $a^i$ et $a^j$ : $a^i b^i ∈ K$ tandis que $a^j b^i ∉ K$.
+          Cela inclut le cas $i = 0$, pour lequel le suffixe est vide.
+          L'ensemble $D$ est donc distinguant et infini.
+          La @distinguants-myhill-nerode donne que $K$ n'est pas régulier.
+        ],
+      ),
+    )),
+    partie("III", "Distinguer par des préfixes et des contextes", contenu: (
+      [
+        Dans chacune des deux questions suivantes, $D ⊂ Σ^*$ est un ensemble infini.
+        Pour un mot $u$, on note $u^R$ son miroir et $L^R = {u^R | u ∈ L}$.
+        On rappelle que le miroir d'un langage régulier est régulier.
       ],
-    ),
-    question([Que vaut $"ind"(L_1)$ ?], solution: [
-      La question 1 donne $"ind"(L_1)≥3$. L'automate déterministe complet suivant reconnaît $L_1$ :
-      #align(center, cetz.canvas(length: unite-automates, {
-        import finite.draw: state, transition
-        cetz.draw.set-style(..style-automates)
-        state((0, 0), "0", label: $0$, initial: (label: none), final: true)
-        state((3, 0), "1", label: $1$)
-        state((0, -3), "2", label: $2$)
-        transition("0", "1", label: $a$, curve: 0.5)
-        transition("1", "0", label: (text: $b$, dist: -0.33), curve: 0)
-        transition("0", "2", label: (text: $b$, dist: -0.33), curve: 0)
-        transition("1", "2", label: $a$, curve: 0)
-        transition("2", "2", label: $a,b$, anchor: bottom)
-      }))
-      L'état $0$ suit les mots de $(a b)^*$, l'état $1$ ceux de $(a b)^* a$, et l'état $2$ ceux qui ne peuvent plus être complétés en un mot de $L_1$.
-      Donc $"ind"(L_1)=3$.
-    ]),
-    question([On suppose que $L$ a un ensemble distinguant infini. Montrer que $L$ n'est pas régulier.], solution: [
-      Un ensemble distinguant infini possède des sous-ensembles distinguants de toute taille finie.
-      La question 2 imposerait donc un nombre d'états supérieur à tout entier à un automate déterministe complet reconnaissant $L$.
-      Aucun tel automate n'existe ; par le théorème de Kleene, $L$ n'est pas régulier.
-    ]),
-    question([En déduire que ${a^n b^n | n∈NN}$ n'est pas régulier.], solution: [
-      L'ensemble $a^*$ est distinguant : si $i≠j$, le suffixe $b^i$ distingue $a^i$ et $a^j$.
-      Il est infini, donc la question 4 s'applique.
-    ]),
-    question(
-      [Soit $L_2$ l'ensemble des mots sur ${a,b}$ contenant un nombre pair de $a$ et un nombre pair de $b$.
-        Déterminer $"ind"(L_2)$.],
-      solution: [
-        L'ensemble ${ε,a,b,a b}$ est distinguant : ses quatre mots ont quatre couples de parités distincts.
-        Pour distinguer deux d'entre eux $u,v$, prendre le suffixe $u$ : $u u$ a ses deux nombres de lettres pairs, alors que $v u$ a au moins une parité impaire. D'où $"ind"(L_2)≥4$.
-        L'automate déterministe complet ci-dessous suit le couple des parités ; $0,1,2,3$ représentent respectivement $(0,0),(1,0),(0,1),(1,1)$.
-        #align(center, cetz.canvas(length: unite-automates, {
-          import finite.draw: state, transition
-          cetz.draw.set-style(..style-automates)
-          state((0, 0), "0", label: $0$, initial: (label: none), final: true)
-          state((3, 0), "1", label: $1$)
-          state((0, -3), "2", label: $2$)
-          state((3, -3), "3", label: $3$)
-          transition("0", "1", label: $a$, curve: 0.5)
-          transition("1", "0", label: (text: $a$, dist: -0.33), curve: 0)
-          transition("2", "3", label: (text: $a$, dist: -0.33), curve: 0)
-          transition("3", "2", label: $a$, curve: 0.5)
-          transition("0", "2", label: (text: $b$, dist: -0.33), curve: 0)
-          transition("2", "0", label: $b$, curve: 0.5)
-          transition("1", "3", label: $b$, curve: 0.5)
-          transition("3", "1", label: (text: $b$, dist: -0.33), curve: 0)
-        }))
-        Ainsi $"ind"(L_2)=4$.
-      ],
-    ),
+      question(
+        [
+          Montrer que $L$ n'est pas régulier si, pour tous mots distincts $u, v ∈ D$, il existe un _préfixe distinguant_ $x ∈ Σ^*$ tel qu'exactement l'un des mots $x u$ et $x v$ appartient à $L$.
+        ],
+        solution: [
+          L'ensemble $D^R = {u^R | u ∈ D}$ est infini, car l'application miroir est bijective.
+          Si $u, v ∈ D$ sont distincts, un préfixe distinguant $x$ pour $u$ et $v$ fournit un suffixe distinguant $x^R$ pour $u^R$ et $v^R$ relativement à $L^R$ :
+          $ (x u)^R = u^R x^R quad "et" quad (x v)^R = v^R x^R. $
+          Donc $D^R$ est distinguant pour $L^R$.
+          La @distinguants-myhill-nerode montre que $L^R$ n'est pas régulier.
+          Si $L$ était régulier, $L^R$ le serait aussi, d'où une contradiction.
+        ],
+      ),
+      question(
+        [
+          On suppose que, pour tous mots distincts $u, v ∈ D$, il existe $x, y ∈ Σ^*$ tels qu'exactement l'un des mots $x u y$ et $x v y$ appartient à $L$.
+          Le couple $(x, y)$ est appelé _contexte distinguant_ pour $u$ et $v$.
+          Les mots $x$ et $y$ peuvent être vides.
+          Montrer que $L$ n'est pas régulier.
+
+          _Indication :_ si $L$ était reconnu par un automate d'ensemble d'états $Q$, considérer, pour chaque mot $u$, la fonction $f_u : Q ⟶ Q$ définie par $f_u (q) = δ^*(q, u)$.
+        ],
+        solution: [
+          Supposons qu'un automate $A = (Q, Σ, q_0, F, δ)$ à $n$ états reconnaisse $L$.
+          Chaque mot $u$ induit une fonction $f_u : q ⟼ δ^*(q, u)$ de $Q$ dans $Q$.
+          Il existe exactement $n^n$ fonctions de $Q$ dans $Q$, puisque chacun des $n$ états a $n$ images possibles.
+          Comme $D$ est infini, le principe des tiroirs fournit deux mots distincts $u, v ∈ D$ tels que $f_u = f_v$.
+
+          Pour tous $x, y ∈ Σ^*$, en posant $q = δ^*(q_0, x)$, nous obtenons
+          $ δ^*(q_0, x u y) = δ^*(f_u (q), y) = δ^*(f_v (q), y) = δ^*(q_0, x v y). $
+          Les deux mots $x u y$ et $x v y$ sont donc tous les deux acceptés ou tous les deux rejetés.
+          Ils ne peuvent être distingués par aucun contexte, contrairement à l'hypothèse.
+          Ainsi $L$ n'est pas régulier.
+
+          Plus généralement, dans un langage reconnu par un automate à $n$ états, tout ensemble dont les mots sont deux à deux distinguables par des contextes contient au plus $n^n$ mots.
+          Ici, mémoriser seulement l'état atteint depuis $q_0$ ne suffit pas : le préfixe $x$ peut conduire à n'importe quel état accessible avant la lecture de $u$ ou de $v$.
+        ],
+      ),
+    )),
   ),
 )
