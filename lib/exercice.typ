@@ -438,7 +438,10 @@
   body,
 ) = {
   assert(type == str(type) and type != "", message: "Le type de document doit être une chaîne non vide")
-  assert(tp == none or (type == "tp" and std.type(tp) == dictionary), message: "tp doit être un dictionnaire réservé aux documents de type tp")
+  assert(
+    tp == none or (type == "tp" and std.type(tp) == dictionary),
+    message: "tp doit être un dictionnaire réservé aux documents de type tp",
+  )
   verifier-bareme(bareme, exercices.map(ex => nombre-questions(ex.contenu)).sum(default: 0))
   let titre-affiche = titre + if corrige { " : corrigé" } else { "" }
   let duree = if type not in ("devoir", "concours") { none } else if duree != none { duree } else if (
@@ -464,7 +467,13 @@
     titre-entete: titre-entete,
     repeter-entete: type == "colle",
   )
-  [#metadata((type: type, titre: titre, niveau: niveau, concours: concours, ..if tp == none { (:) } else { (tp: tp) })) <document-meta>]
+  [#metadata((
+    type: type,
+    titre: titre,
+    niveau: niveau,
+    concours: concours,
+    ..if tp == none { (:) } else { (tp: tp) },
+  )) <document-meta>]
   body
   let afficher-contexte = type not in ("devoir", "concours") or concours == none or concours.at("oral", default: false)
   let debut-bareme = 0

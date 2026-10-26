@@ -5,26 +5,19 @@
 
 #let ex = exercice(
   meta: (
-    titre: "Ensembles distinguants et théorème de Myhill-Nerode",
+    titre: "Théorème de Myhill-Nerode",
     chapitres: ("automates-finis", "langages-reguliers"),
     difficulte: 3,
     niveaux: ("MPI",),
   ),
   contenu: (
     [
-      On fixe un alphabet fini non vide $Σ$ et un langage $L ⊂ Σ^*$.
-      Tous les automates considérés sont finis, déterministes et complets.
-      On note $δ^*(q, u)$ l'état atteint après lecture du mot $u$ depuis l'état $q$.
-      On rappelle que $δ^*(q, u v) = δ^*(δ^*(q, u), v)$.
+      Soit $Σ$ un alphabet et $L$ un langage sur $Σ$.
 
       Un mot $w ∈ Σ^*$ est un _suffixe distinguant_ pour $u, v ∈ Σ^*$ relativement à $L$ si exactement l'un des mots $u w$ et $v w$ appartient à $L$.
       Un ensemble $D ⊂ Σ^*$ est _distinguant_ pour $L$ si toute paire de mots distincts de $D$ possède un suffixe distinguant.
-      Le suffixe $w$ peut dépendre de la paire choisie et peut être vide.
-      On n'impose pas $D ⊂ L$.
-
-      On note $"ind"(L)$ le nombre minimum d'états d'un automate reconnaissant $L$, avec $"ind"(L) = ∞$ si aucun n'existe.
     ],
-    partie("I", "Compter les états à l'aide de suffixes", contenu: (
+    partie("I", "Indice d'un langage", contenu: (
       question(
         [
           Sur $Σ = {a, b}$, on considère $L_1 = cal(L)((a b)^*)$.

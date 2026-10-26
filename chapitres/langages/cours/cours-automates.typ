@@ -5,25 +5,27 @@
   theoremes,
 )
 #import theoremes: algorithme, definition, exercice, lemme, theoreme
-#import automate: cetz, dessiner-automate, finite, style-automates, unite-automates
+#import automate: Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
 #import "@preview/touying:0.8.0": touying-reducer
 
 #show: cours-et-presentation.with(titre: "Automates", niveau: "MPI")
 
-#let colonnes-definition = (1.3fr, 1fr)
+#let colonnes-definition = (1.4fr, 1fr)
+#let LA = $cal(L)(A)$
+#let timess = $#h(0.08em) class(#"normal", ×) #h(0.08em)$
 
 = Automate non déterministe
 #slide(titre: false, saut: false)
 
 #colonnes-cours(
   columns: colonnes-definition,
-  definition(marge: false, [Automate non déterministe])[
+  definition([Automate non déterministe])[
     Un _automate_ est un $5$-uplet $A = (Σ, Q, I, F, T)$ où :
     - $Σ$ est un alphabet.
     - $Q$ est un ensemble fini d'_états_.
     - $I ⊂ Q$ est l'ensemble des _états initiaux_.
     - $F ⊂ Q$ est l'ensemble des _états finaux_, ou acceptants.
-    - $T ⊂ Q × Σ × Q$ est l'ensemble des _transitions_.
+    - $T ⊂ Q timess Σ timess Q$ est l'ensemble des _transitions_.
   ],
   figure(
     dessiner-automate(
@@ -53,9 +55,9 @@
 
 #colonnes-cours(
   columns: colonnes-definition,
-  definition(marge: false, [Fonction de transition $δ$])[
-    On peut remplacer $T$ par  $δ : Q × Σ → cal(P)(Q)$ tel que :
-    $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T}. $
+  definition([Fonction de transition $δ$])[
+    On peut remplacer $T$ par  $δ : Q timess Σ → cal(P)(Q)$ tel que :
+    $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T} $
   ],
   align(center, figure(
     table(
@@ -85,11 +87,11 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   column-gutter: 1.5em,
   align: center + horizon,
   definition[Fonction de transition étendue $δ^*$][
-    On peut définir récursivement l'ensemble $δ^*(q, m)$ des états atteignables après lecture de $m ∈ Σ^*$ depuis $q ∈ Q$ :
-    #text(size: 0.9em)[$ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a u) = ⋃_(q' ∈ δ(q, a)) δ^*(q', u) $]
+    On définit récursivement l'ensemble $δ^*(q, m)$ des états atteignables après lecture de $m ∈ Σ^*$ depuis $q ∈ Q$ :
+    $ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a u) = ⋃_(q' ∈ δ(q, a)) δ^*(q', u) $
   ],
   [
-    #exercice[Pour l'automate d'exemple, calculer $δ^*(1, a b)$.]
+    #exercice[Donner $δ^*(1, a b)$ pour l'exemple ci-dessus.]
     #solution[
       $δ(1, a) = {0, 2}$, donc $δ^*(1, a b) = δ(0, b) ∪ δ(2, b) = {1, 2}$.
     ]
@@ -105,65 +107,51 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
       On peut aussi étendre $δ$ et $δ^*$ à un ensemble d'états $X ⊂ Q$ : $ δ(X, a) = display(⋃_(q ∈ X)) δ(q, a) quad "et" quad δ^*(X, m) = display(⋃_(q ∈ X)) δ^*(q, m) $
     ] <def-delta-ens>
   ],
-  figure(
-    cetz.canvas(length: unite-automates, {
-      import cetz.draw: circle, content, line, set-style
-      import finite.draw: state
-      set-style(..style-automates, state: (radius: 0.2))
-      circle((0, 0), radius: (0.85, 1.35), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
-      circle((4, 0), radius: (0.85, 1.95), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
-      content((0, 1.75), $Q'$)
-      content((4, 2.35), $δ^*(Q', m)$)
-      state((0, 0.7), "q1", label: none)
-      state((0, -0.7), "q2", label: none)
-      state((4, 1.3), "r1", label: none)
-      state((4, 0), "r2", label: none)
-      state((4, -1.3), "r3", label: none)
-      for (depart, arrivee, hauteur) in (("q1", "r1", 1), ("q1", "r2", 0.35), ("q2", "r2", -0.35), ("q2", "r3", -1)) {
-        cetz.decorations.wave(
-          line(depart + ".state.east", arrivee + ".state.west"),
-          amplitude: 0.16,
-          segments: 7,
-          start: 5%,
-          stop: 90%,
-          mark: (end: ">", fill: black),
-        )
-        content((2, hauteur + 0.35), $m$)
-      }
-    }),
-    numbering: none,
-    caption: [Les flèches représentent des chemins d'étiquette $m$.],
-  ),
+  cetz.canvas(length: unite-automates * 0.9, {
+    import cetz.draw: circle, content, line, set-style
+    import finite.draw: state
+    set-style(..style-automates, state: (radius: 0.2))
+    circle((0, 0), radius: (0.85, 1.35), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
+    circle((4, 0), radius: (0.85, 1.8), stroke: rgb("#16716b"), fill: rgb("#16716b").lighten(94%))
+    content((-1.5, 0), $X$)
+    content((6.2, 0), $δ^*(X, m)$)
+    state((0, 0.5), "q1", label: none)
+    state((0, -0.5), "q2", label: none)
+    state((4, 1.1), "r1", label: none)
+    state((4, 0), "r2", label: none)
+    state((4, -1.1), "r3", label: none)
+    for (depart, arrivee, hauteur) in (("q1", "r1", 1), ("q1", "r2", 0.35), ("q2", "r2", -0.35), ("q2", "r3", -1)) {
+      cetz.decorations.wave(
+        line(depart + ".state.east", arrivee + ".state.west"),
+        amplitude: 0.15,
+        segments: 3,
+        start: 5%,
+        stop: 90%,
+        mark: (end: ")>", fill: black),
+      )
+      content((2, hauteur + 0.35), $m$)
+    }
+  }),
 )
 
 #lemme[Concaténation de chemins][
-  Avec $u, v ∈ Σ^*$, $Q' ⊂ Q$ et en notant $⋅$ au lieu de $δ^*$ :
-  $ Q' ⋅ u v = Q' ⋅ u ⋅ v $
+  Avec $u, v ∈ Σ^*$, $X ⊂ Q$ et en notant $⋅$ au lieu de $δ^*$ :
+  $ X ⋅ u v = X ⋅ u ⋅ v $
   #grid(
     columns: (1fr, auto, 1fr),
     align: left + horizon,
-    [Cas particulier $Q' = {q}$ :],
-    [$q ⋅ u v = q ⋅ u ⋅ v$],
-    [],
+    [Cas particulier $X = {q}$ :], [$q ⋅ u v = q ⋅ u ⋅ v$], [],
   )
 ] <lem-delta-etoile>
 
 = Langage reconnaissable
 
-#definition[Chemin acceptant][
-  Un _chemin_ $C$ dans un automate $A$ est une suite de transitions consécutives :
-  $q_0 limits(⟶)^(a_1) q_1 limits(⟶)^(a_2) … limits(⟶)^(a_n) q_n.$\
-  L'_étiquette_ de $C$ est le mot $a_1 … a_n$.
-  On dit que $C$ est _acceptant_ si $q_0 ∈ I$ et $q_n ∈ F$.
-]
-
-#underline[Remarque] : il suffit d'un chemin acceptant pour que $m in cal(L)(A)$, même si un autre chemin d'étiquette $m$ n'est pas acceptant.
-
 #slide()
-#definition[Langage reconnaissable][
-  Un mot est _accepté_ par $A$ s'il est l'étiquette d'un chemin acceptant.
-  Le _langage_ $cal(L)(A)$ reconnu par $A$ est l'ensemble des mots acceptés.
-  Un langage est _reconnaissable_ s'il est reconnu par un automate.
+Les mots acceptés par un automate sont les étiquettes des _chemins acceptants_, de $I$ à $F$ :
+#definition([Langage reconnaissable], marge: false)[
+  Un mot $m$ est _accepté_ par $A$ si $δ^*(I, m) ∩ F ≠ ∅$.
+  Le _langage reconnu_ par $A$ est $LA = {m ∈ Σ^* ∣ δ^*(I, m) ∩ F ≠ ∅}$.
+  On note $Lrec(Σ)$ l'ensemble des _langages reconnaissables_ par un automate.
 ]
 
 #slide()
@@ -224,12 +212,12 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 
 = Test d'appartenance
 
-Pour déterminer si $m = m_1 … m_n ∈ cal(L)(A)$, on peut calculer itérativement l'ensemble $Q_k$ des états atteignables après lecture de $m_1 … m_k$ : $Q_0 = I$ et $Q_k = δ(Q_(k-1), m_k)$.
-Alors $m ∈ cal(L)(A) <==> Q_n ∩ F ≠ ∅$.
+Pour déterminer si $m = m_1 … m_n ∈ LA$, on peut calculer itérativement l'ensemble $Q_k$ des états atteignables après lecture de $m_1 … m_k$ : $Q_0 = I$ et $Q_k = δ(Q_(k-1), m_k)$.
+Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
 
 #slide()
 #exercice[
-  + Quelle est la complexité de cette méthode, en temps et mémoire ?
+  + Proposer une structure de données pour représenter $Q_k$ et donner la complexité en temps et mémoire.
   + Proposer une autre méthode par mémoïsation. Comparer les deux méthodes.
 ]
 #solution[
@@ -238,31 +226,33 @@ Alors $m ∈ cal(L)(A) <==> Q_n ∩ F ≠ ∅$.
 = Automate complet
 
 #definition[Automates équivalents][
-  Deux automates sont équivalents s'ils reconnaissent le même langage.
+  Deux automates sont _équivalents_ s'ils reconnaissent le même langage.
 ]
 
 #definition[Automate complet][
-  Un automate est complet s'il n'a pas de blocage :
-  $∀ q ∈ Q, #sep ∀ a ∈ Σ, #sep ∃ q' ∈ Q, #sep (q, a, q') ∈ T.$
+  Un automate $A = (Q, Σ, I, F, δ)$ est _complet_ s'il n'a pas de blocage : $∀ q ∈ Q, a ∈ Σ, #sep δ(q, a) ≠ ∅$.
 ]
 
 #slide()
-#theoreme[Tout automate est équivalent à un automate complet.]
+#theoreme[Complétion d'un automate][Tout automate est équivalent à un automate complet.]<thm-complet>
 
-= Automate déterministe (AD)
+= Automate déterministe
 
+Intuitivement, un automate est déterministe s'il n'y a jamais plusieurs possibilités de lecture.
 #grid(
   columns: colonnes-definition,
   column-gutter: 1.5em,
   align: horizon,
-  definition(coeur: true, marge: false)[
-    Un automate est déterministe si :
-    + Il possède un unique état initial.
-    + $(q, a, q_1) ∈ T ∧ (q, a, q_2) ∈ T ==> q_1 = q_2$
-  ],
+  {
+    definition(coeur: true, marge: false, [Automate déterministe (AD)])[
+      Un automate $A = (Q, Σ, I, F, δ)$ est _déterministe_ si :
+      - Il possède un unique état initial : $|I| = 1$
+      - Il y a au plus une transition $q limits(⟶)^(a) …$ : $∀ q ∈ Q, a ∈ Σ, #sep |δ(q, a)| ≤ 1$
+    ]
+  },
   figure(
     dessiner-automate(
-      (("q", (0, 0), false, false), ("q_1", (2.5, 1), false, false), ("q_2", (2.5, -1), false, false)),
+      (("q", (0, 0), false, false), ("q_1", (2.5, 0.75), false, false), ("q_2", (2.5, -0.75), false, false)),
       (("q", "q_1", "a", (curve: 0)), ("q", "q_2", "a", (curve: 0))),
     ),
     numbering: none,
@@ -270,44 +260,35 @@ Alors $m ∈ cal(L)(A) <==> Q_n ∩ F ≠ ∅$.
   ),
 )
 
-Un ADC (automate déterministe complet) a $|Q| × |Σ|$ transitions et une fonction de transition de la forme $δ : Q × Σ → Q$.
+Un automate déterministe complet (ADC) a $|Q| timess |Σ|$ transitions et une fonction de transition de la forme $δ : Q timess Σ → Q$.
 
 #slide()
-#exercice[
-  Soient $A = (Q, Σ, q_0, F, T)$ un AD, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?
-  + $(q_1, a, q) ∈ T ∧ (q_2, a, q) ∈ T ==> q_1 = q_2.$
+#exercice[Propriétés des automates déterministes][
+  Soient $A = (Q, Σ, q_0, F, δ)$ un AD, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?
+  + $δ(q_1, a) = δ(q_2, a) ==> q_1 = q_2.$
   + $A$ contient au plus un chemin d'étiquette $m$ partant de $q$.
   + $A$ contient au plus un chemin de $q_0$ à $q$.
-  + $A$ est non ambigu : un mot de $cal(L)(A)$ a un unique chemin acceptant.
+  + $A$ est _non ambigu_ : chaque mot de $LA$ a un unique chemin acceptant.
   + Si $A'$ est non ambigu alors $A'$ est déterministe.
 ]
 
 #slide()
-#definition[
-  Si $A = (Q, Σ, q_0, F, T)$ est un ADC, on définit $δ^* : Q × Σ^* → Q$ récursivement, pour $q ∈ Q$ :
-  - $δ^*(q, ε) = q$
-  - $∀ a ∈ Σ, m ∈ Σ^* : #sep δ^*(q, a m) = δ^*(δ(q, a), m)$
-]
-$δ^*(q, u)$, noté parfois $q ⋅ u$, est l'état atteint après lecture de $u$ depuis $q$.
-On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
-#slide()
-#theoreme[$∀q ∈ Q, u, v ∈ Σ^* : #sep δ^*(q, u v) = δ^*(δ^*(q, u), v)$.] <thm-delta-etoile>
+Si $A$ est un ADC, $δ^* : Q timess Σ^* → Q$ associe à chaque état $q$ et mot $m$ l'unique état atteint après lecture de $m$ depuis $q$.
 
-#slide()
 #exercice[
-  Soit $A$ un ADC à $n$ états sur un alphabet $Σ$.
-  Montrer que si $A$ accepte tous les mots de taille strictement inférieure à $n$, alors $cal(L)(A) = Σ^*$.
+  Soit $A = (Q, Σ, q_0, F, δ)$ un ADC à $n$ états.
+  Montrer : $Σ^(< n) ⊂ LA ==> LA = Σ^*$.
   La borne est-elle optimale ?
 ]
 #solution[
   #slide()
-  Supposons $cal(L)(A) ≠ Σ^*$ et soit $m ∈ Σ^* \\ cal(L)(A)$ de taille minimale.
+  Supposons $LA ≠ Σ^*$ et soit $m ∈ Σ^* \\ LA$ de taille minimale.
   Par hypothèse, $abs(m) ≥ n$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
   $δ^*(q_0, x) = δ^*(q_0, x y).$
   @lem-delta-etoile donne $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
-  Donc $x z ∉ cal(L)(A)$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
+  Donc $x z ∉ LA$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
 
   #slide()
   La borne est optimale sur $Σ = {a}$.
@@ -332,14 +313,14 @@ On a $u ∈ cal(L)(A) <==> δ^*(q_i, u) ∈ F$.
   + Soit $q ∈ Q$. La finitude de $Q$ donne $0 ≤ i < j$ tels que $f_u^i (q) = f_u^j (q)$.
     Comme $f_u^i$ est injective, $f_u^(j - i) (q) = q$.
     D'après @lem-delta-etoile, $f_u^k (q) = δ^*(q, u^k)$ pour tout $k ∈ ℕ$. Prendre $k = j - i ≥ 1$.
-  + Non. Supposons $cal(L)(A) = Σ^* a Σ^*$. Comme $ε ∉ cal(L)(A)$, l'état initial $q_0$ n'est pas final.
+  + Non. Supposons $LA = Σ^* a Σ^*$. Comme $ε ∉ LA$, l'état initial $q_0$ n'est pas final.
     La question précédente donne $k ≥ 1$ tel que $δ^*(q_0, a^k) = q_0$.
     Le mot $a^k$ est donc refusé, alors qu'il appartient à $Σ^* a Σ^*$ : contradiction.
 ]
 
 == Implémentation déterministe complet
 
-Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$) en temps et O($1$) en mémoire :
+Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ LA$ en O($abs(m)$) en temps et O($1$) en mémoire :
 #grid(
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
@@ -347,7 +328,6 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$)
   [
     ```c
     #include <stdbool.h>
-
     typedef struct {
       int initial;
       bool *finaux; // finaux[q] : q est final
@@ -359,47 +339,34 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ cal(L)(A)$ en O($abs(m)$)
     ```c
     bool accepte(const adc *a, const int m[], int n) {
       int etat = a->initial;
-      for (int i = 0; i < n; i++) {
+      for (int i = 0; i < n; i++)
         etat = a->delta[etat][m[i]];
-      }
       return a->finaux[etat];
     }
     ```
   ],
 )
-#underline[Complexité] : #completer()
 
 == Déterminisation
 #theoreme(
   coeur: true,
-)[Soit $A = (Σ, Q, I, F, δ)$ un automate. Alors $A$ est équivalent à un automate déterministe complet.]
-#solution(cours: true)[
-  Soit $A' = (Σ, cal(P)(Q), {I}, F', δ')$ l'_automate des parties_, défini par :
-  $ F' = {X ⊂ Q ∣ X ∩ F ≠ ∅} quad "et" quad δ'(X, a) = union.big_(q ∈ X) δ(q, a) $
-  $ δ' : cal(P)(Q) × Σ ⟶ cal(P)(Q) $
-  Pour $u = u_1 … u_n$, on montre l'invariant : $δ'^*({I}, u) = {δ^*(q, u) ∣ q ∈ I}$. Donc $u ∈ cal(L)(A) <==> δ'^*({I}, u) ∩ F ≠ ∅ <==> u ∈ cal(L)(A')$.
+)[Soit $A = (Σ, Q, I, F, δ)$ un automate. Alors $A$ est équivalent à un ADC.]
+#solution(cours: true, coeur: true)[
+  Soit $A' = (Σ, cal(P)(Q), {I}, F', δ)$ l'_automate des parties_, où chaque état est un ensemble d'états de $A$,\ $F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}$ et $δ : cal(P)(Q) timess Σ → cal(P)(Q)$ est définie comme dans @def-delta-ens. \
+  $A'$ a un seul état initial $I$ et chaque $δ(X, a)$ est un unique ensemble d'états donc $A'$ est un ADC. \
+  $A'$ est équivalent à $A$ car :
+  $ u ∈ cal(L)(A') <==> δ^*(I, u) ∈ F' <==> δ^*(I, u) ∩ F ≠ ∅ <==> u ∈ LA $
 ]
 
-#slide()
-#underline[Invariant] : après lecture d'un mot $u$, l'état atteint dans $A'$ est l'ensemble des états atteignables dans $A$ depuis $I$ en lisant $u$.
-
-#slide()
-#algorithme[
-  + $D ← {I}$ ; initialiser une file $f$ contenant $I$.
-  + *Tant que* $f$ n'est pas vide :
-    + Défiler un ensemble $X$ de $f$.
-    + *Pour chaque* $a ∈ Σ$ :
-      + $X' ← δ(X, a)$
-      + $δ'(X, a) ← X'$
-      + *Si* $X' ∉ D$ :
-        + Ajouter $X'$ à $D$ et l'enfiler dans $f$.
-  + $F' ← {X ∈ D ∣ X ∩ F ≠ ∅}$
-]
-#slide()
-L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire que les états accessibles. L'ensemble vide joue le rôle d'un puits.
+L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construit que les états accessibles. $∅$ joue le rôle de l'état poubelle utilisé dans @thm-complet.
 
 #let facteur = dessiner-automate(
-  (("0", (0, 0), true, false), ("1", (3, 0), false, false), ("2", (6, 0), false, false), ("3", (9, 0), false, true)),
+  (
+    ("0", (0, 0), true, false),
+    ("1", (2.5, 0), false, false),
+    ("2", (5, 0), false, false),
+    ("3", (7.5, 0), false, true),
+  ),
   (
     ("0", "0", "a, b", (:)),
     ("0", "1", "a", (curve: 0)),
@@ -410,11 +377,11 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 )
 
 #colonnes-cours(
-  columns: colonnes-definition,
-  exercice(coeur: true)[Déterminiser l'automate suivant.],
+  columns: (1fr, 1fr),
+  exercice(coeur: true)[Déterminiser l'automate ci-contre.],
   facteur,
 )
-#solution[
+#solution(presentation: true)[
   == Automate déterminisé
   // Les éléments masqués gardent leurs dimensions et leurs ancres entre les étapes.
   #text(size: 0.6em)[
@@ -465,18 +432,19 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 #slide()
 #exercice[
   Soit $L_n = Σ^* a Σ^n$ sur $Σ = {a, b}$, avec $n ∈ ℕ$.
-  + Construire un automate non déterministe à $n + 2$ états reconnaissant $L_n$.
-  + En déduire un automate déterministe à $2^(n + 2)$ états.
+  + Montrer que $L_n$ est reconnu par un automate non déterministe à $n + 2$ états.
+  + Montrer que $L_n$ est reconnu par un automate déterministe à $2^(n + 2)$ états.
   + Montrer que tout automate déterministe reconnaissant $L_n$ possède au moins $2^n$ états.
 ]
 
 = Stabilité des langages reconnaissables
 
 == Complémentaire
+
 #theoreme(coeur: true, titre: [Stabilité par complémentaire])[
-  Si $L ⊂ Σ^*$ est reconnaissable, $Σ^* ∖ L$ est reconnaissable.
+  Si $L ∈ Lrec(Σ)$ alors $Σ^* ∖ L ∈ Lrec(Σ)$.
 ] <thm-complementaire>
-#article-only[*Preuve* :]
+
 #solution[
   #pause
   Prendre un automate déterministe complet reconnaissant $L$ et remplacer $F$ par $Q ∖ F$.
@@ -484,65 +452,69 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, ne construire 
 ]
 #slide()
 #exercice[
-  + Montrer pourquoi la preuve nécessite un automate déterministe complet.
-  + Dessiner un automate reconnaissant les mots contenant le facteur $a a a$, puis un automate reconnaissant les mots ne le contenant pas.
+  + Montrer que la preuve de @thm-complementaire nécessite un automate déterministe complet.
+  + Dessiner un automate reconnaissant les mots sur $Σ = {a, b}$ n'ayant pas $a a a$ comme facteur.
 ]
 
 == Automate produit
 #theoreme(
   coeur: true,
-)[Les langages reconnaissables sur un même alphabet sont stables par intersection, union et différence.]
-Pour deux automates déterministes complets $A_1$, $A_2$, leur produit $A_1 thin class("normal", ×) thin A_2$ utilise les états $Q_1 × Q_2$, l'état initial $(i_1, i_2)$ et :
-$ δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)). $
+  titre: [Stabilité par intersection, union et différence],
+)[$Lrec(Σ)$ est stable par intersection, union et différence.] <thm-operations>
+#solution(cours: true, coeur: true)[
+  On considère deux ADC $A_k = (Q_k, Σ, i_k, F_k, δ_k)$ de langage $L_k$, pour $k ∈ {1, 2}$.\
+  Leur _automate produit_ est $A_1 timess A_2 = (Q_1 timess Q_2, Σ, (i_1, i_2), F, δ)$ avec
+  $δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)).$
+  Le produit simule les deux lectures en parallèle. Chaque opérateur correspond à un choix de $F$ :
+  #align(center, table(
+    columns: (auto, ..(10em,) * 3),
+    align: center + horizon,
+    inset: (x: 0.5em, y: 0.7em),
+    table.header(
+      [], $L_1 ∩ L_2$,
+      $L_1 ∪ L_2$, $L_1 ∖ L_2$,
+    ),
+    $F$,
+    ..(
+      $F_1 timess F_2$,
+      $(F_1 timess Q_2) ∪ (Q_1 timess F_2)$,
+      $F_1 timess (Q_2 ∖ F_2)$,
+    ).map(reponse => if est-corrige() { reponse } else { completer() }),
+  ))
+]
 
 #slide()
-Le produit simule les deux lectures en parallèle. Compléter l'ensemble des états finaux :
-#align(center, table(
-  columns: (auto, 6em, 12em, 9em),
-  align: center + horizon,
-  inset: (x: 0.5em, y: 0.7em),
-  table.header([Langage], $L_1 ∩ L_2$, $L_1 ∪ L_2$, $L_1 ∖ L_2$),
-  $F$,
-  ..(
-    $F_1 × F_2$,
-    $(F_1 × Q_2) ∪ (Q_1 × F_2)$,
-    $F_1 × (Q_2 ∖ F_2)$,
-  ).map(reponse => if est-corrige() { reponse } else { completer() }),
-))
-#article-only[
-  Si les alphabets diffèrent, compléter les deux automates sur leur union.
-  Ces résultats se généralisent aux unions et intersections finies.
-  Pour une union, on peut aussi prendre l'union disjointe de deux automates non déterministes.
-]
-#slide()
-#underline[Remarque] : en supposant $Q_1 ∩ Q_2 = ∅$ (quitte à renommer les états), $L_1 ∪ L_2$ est aussi reconnu par l'automate non déterministe $(Q_1 ∪ Q_2, Σ, {i_1, i_2}, F_1 ∪ F_2, δ)$, où :
-$ δ(q, a) = cases(
-  {δ_1(q, a)} & "si" q ∈ Q_1,
-  {δ_2(q, a)} & "si" q ∈ Q_2,
-) $
+#underline[Remarque] : en supposant $Q_1 ∩ Q_2 = ∅$ (quitte à renommer les états), $L_1 ∪ L_2$ est reconnu plus simplement par l'automate non déterministe $(Q_1 ∪ Q_2, Σ, {i_1, i_2}, F_1 ∪ F_2, δ)$ où :
+$δ(q, a) = display(
+  cases(
+    δ_1(q, a) & "si" q ∈ Q_1,
+    δ_2(q, a) & "si" q ∈ Q_2,
+  )
+)$
 
 #exercice[
-  + La construction fonctionne-t-elle sans les hypothèses de déterminisme et de complétude ? Examiner chaque opération.
-  + Construire un automate reconnaissant les mots sur ${a, b}$ contenant un nombre pair de $a$ et un nombre de $b$ congru à $2$ modulo $3$.
+  + Est-il nécessaire de considérer $A_1$, $A_2$ déterministes complets dans la preuve de @thm-operations ?
+  + Montrer que $L = {m | |m|_a ≡ 0 #sep mod #sep 2, #sep |m|_b ≡ 1 #sep mod #sep 3}$ est reconnaissable.
 ]
 
 = Accessibilité et émondage
 
 #colonnes-cours(
   columns: colonnes-definition,
-  definition[
+  definition[Accessibilité][
     Soit $A = (Σ, Q, I, F, δ)$ un automate et $q ∈ Q$.
     - $q$ est _accessible_ s'il existe un chemin de $I$ à $q$ dans $A$.
     - $q$ est _co-accessible_ s'il existe un chemin de $q$ à $F$ dans $A$.
     - $A$ est _émondé_ si tous ses états sont accessibles et co-accessibles.
   ],
-  exercice[Décrire un algorithme de coût $O(abs(Q) + abs(T))$ déterminant ces deux ensembles.],
+  exercice[Décrire un algorithme déterminant les sommets accessibles et co-accessibles.],
 )
-#solution[#pause Parcourir le graphe depuis $I$, puis le graphe transposé depuis $F$.]
 #slide()
-#theoreme[Tout automate est équivalent à un automate émondé.]
-Supprimer les états inaccessibles et les états non co-accessibles : aucun chemin acceptant ne les utilise.
-#exercice[Tout automate est-il équivalent à un automate émondé déterministe complet ?]
+#colonnes-cours(
+  columns: colonnes-definition,
+  theoreme[Tout automate est équivalent à un automate émondé.],
+  exercice[Tout automate est-il équivalent à un automate émondé déterministe complet ?],
+)
 
 = Lemme de l'étoile
 

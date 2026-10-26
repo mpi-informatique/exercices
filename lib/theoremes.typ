@@ -13,11 +13,9 @@
 #import "@preview/theorion:0.6.0" as theorion
 #import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils
 #import theorion.cosmos.fancy: (
-  fancy-box, get-fancy-radius,
-  set-primary-border-color, set-primary-body-color,
-  set-secondary-border-color, set-secondary-body-color,
-  set-tertiary-border-color, set-tertiary-body-color,
-  set-quaternary-border-color, set-quaternary-body-color,
+  fancy-box, get-fancy-radius, set-primary-body-color, set-primary-border-color, set-quaternary-body-color,
+  set-quaternary-border-color, set-secondary-body-color, set-secondary-border-color, set-tertiary-body-color,
+  set-tertiary-border-color,
 )
 #import "blocs.typ": epaisseur-trait
 
@@ -157,15 +155,23 @@
       let couleur = palette.at(nom, default: palette.at("theorem", default: rgb("#233e6a")))
       block(width: 100%, breakable: false, {
         if full-title != "" {
-          block(width: 100%, fill: couleur, radius: (top: 4pt), above: 0pt, below: 0pt, inset: (x: 0.7em, y: 0.3em), text(
-            size: 1em,
-            weight: "bold",
-            fill: white,
-            [#full-title#if coeur {
-                h(0.4em)
-                [♡]
-              }],
-          ))
+          block(
+            width: 100%,
+            fill: couleur,
+            radius: (top: 4pt),
+            above: 0pt,
+            below: 0pt,
+            inset: (x: 0.7em, y: 0.3em),
+            text(
+              size: 1em,
+              weight: "bold",
+              fill: white,
+              [#full-title#if coeur {
+                  h(0.4em)
+                  [♡]
+                }],
+            ),
+          )
         }
         block(
           width: 100%,
@@ -251,7 +257,9 @@
 #let (compteur-axiome, axiome, axiome-sans-numero, afficher-axiome) = creer-environnement("axiom")
 #let (compteur-postulat, postulat, postulat-sans-numero, afficher-postulat) = creer-environnement("postulate")
 #let (compteur-definition, definition, definition-sans-numero, afficher-definition) = creer-environnement("definition")
-#let (compteur-proposition, proposition, proposition-sans-numero, afficher-proposition) = creer-environnement("proposition")
+#let (compteur-proposition, proposition, proposition-sans-numero, afficher-proposition) = creer-environnement(
+  "proposition",
+)
 #let (compteur-hypothese, hypothese, hypothese-sans-numero, afficher-hypothese) = creer-environnement("assumption")
 #let (compteur-propriete, propriete, propriete-sans-numero, afficher-propriete) = creer-environnement("property")
 #let (compteur-conjecture, conjecture, conjecture-sans-numero, afficher-conjecture) = creer-environnement("conjecture")

@@ -1,10 +1,12 @@
 #import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
-#import "/load.typ": cours-et-presentation, solution, taille-presentation, article-only, item-by-item, only, pause, slides-only
-#import "/load.typ": automate, theoremes, completer
+#import "/load.typ": (
+  article-only, cours-et-presentation, item-by-item, only, pause, slides-only, solution, taille-presentation,
+)
+#import "/load.typ": automate, completer, theoremes
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
-#import "/load.typ": sep, widetilde, colonnes-cours, liste-a-completer, equation-slide
-#import automate: Lreg, LL
+#import "/load.typ": colonnes-cours, equation-slide, liste-a-completer, sep, widetilde
+#import automate: LL, Lreg
 #import "/load.typ": code
 #import code: code-extrait
 
@@ -26,7 +28,9 @@
 
 #definition(item-by-item[
   - Un _alphabet_ est un ensemble $Σ$ fini, dont les éléments sont des _lettres_.
-  - #taille-presentation(0.92em)[Un _mot_ $m$ de $Σ$ est une suite finie $m_1, …, m_n$ de lettres de $Σ$, noté $m = m_1 … m_n$.]
+  - #taille-presentation(
+      0.92em,
+    )[Un _mot_ $m$ de $Σ$ est une suite finie $m_1, …, m_n$ de lettres de $Σ$, noté $m = m_1 … m_n$.]
   - La _taille_ $abs(m)$ de $m$ est son nombre de lettres.
   - Le _mot vide_, ne contenant aucune lettre, est noté $ε$.
   - Des mots $u = u_1 … u_n$ et $v = v_1 … v_p$ de $Σ$ sont _égaux_ si $n = p$ et : $forall i ∈ [|1, n|]$, $u_i = v_i$.
@@ -42,13 +46,13 @@
   - Si $u in Σ^*$, on définit sa _puissance_ par récurrence : $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
 ]
 
-#underline[Remarque] : 
+#underline[Remarque] :
 - $(Σ^*, ⋅)$ est un monoïde : la concaténation est associative et $ε$ est élément neutre.
 - $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$.
 
 #slide()
 
-#exercice([Théorème de Lévy])[
+#exercice[
   Soient $a, b ∈ Σ$ et $u ∈ Σ^*$ tels que $a u = u b$. #slides-only[\ ]
   Montrer que $a = b$ et : $exists k ∈ ℕ, #sep u = a^k$.
 ]
@@ -121,7 +125,7 @@
 #exercice[
   + Écrire une fonction ```c int facteur(char *, char *)``` testant si le premier mot est un facteur du deuxième.
   + Écrire une fonction ```ocaml sous_mot : string -> string -> bool``` testant si le premier mot est un sous-mot du deuxième.
-  + Donner deux algorithmes de MP2I pour chercher un facteur dans un mot. 
+  + Donner deux algorithmes de MP2I pour chercher un facteur dans un mot.
 ]
 #solution[
   #slides-only[== Recherche d'un facteur : corrigé]
@@ -207,7 +211,7 @@ Le nombre de langages sur $Σ$ est : #completer()
 ]
 Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_n ∈ L}.$
 
-#underline[Exemple] : $Σ^n$ est l'ensemble des mots de taille $n$ sur l'alphabet $Σ$.
+#underline[Exemple] : $Σ^n$ est l'ensemble des mots de taille $n$ sur l'alphabet $Σ$. On note aussi $Σ^(< n) = union.big_(k < n) Σ^k$.
 
 #slide()
 
@@ -290,7 +294,7 @@ En particulier :
 
 #slide()
 
-#underline[Exemple] : 
+#underline[Exemple] :
 + Soit $m$ un mot. Alors ${m}$ est fini, donc régulier. On le note aussi $m$ par abus de notation.
 #pause
 + $Σ$ est fini donc régulier. Donc $Σ^*$ est régulier.
@@ -343,7 +347,7 @@ Les expressions régulières sont une notation plus concise pour représenter un
 
 #underline[Exemple] : $a^*$, $(a | a b a)^*$ et $a (a | b)^* b$ sont des expressions régulières.
 
-#underline[Remarque] : 
+#underline[Remarque] :
 - On utilise seulement les parenthèses nécessaires : $(((a b) c) | d)$ sera noté $a b c | d$.
 - On utilise parfois $+$ à la place de $|$.
 
@@ -388,7 +392,9 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
       + Mots contenant un nombre pair de $a$.
     ],
     [
-      #enum(start: 4)[Mots contenant un nombre impair de $a$.][Sur $Σ = {0, 1}$ : écritures en base $2$ des entiers divisibles par $4$.]
+      #enum(
+        start: 4,
+      )[Mots contenant un nombre impair de $a$.][Sur $Σ = {0, 1}$ : écritures en base $2$ des entiers divisibles par $4$.]
     ],
   )
 ]
@@ -500,11 +506,7 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
       + $e | ∅ ≡ e$
       + $∅^* ≡ ε$
     ],
-    enum(start: 5,
-      [$ε^* ≡ ε$],
-      [$(e_1 | e_2) e_3 ≡ e_1 e_3 | e_2 e_3$],
-      [$e_1 (e_2 e_3) ≡ (e_1 e_2) e_3$],
-    ),
+    enum(start: 5, [$ε^* ≡ ε$], [$(e_1 | e_2) e_3 ≡ e_1 e_3 | e_2 e_3$], [$e_1 (e_2 e_3) ≡ (e_1 e_2) e_3$]),
   )
 ]
 
@@ -577,7 +579,7 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
 
 #slides-only[
   #slide()
-    - Pour montrer une égalité de deux mots, on peut faire une récurrence sur la taille du mot.
+  - Pour montrer une égalité de deux mots, on peut faire une récurrence sur la taille du mot.
   - Pour montrer une égalité de deux langages, on peut montrer une double inclusion.
 
   #exercice[
