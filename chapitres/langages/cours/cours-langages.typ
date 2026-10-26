@@ -428,9 +428,7 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
     + Écrire ```ocaml epsilon : 'a regexp -> bool``` qui teste $ε ∈ LL(e)$.
     + Écrire ```ocaml vide : 'a regexp -> bool``` qui teste $LL(e) = ∅$.
   ],
-  [
-    #code-extrait(corrige-ocaml, "regexp")
-  ],
+  align(left, code-extrait(corrige-ocaml, "regexp")),
 )
 #solution[
   #slides-only[== Test du mot vide : corrigé]
