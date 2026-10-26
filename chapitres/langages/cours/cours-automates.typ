@@ -15,18 +15,16 @@
 = Automate non déterministe
 #slide(titre: false, saut: false)
 
-#let definition-automate = definition(marge: false, [Automate non déterministe])[
-  Un _automate_ est un $5$-uplet $A = (Σ, Q, I, F, T)$ où :
-  - $Σ$ est un alphabet.
-  - $Q$ est un ensemble fini d'_états_.
-  - $I ⊂ Q$ est l'ensemble des _états initiaux_.
-  - $F ⊂ Q$ est l'ensemble des _états finaux_, ou acceptants.
-  - $T ⊂ Q × Σ × Q$ est l'ensemble des _transitions_.
-]
-
 #colonnes-cours(
   columns: colonnes-definition,
-  definition-automate,
+  definition(marge: false, [Automate non déterministe])[
+    Un _automate_ est un $5$-uplet $A = (Σ, Q, I, F, T)$ où :
+    - $Σ$ est un alphabet.
+    - $Q$ est un ensemble fini d'_états_.
+    - $I ⊂ Q$ est l'ensemble des _états initiaux_.
+    - $F ⊂ Q$ est l'ensemble des _états finaux_, ou acceptants.
+    - $T ⊂ Q × Σ × Q$ est l'ensemble des _transitions_.
+  ],
   figure(
     dessiner-automate(
       (("0", (0, 0), true, false), ("1", (3, 0), false, false), ("2", (6, 0), false, true)),
@@ -53,15 +51,12 @@
 
 == Fonction de transition
 
-#let definition-transition = [
-  #definition(marge: false, [Fonction de transition $δ$])[
-    On peut remplacer $T$ par  $δ : Q × Σ → cal(P)(Q)$ tel que :
-    $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T}. $
-  ]
-]
 #colonnes-cours(
   columns: colonnes-definition,
-  definition-transition,
+  definition(marge: false, [Fonction de transition $δ$])[
+    On peut remplacer $T$ par  $δ : Q × Σ → cal(P)(Q)$ tel que :
+    $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T}. $
+  ],
   align(center, figure(
     table(
       columns: (auto, ..(4em,) * 3),
