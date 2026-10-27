@@ -4,6 +4,14 @@
 
 #let sep = h(0.5em)
 
+/// Crée un lien vers une ressource du site Exercices MPI, signalé par une flèche ↗.
+/// Exemple : `#lien-exercice("tp-automates")[TP sur les automates]`.
+///
+/// - id (str): Identifiant de la ressource dans l'URL du site, sans barres obliques.
+/// - body (content): Texte cliquable.
+/// -> content
+#let lien-exercice(id, body) = link("https://mpi-informatique.github.io/exercices/" + id + "/", [#body#h(0.2em)#text(size: 0.8em)[↗]])
+
 /// Trace des pointillés sur la largeur restante de la ligne.
 ///
 /// -> content
