@@ -168,7 +168,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 #grid(
   columns: if est-presentation() { (auto, 1fr) } else { (1fr, 1fr) },
   column-gutter: 1em,
-  align: horizon,
+  align: bottom,
   figure(
     dessiner-automate(
       (("0", (0, 0), true, false), ("1", (3, 0), false, true)),
