@@ -1,6 +1,6 @@
 #import "lib/options.typ": est-presentation, est-corrige
 #import "lib/exercice.typ": *
-#import "lib/document.typ": sep, completer, liste-a-completer, widetilde, lien-exercice
+#import "lib/document.typ": sep, completer, liste-a-completer, widetilde, lien-exercice, complement
 #import "lib/blocs.typ": epaisseur-trait
 #import "lib/meta.typ" as meta
 #import "lib/automate.typ" as automate
