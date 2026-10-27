@@ -136,7 +136,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   assert(query(<solution-partout-test>).len() > 0)
   let coeurs = query(<coeur-solution-test>)
   if sys.inputs.at("format") == "presentation" {
-    assert(coeurs.len() >= 2)
+    assert(coeurs.len() == 0)
   } else {
     assert(coeurs.len() == if corrige { 2 } else { 1 })
   }
@@ -203,7 +203,7 @@ Deuxième contenu.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
                         str(source), str(racine / ('saut-' + variante + '.pdf'))], check=True)
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": complement, tp, coeur-en-marge, note-en-marge
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": hp, tp, coeur-en-marge, marge
 #let corps = if sys.inputs.at("format") == "presentation" { 22pt } else { 10pt }
 #set text(font: "New Computer Modern", size: corps)
 #set page(margin: 32pt)
@@ -216,22 +216,27 @@ Deuxième contenu.
 #show text.where(text: "♡"): relever-note
 #show text.where(text: "N"): relever-note
 #let contenu() = box(width: 100%, height: 2em)[#metadata("corps") <corps-marge-test> Texte du bloc.]
-#complement(contenu())
+#hp(contenu())
 #tp(contenu())
 #coeur-en-marge(contenu())
-#note-en-marge([N], contenu())
+#marge([N], contenu())
 #context {
   let notes = query(<note-marge-test>)
   let blocs = query(<corps-marge-test>)
-  assert(notes.map(it => it.value.repere) == ("HP", "TP", "♡", "N"))
-  assert(blocs.len() == notes.len())
-  for (note, bloc) in notes.zip(blocs) {
-    let position = note.location().position()
-    let texte = bloc.location().position()
-    assert(note.value.taille == corps)
-    assert(position.x >= 0pt)
-    assert(position.x + measure(text(note.value.repere)).width < texte.x)
-    assert(texte.x == 32pt)
+  assert(blocs.len() == 4)
+  for bloc in blocs { assert(bloc.location().position().x == 32pt) }
+  if sys.inputs.at("format") == "presentation" {
+    assert(notes.len() == 0)
+  } else {
+    assert(notes.map(it => it.value.repere) == ("HP", "TP", "♡", "N"))
+    for (note, bloc) in notes.zip(blocs) {
+      let position = note.location().position()
+      let texte = bloc.location().position()
+      let taille = if note.value.repere == "♡" { corps } else { 0.8 * corps }
+      assert(note.value.taille == taille)
+      assert(position.x >= 0pt)
+      assert(position.x + measure(text(size: taille, note.value.repere)).width < texte.x)
+    }
   }
 }
 ''', encoding='utf-8')

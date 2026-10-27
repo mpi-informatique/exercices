@@ -1,23 +1,23 @@
 #import "theoremes.typ": configurer-theoremes
 #import "code.typ": configurer-code
-#import "blocs.typ": epaisseur-trait, note-en-marge
+#import "blocs.typ": epaisseur-trait, marge
 
 #let sep = h(0.5em)
 
 /// Signale un complément ou un contenu hors programme par « HP » dans la marge.
-/// Le repère utilise le même corps que le cœur des théorèmes.
-/// Exemple : `#complement[Théorème de Myhill-Nerode]`.
+/// Le repère utilise 80 % du corps courant.
+/// Exemple : `#hp[Théorème de Myhill-Nerode]`.
 ///
 /// - body (content): Titre ou contenu à signaler.
 /// -> content
-#let complement(body) = note-en-marge([HP], body)
+#let hp(body) = marge([HP], body)
 
-/// Signale un travail pratique par « TP » dans la marge, au même corps que « HP » et le cœur.
+/// Signale un travail pratique par « TP » dans la marge, au même corps que « HP ».
 /// Exemple : `#tp[Implémenter la déterminisation d'un automate.]`.
 ///
 /// - body (content): Contenu à signaler.
 /// -> content
-#let tp(body) = note-en-marge([TP], body)
+#let tp(body) = marge([TP], body)
 
 /// Crée un lien bleu vers une ressource du site Exercices MPI.
 /// Exemple : `#lien("tp-automates")[TP sur les automates]`.
