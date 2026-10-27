@@ -1,7 +1,7 @@
 /// Cadres disponibles : `theoreme`, `lemme`, `corollaire`, `axiome`, `postulat`,
 /// `definition`, `proposition`, `hypothese`, `propriete`, `conjecture`, `remarque`,
 /// `note`, `exemple`, `exercice`, `probleme` et `algorithme`.
-/// Le bloc `methode` met en valeur une démarche sans numérotation, avec une barre latérale.
+/// Le bloc `methode` met en valeur une démarche sans numérotation, avec une double barre latérale.
 ///
 /// Chaque famille expose `compteur-<nom>`, `<nom>`, `<nom>-sans-numero` et
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
@@ -138,13 +138,20 @@
         breakable: palette == none,
         stroke: (left: epaisseur-trait + couleur),
         fill: if palette == none { none } else { couleur.lighten(94%) },
-        inset: (left: 0.8em, right: 0.5em, y: 0.4em),
-        {
-          set text(style: "normal")
-          text(weight: "semibold", full-title)
-          v(0.4em)
-          body
-        },
+        inset: (left: 0.18em),
+        block(
+          width: 100%,
+          breakable: palette == none,
+          above: 0pt,
+          below: 0pt,
+          stroke: (left: epaisseur-trait + couleur),
+          inset: (left: 0.8em, right: 0.5em, y: 0.4em),
+          {
+            set text(style: "normal", weight: "regular")
+            full-title
+            body
+          },
+        ),
       )
     } else if palette == none {
       let rendre = if nom in ("exercise", "problem") { rendre-exercice } else { fancy-box }
@@ -246,7 +253,8 @@
   [#prefix#if avec-titre { [ : #title] }]
 }
 
-/// Met en valeur une méthode sans numéro, avec un titre et une barre latérale.
+/// Met en valeur une méthode sans numéro, avec une double barre latérale.
+/// Seul « Méthode : » est souligné ; le titre facultatif reste en caractères ordinaires.
 /// Le texte est droit et les listes conservent leur numérotation habituelle.
 /// Le rendu A4 est monochrome ; la présentation utilise la couleur `method` de la palette,
 /// ou celle des théorèmes par défaut. Les animations Touying sont prises en charge.
@@ -264,7 +272,7 @@
   rendre-cadre(
     "method",
     body,
-    full-title: titre-cadre([Méthode], titre),
+    full-title: [#underline[Méthode :]#if titre != "" and titre != [] { [ #titre] }],
     coeur: coeur,
     marge: marge,
   )
