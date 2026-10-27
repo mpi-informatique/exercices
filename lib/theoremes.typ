@@ -1,6 +1,7 @@
 /// Cadres disponibles : `theoreme`, `lemme`, `corollaire`, `axiome`, `postulat`,
 /// `definition`, `proposition`, `hypothese`, `propriete`, `conjecture`, `remarque`,
 /// `note`, `exemple`, `exercice`, `probleme` et `algorithme`.
+/// Le bloc `methode` met en valeur une démarche sans numérotation, avec une barre latérale.
 ///
 /// Chaque famille expose `compteur-<nom>`, `<nom>`, `<nom>-sans-numero` et
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
@@ -18,6 +19,7 @@
   set-tertiary-border-color,
 )
 #import "blocs.typ": epaisseur-trait
+#import "options.typ": est-presentation
 
 #let espacement-cadres = state("exercices-espacement-cadres", none)
 #let style-cadres = state("exercices-style-cadres", none)
@@ -129,7 +131,22 @@
   }
   context {
     let palette = style-cadres.get()
-    let cadre = if palette == none {
+    let cadre = if nom == "method" {
+      let couleur = if palette == none { black } else { palette.at("method", default: palette.at("theorem", default: rgb("#233e6a"))) }
+      block(
+        width: 100%,
+        breakable: palette == none,
+        stroke: (left: epaisseur-trait + couleur),
+        fill: if palette == none { none } else { couleur.lighten(94%) },
+        inset: (left: 0.8em, right: 0.5em, y: 0.4em),
+        {
+          set text(style: "normal")
+          text(weight: "semibold", full-title)
+          v(0.4em)
+          body
+        },
+      )
+    } else if palette == none {
       let rendre = if nom in ("exercise", "problem") { rendre-exercice } else { fancy-box }
       rendre(
         get-symbol: loc => none,
@@ -227,6 +244,30 @@
 #let titre-cadre(prefix, title) = {
   let avec-titre = (type(title) == str and title != "") or (type(title) == content and title != [] and title != [#""])
   [#prefix#if avec-titre { [ : #title] }]
+}
+
+/// Met en valeur une méthode sans numéro, avec un titre et une barre latérale.
+/// Le texte est droit et les listes conservent leur numérotation habituelle.
+/// Le rendu A4 est monochrome ; la présentation utilise la couleur `method` de la palette,
+/// ou celle des théorèmes par défaut. Les animations Touying sont prises en charge.
+///
+/// - titre (content, str): Titre facultatif après « Méthode ».
+/// - coeur (bool): Signaler une méthode à connaître.
+/// - marge (bool): Ajouter la marge supérieure du bloc A4.
+/// - body (content): Démarche, éventuellement sous forme d'étapes numérotées.
+/// -> content
+#let methode(titre: "", coeur: false, marge: true, body) = {
+  // Le filtre de Touying ne descend pas dans les arguments des fonctions différées.
+  body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
+    if (marque.kind == "touying-slides-only") == est-presentation() { marque.body } else { [] }
+  })
+  rendre-cadre(
+    "method",
+    body,
+    full-title: titre-cadre([Méthode], titre),
+    coeur: coeur,
+    marge: marge,
+  )
 }
 
 /// Crée une famille `(compteur, numerote, sans-numero, afficher)` avec titre français.

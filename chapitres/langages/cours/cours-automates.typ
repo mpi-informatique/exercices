@@ -4,7 +4,7 @@
   article-only, automate, colonnes-cours, completer, cours-et-presentation, pause, sep, slides-only, solution,
   theoremes,
 )
-#import theoremes: algorithme, definition, exercice, lemme, theoreme
+#import theoremes: algorithme, definition, exercice, lemme, methode, theoreme
 #import automate: Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
 #import "@preview/touying:0.8.0": touying-reducer
 
@@ -538,10 +538,11 @@ Répéter le cycle $k$ fois donne un chemin acceptant d'étiquette $x y^k z$, y 
 #slide()
 *Attention* : la réciproque est fausse. On ne choisit pas la décomposition $x y z$.
 
-Pour montrer que $L$ n'est pas reconnaissable :
-+ Supposer qu'un automate à $n$ états reconnaît $L$.
-+ Choisir $u ∈ L$ avec $abs(u) ≥ n$.
-+ Pour toute décomposition respectant le lemme, trouver un $k$ tel que $x y^k z ∉ L$.
+#methode(titre: [Montrer qu'un langage n'est pas reconnaissable])[
+  + Supposer qu'un automate à $n$ états reconnaît $L$.
+  + Choisir $u ∈ L$ avec $abs(u) ≥ n$.
+  + Pour toute décomposition respectant le lemme, trouver un $k ∈ ℕ$ tel que $x y^k z ∉ L$.
+]
 
 #slide()
 #exercice[

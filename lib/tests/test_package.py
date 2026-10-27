@@ -80,6 +80,13 @@ Voir @question-mobile avant son énoncé.
     + $s ← s + x$
   + *Renvoyer* $s$.
 ]
+== Méthode
+#theoremes.methode(titre: [Construire une preuve])[
+  #context { assert(text.style == "normal") }
+  + Fixer les hypothèses.
+  #pause
+  + Établir la conclusion. #article-only[Version imprimée.] #slides-only[Version projetée.]
+]
 == Application
 #theoremes.exercice(titre: [Monoïdes et taille])[
   Un exercice. #slides-only[#linebreak()#metadata("presentation") <retour-exercice-test>]
