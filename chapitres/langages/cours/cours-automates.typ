@@ -1,8 +1,8 @@
 #import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
-  article-only, automate, colonnes-cours, completer, cours-et-presentation, hp, lien, pause, sep, slides-only, solution,
-  theoremes, tp,
+  PP, article-only, automate, colonnes-cours, completer, cours-et-presentation, hp, lien, pause, sep, slides-only,
+  solution, theoremes, tp,
 )
 #import theoremes: algorithme, definition, exercice, lemme, methode, theoreme
 #import automate: Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
@@ -56,7 +56,7 @@
 #colonnes-cours(
   columns: colonnes-definition,
   definition([Fonction de transition $δ$])[
-    On peut remplacer $T$ par  $δ : Q timess Σ → cal(P)(Q)$ tel que :
+    On peut remplacer $T$ par  $δ : Q timess Σ → PP(Q)$ tel que :
     $ δ(q, a) = {q' ∈ Q ∣ (q, a, q') ∈ T} $
   ],
   align(center, figure(
@@ -359,10 +359,10 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ LA$ en O($abs(m)$) en tem
   coeur: true,
 )[Soit $A = (Σ, Q, I, F, δ)$ un automate. Alors $A$ est équivalent à un ADC.]
 #solution(cours: true, coeur: true)[
-  Soit $A' = (Σ, cal(P)(Q), {I}, F', δ)$ l'_automate des parties_, où chaque état est un ensemble d'états de $A$,\ $F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}$ et $δ : cal(P)(Q) timess Σ → cal(P)(Q)$ est définie comme dans @def-delta-ens. \
-  $A'$ a un seul état initial $I$ et chaque $δ(X, a)$ est un unique ensemble d'états donc $A'$ est un ADC. \
-  $A'$ est équivalent à $A$ car :
-  $ u ∈ cal(L)(A') <==> δ^*(I, u) ∈ F' <==> δ^*(I, u) ∩ F ≠ ∅ <==> u ∈ LA $
+  Soit $PP(A) = (Σ, PP(Q), {I}, F', δ)$ l'_automate des parties_, où chaque état est un ensemble d'états de $A$,\ $F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}$ et $δ : PP(Q) timess Σ → PP(Q)$ est définie comme dans @def-delta-ens. \
+  $PP(A)$ a un seul état initial $I$ et chaque $δ(X, a)$ est un unique ensemble d'états donc $A'$ est un ADC. \
+  $PP(A)$ est équivalent à $A$ car :
+  $ u ∈ cal(L)(PP(A)) <==> δ^*(I, u) ∈ F' <==> δ^*(I, u) ∩ F ≠ ∅ <==> u ∈ LA $
 ]
 
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construit que les états accessibles.
@@ -580,5 +580,5 @@ $δ(q, a) = display(
 
 #hp[= Compléments]
 
-- #lien("residuels-minimisation")[Théorème de Myhill-Nerode] : donne une condition nécessaire et suffisante pour qu'un langage soit reconnaissable.
-- #lien("residuels-minimisation")[Minimisation d'automate] : construire un ADC équivalent avec le moins d'états possible.
+- #lien("residuels-minimisation")[Théorème de Myhill-Nerode] : condition nécessaire et suffisante pour qu'un langage soit reconnaissable, à l'aide d'une relation d'équivalence $∼$ sur $Q$.
+- #lien("residuels-minimisation")[Minimisation d'automate] : chaque automate $A$ possède un unique automate minimal (en nombre d'états) $M(A)$, dont les état sont $Q\\∼$. Plusieurs algorithmes permettent de le construire : Moore et Hopcroft calculent $∼$ par raffinement de partition, Brzozowski calcule $M(A) = PP((PP(A^top))^top).$

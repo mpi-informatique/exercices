@@ -3,7 +3,7 @@
 #import "blocs.typ": epaisseur-trait, marge
 
 #let sep = h(0.5em)
-
+#let PP = $cal(P)$
 /// Signale un complément ou un contenu hors programme par « HP » dans la marge.
 /// Le repère utilise 70 % du corps courant.
 /// Exemple : `#hp[Théorème de Myhill-Nerode]`.
