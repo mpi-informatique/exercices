@@ -5,19 +5,12 @@
 #let sep = h(0.5em)
 
 /// Signale un complément ou un contenu hors programme par « HP » dans la marge.
-/// Le repère utilise 80 % du corps courant.
+/// Le repère utilise 70 % du corps courant.
 /// Exemple : `#hp[Théorème de Myhill-Nerode]`.
 ///
 /// - body (content): Titre ou contenu à signaler.
 /// -> content
 #let hp(body) = marge([HP], body)
-
-/// Signale un travail pratique par « TP » dans la marge, au même corps que « HP ».
-/// Exemple : `#tp[Implémenter la déterminisation d'un automate.]`.
-///
-/// - body (content): Contenu à signaler.
-/// -> content
-#let tp(body) = marge([TP], body)
 
 /// Crée un lien bleu vers une ressource du site Exercices MPI.
 /// Exemple : `#lien("tp-automates")[TP sur les automates]`.
@@ -26,6 +19,15 @@
 /// - body (content): Texte cliquable.
 /// -> content
 #let lien(id, body) = link("https://mpi-informatique.github.io/exercices/" + id + "/", text(fill: rgb("#0645ad"), body))
+
+/// Signale un travail pratique par « TP » dans la marge, au même corps que « HP ».
+/// Avec `id`, le repère devient un lien bleu vers la ressource correspondante.
+/// Exemple : `#tp(id: "tp-automates")[Implémenter la déterminisation d'un automate.]`.
+///
+/// - id (str, none): Identifiant de la ressource ; `none` conserve un repère sans lien.
+/// - body (content): Contenu à signaler.
+/// -> content
+#let tp(id: none, body) = marge(if id == none { [TP] } else { lien(id)[TP] }, body)
 
 /// Trace des pointillés sur la largeur restante de la ligne.
 ///

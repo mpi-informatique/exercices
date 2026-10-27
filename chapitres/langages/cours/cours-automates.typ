@@ -483,7 +483,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   + Dessiner un automate reconnaissant les mots sur $Σ = {a, b}$ n'ayant pas $a a a$ comme facteur.
 ]
 
-#tp[== Automate produit]
+#tp(id: "tp-automates")[== Automate produit]
 #theoreme(
   coeur: true,
   titre: [Stabilité par intersection, union et différence],

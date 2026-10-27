@@ -215,24 +215,31 @@ Deuxième contenu.
 #show text.where(text: "TP"): relever-note
 #show text.where(text: "♡"): relever-note
 #show text.where(text: "N"): relever-note
+#show link: it => {
+  [#metadata(it.dest) <note-lien-test>]
+  it
+}
 #let contenu() = box(width: 100%, height: 2em)[#metadata("corps") <corps-marge-test> Texte du bloc.]
 #hp(contenu())
 #tp(contenu())
+#tp(id: "tp-automates", contenu())
 #coeur-en-marge(contenu())
 #marge([N], contenu())
 #context {
   let notes = query(<note-marge-test>)
   let blocs = query(<corps-marge-test>)
-  assert(blocs.len() == 4)
+  assert(blocs.len() == 5)
   for bloc in blocs { assert(bloc.location().position().x == 32pt) }
   if sys.inputs.at("format") == "presentation" {
     assert(notes.len() == 0)
+    assert(query(<note-lien-test>).len() == 0)
   } else {
-    assert(notes.map(it => it.value.repere) == ("HP", "TP", "♡", "N"))
+    assert(notes.map(it => it.value.repere) == ("HP", "TP", "TP", "♡", "N"))
+    assert(query(<note-lien-test>).map(it => it.value) == ("https://mpi-informatique.github.io/exercices/tp-automates/",))
     for (note, bloc) in notes.zip(blocs) {
       let position = note.location().position()
       let texte = bloc.location().position()
-      let taille = if note.value.repere == "♡" { corps } else { 0.8 * corps }
+      let taille = if note.value.repere == "♡" { corps } else { 0.7 * corps }
       assert(note.value.taille == taille)
       assert(position.x >= 0pt)
       assert(position.x + measure(text(size: taille, note.value.repere)).width < texte.x)

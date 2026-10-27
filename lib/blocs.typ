@@ -4,7 +4,7 @@
 
 /// Place une note dans la marge gauche, centrée à côté du contenu, sans réduire sa largeur.
 /// Dans la présentation, affiche uniquement le contenu, sans note en marge.
-/// Le texte utilise par défaut 80 % du corps courant ; passer `taille: 1em` pour un symbole.
+/// Le texte utilise par défaut 70 % du corps courant ; passer `taille: 1em` pour un symbole.
 /// Le décalage tient compte de la largeur du repère.
 /// Exemple : `#marge([TP])[Travail pratique à réaliser.]`.
 ///
