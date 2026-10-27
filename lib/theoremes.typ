@@ -132,7 +132,9 @@
   context {
     let palette = style-cadres.get()
     let cadre = if nom == "method" {
-      let couleur = if palette == none { black } else { palette.at("method", default: palette.at("theorem", default: rgb("#233e6a"))) }
+      let couleur = if palette == none { black } else {
+        palette.at("method", default: palette.at("theorem", default: rgb("#233e6a")))
+      }
       block(
         width: 100%,
         breakable: palette == none,
@@ -267,7 +269,7 @@
   rendre-cadre(
     "method",
     body,
-    full-title: [#underline[Méthode :]#if titre != "" and titre != [] { [ #titre] }],
+    full-title: [#underline[Méthode] :#if titre != "" and titre != [] { [ #titre] }],
     coeur: coeur,
     marge: marge,
   )

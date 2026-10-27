@@ -1,8 +1,8 @@
 #import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
-  article-only, automate, colonnes-cours, completer, cours-et-presentation, pause, sep, slides-only, solution,
-  theoremes,
+  article-only, automate, colonnes-cours, completer, cours-et-presentation, hp, lien, pause, sep, slides-only, solution,
+  theoremes, tp,
 )
 #import theoremes: algorithme, definition, exercice, lemme, methode, theoreme
 #import automate: Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
@@ -10,7 +10,7 @@
 
 #show: cours-et-presentation.with(titre: "Automates", niveau: "MPI")
 
-#let colonnes-definition = (1.4fr, 1fr)
+#let colonnes-definition = (1.5fr, 1fr)
 #let LA = $cal(L)(A)$
 #let timess = $#h(0.08em) class(#"normal", ×) #h(0.08em)$
 
@@ -51,7 +51,7 @@
   En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ?
 ]
 
-== Fonction de transition
+#slides-only[== Fonction de transition]
 
 #colonnes-cours(
   columns: colonnes-definition,
@@ -87,7 +87,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   column-gutter: 1.5em,
   align: center + horizon,
   definition[Fonction de transition étendue $δ^*$][
-    On définit récursivement l'ensemble $δ^*(q, m)$ des états atteignables après lecture de $m ∈ Σ^*$ depuis $q ∈ Q$ :
+    On définit récursivement l'ensemble $δ^*(q, m)$ des états atteignables par un chemin d'étiquette $m ∈ Σ^*$ depuis $q ∈ Q$ :
     $ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a u) = ⋃_(q' ∈ δ(q, a)) δ^*(q', u) $
   ],
   [
@@ -97,6 +97,15 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
     ]
   ],
 )
+
+// #definition[Chemin][
+//   Un chemin est une suite de transitions $q_0 limits(⟶)^(a_1) q_1 limits(⟶)^(a_2) … limits(⟶)^(a_n) q_n$. Son _étiquette_ est le mot $m = a_1 … a_n$.\
+// ]
+
+// #lemme([$δ^*$ et chemins])[
+//   $δ^*(q, m)$ est l'ensemble des états atteignables par un chemin d'étiquette $m$ partant de $q$.
+// ]
+
 #slide()
 #grid(
   columns: colonnes-definition,
@@ -134,6 +143,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   }),
 )
 
+
 #lemme[Concaténation de chemins][
   Avec $u, v ∈ Σ^*$, $X ⊂ Q$ et en notant $⋅$ au lieu de $δ^*$ :
   $ X ⋅ u v = X ⋅ u ⋅ v $
@@ -147,11 +157,10 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 = Langage reconnaissable
 
 #slide()
-Les mots acceptés par un automate sont les étiquettes des _chemins acceptants_, de $I$ à $F$ :
 #definition([Langage reconnaissable], marge: false)[
-  Un mot $m$ est _accepté_ par $A$ si $δ^*(I, m) ∩ F ≠ ∅$.
-  Le _langage reconnu_ par $A$ est $LA = {m ∈ Σ^* ∣ δ^*(I, m) ∩ F ≠ ∅}$.
-  On note $Lrec(Σ)$ l'ensemble des _langages reconnaissables_ par un automate.
+  Un mot $m$ est _accepté_ par $A$ si $δ^*(I, m) ∩ F ≠ ∅$, c'est-à-dire s'il est étiquette d'un _chemin acceptant_ de $I$ à $F$.\
+  Le _langage reconnu_ par $A$, noté $LA$, est l'ensemble des mots acceptés par $A$.\
+  On note $Lrec(Σ)$ l'ensemble des _langages reconnaissables_ par automate.
 ]
 
 #slide()
@@ -210,8 +219,6 @@ Les mots acceptés par un automate sont les étiquettes des _chemins acceptants_
   ],
 )
 
-= Test d'appartenance
-
 Pour déterminer si $m = m_1 … m_n ∈ LA$, on peut calculer itérativement l'ensemble $Q_k$ des états atteignables après lecture de $m_1 … m_k$ : $Q_0 = I$ et $Q_k = δ(Q_(k-1), m_k)$.
 Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
 
@@ -260,7 +267,7 @@ Intuitivement, un automate est déterministe s'il n'y a jamais plusieurs possibi
   ),
 )
 
-Un automate déterministe complet (ADC) a $|Q| timess |Σ|$ transitions et une fonction de transition de la forme $δ : Q timess Σ → Q$.
+Un automate déterministe complet (ADC) a une fonction de transition de la forme $δ : Q timess Σ → Q$ et $δ^* : Q timess Σ^* → Q$.
 
 #slide()
 #exercice[Propriétés des automates déterministes][
@@ -273,7 +280,6 @@ Un automate déterministe complet (ADC) a $|Q| timess |Σ|$ transitions et une f
 ]
 
 #slide()
-Si $A$ est un ADC, $δ^* : Q timess Σ^* → Q$ associe à chaque état $q$ et mot $m$ l'unique état atteint après lecture de $m$ depuis $q$.
 
 #exercice[
   Soit $A = (Q, Σ, q_0, F, δ)$ un ADC à $n$ états.
@@ -318,7 +324,7 @@ Si $A$ est un ADC, $δ^* : Q timess Σ^* → Q$ associe à chaque état $q$ et m
     Le mot $a^k$ est donc refusé, alors qu'il appartient à $Σ^* a Σ^*$ : contradiction.
 ]
 
-== Implémentation d'un ADC
+#slides-only[== Implémentation d'un ADC]
 
 Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ LA$ en O($abs(m)$) en temps et O($1$) en mémoire :
 #grid(
@@ -347,7 +353,8 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ LA$ en O($abs(m)$) en tem
   ],
 )
 
-== Déterminisation
+#slides-only[== Déterminisation]
+
 #theoreme(
   coeur: true,
 )[Soit $A = (Σ, Q, I, F, δ)$ un automate. Alors $A$ est équivalent à un ADC.]
@@ -358,7 +365,7 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ LA$ en O($abs(m)$) en tem
   $ u ∈ cal(L)(A') <==> δ^*(I, u) ∈ F' <==> δ^*(I, u) ∩ F ≠ ∅ <==> u ∈ LA $
 ]
 
-L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construit que les états accessibles. $∅$ joue le rôle de l'état poubelle utilisé dans @thm-complet.
+L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construit que les états accessibles.
 
 #let facteur = dessiner-automate(
   (
@@ -437,6 +444,26 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   + Montrer que tout automate déterministe reconnaissant $L_n$ possède au moins $2^n$ états.
 ]
 
+
+= Accessibilité et émondage
+
+#colonnes-cours(
+  columns: colonnes-definition,
+  definition[Accessibilité][
+    Soit $A = (Σ, Q, I, F, δ)$ un automate et $q ∈ Q$.
+    - $q$ est _accessible_ s'il existe un chemin de $I$ à $q$ dans $A$.
+    - $q$ est _co-accessible_ s'il existe un chemin de $q$ à $F$ dans $A$.
+    - $A$ est _émondé_ si tous ses états sont accessibles et co-accessibles.
+  ],
+  exercice[Décrire un algorithme déterminant les états accessibles et co-accessibles.],
+)
+#slide()
+#colonnes-cours(
+  columns: colonnes-definition,
+  theoreme[Tout automate est équivalent à un automate émondé.],
+  exercice[Tout automate est-il équivalent à un ADC émondé ?],
+)
+
 = Stabilité des langages reconnaissables
 
 == Complémentaire
@@ -456,7 +483,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   + Dessiner un automate reconnaissant les mots sur $Σ = {a, b}$ n'ayant pas $a a a$ comme facteur.
 ]
 
-== Automate produit
+#tp[== Automate produit]
 #theoreme(
   coeur: true,
   titre: [Stabilité par intersection, union et différence],
@@ -469,7 +496,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   #align(center, table(
     columns: (auto, ..(10em,) * 3),
     align: center + horizon,
-    inset: (x: 0.5em, y: 0.7em),
+    inset: (x: 0.5em, y: 0.5em),
     table.header(
       [], $L_1 ∩ L_2$,
       $L_1 ∪ L_2$, $L_1 ∖ L_2$,
@@ -484,7 +511,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 ]
 
 #slide()
-#underline[Remarque] : en supposant $Q_1 ∩ Q_2 = ∅$ (quitte à renommer les états), $L_1 ∪ L_2$ est reconnu plus simplement par l'automate non déterministe $(Q_1 ∪ Q_2, Σ, {i_1, i_2}, F_1 ∪ F_2, δ)$ où :
+#underline[Remarque] : en supposant $Q_1 ∩ Q_2 = ∅$ (quitte à renommer les états), $L_1 ∪ L_2$ est reconnu plus simplement par l'automate non déterministe $A_1 ∪ A_2 = (Q_1 ∪ Q_2, Σ, {i_1, i_2}, F_1 ∪ F_2, δ)$ où :
 $δ(q, a) = display(
   cases(
     δ_1(q, a) & "si" q ∈ Q_1,
@@ -497,59 +524,42 @@ $δ(q, a) = display(
   + Montrer que $L = {m | |m|_a ≡ 0 #sep mod #sep 2, #sep |m|_b ≡ 1 #sep mod #sep 3}$ est reconnaissable.
 ]
 
-= Accessibilité et émondage
-
-#colonnes-cours(
-  columns: colonnes-definition,
-  definition[Accessibilité][
-    Soit $A = (Σ, Q, I, F, δ)$ un automate et $q ∈ Q$.
-    - $q$ est _accessible_ s'il existe un chemin de $I$ à $q$ dans $A$.
-    - $q$ est _co-accessible_ s'il existe un chemin de $q$ à $F$ dans $A$.
-    - $A$ est _émondé_ si tous ses états sont accessibles et co-accessibles.
-  ],
-  exercice[Décrire un algorithme déterminant les sommets accessibles et co-accessibles.],
-)
-#slide()
-#colonnes-cours(
-  columns: colonnes-definition,
-  theoreme[Tout automate est équivalent à un automate émondé.],
-  exercice[Tout automate est-il équivalent à un ADC émondé ?],
-)
-
 = Lemme de l'étoile
 
-#lemme(coeur: true)[
-  Soit $L$ reconnu par un automate à $n$ états. Pour tout $u ∈ L$ de taille au moins $n$, il existe $x, y, z$ tels que :
+#lemme(coeur: true, titre: [Lemme de l'étoile])[
+  Soit $L$ reconnu par un automate à $n$ états. Pour tout $u ∈ L$ de taille au moins $n$, il existe des mots $x, y, z$ tels que :
   $ u = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad ∀ k ∈ ℕ, #sep x y^k z ∈ L. $
-]
+]<lem-etoile>
 #slide()
-*Preuve* : prendre un chemin acceptant d'étiquette $u$.
-Parmi ses $n + 1$ premiers états, deux sont égaux : $q_i = q_j$, avec $0 ≤ i < j ≤ n$.
-Décomposer le mot en $x$, avant $q_i$, $y$, entre $q_i$ et $q_j$, et $z$, après $q_j$.
+// #solution[
+//   prendre un chemin acceptant d'étiquette $u$.
+//   Parmi ses $n + 1$ premiers états, deux sont égaux : $q_i = q_j$, avec $0 ≤ i < j ≤ n$.
+//   Décomposer le mot en $x$, avant $q_i$, $y$, entre $q_i$ et $q_j$, et $z$, après $q_j$.
 
-#dessiner-automate(
-  (("q_0", (0, 0), true, false), ("q_i", (4, 0), false, false), ("q_p", (8, 0), false, true)),
-  (("q_0", "q_i", "x", (curve: 0)), ("q_i", "q_i", "y", (:)), ("q_i", "q_p", "z", (curve: 0))),
-)
+//   #dessiner-automate(
+//     (("q_0", (0, 0), true, false), ("q_i", (4, 0), false, false), ("q_p", (8, 0), false, true)),
+//     (("q_0", "q_i", "x", (curve: 0)), ("q_i", "q_i", "y", (:)), ("q_i", "q_p", "z", (curve: 0))),
+//   )
+// On a $abs(x y) = j ≤ n$ et $abs(y) = j - i > 0$.
+// Répéter le cycle $k$ fois donne un chemin acceptant d'étiquette $x y^k z$, y compris pour $k = 0$.
+// ]
+//
 #slide()
-On a $abs(x y) = j ≤ n$ et $abs(y) = j - i > 0$.
-Répéter le cycle $k$ fois donne un chemin acceptant d'étiquette $x y^k z$, y compris pour $k = 0$.
+#underline[Attention] :
+- La réciproque du lemme de l'étoile est fausse.
+- On peut choisir $u$, mais pas sa décomposition $x y z$.
 
-#slide()
-*Attention* : la réciproque est fausse. On ne choisit pas la décomposition $x y z$.
-
-#methode(titre: [Montrer qu'un langage n'est pas reconnaissable])[
-  + Supposer qu'un automate à $n$ états reconnaît $L$.
+#methode(titre: [Montrer que $L$ n'est pas reconnaissable.])[
+  + Supposer par l'absurde que $L$ est reconnu par un automate à $n$ états.
   + Choisir $u ∈ L$ avec $abs(u) ≥ n$.
-  + Pour toute décomposition respectant le lemme, trouver un $k ∈ ℕ$ tel que $x y^k z ∉ L$.
+  + Appliquer le lemme de l'étoile pour obtenir une décomposition $u = x y z$.
+  + Trouver $k$ tel que $x y^k z ∉ L$ pour aboutir à une contradiction.
 ]
 
 #slide()
 #exercice[
   Montrer que les langages suivants ne sont pas reconnaissables :
-  #grid(
-    columns: (1fr, 1fr),
-    column-gutter: 1.5em,
+  #colonnes-cours(
     enum[$L_1 = {a^n b^n ∣ n ∈ ℕ}$],
     enum(start: 2)[$L_2 = {a^n b^p ∣ n, p ∈ ℕ, #sep n ≠ p}$],
   )
@@ -565,5 +575,10 @@ Répéter le cycle $k$ fois donne un chemin acceptant d'étiquette $x y^k z$, y 
 ]
 
 #underline[Remarque] :
-- Les automates sont sans mémoire : le choix d'une transition dépend uniquement de l'état actuel et de la lettre lue, pas du chemin déjà parcouru. Ils ne peuvent donc pas compter.
-- ${a^n b^p | n ≡ p mod 2}$ est reconnaissable car il suffit de mémoriser la parité du nombre de $a$ et de $b$ lus (2 états suffisent) et pas une infinité de valeurs possibles.
+- Les automates sont sans mémoire : le choix d'une transition dépend uniquement de l'état actuel et de la lettre lue, pas du chemin déjà parcouru. Ils ne peuvent donc pas compter, ce qui explique intuitivement que $L_1, L_2 ∉ Lrec(Σ)$.
+- Par contre, ${a^n b^p | n ≡ p mod 2}$ est reconnaissable car il suffit de mémoriser la parité du nombre de $a$ et de $b$ lus (2 états suffisent) et pas une infinité de valeurs possibles.
+
+#hp[= Compléments]
+
+- #lien("residuels-minimisation")[Théorème de Myhill-Nerode] : donne une condition nécessaire et suffisante pour qu'un langage soit reconnaissable.
+- #lien("residuels-minimisation")[Minimisation d'automate] : construire un ADC équivalent avec le moins d'états possible.
