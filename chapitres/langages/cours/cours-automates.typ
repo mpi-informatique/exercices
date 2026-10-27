@@ -547,8 +547,12 @@ Répéter le cycle $k$ fois donne un chemin acceptant d'étiquette $x y^k z$, y 
 #slide()
 #exercice[
   Montrer que les langages suivants ne sont pas reconnaissables :
-  + $L_1 = {a^n b^n ∣ n ∈ ℕ}$
-  + $L_2 = {a^n b^p ∣ n, p ∈ ℕ, #sep n ≠ p}$
+  #grid(
+    columns: (1fr, 1fr),
+    column-gutter: 1.5em,
+    enum[$L_1 = {a^n b^n ∣ n ∈ ℕ}$],
+    enum(start: 2)[$L_2 = {a^n b^p ∣ n, p ∈ ℕ, #sep n ≠ p}$],
+  )
 ]
 #solution[
   == Correction : autant de a que de b
