@@ -5,7 +5,7 @@
   solution, theoremes, tp,
 )
 #import theoremes: algorithme, definition, exercice, lemme, methode, theoreme
-#import automate: Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
+#import automate: LL, Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
 #import "@preview/touying:0.8.0": touying-reducer
 
 #show: cours-et-presentation.with(titre: "Automates", niveau: "MPI")
@@ -48,7 +48,7 @@
 
 #slide()
 #exercice[
-  En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ?
+  En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ? #completer()
 ]
 
 #slides-only[== Fonction de transition]
@@ -91,7 +91,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
     $ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a u) = ⋃_(q' ∈ δ(q, a)) δ^*(q', u) $
   ],
   [
-    #exercice[Donner $δ^*(1, a b)$ pour l'exemple ci-dessus.]
+    #exercice[Donner $δ^*(1, a b)$ pour l'automate ci-dessus.\ #completer()]
     #solution[
       $δ(1, a) = {0, 2}$, donc $δ^*(1, a b) = δ(0, b) ∪ δ(2, b) = {1, 2}$.
     ]
@@ -189,12 +189,12 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
     figure(
       block(height: hauteur, align(horizon, automates.at(0))),
       numbering: none,
-      caption: [$A_1$],
+      caption: [$LL(A_1)$ = #completer(taille: 10em)],
     ),
     figure(
       block(height: hauteur, align(horizon, automates.at(1))),
       numbering: none,
-      caption: [$A_2$],
+      caption: [$LL(A_2)$ = #completer(taille: 10em)],
     ),
   )
 }
@@ -535,7 +535,7 @@ $δ(q, a) = display(
 
 #lemme(coeur: true, titre: [Lemme de l'étoile])[
   Soit $L$ reconnu par un automate à $n$ états. Pour tout $u ∈ L$ de taille au moins $n$, il existe des mots $x, y, z$ tels que :
-  $ u = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad ∀ k ∈ ℕ, #sep x y^k z ∈ L. $
+  $ u = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad x y^* z ⊂ L. $
 ]<lem-etoile>
 #slide()
 // #solution[
@@ -554,7 +554,7 @@ $δ(q, a) = display(
 #slide()
 #underline[Attention] :
 - La réciproque du lemme de l'étoile est fausse.
-- On peut choisir $u$, mais pas sa décomposition $x y z$.
+- On peut choisir $u$ mais pas sa décomposition $x y z$.
 
 #methode(titre: [Montrer que $L$ n'est pas reconnaissable.])[
   + Supposer par l'absurde que $L$ est reconnu par un automate à $n$ états.
@@ -581,11 +581,11 @@ $δ(q, a) = display(
   Si $L_2$ était reconnaissable, $a^* b^* ∖ L_2 = L_1$ le serait aussi par stabilité par différence.
 ]
 
-#underline[Remarque] :
+#underline[Remarques] :
 - Les automates sont sans mémoire : le choix d'une transition dépend uniquement de l'état actuel et de la lettre lue, pas du chemin déjà parcouru. Ils ne peuvent donc pas compter, ce qui explique intuitivement que $L_1, L_2 ∉ Lrec(Σ)$.
 - Par contre, ${a^n b^p | n ≡ p mod 2}$ est reconnaissable car il suffit de mémoriser la parité du nombre de $a$ et de $b$ lus (2 états suffisent) et pas une infinité de valeurs possibles.
 
 #hp[= Compléments]
 
-- #lien("residuels-minimisation")[Théorème de Myhill-Nerode] : condition nécessaire et suffisante pour qu'un langage soit reconnaissable, à l'aide d'une relation d'équivalence $∼$ sur $Q$.
-- #lien("residuels-minimisation")[Minimisation d'automate] : chaque automate $A$ possède un unique automate minimal (en nombre d'états) $M(A)$, dont les état sont $Q\\∼$. Plusieurs algorithmes permettent de le construire : Moore et Hopcroft calculent $∼$ par raffinement de partition, Brzozowski calcule $M(A) = PP((PP(A^top))^top).$
+- #lien("residuels-minimisation")[Théorème de Myhill-Nerode] : condition nécessaire et suffisante pour qu'un langage soit reconnaissable, exprimée par une relation d'équivalence $∼$ sur $Q$.
+- #lien("residuels-minimisation")[Minimisation d'automate] : chaque automate $A$ est équivalent à un unique ADC minimal (en nombre d'états) $M(A)$, dont les état sont $Q\\∼$. Plusieurs algorithmes permettent de le construire : Moore et Hopcroft calculent $∼$ par raffinement de partition, Brzozowski calcule $M(A) = PP((PP(A^top))^top).$
