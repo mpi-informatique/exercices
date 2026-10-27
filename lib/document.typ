@@ -6,7 +6,7 @@
 #let sep = h(0.5em)
 
 /// Signale un complément ou un contenu hors programme par « HP » dans la marge.
-/// Le repère utilise le même corps que le cœur des théorèmes.
+/// Le repère utilise la moitié du corps courant.
 /// Exemple : `#complement[Théorème de Myhill-Nerode]`.
 ///
 /// - body (content): Titre ou contenu à signaler.
@@ -15,7 +15,7 @@
   columns: (0pt, 1fr),
   column-gutter: 0pt,
   align: (left + horizon, left + top),
-  box(width: 0pt, move(dx: if est-presentation() { -1.4em } else { -2em }, text(weight: "regular")[HP])),
+  box(width: 0pt, move(dx: if est-presentation() { -1.4em } else { -2em }, text(size: 0.5em, weight: "regular")[HP])),
   body,
 )
 
