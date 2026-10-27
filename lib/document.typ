@@ -4,6 +4,13 @@
 
 #let sep = h(0.5em)
 
+/// Signale un complément ou un contenu hors programme par une étoile creuse ☆.
+/// Exemple : `#complement[Théorème de Myhill-Nerode]`.
+///
+/// - body (content): Titre ou contenu à signaler.
+/// -> content
+#let complement(body) = [☆#h(0.3em)#body]
+
 /// Crée un lien vers une ressource du site Exercices MPI, signalé par le symbole 🔗.
 /// Exemple : `#lien-exercice("tp-automates")[TP sur les automates]`.
 ///
