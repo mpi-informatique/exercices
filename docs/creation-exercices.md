@@ -16,9 +16,10 @@ Choix pédagogiques et éditoriaux de la banque. Les commandes sont dans le [gui
 - Créer les exercices destinés au public dans une branche du dépôt public dès lors que leur version provisoire peut être publique. Le dépôt privé ne sert plus de zone d'attente pour leur relecture. Une branche publique et une pull request en brouillon sont publiques.
 - Réserver le dépôt privé aux contenus confidentiels et aux sujets dont la diffusion doit attendre une date ou une validation, même s'ils seront publics ensuite.
 - Partir de `main` à jour et utiliser une branche par unité de travail cohérente : un exercice indépendant avec son corrigé et ses ressources, ou un lot à relire ensemble, par exemple un TD. Nommer la branche `exo/<identifiant>` ou `td/<identifiant>` et poursuivre sur la même branche pendant la relecture.
-- Si plusieurs sessions travaillent simultanément, utiliser un worktree distinct par branche. Préserver les modifications en cours de l'utilisateur.
+- Utiliser le clone existant par défaut ; créer des worktrees seulement si plusieurs sessions doivent travailler simultanément sur des branches différentes. Préserver les modifications en cours de l'utilisateur.
 - Compiler les variantes concernées et tester le code du corrigé, puis committer et pousser la branche sans forcer. Fournir son nom, les PDF utiles et les points à relire ; si une pull request est créée avant validation, la laisser en brouillon.
-- Garder `main` pour les contenus relus et validés. La compilation ne remplace pas la relecture mathématique et pédagogique. Attendre la validation explicite du professeur avant de fusionner ; supprimer ensuite la branche devenue inutile.
+- Garder `main` pour les contenus relus et validés. La compilation ne remplace pas la relecture mathématique et pédagogique. Attendre la validation explicite du professeur avant de fusionner dans `main`.
+- Après fusion dans `main`, supprimer le worktree dédié s'il existe, puis la branche locale et distante. Vérifier auparavant que la fusion est effective et qu'aucune modification non sauvegardée ni session active ne dépend encore du worktree ; ne pas forcer sa suppression.
 
 ## Imports et ressources
 
