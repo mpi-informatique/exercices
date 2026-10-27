@@ -4,12 +4,21 @@ Choix pédagogiques et éditoriaux de la banque. Les commandes sont dans le [gui
 
 ## Organisation et réutilisation
 
-- Vérifier qu'un exercice n'existe pas déjà avant de le créer. Par défaut, créer les nouveaux sujets produits par une IA dans `exercices-prive` s'il existe, sauf demande de publication.
+- Vérifier qu'un exercice n'existe pas déjà avant de le créer. Choisir le dépôt et la branche selon le [circuit de relecture](#relecture-et-intégration), y compris pour les créations par IA.
 - Ranger les contenus par chapitre : exercices dans `chapitres/<chapitre>/exercices/`, cours et TD de langages dans `cours/` et `td/`, TP dans `tp/<identifiant>/`. Les mathématiques conservent leurs sous-dossiers et leurs feuilles à la racine de `chapitres/maths/`.
 - Ranger les écrits dans `devoirs/concours/` par année, les oraux dans `devoirs/concours/oral/<concours>/`. Nommer un oral `<concours>-oral-<filiere>-<theme>.typ` ; la filière MPI peut être omise. Conserver l'année dans les métadonnées.
 - Garder un exercice simple dans un fichier. S'il possède des ressources, les regrouper dans un dossier `<identifiant>/` avec `<identifiant>.typ`, le code et les tests. Partir du modèle adapté.
 - Réutiliser les fichiers par import direct, sans relais ni copie. Exporter une variable pour une partie réutilisable, plutôt que la chercher par numéro. Conserver les introductions dans `contenu` ; reprendre explicitement les rappels de `contexte` dans un extrait autonome.
 - Garder les colles, copies nominatives, évaluations et scans dans le dépôt privé. Les contenus publics s'y chargent avec `public`.
+
+## Relecture et intégration
+
+- Créer les exercices destinés au public dans une branche du dépôt public dès lors que leur version provisoire peut être publique. Le dépôt privé ne sert plus de zone d'attente pour leur relecture. Une branche publique et une pull request en brouillon sont publiques.
+- Réserver le dépôt privé aux contenus confidentiels et aux sujets dont la diffusion doit attendre une date ou une validation, même s'ils seront publics ensuite.
+- Partir de `main` à jour et utiliser une branche par unité de travail cohérente : un exercice indépendant avec son corrigé et ses ressources, ou un lot à relire ensemble, par exemple un TD. Nommer la branche `exo/<identifiant>` ou `td/<identifiant>` et poursuivre sur la même branche pendant la relecture.
+- Si plusieurs sessions travaillent simultanément, utiliser un worktree distinct par branche. Préserver les modifications en cours de l'utilisateur.
+- Compiler les variantes concernées et tester le code du corrigé, puis committer et pousser la branche sans forcer. Fournir son nom, les PDF utiles et les points à relire ; si une pull request est créée avant validation, la laisser en brouillon.
+- Garder `main` pour les contenus relus et validés. La compilation ne remplace pas la relecture mathématique et pédagogique. Attendre la validation explicite du professeur avant de fusionner ; supprimer ensuite la branche devenue inutile.
 
 ## Imports et ressources
 

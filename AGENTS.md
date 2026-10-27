@@ -10,6 +10,7 @@
 - Contenu local : compiler uniquement les variantes concernées et tester le code modifié. Bibliothèque : lancer `just check`. Annoncer les vérifications effectuées ; inspecter les PDF seulement si utile.
 - Site, export ou compilation dans le navigateur : arrêter puis relancer le serveur avec `just web-stop` et `just web`, puis vérifier le comportement dans le navigateur intégré de Codex, en conservant si possible la ressource et la variante affichées.
 - Fournir les liens vers les PDF générés utiles à la demande.
-- Faire un commit sur la branche principale, récupérer et intégrer les commits distants, puis pousser sans forcer. Préserver les modifications de l'utilisateur.
+- Pour les créations de sujets et leur relecture, suivre le [circuit de relecture](docs/creation-exercices.md#relecture-et-intégration) : committer et pousser sur la branche dédiée, sans fusionner dans `main` avant validation explicite du professeur.
+- Pour les autres modifications, faire un commit sur la branche courante (sur `main` par défaut), récupérer et intégrer les commits distants de cette branche, puis pousser sans forcer. Préserver les modifications de l'utilisateur.
 
 Les commandes se lancent depuis la racine du dépôt. Si Just manque, utiliser `nix develop . -c just …` ; `just --list` décrit les recettes.
