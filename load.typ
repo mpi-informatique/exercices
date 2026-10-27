@@ -1,6 +1,6 @@
 #import "lib/options.typ": est-corrige, est-presentation
 #import "lib/exercice.typ": *
-#import "lib/document.typ": hp, completer, lien, liste-a-completer, sep, tp, widetilde
+#import "lib/document.typ": PP, completer, hp, lien, liste-a-completer, sep, tp, widetilde
 #import "lib/blocs.typ": coeur-en-marge, epaisseur-trait, marge
 #import "lib/meta.typ" as meta
 #import "lib/automate.typ" as automate
