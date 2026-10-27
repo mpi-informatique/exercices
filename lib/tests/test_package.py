@@ -203,4 +203,40 @@ Deuxième contenu.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
                         str(source), str(racine / ('saut-' + variante + '.pdf'))], check=True)
-print('Package local : imports, ressources, énoncé, corrigé, cours et présentation vérifiés.')
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": complement, tp, coeur-en-marge, note-en-marge
+#let corps = if sys.inputs.at("format") == "presentation" { 22pt } else { 10pt }
+#set text(font: "New Computer Modern", size: corps)
+#set page(margin: 32pt)
+#let relever-note(it) = context {
+  [#metadata((repere: it.text, taille: text.size)) <note-marge-test>]
+  it
+}
+#show text.where(text: "HP"): relever-note
+#show text.where(text: "TP"): relever-note
+#show text.where(text: "♡"): relever-note
+#show text.where(text: "N"): relever-note
+#let contenu() = box(width: 100%, height: 2em)[#metadata("corps") <corps-marge-test> Texte du bloc.]
+#complement(contenu())
+#tp(contenu())
+#coeur-en-marge(contenu())
+#note-en-marge([N], contenu())
+#context {
+  let notes = query(<note-marge-test>)
+  let blocs = query(<corps-marge-test>)
+  assert(notes.map(it => it.value.repere) == ("HP", "TP", "♡", "N"))
+  assert(blocs.len() == notes.len())
+  for (note, bloc) in notes.zip(blocs) {
+    let position = note.location().position()
+    let texte = bloc.location().position()
+    assert(note.value.taille == corps)
+    assert(position.x >= 0pt)
+    assert(position.x + measure(text(note.value.repere)).width < texte.x)
+    assert(texte.x == 32pt)
+  }
+}
+''', encoding='utf-8')
+    for variante in ('cours', 'presentation'):
+        subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                        '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
+                        str(source), str(racine / ('notes-' + variante + '.pdf'))], check=True)
+print('Package local : imports, ressources, énoncé, corrigé, cours, présentation et notes en marge vérifiés.')

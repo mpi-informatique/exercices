@@ -18,7 +18,7 @@
   set-quaternary-border-color, set-secondary-body-color, set-secondary-border-color, set-tertiary-body-color,
   set-tertiary-border-color,
 )
-#import "blocs.typ": epaisseur-trait
+#import "blocs.typ": epaisseur-trait, coeur-en-marge
 #import "options.typ": est-presentation
 
 #let espacement-cadres = state("exercices-espacement-cadres", none)
@@ -216,12 +216,7 @@
       v(0.5em)
     }
     if coeur and palette == none {
-      grid(
-        columns: (0pt, 1fr),
-        column-gutter: 0pt,
-        align: (left + horizon, left + top),
-        box(width: 0pt, move(dx: -1.5em, dy: 0.4em, box[♡])), cadre,
-      )
+      coeur-en-marge(cadre, dy: 0.4em)
     } else {
       cadre
     }

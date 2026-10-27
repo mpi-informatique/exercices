@@ -1,16 +1,33 @@
+#import "options.typ": est-presentation
+
 #let epaisseur-trait = 0.4pt
+
+/// Place une note dans la marge gauche, centrée à côté du contenu, sans réduire sa largeur.
+/// La note conserve le corps courant ; son décalage tient compte de sa largeur et du format.
+/// Exemple : `#note-en-marge([TP])[Travail pratique à réaliser.]`.
+///
+/// - note (content): Repère à afficher dans la marge.
+/// - body (content): Contenu à signaler.
+/// - dy (length): Décalage vertical supplémentaire du repère.
+/// -> content
+#let note-en-marge(note, body, dy: 0pt) = context {
+  let repere = text(weight: "regular", top-edge: "bounds", bottom-edge: "bounds", note)
+  let ecart = if est-presentation() { 0.02em } else { 0.5em }
+  grid(
+    columns: (0pt, 1fr),
+    column-gutter: 0pt,
+    align: (left + horizon, left + top),
+    box(width: 0pt, move(dx: -measure(repere).width - ecart, dy: dy, repere)),
+    body,
+  )
+}
 
 /// Ajoute un cœur centré à gauche sans réduire la largeur du texte.
 ///
 /// - body (content): Contenu à signaler.
+/// - dy (length): Décalage vertical supplémentaire du cœur.
 /// -> content
-#let coeur-en-marge(body) = grid(
-  columns: (0pt, 1fr),
-  column-gutter: 0pt,
-  align: (left + horizon, left + top),
-  box(width: 0pt, move(dx: -1.2em, text(top-edge: "bounds", bottom-edge: "bounds")[♡])),
-  body,
-)
+#let coeur-en-marge(body, dy: 0pt) = note-en-marge([♡], body, dy: dy)
 
 /// Compose une solution sécable avec un trait à gauche ; `none` n'affiche rien.
 ///
