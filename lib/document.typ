@@ -31,8 +31,9 @@
 
 /// Trace des pointillés sur la largeur restante de la ligne.
 ///
+/// - taille (relative, fraction): Largeur des pointillés ; `1fr` occupe l'espace restant par défaut.
 /// -> content
-#let completer() = box(width: 1fr, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 25%), repeat[.])))
+#let completer(taille: 1fr) = box(width: taille, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 25%), repeat[.])))
 
 /// Construit une liste numérotée avec des pointillés après chaque élément.
 ///
