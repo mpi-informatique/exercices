@@ -13,7 +13,7 @@
 /// - dy (length): Décalage vertical supplémentaire du repère.
 /// - taille (length): Corps du repère, relatif au texte courant.
 /// -> content
-#let marge(note, body, dy: 0pt, taille: 0.8em) = context {
+#let marge(note, body, dy: 0pt, taille: 0.7em) = context {
   if est-presentation() {
     body
   } else {
@@ -22,8 +22,7 @@
       columns: (0pt, 1fr),
       column-gutter: 0pt,
       align: (left + horizon, left + top),
-      box(width: 0pt, move(dx: -measure(repere).width - 0.5em, dy: dy, repere)),
-      body,
+      box(width: 0pt, move(dx: -measure(repere).width - 0.5em, dy: dy, repere)), body,
     )
   }
 }
