@@ -165,19 +165,12 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 
 #slide()
 #exercice[Déterminer les langages reconnus par les automates ci-dessous.]
-#grid(
-  columns: if est-presentation() { (auto, 1fr) } else { (1fr, 1fr) },
-  column-gutter: 1em,
-  align: bottom,
-  figure(
+#context {
+  let automates = (
     dessiner-automate(
       (("0", (0, 0), true, false), ("1", (3, 0), false, true)),
       (("0", "0", "b", (:)), ("1", "1", "b", (:)), ("0", "1", "a", (curve: 0.5)), ("1", "0", "a", (curve: 0.5))),
     ),
-    numbering: none,
-    caption: [$A_1$],
-  ),
-  figure(
     dessiner-automate(
       (("0", (0, 0), true, false), ("1", (6, 0), right, false), ("2", (3, 0), false, true)),
       (
@@ -187,10 +180,24 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
         ("1", "2", "a", (curve: 0)),
       ),
     ),
-    numbering: none,
-    caption: [$A_2$],
-  ),
-)
+  )
+  let hauteur = calc.max(..automates.map(automate => measure(automate).height))
+  grid(
+    columns: if est-presentation() { (auto, 1fr) } else { (1fr, 1fr) },
+    column-gutter: 1em,
+    align: horizon,
+    figure(
+      block(height: hauteur, align(horizon, automates.at(0))),
+      numbering: none,
+      caption: [$A_1$],
+    ),
+    figure(
+      block(height: hauteur, align(horizon, automates.at(1))),
+      numbering: none,
+      caption: [$A_2$],
+    ),
+  )
+}
 
 #slides-only[
   #slide()
