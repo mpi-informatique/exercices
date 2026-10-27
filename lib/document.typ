@@ -4,13 +4,16 @@
 
 #let sep = h(0.5em)
 
-/// Crée un lien vers une ressource du site Exercices MPI, signalé par une flèche ↗.
+/// Crée un lien vers une ressource du site Exercices MPI, signalé par le symbole 🔗.
 /// Exemple : `#lien-exercice("tp-automates")[TP sur les automates]`.
 ///
 /// - id (str): Identifiant de la ressource dans l'URL du site, sans barres obliques.
 /// - body (content): Texte cliquable.
 /// -> content
-#let lien-exercice(id, body) = link("https://mpi-informatique.github.io/exercices/" + id + "/", [#body#h(0.2em)#text(size: 0.8em)[↗]])
+#let lien-exercice(id, body) = {
+  let icone = image(bytes("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/><path d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/></svg>"), width: 0.8em, alt: "Lien")
+  link("https://mpi-informatique.github.io/exercices/" + id + "/", [#body#h(0.2em)#box(icone)])
+}
 
 /// Trace des pointillés sur la largeur restante de la ligne.
 ///
