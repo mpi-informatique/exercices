@@ -3,23 +3,29 @@
 #let epaisseur-trait = 0.4pt
 
 /// Place une note dans la marge gauche, centrée à côté du contenu, sans réduire sa largeur.
-/// La note conserve le corps courant ; son décalage tient compte de sa largeur et du format.
-/// Exemple : `#note-en-marge([TP])[Travail pratique à réaliser.]`.
+/// Dans la présentation, affiche uniquement le contenu, sans note en marge.
+/// Le texte utilise par défaut 80 % du corps courant ; passer `taille: 1em` pour un symbole.
+/// Le décalage tient compte de la largeur du repère.
+/// Exemple : `#marge([TP])[Travail pratique à réaliser.]`.
 ///
 /// - note (content): Repère à afficher dans la marge.
 /// - body (content): Contenu à signaler.
 /// - dy (length): Décalage vertical supplémentaire du repère.
+/// - taille (length): Corps du repère, relatif au texte courant.
 /// -> content
-#let note-en-marge(note, body, dy: 0pt) = context {
-  let repere = text(weight: "regular", top-edge: "bounds", bottom-edge: "bounds", note)
-  let ecart = if est-presentation() { 0.02em } else { 0.5em }
-  grid(
-    columns: (0pt, 1fr),
-    column-gutter: 0pt,
-    align: (left + horizon, left + top),
-    box(width: 0pt, move(dx: -measure(repere).width - ecart, dy: dy, repere)),
-    body,
-  )
+#let marge(note, body, dy: 0pt, taille: 0.8em) = context {
+  if est-presentation() {
+    body
+  } else {
+    let repere = text(size: taille, weight: "regular", top-edge: "bounds", bottom-edge: "bounds", note)
+    grid(
+      columns: (0pt, 1fr),
+      column-gutter: 0pt,
+      align: (left + horizon, left + top),
+      box(width: 0pt, move(dx: -measure(repere).width - 0.5em, dy: dy, repere)),
+      body,
+    )
+  }
 }
 
 /// Ajoute un cœur centré à gauche sans réduire la largeur du texte.
@@ -27,7 +33,7 @@
 /// - body (content): Contenu à signaler.
 /// - dy (length): Décalage vertical supplémentaire du cœur.
 /// -> content
-#let coeur-en-marge(body, dy: 0pt) = note-en-marge([♡], body, dy: dy)
+#let coeur-en-marge(body, dy: 0pt) = marge([♡], body, dy: dy, taille: 1em)
 
 /// Compose une solution sécable avec un trait à gauche ; `none` n'affiche rien.
 ///
