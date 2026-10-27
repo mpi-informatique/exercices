@@ -12,8 +12,13 @@
   ),
   contenu: (
     [
-      Soit $Σ$ un alphabet fini, $L ⊂ Σ^*$ un langage et $A = (Q, Σ, q_0, F, δ)$ un ADC.
+      Soit $Σ$ un alphabet fini et $L ⊂ Σ^*$ un langage.
+      Un _ADC_ est un automate déterministe complet, noté $A = (Q, Σ, q_0, F, δ)$.
+      On rappelle qu'un langage est régulier si et seulement s'il est reconnu par un ADC.
       Pour les exemples, on fixe $Σ = {a, b}$ et $L_1 = cal(L)(Σ^* a b Σ^*)$.
+
+      Un mot $w ∈ Σ^*$ est un _suffixe distinguant_ pour $u, v ∈ Σ^*$ si exactement l'un des mots $u w$ et $v w$ appartient à $L$.
+      Un ensemble $D ⊂ Σ^*$ est _distinguant_ pour $L$ si deux mots distincts de $D$ ont toujours un suffixe distinguant.
     ],
     partie("I", "Ensembles distinguants", contenu: (
       question(
