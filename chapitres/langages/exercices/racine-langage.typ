@@ -15,7 +15,7 @@
       En général, $L_2 ⊆ L^2$, mais les deux facteurs d'un mot de $L^2$ peuvent être différents.
     ]),
     question([Montrer que $sqrt(L)$ est régulier.], solution: [
-      Soit $A = (Q, Σ, δ, q_0, F)$ un automate déterministe complet reconnaissant $L$.
+      Soit $A = (Q, Σ, δ, q_0, F)$ un ADC reconnaissant $L$.
       On note $δ^*$ sa fonction de transition étendue aux mots.
       Pour $p, q ∈ Q$, on pose $K_(p, q) = {u ∈ Σ^* | δ^*(p, u) = q}$.
       Ce langage est régulier : il est reconnu par l'automate obtenu à partir de $A$ en prenant $p$ pour état initial et $q$ pour unique état final.
@@ -30,7 +30,7 @@
       Sur $Σ = {a, b}$, prendre le langage régulier $L = {a^n b | n ∈ ℕ}$, dénoté par $a^* b$.
       Alors $L_2 = {a^n b a^n b | n ∈ ℕ}$.
 
-      Supposons qu'un automate déterministe complet à $N$ états reconnaisse $L_2$.
+      Supposons qu'un ADC à $N$ états reconnaisse $L_2$.
       Parmi les $N + 1$ mots $ε, a, …, a^N$, deux mots $a^i$ et $a^j$, avec $i < j$, conduisent au même état.
       En leur ajoutant le même suffixe $b a^i b$, on obtient donc deux mots ayant le même statut d'acceptation.
       Or $a^i b a^i b ∈ L_2$, tandis que $a^j b a^i b ∉ L_2$, puisque $i ≠ j$.

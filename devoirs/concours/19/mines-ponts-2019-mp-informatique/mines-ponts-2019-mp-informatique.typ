@@ -182,7 +182,7 @@
   contenu: (
     [
       == Définition mathématique d'un automate
-      Dans tout le sujet, le terme _automate_ désigne un automate fini déterministe complet sur ${a,b}$, c'est-à-dire un quadruplet $cal(A)=⟨ Q,i,δ,F ⟩$ avec $i ∈ Q$, $δ: Q × {a,b} → Q$ et $F ⊂ Q$.\
+      Dans tout le sujet, le terme _automate_ désigne un ADC sur ${a,b}$, c'est-à-dire un quadruplet $cal(A)=⟨ Q,i,δ,F ⟩$ avec $i ∈ Q$, $δ: Q × {a,b} → Q$ et $F ⊂ Q$.\
       On note $cal(L)(cal(A))$ le langage reconnu par $cal(A)$ et $δ^*: Q × {a,b}^* → Q$ l'extension de $δ$ définie par
       $ δ^*(q,ε)=q, #sep δ^*(q,σ w)=δ^*(δ(q,σ),w). $
 
@@ -539,7 +539,7 @@
               $ Q_cal(C)={S_0,…,S_(ℓ-1)}, #sep i_cal(C)=[i_cal(B)]=S_0, $
               $ δ_cal(C)([q],σ)=[δ_cal(B)(q,σ)], #sep F_cal(C)={[q] | q ∈ F_cal(B)}. $
               Les questions 23 et 24 assurent que transitions et caractère final sont indépendants du représentant choisi.
-              On obtient donc un automate déterministe complet.
+              On obtient donc un ADC.
               L'application $η$ est surjective, préserve l'état initial et commute aux transitions par définition.
               La question 24 donne $q ∈ F_cal(B) ⟺ [q] ∈ F_cal(C)$ : $η$ est un morphisme.
               Enfin, l'accessibilité de $cal(B)$ fournit pour chaque $q$ un mot $w$ menant à $q$.
@@ -629,7 +629,7 @@
             bareme: 1.5,
             notation: [25 % pour les classes, 25 % pour l'automate quotient, 25 % pour chacun des deux morphismes.],
           ),
-          [Soit $L$ un langage régulier et $cal(K)_L$ l'ensemble des automates déterministes complets accessibles qui acceptent $L$. On note $m_L$ leur plus petit nombre d'états.],
+          [Soit $L$ un langage régulier et $cal(K)_L$ l'ensemble des ADC accessibles qui acceptent $L$. On note $m_L$ leur plus petit nombre d'états.],
           question(
             [Montrer que deux automates de $cal(K)_L$ ayant $m_L$ états sont nécessairement isomorphes.],
             solution: [
@@ -644,7 +644,7 @@
             [Montrer que, pour tout $cal(A) ∈ cal(K)_L$, il existe un morphisme $φ: cal(A) → cal(M)_L$,
               où $cal(M)_L$ est un automate de $cal(K)_L$ à $m_L$ états.],
             solution: [
-              Comme $L$ est régulier, il est reconnu par un automate déterministe complet. Sa partie accessible appartient à $cal(K)_L$.
+              Comme $L$ est régulier, il est reconnu par un ADC. Sa partie accessible appartient à $cal(K)_L$.
               L'ensemble non vide ${abs(Q_cal(A)) | cal(A) ∈ cal(K)_L} ⊂ NN$ admet donc un minimum $m_L$, atteint par un automate $cal(M)_L$.
               Par la question 29, on obtient $φ': cal(A) → cal(C)$ et $ψ': cal(M)_L → cal(C)$.
               Comme précédemment, $cal(C) ∈ cal(K)_L$ et $m_L ≤ abs(Q_cal(C)) ≤ m_L$.

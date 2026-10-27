@@ -58,7 +58,7 @@
       ],
     ),
     [
-      Soit $cal(A)=(Q,A,δ,i,F)$ un automate fini déterministe complet.
+      Soit $cal(A)=(Q,A,δ,i,F)$ un ADC.
       On note $q · a=δ(q,a)$ et $q · u$ l'état obtenu après lecture de $u$ depuis $q$.
       Une fonction de transition est une fonction $f_u:q↦q · u$, pour un mot $u∈A^*$.
       Dans les complexités, $n=abs(Q)≥1$, $k=abs(A)≥1$ et $N$ est le nombre de fonctions de transition distinctes.

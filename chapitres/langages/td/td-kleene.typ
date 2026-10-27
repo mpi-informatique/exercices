@@ -1,15 +1,20 @@
 #import "/load.typ": est-corrige
-#import "/load.typ": feuille
+#import "/load.typ": exercice, feuille
 #import "/chapitres/langages/exercices/langages-locaux-glushkov.typ": ex as locaux
 #import "/devoirs/concours/oral/ccinp/ccinp-oral-langages-automates.typ": ex as ccp
 #import "/chapitres/langages/exercices/stabilite-langages-reguliers.typ": ex as stabilite
 #import "/chapitres/langages/exercices/mcnaughton-yamada/mcnaughton-yamada.typ": ex as dynamique
-#import "/chapitres/langages/exercices/residuels-minimisation.typ": ex as residuels
+#import "/chapitres/langages/exercices/residuels-minimisation.typ": ex as myhill-nerode, introduction, residuels
+
+#let ex-residuels = exercice(
+  meta: (..myhill-nerode.meta, titre: "Résiduels et théorème de Myhill-Nerode"),
+  contenu: (introduction, residuels),
+)
 
 #show: feuille.with(
   titre: "TD : Théorème de Kleene",
   niveau: "MPI",
   auteur: "Q. Fortier",
-  exercices: (locaux, ccp, stabilite, dynamique, residuels),
+  exercices: (locaux, ccp, stabilite, dynamique, ex-residuels),
   corrige: est-corrige(defaut: true),
 )

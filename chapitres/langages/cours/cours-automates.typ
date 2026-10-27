@@ -318,7 +318,7 @@ Si $A$ est un ADC, $δ^* : Q timess Σ^* → Q$ associe à chaque état $q$ et m
     Le mot $a^k$ est donc refusé, alors qu'il appartient à $Σ^* a Σ^*$ : contradiction.
 ]
 
-== Implémentation déterministe complet
+== Implémentation d'un ADC
 
 Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ LA$ en O($abs(m)$) en temps et O($1$) en mémoire :
 #grid(
@@ -447,12 +447,12 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 
 #solution[
   #pause
-  Prendre un automate déterministe complet reconnaissant $L$ et remplacer $F$ par $Q ∖ F$.
+  Prendre un ADC reconnaissant $L$ et remplacer $F$ par $Q ∖ F$.
   Chaque mot possède un unique chemin, qui aboutit dans un état final exactement lorsque le mot n'appartient pas à $L$.
 ]
 #slide()
 #exercice[
-  + Montrer que la preuve de @thm-complementaire nécessite un automate déterministe complet.
+  + Montrer que la preuve de @thm-complementaire nécessite un ADC.
   + Dessiner un automate reconnaissant les mots sur $Σ = {a, b}$ n'ayant pas $a a a$ comme facteur.
 ]
 
@@ -493,7 +493,7 @@ $δ(q, a) = display(
 )$
 
 #exercice[
-  + Est-il nécessaire de considérer $A_1$, $A_2$ déterministes complets dans la preuve de @thm-operations ?
+  + Est-il nécessaire de supposer que $A_1$ et $A_2$ sont des ADC dans la preuve de @thm-operations ?
   + Montrer que $L = {m | |m|_a ≡ 0 #sep mod #sep 2, #sep |m|_b ≡ 1 #sep mod #sep 3}$ est reconnaissable.
 ]
 
@@ -513,7 +513,7 @@ $δ(q, a) = display(
 #colonnes-cours(
   columns: colonnes-definition,
   theoreme[Tout automate est équivalent à un automate émondé.],
-  exercice[Tout automate est-il équivalent à un automate émondé déterministe complet ?],
+  exercice[Tout automate est-il équivalent à un ADC émondé ?],
 )
 
 = Lemme de l'étoile

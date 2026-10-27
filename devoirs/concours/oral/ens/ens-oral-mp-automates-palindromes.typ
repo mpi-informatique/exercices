@@ -25,7 +25,7 @@
     ],
     question(
       [
-        Soit $Π_n=Π∩Σ^n$. Montrer que, pour tout automate fini déterministe complet $A$ et tout $n∈NN$, si $cal(L)(A)∩Σ^(2n)=Π_(2n)$, alors $A$ a au moins $abs(Σ)^n$ états.
+        Soit $Π_n=Π∩Σ^n$. Montrer que, pour tout ADC $A$ et tout $n∈NN$, si $cal(L)(A)∩Σ^(2n)=Π_(2n)$, alors $A$ a au moins $abs(Σ)^n$ états.
       ],
       solution: [
         Associons à $u∈Σ^n$ l'état $f(u)$ atteint après sa lecture.
@@ -39,7 +39,7 @@
         En déduire que $Π$ n'est pas régulier.
       ],
       solution: [
-        Si un automate déterministe complet à $N$ états reconnaissait $Π$, la question 1 donnerait $N≥abs(Σ)^N≥2^N>N$, contradiction.
+        Si un ADC à $N$ états reconnaissait $Π$, la question 1 donnerait $N≥abs(Σ)^N≥2^N>N$, contradiction.
       ],
     ),
     question(

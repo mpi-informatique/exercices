@@ -153,7 +153,7 @@
         Répéter $e$ fois donne les comptes $(k+p,l)$. L'autre égalité, répétée $d$ fois, donne $(k,l+p)$.
         Par définition de $K$, ces comptes sont réalisés dans $L$, qui est donc ultimement périodique.
 
-        Enfin, si un automate déterministe complet à $N$ états reconnaît un langage $K$, $w^(-1)K$ est le langage lu depuis l'état atteint après $w$ ; il y a donc au plus $N$ quotients. Cela prouve l'indication.
+        Enfin, si un ADC à $N$ états reconnaît un langage $K$, $w^(-1)K$ est le langage lu depuis l'état atteint après $w$ ; il y a donc au plus $N$ quotients. Cela prouve l'indication.
         Pour un langage régulier $L$, sa clôture commutative est régulière si et seulement si $L$ est ultimement périodique au sens du sujet.
       ],
     ),

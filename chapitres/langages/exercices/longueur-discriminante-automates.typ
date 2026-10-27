@@ -34,7 +34,7 @@
     ),
     question(
       [
-        Soient $A_1=(Σ,Q_1,i_1,F_1,δ_1)$ et $A_2=(Σ,Q_2,i_2,F_2,δ_2)$ deux automates déterministes complets à $n_1$ et $n_2$ états, de langages $L_1≠L_2$.
+        Soient $A_1=(Σ,Q_1,i_1,F_1,δ_1)$ et $A_2=(Σ,Q_2,i_2,F_2,δ_2)$ deux ADC à $n_1$ et $n_2$ états, de langages $L_1≠L_2$.
         Notons $l(L_1,L_2)$ la plus petite taille d'un mot appartenant à l'un des deux langages mais pas à l'autre.
         Montrer que $l(L_1,L_2)<n_1 n_2$.
       ],

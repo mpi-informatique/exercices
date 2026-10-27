@@ -8,7 +8,7 @@
 #import "/chapitres/langages/exercices/reconnaissable-ou-non.typ": ex as reconnaissable
 #import "/chapitres/langages/exercices/algorithmes-automates.typ": ex as algorithmes
 #import "/chapitres/langages/exercices/longueur-discriminante-automates.typ": ex as taille
-#import "/chapitres/langages/exercices/ensembles-distinguants-automates.typ": ex as distinguant
+#import "/chapitres/langages/exercices/residuels-minimisation.typ": ex as myhill-nerode, introduction, ensembles-distinguants
 #import "/devoirs/concours/oral/ens/ens-oral-mp-automates-palindromes.typ": ex as palindromes
 
 #let determinisation = exercice(
@@ -62,6 +62,11 @@
       ],
     ),
   ),
+)
+
+#let distinguant = exercice(
+  meta: (..myhill-nerode.meta, titre: "Ensembles distinguants"),
+  contenu: (introduction, ensembles-distinguants),
 )
 
 #show: feuille.with(

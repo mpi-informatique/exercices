@@ -51,7 +51,7 @@
   ],
   contenu: (
     [
-      Dans toute la suite, les automates sont déterministes et complets, sur $Σ={a,b}$.
+      Dans toute la suite, les automates sont des ADC, sur $Σ={a,b}$.
       Soient $A=(Q_A,i_A,δ_A,F_A)$ et $A'=(Q_(A'),i_(A'),δ_(A'),F_(A'))$.
       Une fonction $f:Q_A→Q_(A')$ est un morphisme d'automates si :
       #enum(
@@ -207,7 +207,7 @@
       ],
     ),
     [
-      Soit $L$ un langage régulier et $n$ le plus petit nombre d'états d'un automate déterministe complet reconnaissant $L$.
+      Soit $L$ un langage régulier et $n$ le plus petit nombre d'états d'un ADC reconnaissant $L$.
     ],
     question(
       [

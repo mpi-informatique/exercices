@@ -64,6 +64,7 @@ Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le doss
 | Conditions successives | `#sep` après la virgule ; espacement ordinaire dans les arguments, tuples, ensembles et indices. |
 | Flèches | `⟶`, `⟼`, `==>` pour l'implication, `⟺` pour l'équivalence ; préserver la syntaxe des langages de programmation. |
 | Symboles | Unicode (`Σ`, `ε`, `∀`, `∃`…) ; `union.big` et `inter.big` pour les opérations indexées, `∪` et `∩` pour les opérations binaires. |
+| Automate déterministe complet | ADC, et `adc` pour le type dans le code. |
 | Graphe | `G = (S, A)`. |
 | Déterminant et combinaison | Indiquer la taille seulement si utile, par une accolade à droite ; `binom(n, k)`. |
 

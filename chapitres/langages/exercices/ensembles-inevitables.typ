@@ -184,7 +184,7 @@
         Les mots qui contiennent un facteur de $cal(L)(e)$ forment le langage régulier
         $ B = Sigma^* cal(L)(e) Sigma^*. $
         On construit un automate pour $B$, on le déterminise, puis on le complète sur $Sigma$ avant d'échanger états finaux et non finaux.
-        On obtient un automate déterministe complet $A$ reconnaissant
+        On obtient un ADC $A$ reconnaissant
         $ "Av"(cal(L)(e)) = Sigma^* without B. $
 
         On conserve les états utiles de $A$.
@@ -203,7 +203,7 @@
         Étant donnés $e$ et un ensemble fini $S$, expliquer comment décider cette propriété, ainsi que la propriété opposée.
       ],
       solution: [
-        On construit un automate déterministe pour $cal(L)(e)$ et un automate déterministe complet pour $"Av"(S)$, comme à la question 9 en remplaçant $cal(L)(e)$ par l'union finie des mots de $S$.
+        On construit un automate déterministe pour $cal(L)(e)$ et un ADC pour $"Av"(S)$, comme à la question 9 en remplaçant $cal(L)(e)$ par l'union finie des mots de $S$.
 
         Leur automate produit reconnaît $cal(L)(e) ∩ "Av"(S)$ : une paire d'états est finale lorsque ses deux composantes le sont.
         Après suppression des états inutiles, un cycle existe si et seulement si cette intersection est infinie.

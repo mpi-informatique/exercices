@@ -22,7 +22,7 @@
   ],
   contenu: (
     [
-      On fixe un alphabet fini $Σ$ avec $abs(Σ)>1$. Tous les automates de ce sujet sont déterministes complets.
+      On fixe un alphabet fini $Σ$ avec $abs(Σ)>1$. Tous les automates de ce sujet sont des ADC.
       Un mot non vide $w∈Σ^*$ est primitif s'il n'existe pas de mot $u∈Σ^*$ et d'entier $p>1$ tels que $w=u^p$.
     ],
     question(

@@ -1,4 +1,4 @@
-type afdc = {
+type adc = {
   initial : int;
   finaux : int list;
   delta : int array array

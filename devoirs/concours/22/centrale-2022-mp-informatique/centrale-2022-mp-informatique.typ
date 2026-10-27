@@ -231,7 +231,7 @@
     concours: concours,
   ),
   corrections: [
-    - Partie I.D : préciser que la minimalité concerne les automates déterministes complets.
+    - Partie I.D : préciser que la minimalité concerne les ADC.
     - Questions 26–27 : remplacer $δ^*({I},u)$ par $δ^*(I,u)$, car l'état initial du déterminisé est $I$.
     - Partie II.B.3, avant la question 38 : $a$ est une expression régulière quelconque, pas nécessairement une lettre.
   ],
@@ -480,7 +480,7 @@
         "Algorithme de Brzozowski",
         jury: [Raisonner sur les chemins ; distinguer accessibilité et coaccessibilité.],
         contenu: (
-          [L'algorithme de Brzozowski donne un automate déterministe complet ayant un nombre minimal d'états parmi les automates déterministes complets reconnaissant le même langage.
+          [L'algorithme de Brzozowski donne un ADC ayant un nombre minimal d'états parmi les ADC reconnaissant le même langage.
             On se donne $A=(Q,I,{f},T)$ reconnaissant $L$, dont le miroir $widetilde(A)$ est déterministe et accessible.
             On note $A_"det"=(Y,{I},F',δ)$ son déterminisé accessible.
             Pour $u ∈ Σ^*$, on pose $u^(-1)L={w ∈ Σ^* | u w ∈ L}$.],
@@ -505,11 +505,11 @@
             [Pour un automate quelconque $A$ reconnaissant $L$, on pose $B=(widetilde(A))_"det"$.
               En déduire que $(widetilde(B))_"det"$ reconnaît $L$ et vérifie $(*)$.],
             solution: [
-              $B$ est déterministe, complet et accessible, et reconnaît $widetilde(L)$.
+              $B$ est un ADC accessible et reconnaît $widetilde(L)$.
               L'automate $widetilde(B)$ a un unique état final et son miroir $B$ est déterministe accessible : le résultat précédent s'applique.
               Son déterminisé $C$ reconnaît $L$ et vérifie $(*)$.
 
-              Il est minimal parmi les déterministes complets : si deux mots conduisent au même état d'un autre déterministe complet reconnaissant $L$, ils ont les mêmes continuations acceptantes, donc le même quotient $u^(-1)L$.
+              Il est minimal parmi les ADC : si deux mots conduisent au même état d'un autre ADC reconnaissant $L$, ils ont les mêmes continuations acceptantes, donc le même quotient $u^(-1)L$.
               Par $(*)$, ils conduisent aussi au même état de $C$.
               Choisir un mot d'accès à chaque état de $C$ donne ainsi des états distincts dans l'autre automate.
               Celui-ci a au moins autant d'états.

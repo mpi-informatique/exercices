@@ -133,7 +133,7 @@
   // ],
   contenu: (
     [== Notations
-      - On appelle *machine* tout triplet $(Q,Σ,δ)$ où $Q$ est un ensemble fini non vide dont les éléments sont appelés *états*, $Σ$ un ensemble fini non vide appelé *alphabet* dont les éléments sont appelés *lettres*, et $δ$ une application de $Q × Σ$ dans $Q$ appelée *fonction de transition*. Une machine correspond donc à un automate déterministe complet sans notion d'état initial ou d'états finaux.
+      - On appelle *machine* tout triplet $(Q,Σ,δ)$ où $Q$ est un ensemble fini non vide dont les éléments sont appelés *états*, $Σ$ un ensemble fini non vide appelé *alphabet* dont les éléments sont appelés *lettres*, et $δ$ une application de $Q × Σ$ dans $Q$ appelée *fonction de transition*. Une machine correspond donc à un ADC sans notion d'état initial ou d'états finaux.
       - Pour un état $q$ et une lettre $x$, on note $q.x=δ(q,x)$.
       - L'ensemble des mots (c'est-à-dire des concaténations de lettres) sur l'alphabet $Σ$ est noté $Σ^*$.
       - Le mot vide est noté $ε$.
