@@ -1,15 +1,23 @@
 #import "theoremes.typ": configurer-theoremes
 #import "code.typ": configurer-code
 #import "blocs.typ": epaisseur-trait
+#import "options.typ": est-presentation
 
 #let sep = h(0.5em)
 
-/// Signale un complément ou un contenu hors programme par une étoile creuse ☆.
+/// Signale un complément ou un contenu hors programme par « HP » dans la marge.
+/// Le repère utilise le même corps que le cœur des théorèmes.
 /// Exemple : `#complement[Théorème de Myhill-Nerode]`.
 ///
 /// - body (content): Titre ou contenu à signaler.
 /// -> content
-#let complement(body) = [☆#h(0.3em)#body]
+#let complement(body) = grid(
+  columns: (0pt, 1fr),
+  column-gutter: 0pt,
+  align: (left + horizon, left + top),
+  box(width: 0pt, move(dx: if est-presentation() { -1.4em } else { -2em }, text(weight: "regular")[HP])),
+  body,
+)
 
 /// Crée un lien bleu vers une ressource du site Exercices MPI.
 /// Exemple : `#lien("tp-automates")[TP sur les automates]`.
