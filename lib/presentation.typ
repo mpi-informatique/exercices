@@ -143,6 +143,7 @@
 }
 
 /// Dispose les contenus en colonnes dans le cours et à la suite dans la présentation.
+/// Le contenu commence à la ligne, sans marge supérieure supplémentaire.
 /// Passer le cadre via `encadrer`, plutôt qu'entourer l'appel, pour que Touying résolve les variantes.
 ///
 /// - columns (array, int): Colonnes du cours, comme pour `grid`.
@@ -161,7 +162,8 @@
   ..contenus,
 ) = {
   // Résoudre les solutions et animations avant de les enfermer dans la grille ou le cadre.
-  let composer-colonnes(self: none, ..cellules) = encadrer(grid(columns: columns, column-gutter: column-gutter, align: align, ..cellules))
+  // Garder l'interligne normal, sans l'espacement de paragraphe ajouté par défaut avant une grille.
+  let composer-colonnes(self: none, ..cellules) = context encadrer(block(above: par.leading, grid(columns: columns, column-gutter: column-gutter, align: align, ..cellules)))
   if not est-presentation() {
     return touying.touying-fn-wrapper-raw(composer-colonnes, ..contenus)
   }
@@ -173,6 +175,7 @@
 }
 
 /// Répartit une liste numérotée en colonnes dans le cours et la garde continue en présentation.
+/// La liste commence à la ligne, sans marge supérieure supplémentaire.
 /// Exemple : `#liste-cours([Premier élément.], [Deuxième élément.], [Troisième élément.])`.
 ///
 /// - columns (int): Nombre de colonnes du cours, remplies de haut en bas.

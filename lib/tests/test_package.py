@@ -163,6 +163,33 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
     assert(gauche.page == droite.page and gauche.x == droite.x and gauche.y < droite.y)
   }
 }
+== Espacement avant les listes
+#text(size: 10pt)[
+  #set par(leading: 5pt, spacing: 20pt)
+  #let repere(nom) = box(height: 10pt, baseline: 0pt)[#metadata(nom) <espacement-liste-test> Texte.]
+  #block[
+    #repere("reference-avant")
+    #enum(repere("reference-apres"))
+  ]
+  #block[
+    #repere("liste-avant")
+    #liste-cours(repere("liste-apres"))
+  ]
+  #block[
+    #repere("colonnes-avant")
+    #colonnes-cours([#enum(repere("colonnes-apres"))])
+  ]
+  #context {
+    let marques = query(<espacement-liste-test>)
+    let position(nom) = marques.find(it => it.value == nom).location().position().y
+    let ecart(prefixe) = position(prefixe + "-apres") - position(prefixe + "-avant")
+    let reference = ecart("reference")
+    assert(reference >= 10pt)
+    for prefixe in ("liste", "colonnes") {
+      assert(calc.abs(ecart(prefixe) - reference) < 0.1pt, message: prefixe + ": " + repr(ecart(prefixe)) + " au lieu de " + repr(reference))
+    }
+  }
+]
 == Liste du cours
 #liste-cours(
   start: 3,
