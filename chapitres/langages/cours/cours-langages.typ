@@ -212,10 +212,29 @@ Le nombre de langages sur $Σ$ est : #completer()
 #slide()
 
 #underline[Exemples de langages] :
-+ L'ensemble $L_0 = {ε, a, b a b}$ sur $Σ = {a, b}$.
-+ L'ensemble $L_1$ des mots du dictionnaire français sur $Σ = {a, b, …, z}$.
-+ L'ensemble $L_2$ des formules arithmétiques sur $Σ = {0, …, 9, "+", "-", "/", "*", "(", ")"}$.
-+ L'ensemble $L_3$ des programmes OCaml sur $Σ = {a, …, z, "_", "!", "<", ">", …}$.
+#taille-presentation(0.85em)[
+  #set par(justify: false)
+  #table(
+    columns: (1fr, 1fr, 1fr, 1.2fr, 1.2fr),
+    align: (left, center, center, center, center),
+    inset: 0.4em,
+    [*Description*],
+    [$L_0 = {ε, a, b a b}$],
+    [$L_1$ : mots du dictionnaire français],
+    [$L_2$ : formules arithmétiques],
+    [$L_3$ : programmes OCaml],
+    [*Alphabet*],
+    [${a, b}$],
+    [${a, b, …, z}$],
+    [${0, …, 9}$ \ $∪ {"+", "-", "/", "*"}$ \ $∪ {"(", ")"}$],
+    [Lettres, chiffres, espaces, ponctuation…],
+    [*Exemple de mot*],
+    [$b a b$],
+    [`chat`],
+    [`(2+3)*4`],
+    [`let x = 1`],
+  )
+]
 
 == Concaténation
 
