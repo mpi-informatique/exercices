@@ -171,3 +171,24 @@
     encadrer(contenus.pos().join(parbreak()))
   })
 }
+
+/// Répartit une liste numérotée en colonnes dans le cours et la garde continue en présentation.
+/// Exemple : `#liste-cours([Premier élément.], [Deuxième élément.], [Troisième élément.])`.
+///
+/// - columns (int): Nombre de colonnes du cours, remplies de haut en bas.
+/// - column-gutter (length): Espacement entre colonnes.
+/// - start (int): Premier numéro.
+/// - encadrer (function): Cadre commun autour de la liste.
+/// - ..items (arguments): Contenus des éléments de la liste.
+/// -> content
+#let liste-cours(columns: 2, column-gutter: 1.5em, start: 1, encadrer: body => body, ..items) = {
+  assert(type(columns) == int and columns > 0, message: "columns doit être un entier strictement positif")
+  let items = items.pos()
+  if est-presentation() {
+    encadrer(enum(start: start, ..items))
+  } else {
+    let taille = calc.max(1, calc.ceil(items.len() / columns))
+    let listes = items.chunks(taille).enumerate().map(((i, elements)) => enum(start: start + i * taille, ..elements))
+    colonnes-cours(columns: columns, column-gutter: column-gutter, align: left + top, encadrer: encadrer, ..listes)
+  }
+}
