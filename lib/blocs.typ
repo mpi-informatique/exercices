@@ -3,7 +3,7 @@
 #let epaisseur-trait = 0.4pt
 
 /// Place une note dans la marge gauche, centrée à côté du contenu, sans réduire sa largeur.
-/// Dans la présentation, affiche uniquement le contenu, sans note en marge.
+/// Dans la présentation, renvoie directement le contenu, notamment les titres ouvrant une diapositive.
 /// Le texte utilise par défaut 70 % du corps courant ; passer `taille: 1em` pour un symbole.
 /// Le décalage tient compte de la largeur du repère.
 /// Exemple : `#marge([TP])[Travail pratique à réaliser.]`.
@@ -13,10 +13,9 @@
 /// - dy (length): Décalage vertical supplémentaire du repère.
 /// - taille (length): Corps du repère, relatif au texte courant.
 /// -> content
-#let marge(note, body, dy: 0pt, taille: 0.7em) = context {
-  if est-presentation() {
-    body
-  } else {
+#let marge(note, body, dy: 0pt, taille: 0.7em) = {
+  if est-presentation() { return body }
+  context {
     let repere = text(size: taille, weight: "regular", top-edge: "bounds", bottom-edge: "bounds", note)
     grid(
       columns: (0pt, 1fr),

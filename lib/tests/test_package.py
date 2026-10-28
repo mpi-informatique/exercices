@@ -260,7 +260,7 @@ Un énoncé.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'corrige=' + corrige,
                         str(source), str(racine / ('cours-simple-' + corrige + '.pdf'))], check=True)
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, slide
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, slide, tp
 #import "@preview/touying:0.8.0": utils
 #show: cours-et-presentation.with(titre: "Saut de diapositive")
 == Titre commun
@@ -269,13 +269,17 @@ Premier contenu.
 #slide()
 #metadata("apres") <saut-diapositive-test>
 Deuxième contenu.
+#tp(id: "tp-automates")[== Automate produit]
+#metadata("produit") <saut-diapositive-test>
+Contenu de la nouvelle diapositive.
 #context {
   let marques = query(<saut-diapositive-test>)
-  assert(marques.len() == 2)
+  assert(marques.len() == 3)
   let projection = sys.inputs.at("format") == "presentation"
   let pages = marques.map(it => it.location().position().page)
-  assert(pages.last() - pages.first() == if projection { 1 } else { 0 })
-  if projection { assert(utils.current-heading().body == [Titre commun]) }
+  assert(pages.at(1) - pages.at(0) == if projection { 1 } else { 0 })
+  assert(pages.at(2) - pages.at(1) == if projection { 1 } else { 0 })
+  if projection { assert(utils.current-heading().body == [Automate produit]) }
 }
 ''', encoding='utf-8')
     for variante in ('cours', 'presentation'):
