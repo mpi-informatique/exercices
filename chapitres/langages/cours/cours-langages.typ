@@ -469,12 +469,11 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
     [
       + Mots contenant au plus un $a$.
       + Mots dont la taille est congrue à $1$ modulo $3$.
-      + Mots contenant un nombre pair de $a$.
     ],
     [
       #enum(
-        start: 4,
-      )[Mots contenant un nombre impair de $a$.][Sur $Σ = {0, 1}$ : écritures en base $2$ des entiers divisibles par $4$.]
+        start: 3,
+      )[Sur $Σ = {0, 1}$ : écritures en base $2$ des entiers divisibles par $4$.][Sur $Σ = {a, b}$ : mots ne contenant pas le facteur $a a$.]
     ],
   )
 ]
@@ -485,15 +484,14 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
   #pause
   + $(a | b) ((a | b) (a | b) (a | b))^*$
   #pause
-  + $b^* (a b^* a b^*)^*$
-  #pause
-  + $b^* a b^* (a b^* a b^*)^*$
-  #pause
   + Pour les écritures canoniques, sans zéro initial, avec $0$ écrit $0$ : $0 | 1 (0 | 1)^* 0 0$.
     Si les zéros initiaux sont autorisés : $0 | (0 | 1)^* 0 0$.
-
-  Les $a$ se regroupent par paires dans les réponses 3 et 4.
-  Un entier binaire non nul est divisible par $4$ si et seulement si ses deux derniers chiffres sont $0$.
+    Un entier binaire non nul est divisible par $4$ si et seulement si ses deux derniers chiffres sont $0$.
+  #pause
+  + $(b | a b)^* (ε | a)$.
+    Chaque $a$, sauf éventuellement la dernière lettre du mot, est suivi d'un $b$.
+    Le mot se découpe donc en blocs $b$ ou $a b$, avec éventuellement un $a$ final.
+    Réciproquement, une telle concaténation ne contient pas $a a$, y compris à la jonction des blocs.
 ]
 
 #slide()
