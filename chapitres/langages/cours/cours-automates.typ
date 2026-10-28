@@ -116,7 +116,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
       On peut aussi étendre $δ$ et $δ^*$ à un ensemble d'états $X ⊂ Q$ : $ δ(X, a) = display(⋃_(q ∈ X)) δ(q, a) quad "et" quad δ^*(X, m) = display(⋃_(q ∈ X)) δ^*(q, m) $
     ] <def-delta-ens>
   ],
-  cetz.canvas(length: unite-automates * 0.9, {
+  align(center, cetz.canvas(length: unite-automates * 0.9, {
     import cetz.draw: circle, content, line, set-style
     import finite.draw: state
     set-style(..style-automates, state: (radius: 0.2))
@@ -140,7 +140,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
       )
       content((2, hauteur + 0.35), $m$)
     }
-  }),
+  })),
 )
 
 
