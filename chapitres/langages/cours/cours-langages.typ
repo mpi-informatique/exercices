@@ -68,6 +68,59 @@
 
 #slide()
 
+#exercice[Lemme de Lévy][
+  Soient $u, v, x, y ∈ Σ^*$ tels que $u v = x y$.
+  Montrer qu'il existe un unique $m ∈ Σ^*$ vérifiant l'une des conditions suivantes :
+  - $u = x m$ et $y = m v$
+  - $x = u m$ et $v = m y$
+]
+#if est-presentation() and est-corrige() { slide() }
+#solution[
+  #slides-only[== Lemme de Lévy : preuve]
+  Les bandes représentent le même mot $u v = x y$, avec deux découpages.
+  Le morceau $m$ est celui situé entre les deux coupures.
+
+  #{
+    let bande(..cellules) = table(
+      columns: (2fr, 1fr, 2fr),
+      align: center,
+      inset: (x: 6pt, y: 3pt),
+      stroke: 0.5pt,
+      ..cellules,
+    )
+    let morceau = table.cell(fill: rgb("#dceaf7"))[$m$]
+    grid(
+      columns: (1fr, 1fr),
+      column-gutter: 1.5em,
+      [
+        *Si $abs(x) ≤ abs(u)$ :*
+        #bande(
+          table.cell(colspan: 2)[$u$], [$v$],
+          [$x$], morceau, [$v$],
+          [$x$], table.cell(colspan: 2)[$y$],
+        )
+        Les $abs(x)$ premières lettres donnent $u = x m$.
+        Puis $x m v = x y$ donne $y = m v$.
+      ],
+      [
+        *Si $abs(u) ≤ abs(x)$ :*
+        #bande(
+          [$u$], table.cell(colspan: 2)[$v$],
+          [$u$], morceau, [$y$],
+          table.cell(colspan: 2)[$x$], [$y$],
+        )
+        De même, $x = u m$.
+        Puis $u v = u m y$ donne $v = m y$.
+      ],
+    )
+  }
+
+  Dans chaque cas, $m$ est l'unique suffixe du plus long des mots $u$ et $x$ de taille $abs(abs(u) - abs(x))$.
+  Si $abs(u) = abs(x)$, les deux cas donnent $u = x$, $v = y$ et $m = ε$.
+]
+
+#slide()
+
 #definition[
   Soient $u, m ∈ Σ^*$.
   - $u$ est un _préfixe_ de $m$ s'il existe un mot $v$ tel que $m = u v$.
