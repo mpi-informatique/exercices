@@ -1,6 +1,7 @@
 #import "theoremes.typ": configurer-theoremes
 #import "code.typ": configurer-code
 #import "blocs.typ": epaisseur-trait, marge
+#import "options.typ": est-presentation
 
 #let sep = h(0.5em)
 #let PP = $cal(P)$
@@ -29,11 +30,13 @@
 /// -> content
 #let tp(id: none, body) = marge(if id == none { [TP] } else { lien(id)[TP] }, body)
 
-/// Trace des pointillés sur la largeur restante de la ligne.
+/// Trace des pointillés sur la largeur restante de la ligne, sauf en présentation.
 ///
 /// - taille (relative, fraction): Largeur des pointillés ; `1fr` occupe l'espace restant par défaut.
 /// -> content
-#let completer(taille: 1fr) = box(width: taille, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 25%), repeat[.])))
+#let completer(taille: 1fr) = if not est-presentation() {
+  box(width: taille, move(dy: 0.2em, text(fill: rgb(0%, 0%, 0%, 25%), repeat[.])))
+}
 
 /// Construit une liste numérotée avec des pointillés après chaque élément.
 ///
