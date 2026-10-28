@@ -23,6 +23,7 @@ import { isPrivate } from '../lib/privateBank';
 
 const TypstEditor = lazy(() => import('./TypstEditor'));
 const PdfViewer = lazy(() => import('./PdfViewer'));
+const defaultResourceId = 'cours-langages';
 interface Props { resources: Resource[]; initialId?: string }
 
 function download(data: BlobPart, name: string, type: string) {
@@ -38,7 +39,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
   const library = usePrivateBank();
   const resources = useMemo(() => [...publicResources, ...(library.bank?.resources ?? [])], [publicResources, library.bank]);
   const [privatePanelOpen, setPrivatePanelOpen] = useState(false);
-  const [selected, setSelected] = useState(initialId ?? 'residuels-minimisation');
+  const [selected, setSelected] = useState(initialId ?? defaultResourceId);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
   const resource = resources.find(resource => resource.id === selected);
@@ -74,8 +75,8 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
 
   useEffect(() => {
     if (isPrivate({ id: selected }) && !library.bank?.resources.some(item => item.id === selected)) {
-      setSelected('residuels-minimisation');
-      history.replaceState({}, '', exerciseUrl('residuels-minimisation', variant));
+      setSelected(defaultResourceId);
+      history.replaceState({}, '', exerciseUrl(defaultResourceId, variant));
     }
   }, [library.bank]);
 
@@ -91,7 +92,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
     if (side >= 240 && side <= 520) setSidebarWidth(side);
     if (editor >= 280 && editor <= 900) setEditorWidth(editor);
     const pop = () => {
-      setSelected(routeId(location.pathname, location.hash) ?? 'residuels-minimisation');
+      setSelected(routeId(location.pathname, location.hash) ?? defaultResourceId);
       setVariant(routeVariant(location.search));
     };
     window.addEventListener('popstate', pop);
