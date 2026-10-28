@@ -218,6 +218,33 @@ Après les cadres, voir @definition-pause-test.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante, '--input', 'pauses=' + pauses,
                         str(source), str(racine / ('pauses-' + variante + '-' + pauses + '.pdf'))], check=True)
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, slide, pause, solution, theoremes
+#let animations = sys.inputs.at("animations") == "true"
+#show: cours-et-presentation.with(titre: "Pauses finales", animations: animations)
+== Cadre isolé
+#context {
+  let pages = query(<touying-metadata>).last().location().page()
+  assert(pages == if animations { 9 } else { 7 }, message: repr(pages))
+  assert(query(<cadre-final-test>).len() == 1)
+  assert(query(<cadre-final-test>).first().func() == figure)
+}
+#theoremes.exercice[Un exercice isolé.]
+#slide()
+#theoremes.definition[Titre du cadre][Une définition avant un titre.] <cadre-final-test>
+== Cadres successifs
+#theoremes.definition[Première étape.]
+#theoremes.exercice[Deuxième étape.]
+== Colonnes
+#colonnes-cours(encadrer: theoremes.exercice-sans-numero, [Gauche.], [Droite.])
+== Solution finale
+#solution(presentation: true)[Une solution finale.]
+== Pause explicite
+#theoremes.exercice(pause: false)[Une pause volontaire. #pause]
+''', encoding='utf-8')
+    for animations in ('true', 'false'):
+        subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                        '--package-path', str(racine / 'packages'), '--input', 'format=presentation', '--input', 'animations=' + animations,
+                        str(source), str(racine / ('pauses-finales-' + animations + '.pdf'))], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, solution
 #show: cours.with(titre: "Cours sans présentation")
 Un énoncé.

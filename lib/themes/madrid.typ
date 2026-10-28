@@ -1,4 +1,5 @@
 #import "@preview/touying:0.8.0" as touying
+#import "../animations.typ": nettoyer-pauses
 
 /// Adapte les diapositives Touying au bandeau Madrid et au marqueur sans titre.
 ///
@@ -6,13 +7,15 @@
 /// - ..args (arguments): Contenus et options Touying.
 /// -> content
 #let slide-madrid(config: (:), ..args) = touying.touying-slide-wrapper(self => {
+  let (contenus, _) = nettoyer-pauses(args.pos())
   let sans-titre = args.pos().any(body => type(body) == content and touying.utils.tree.find-in-tree(body, it => it.func() == metadata and it.value == "diapositive-sans-titre") != none)
   touying.touying-slide(
     self: self,
     config: if sans-titre {
       touying.utils.merge-dicts(config, touying.config-page(header: none, margin: (top: 0pt)))
     } else { config },
-    ..args,
+    ..contenus,
+    ..args.named(),
   )
 })
 

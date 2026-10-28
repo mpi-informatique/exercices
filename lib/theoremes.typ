@@ -7,13 +7,14 @@
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
 /// Les appels acceptent un contenu et les options communes `titre`, `coeur` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
-/// En présentation, une pause suit chaque cadre ; `pause: false` la désactive.
+/// En présentation, une pause suit chaque cadre si du contenu reste sur la diapositive ; `pause: false` la désactive.
 /// Les références `@etiquette` suivent le type et le numéro, y compris pendant
 /// les animations. Dans `algorithme`, les listes imbriquées décrivent le pseudocode.
 
 #import "@preview/lovelace:0.3.1": pseudocode-list
 #import "@preview/theorion:0.6.0" as theorion
-#import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils, pause as pause-touying
+#import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils
+#import "animations.typ": pause-automatique
 #import theorion.cosmos.fancy: (
   fancy-box, get-fancy-radius, set-primary-body-color, set-primary-border-color, set-quaternary-body-color,
   set-quaternary-border-color, set-secondary-body-color, set-secondary-border-color, set-tertiary-body-color,
@@ -235,7 +236,7 @@
 /// - ..options (arguments): Options de `composer-cadre`.
 /// -> content
 #let rendre-cadre(nom, body, pause: true, ..options) = {
-  if est-presentation() and pause { body += pause-touying }
+  if est-presentation() and pause { body += pause-automatique }
   if not utils.tree.has-touying-mark(body) {
     composer-cadre(body, nom: nom, ..options)
   } else {
