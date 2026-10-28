@@ -163,6 +163,35 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
     assert(gauche.page == droite.page and gauche.x == droite.x and gauche.y < droite.y)
   }
 }
+== Largeurs des colonnes
+#for nom in ("liste", "colonnes") {
+  block(width: 360pt, {
+    let contenus = range(3).map(i => layout(taille => [
+      #metadata((nom: nom, numero: i, largeur: taille.width)) <largeur-colonne-test>
+      #if i == 1 { [Un contenu beaucoup plus long qui doit revenir à la ligne dans sa colonne sans modifier la largeur de ses voisines.] } else { [Court.] }
+    ]))
+    if nom == "liste" {
+      liste-cours(columns: 3, column-gutter: 12pt, ..contenus)
+    } else {
+      colonnes-cours(columns: 3, column-gutter: 12pt, ..contenus)
+    }
+  })
+}
+#context {
+  if sys.inputs.at("format") == "cours" {
+    for nom in ("liste", "colonnes") {
+      let colonnes = query(<largeur-colonne-test>).filter(it => it.value.nom == nom)
+      assert(colonnes.len() == 3)
+      for i in range(1, 3) {
+        assert(calc.abs(colonnes.at(i).value.largeur - colonnes.first().value.largeur) < 0.1pt)
+        let precedent = colonnes.at(i - 1).location().position()
+        let courant = colonnes.at(i).location().position()
+        assert(precedent.page == courant.page)
+        assert(calc.abs(courant.x - precedent.x - 124pt) < 0.1pt)
+      }
+    }
+  }
+}
 == Espacement avant les listes
 #text(size: 10pt)[
   #set par(leading: 5pt, spacing: 20pt)

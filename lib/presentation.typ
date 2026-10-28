@@ -146,7 +146,7 @@
 /// Le contenu commence à la ligne, sans marge supérieure supplémentaire.
 /// Passer le cadre via `encadrer`, plutôt qu'entourer l'appel, pour que Touying résolve les variantes.
 ///
-/// - columns (array, int): Colonnes du cours, comme pour `grid`.
+/// - columns (array, int): Nombre de colonnes de même largeur, ou tableau de largeurs explicites comme pour `grid`.
 /// - column-gutter (length): Espacement entre colonnes.
 /// - align (alignment): Alignement dans la grille.
 /// - saut-slide (bool): Séparer les contenus par des diapositives.
@@ -161,6 +161,10 @@
   encadrer: body => body,
   ..contenus,
 ) = {
+  if type(columns) == int {
+    assert(columns > 0, message: "columns doit être un entier strictement positif")
+    columns = (1fr,) * columns
+  }
   // Résoudre les solutions et animations avant de les enfermer dans la grille ou le cadre.
   // Garder l'interligne normal, sans l'espacement de paragraphe ajouté par défaut avant une grille.
   let composer-colonnes(self: none, ..cellules) = context encadrer(block(above: par.leading, grid(columns: columns, column-gutter: column-gutter, align: align, ..cellules)))
@@ -178,7 +182,7 @@
 /// La liste commence à la ligne, sans marge supérieure supplémentaire.
 /// Exemple : `#liste-cours([Premier élément.], [Deuxième élément.], [Troisième élément.])`.
 ///
-/// - columns (int): Nombre de colonnes du cours, remplies de haut en bas.
+/// - columns (int): Nombre de colonnes du cours, de même largeur et remplies de haut en bas.
 /// - column-gutter (length): Espacement entre colonnes.
 /// - start (int): Premier numéro.
 /// - encadrer (function): Cadre commun autour de la liste.
