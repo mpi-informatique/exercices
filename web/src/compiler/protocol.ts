@@ -2,7 +2,7 @@ import type { Resource, Variant } from '@mpi-informatique/exercices-core';
 
 export interface CompileRequest {
   id: number;
-  resource: Pick<Resource, 'fichier' | 'kind'> & Partial<Pick<Resource, 'type'>>;
+  resource: Pick<Resource, 'fichier' | 'kind'> & Partial<Pick<Resource, 'type' | 'id'>>;
   source: string;
   variant: Variant;
   bundle?: Record<string, string>;

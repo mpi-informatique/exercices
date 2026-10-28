@@ -72,3 +72,24 @@ test('les documents à un seul format exposent leurs métadonnées', async () =>
     assert.ok(metadata.titre);
   }
 });
+
+test('le titre compilé pointe vers la page publique de la ressource', async () => {
+  const resource = resources.find(resource => resource.id === 'cours-kleene')!;
+  const url = 'https://mpi-informatique.github.io/exercices/cours-kleene/';
+  const code = `#import "/load.typ": cours-et-presentation
+#show: cours-et-presentation.with(titre: "Titre lié")
+Contenu.
+#context {
+  assert(sys.inputs.at("url-document") == "${url}")
+  assert(query(link).any(it => it.dest == "${url}"))
+}`;
+  for (const variant of ['enonce', 'corrige', 'presentation'] as const) {
+    await assert.doesNotReject(engine.compile(resource, code, variant));
+  }
+  const sansLien = `#import "/load.typ": cours
+#show: cours.with(titre: "Document local")
+Contenu.
+#context { assert(sys.inputs.at("url-document") == "") }`;
+  await assert.doesNotReject(engine.compile({ ...resource, id: 'private:depot:cours-kleene' }, sansLien, 'enonce'));
+  await assert.doesNotReject(engine.compile({ fichier: 'templates/cours.typ', kind: 'document' }, sansLien, 'enonce'));
+});

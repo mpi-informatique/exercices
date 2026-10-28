@@ -227,6 +227,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible, [role="separator"]
 .pdf-page { position: relative; background: var(--surface); box-shadow: 0 1px 5px #172a3c18; margin: 0 auto 12px; flex-shrink: 0; scroll-margin-top: 12px; }
 .pdf-page canvas { display: block; }
 .pdf-page .textLayer { z-index: 1; }
+.pdf-links { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.pdf-links a { position: absolute; pointer-events: auto; }
+.pdf-links a:is(:hover, :focus-visible) { outline: 1px solid currentColor; background: #245c5010; }
 .pdf-page p { color: #ad3535; padding: 12px; }
 .preview-placeholder { min-height: 100%; display: flex; gap: 8px; justify-content: center; align-items: center; color: var(--muted); font-size: 12px; }
 .pane-loading { flex: 1; display: grid; place-items: center; color: var(--muted); font-size: 12px; }

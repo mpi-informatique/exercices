@@ -3,7 +3,12 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-from sources import classify, pdf_filename, sources, variants
+from sources import classify, document_url, pdf_filename, sources, variants
+
+assert document_url('chapitres/langages/cours/cours-automates.typ') == 'https://mpi-informatique.github.io/exercices/cours-automates/'
+assert document_url('lib/tests/test.typ') == ''
+assert document_url('templates/cours.typ') == ''
+assert document_url('chapitres/langages/cours/déterminisation.typ') == 'https://mpi-informatique.github.io/exercices/d%C3%A9terminisation/'
 
 assert pdf_filename('chapitres/langages/colle.typ', 'enonce') == 'colle.pdf'
 assert pdf_filename('chapitres/langages/colle.typ', 'corrige') == 'colle-cor.pdf'

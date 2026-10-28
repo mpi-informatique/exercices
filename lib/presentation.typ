@@ -2,7 +2,7 @@
 #import "@preview/touying:0.8.0" as touying
 #import touying: article-only, item-by-item, only, pause, slide, slides-only, uncover
 #import "cours.typ": cours, espace-reponse
-#import "document.typ": auteur-par-defaut
+#import "document.typ": auteur-par-defaut, titre-lie
 #import "theoremes.typ": configurer-theoremes
 #import "code.typ": configurer-code
 #import "themes/madrid.typ": theme-madrid, titre-madrid
@@ -122,7 +122,7 @@
   touying.slides-only(titre-madrid(
     [
       #metadata((type: "presentation", titre: titre, niveau: niveau)) <document-meta>
-      #titre
+      #titre-lie(titre)
     ],
     niveau: niveau,
     auteur: auteur,

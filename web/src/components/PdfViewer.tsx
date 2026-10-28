@@ -13,6 +13,7 @@ function PdfPage({ document, number, width, dark }: { document: PDFDocumentProxy
   const [page, setPage] = useState<PDFPageProxy>();
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState('');
+  const [links, setLinks] = useState<{ url: string; left: number; top: number; width: number; height: number }[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -34,13 +35,25 @@ function PdfPage({ document, number, width, dark }: { document: PDFDocumentProxy
     const render = page.render({ canvas: element, viewport, pageColors: dark ? { background: '#172129', foreground: '#e2e9ec' } : undefined, transform: ratio === 1 ? undefined : [ratio, 0, 0, ratio, 0, 0] });
     text.current!.replaceChildren();
     const layer = new TextLayer({ textContentSource: page.streamTextContent(), container: text.current!, viewport });
-    Promise.all([render.promise, layer.render()]).catch(error => { if (error?.name !== 'RenderingCancelledException' && error?.name !== 'AbortException') setError(String(error)); });
-    return () => { render.cancel(); layer.cancel(); };
+    let cancelled = false;
+    setLinks([]);
+    const annotations = page.getAnnotations({ intent: 'display' }).then(annotations => {
+      if (cancelled) return;
+      setLinks(annotations.filter(annotation => annotation.subtype === 'Link' && typeof annotation.url === 'string').map(annotation => {
+        const [x1, y1] = viewport.convertToViewportPoint(annotation.rect[0], annotation.rect[1]);
+        const [x2, y2] = viewport.convertToViewportPoint(annotation.rect[2], annotation.rect[3]);
+        return { url: annotation.url, left: Math.min(x1, x2), top: Math.min(y1, y2), width: Math.abs(x2 - x1), height: Math.abs(y2 - y1) };
+      }));
+    });
+    Promise.all([render.promise, layer.render(), annotations]).catch(error => { if (error?.name !== 'RenderingCancelledException' && error?.name !== 'AbortException') setError(String(error)); });
+    return () => { cancelled = true; render.cancel(); layer.cancel(); };
   }, [page, visible, width, dark]);
 
   const viewport = page?.getViewport({ scale: 1 });
   return <div ref={container} className="pdf-page" id={`pdf-page-${number}`} role="region" aria-label={`Page ${number}`} style={{ width, height: viewport ? width * viewport.height / viewport.width : width * Math.SQRT2, '--scale-factor': viewport ? width / viewport.width : 1 } as React.CSSProperties}>
-    <canvas ref={canvas} aria-hidden="true" /><div ref={text} className="textLayer" />{error && <p role="alert">{error}</p>}
+    <canvas ref={canvas} aria-hidden="true" /><div ref={text} className="textLayer" />
+    <div className="pdf-links">{links.map((link, i) => <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`Ouvrir ${link.url}`} title={link.url} style={{ left: link.left, top: link.top, width: link.width, height: link.height }} />)}</div>
+    {error && <p role="alert">{error}</p>}
   </div>;
 }
 
