@@ -60,7 +60,7 @@ Voir @question-mobile avant son énoncé.
                         '--package-path', str(racine / 'packages'), '--input', 'corrige=' + variante,
                         str(source), str(racine / (variante + '.pdf'))], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, liste-cours, taille-presentation, pause, article-only, slides-only, solution, theoremes
-#show: cours-et-presentation.with(titre: "Cours externe", niveau: "MPI")
+#show: cours-et-presentation.with(titre: "Cours externe", niveau: "MPI", animations: false)
 #show text.where(text: "♡"): it => [#metadata("coeur") <coeur-solution-test>#it]
 = Section
 == Notion
@@ -195,6 +195,29 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante, '--input', 'corrige=' + corrige,
                         str(source), str(output)], check=True)
         assert output.stat().st_size > 0
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, est-presentation, solution, theoremes
+#let pauses = sys.inputs.at("pauses") == "true"
+#let options = if pauses { (:) } else { (pause: false) }
+#show: cours-et-presentation.with(titre: "Pauses des cadres")
+== Cadres successifs
+#theoremes.definition(..options)[Définition.] <definition-pause-test>
+#theoremes.exercice-sans-numero(..options)[Exercice.]
+#theoremes.methode(..options)[Méthode.]
+#solution(cours: true, presentation: true, ..options)[Solution.]
+Après les cadres, voir @definition-pause-test.
+#context {
+  assert(query(<definition-pause-test>).len() == 1)
+  assert(query(<definition-pause-test>).first().func() == figure)
+  if est-presentation() {
+    let pages = query(<touying-metadata>).last().location().page()
+    assert(pages == if pauses { 6 } else { 2 }, message: repr(pages))
+  }
+}
+''', encoding='utf-8')
+    for variante, pauses in (('cours', 'true'), ('presentation', 'true'), ('presentation', 'false')):
+        subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                        '--package-path', str(racine / 'packages'), '--input', 'format=' + variante, '--input', 'pauses=' + pauses,
+                        str(source), str(racine / ('pauses-' + variante + '-' + pauses + '.pdf'))], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, solution
 #show: cours.with(titre: "Cours sans présentation")
 Un énoncé.
