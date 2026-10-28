@@ -1,8 +1,8 @@
 #import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
-  PP, article-only, automate, colonnes-cours, completer, cours-et-presentation, hp, lien, liste-cours, pause, sep, slides-only,
-  solution, theoremes, tp,
+  PP, article-only, automate, colonnes-cours, completer, cours-et-presentation, hp, lien, liste-cours, pause, sep,
+  slides-only, solution, theoremes, tp,
 )
 #import theoremes: algorithme, definition, exercice, lemme, methode, theoreme
 #import automate: LL, Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
@@ -48,7 +48,7 @@
 
 #slide()
 #exercice[
-  En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ? #completer()
+  Combien y a t-il d'automates à $Σ$ et $Q$ fixés, en fonction de $n = |Q|$ et $p = |Σ|$ ? #completer()
 ]
 
 #slides-only[== Fonction de transition]
@@ -82,9 +82,8 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 
 #slides-only[== Fonction de transition étendue]
 
-#grid(
+#colonnes-cours(
   columns: colonnes-definition,
-  column-gutter: 1.5em,
   align: center + horizon,
   definition[Fonction de transition étendue $δ^*$][
     On définit récursivement l'ensemble $δ^*(q, m)$ des états atteignables par un chemin d'étiquette $m ∈ Σ^*$ depuis $q ∈ Q$ :
@@ -92,9 +91,6 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   ],
   [
     #exercice[Donner $δ^*(1, a b)$ pour l'automate ci-dessus.\ #completer()]
-    #solution[
-      $δ(1, a) = {0, 2}$, donc $δ^*(1, a b) = δ(0, b) ∪ δ(2, b) = {1, 2}$.
-    ]
   ],
 )
 
@@ -107,9 +103,8 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 // ]
 
 #slide()
-#grid(
+#colonnes-cours(
   columns: colonnes-definition,
-  column-gutter: 1.5em,
   align: center + horizon,
   [
     #definition[Fonction de transition sur un ensemble][
@@ -143,7 +138,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   })),
 )
 
-
+#slide()
 #lemme[Concaténation de chemins][
   Avec $u, v ∈ Σ^*$, $X ⊂ Q$ et en notant $⋅$ au lieu de $δ^*$ :
   $ X ⋅ u v = X ⋅ u ⋅ v $
@@ -156,10 +151,9 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 
 = Langage reconnaissable
 
-#slide()
 #definition([Langage reconnaissable], marge: false)[
   Un mot $m$ est _accepté_ par $A$ si $δ^*(I, m) ∩ F ≠ ∅$, c'est-à-dire s'il est étiquette d'un _chemin acceptant_ de $I$ à $F$.\
-  Le _langage reconnu_ par $A$, noté $LA$, est l'ensemble des mots acceptés par $A$.\
+  Le _langage_ $LA$ _reconnu_ par $A$ est l'ensemble des mots acceptés par $A$.\
   On note $Lrec(Σ)$ l'ensemble des _langages reconnaissables_ par automate.
 ]
 
@@ -199,26 +193,30 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   )
 }
 
-#slides-only[
-  #slide()
-  À gauche : les mots contenant un nombre impair de $a$, par exemple $b b a b$.
-
-  À droite : $a^* b | b^* a$.
-  Chaque état initial correspond à l'une des deux branches de l'union.
-]
-
 #slide()
 
-#liste-cours(
-  encadrer: contenu => exercice[
+#{
+  let questions = (
+    [$a b | a b c | c$],
+    [Mots de taille paire sur $Σ = {a, b}$.],
+    [$(b | a b | a b a)^*$],
+    [Mots sur $Σ = {a, b}$ dont l'avant-dernière lettre est $a$.],
+  )
+  let enonce(contenu) = exercice[
     Montrer que les langages suivants sont reconnaissables :
     #contenu
-  ],
-  [$a b | a b c | c$],
-  [Mots de taille paire sur $Σ = {a, b}$.],
-  [$(b | a b | a b a)^*$],
-  [Mots sur $Σ = {a, b}$ dont l'avant-dernière lettre est $a$.],
-)
+  ]
+  if est-presentation() {
+    enonce(enum(..questions))
+  } else {
+    colonnes-cours(
+      align: left + top,
+      encadrer: enonce,
+      enum(..questions.slice(0, 2)),
+      enum(start: 3, ..questions.slice(2)),
+    )
+  }
+}
 
 Pour déterminer si $m = m_1 … m_n ∈ LA$, on peut calculer itérativement l'ensemble $Q_k$ des états atteignables après lecture de $m_1 … m_k$ : $Q_0 = I$ et $Q_k = δ(Q_(k-1), m_k)$.
 Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
@@ -226,7 +224,7 @@ Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
 #slide()
 #exercice[
   + Proposer une structure de données pour représenter $Q_k$ et donner la complexité en temps et mémoire.
-  + Proposer une autre méthode par mémoïsation. Comparer les deux méthodes.
+  + Proposer une autre méthode par mémoïsation. Comparer.
 ]
 #solution[
 ]
@@ -241,15 +239,13 @@ Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
   Un automate $A = (Q, Σ, I, F, δ)$ est _complet_ s'il n'a pas de blocage : $∀ q ∈ Q, a ∈ Σ, #sep δ(q, a) ≠ ∅$.
 ]
 
-#slide()
 #theoreme[Complétion d'un automate][Tout automate est équivalent à un automate complet.]<thm-complet>
 
 = Automate déterministe
 
-Intuitivement, un automate est déterministe s'il n'y a jamais plusieurs possibilités de lecture.
-#grid(
+#article-only[Intuitivement, un automate est déterministe s'il n'y a jamais plusieurs possibilités de lecture.]
+#colonnes-cours(
   columns: colonnes-definition,
-  column-gutter: 1.5em,
   align: horizon,
   {
     definition(coeur: true, marge: false, [Automate déterministe (AD)])[
@@ -279,18 +275,17 @@ Un automate déterministe complet (ADC) a une fonction de transition de la forme
   + $A$ contient au plus un chemin d'étiquette $m$ partant de $q$.
   + $A$ contient au plus un chemin de $q_0$ à $q$.
   + $A$ est _non ambigu_ : chaque mot de $LA$ a un unique chemin acceptant.
-  + Si $A'$ est non ambigu alors $A'$ est déterministe.
+  + Si $A'$ est un automate non ambigu alors $A'$ est déterministe.
 ]
 
 #slide()
 
 #exercice[
-  Soit $A = (Q, Σ, q_0, F, δ)$ un ADC à $n$ états.
+  Soit $A = (Q, Σ, q_0, F, δ)$ un ADC à $n$ états.#slides-only[\ ]
   Montrer : $Σ^(< n) ⊂ LA ==> LA = Σ^*$.
   La borne est-elle optimale ?
 ]
 #solution[
-  #slide()
   Supposons $LA ≠ Σ^*$ et soit $m ∈ Σ^* \\ LA$ de taille minimale.
   Par hypothèse, $abs(m) ≥ n$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
@@ -299,7 +294,6 @@ Un automate déterministe complet (ADC) a une fonction de transition de la forme
   @lem-delta-etoile donne $ δ^*(q_0, x z) = δ^*(δ^*(q_0, x), z) = δ^*(δ^*(q_0, x y), z) = δ^*(q_0, m). $
   Donc $x z ∉ LA$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
 
-  #slide()
   La borne est optimale sur $Σ = {a}$.
   En effet, soit $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
   $ δ(i, a) = min(i + 1, n - 1). $
@@ -392,18 +386,17 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   facteur,
 )
 #solution(presentation: true)[
-  == Automate déterminisé
+  #slides-only[== Algorithme de déterminisation]
   // Les éléments masqués gardent leurs dimensions et leurs ancres entre les étapes.
-  #text(size: 0.8em)[
-    #facteur
-    #v(0.5em)
+  #facteur
+  #text(size: 1em)[
     #align(center, touying-reducer(
       reduce: cetz.canvas,
       cover: cetz.draw.hide.with(bounds: true),
       length: unite-automates,
       {
         import finite.draw: state, transition
-        cetz.draw.set-style(..style-automates, state: (radius: 0.9))
+        cetz.draw.set-style(..style-automates, state: (radius: 0.8))
         state((0, 0), "0", label: ${0}$, initial: (label: none))
         (pause,)
         state((2.5, 0), "1", label: ${0, 1}$)
@@ -433,19 +426,18 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
         (pause,)
         transition("5", "4", label: (text: $a$), curve: 0.4)
         (pause,)
-        // Ce retour contourne l’état 4, situé entre les états 5 et 3.
-        transition("5", "3", label: (text: $b$, dist: -style-automates.transition.label.dist), curve: -3)
+        // Ce retour contourne l’éta 4, situé entre les états 5 et 3.
+        transition("5", "3", label: (text: $b$, dist: -style-automates.transition.label.dist), curve: -2)
       },
-    ))
-  ]
+    ))]
 ]
 
 #slide()
 #exercice[
   Soit $L_n = Σ^* a Σ^n$ sur $Σ = {a, b}$, avec $n ∈ ℕ$.
   + Montrer que $L_n$ est reconnu par un automate non déterministe à $n + 2$ états.
-  + Montrer que $L_n$ est reconnu par un automate déterministe à $2^(n + 2)$ états.
-  + Montrer que tout automate déterministe reconnaissant $L_n$ possède au moins $2^n$ états.
+  + Montrer que $L_n$ est reconnu par un AD à $2^(n + 2)$ états.
+  + Montrer que tout AD reconnaissant $L_n$ possède au moins $2^n$ états.
 ]
 
 
@@ -514,7 +506,6 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   ))
 ]
 
-#slide()
 #underline[Remarque] : en supposant $Q_1 ∩ Q_2 = ∅$ (quitte à renommer les états), $L_1 ∪ L_2$ est reconnu plus simplement par l'automate non déterministe $A_1 ∪ A_2 = (Q_1 ∪ Q_2, Σ, {i_1, i_2}, F_1 ∪ F_2, δ)$ où :
 $δ(q, a) = display(
   cases(
@@ -524,8 +515,8 @@ $δ(q, a) = display(
 )$
 
 #exercice[
-  + Est-il nécessaire de supposer que $A_1$ et $A_2$ sont des ADC dans la preuve de @thm-operations ?
   + Montrer que $L = {m | |m|_a ≡ 0 #sep mod #sep 2, #sep |m|_b ≡ 1 #sep mod #sep 3}$ est reconnaissable.
+  + Est-il nécessaire de supposer que $A_1$ et $A_2$ sont des ADC dans la preuve de @thm-operations ?
 ]
 
 = Lemme de l'étoile
@@ -534,7 +525,6 @@ $δ(q, a) = display(
   Soit $L$ reconnu par un automate à $n$ états. Pour tout $u ∈ L$ de taille au moins $n$, il existe des mots $x, y, z$ tels que :
   $ u = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad x y^* z ⊂ L. $
 ]<lem-etoile>
-#slide()
 // #solution[
 //   prendre un chemin acceptant d'étiquette $u$.
 //   Parmi ses $n + 1$ premiers états, deux sont égaux : $q_i = q_j$, avec $0 ≤ i < j ≤ n$.
@@ -579,8 +569,8 @@ $δ(q, a) = display(
 ]
 
 #underline[Remarques] :
-- Les automates sont sans mémoire : le choix d'une transition dépend uniquement de l'état actuel et de la lettre lue, pas du chemin déjà parcouru. Ils ne peuvent donc pas compter, ce qui explique intuitivement que $L_1, L_2 ∉ Lrec(Σ)$.
-- Par contre, ${a^n b^p | n ≡ p mod 2}$ est reconnaissable car il suffit de mémoriser la parité du nombre de $a$ et de $b$ lus (2 états suffisent) et pas une infinité de valeurs possibles.
+- Les automates sont sans mémoire : le choix d'une transition dépend uniquement de l'état actuel et de la lettre lue, pas du chemin déjà parcouru. Ils ne peuvent donc pas compter, d'où $L_1, L_2 ∉ Lrec(Σ)$.
+- Par contre, ${a^n b^p | n ≡ p mod 2} ∈ Lrec(Σ)$ car il suffit de mémoriser la parité du nombre de $a$ et $b$ et pas une infinité de valeurs possibles.
 
 #hp[= Compléments]
 
