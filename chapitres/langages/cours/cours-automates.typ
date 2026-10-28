@@ -198,6 +198,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
     ),
   )
 }
+    #show enum: set block(above: if est-presentation() { 0pt } else { auto }, below: if est-presentation() { 0pt } else { auto })
 
 #slides-only[
   #slide()
