@@ -59,7 +59,7 @@ Voir @question-mobile avant son énoncé.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'corrige=' + variante,
                         str(source), str(racine / (variante + '.pdf'))], check=True)
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, taille-presentation, pause, article-only, slides-only, solution, theoremes
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, liste-cours, taille-presentation, pause, article-only, slides-only, solution, theoremes
 #show: cours-et-presentation.with(titre: "Cours externe", niveau: "MPI")
 #show text.where(text: "♡"): it => [#metadata("coeur") <coeur-solution-test>#it]
 = Section
@@ -161,6 +161,31 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
     assert(gauche.page == droite.page and gauche.y == droite.y and gauche.x < droite.x)
   } else {
     assert(gauche.page == droite.page and gauche.x == droite.x and gauche.y < droite.y)
+  }
+}
+== Liste du cours
+#liste-cours(
+  start: 3,
+  encadrer: theoremes.exercice-sans-numero,
+  ..range(5).map(i => [#metadata(i) <liste-cours-test> Élément #i.]),
+)
+#context {
+  let items = query(<liste-cours-test>)
+  assert(items.map(it => it.value) == range(5))
+  let positions = items.map(it => it.location().position())
+  assert(positions.all(p => p.page == positions.first().page))
+  if sys.inputs.at("format") == "cours" {
+    assert(positions.at(0).y == positions.at(3).y)
+    assert(positions.at(0).x < positions.at(3).x)
+    assert(positions.at(1).y == positions.at(4).y)
+    assert(positions.at(2).y > positions.at(1).y)
+  } else {
+    assert(positions.all(p => p.x == positions.first().x))
+    let pas = positions.at(1).y - positions.at(0).y
+    assert(pas > 0pt)
+    for i in range(1, 5) {
+      assert(calc.abs(positions.at(i).y - positions.at(i - 1).y - pas) < 0.1pt)
+    }
   }
 }
 ''', encoding='utf-8')

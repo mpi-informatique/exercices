@@ -8,7 +8,7 @@
 #import "lib/theoremes.typ" as theoremes
 #import "lib/cours.typ": cours, espace-reponse, solution
 #import "lib/presentation.typ": (
-  article-only, colonnes-cours, cours-et-presentation, equation-slide, item-by-item, only, pause, presentation, slide,
+  article-only, colonnes-cours, cours-et-presentation, equation-slide, item-by-item, liste-cours, only, pause, presentation, slide,
   slides-only, taille-presentation, uncover,
 )
 
