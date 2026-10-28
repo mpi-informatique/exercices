@@ -1,7 +1,8 @@
 #import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
-  article-only, cours-et-presentation, item-by-item, only, pause, slides-only, solution, taille-presentation,
+  article-only, cours-et-presentation, item-by-item, liste-cours, only, pause, slides-only, solution,
+  taille-presentation,
 )
 #import "/load.typ": automate, completer, theoremes
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
@@ -26,7 +27,7 @@
 
 = Alphabet et mot
 
-#definition(item-by-item[
+#definition(titre: [Alphabet, lettre, mot], item-by-item[
   - Un _alphabet_ est un ensemble $Σ$ fini, dont les éléments sont des _lettres_.
   - #taille-presentation(
       0.92em,
@@ -41,12 +42,12 @@
 
 #slide()
 
-#definition[
+#definition(titre: [Concaténation, Puissance])[
   - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est : #equation-slide($u v = u_1 … u_n v_1 … v_p$)
   - Si $u in Σ^*$, on définit sa _puissance_ par récurrence : $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
 ]
 
-#underline[Remarque] :
+#underline[Remarques] :
 - $Σ^*$ muni de la concaténation est un _monoïde_ : la concaténation est associative et $ε$ est élément neutre.
 - $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$.
 
@@ -57,17 +58,14 @@
   Montrer que $a = b$ et : $exists k ∈ ℕ, #sep u = a^k$.
 ]
 #solution[
-  #slides-only[== Théorème de Lévy : preuve]
   Raisonnons par récurrence sur $abs(u)$.
   - Si $u = ε$, l'égalité donne $a = b$ et $u = a^0$.
-  #pause
   - Sinon, en comparant les premières lettres de $a u$ et $u b$, on obtient $u = a v$.
     L'égalité $a a v = a v b$ donne $a v = v b$ après simplification par $a$.
     Par hypothèse de récurrence, $a = b$ et $v = a^k$, donc $u = a^(k + 1)$.
 ]
 
 #slide()
-
 #exercice[Lemme de Lévy][
   Soient $u, v, x, y ∈ Σ^*$ tels que $u v = x y$.
   Montrer qu'il existe un unique $m ∈ Σ^*$ vérifiant l'une des conditions suivantes :
@@ -95,9 +93,13 @@
       [
         *Si $abs(x) ≤ abs(u)$ :*
         #bande(
-          table.cell(colspan: 2)[$u$], [$v$],
-          [$x$], morceau, [$v$],
-          [$x$], table.cell(colspan: 2)[$y$],
+          table.cell(colspan: 2)[$u$],
+          [$v$],
+          [$x$],
+          morceau,
+          [$v$],
+          [$x$],
+          table.cell(colspan: 2)[$y$],
         )
         Les $abs(x)$ premières lettres donnent $u = x m$.
         Puis $x m v = x y$ donne $y = m v$.
@@ -105,9 +107,13 @@
       [
         *Si $abs(u) ≤ abs(x)$ :*
         #bande(
-          [$u$], table.cell(colspan: 2)[$v$],
-          [$u$], morceau, [$y$],
-          table.cell(colspan: 2)[$x$], [$y$],
+          [$u$],
+          table.cell(colspan: 2)[$v$],
+          [$u$],
+          morceau,
+          [$y$],
+          table.cell(colspan: 2)[$x$],
+          [$y$],
         )
         De même, $x = u m$.
         Puis $u v = u m y$ donne $v = m y$.
@@ -121,8 +127,7 @@
 
 #slide()
 
-#definition[
-  Soient $u, m ∈ Σ^*$.
+#definition(titre: [Préfixe, Suffixe, Facteur, Sous-mot])[
   - $u$ est un _préfixe_ de $m$ s'il existe un mot $v$ tel que $m = u v$.
   - $u$ est un _suffixe_ de $m$ s'il existe un mot $v$ tel que $m = v u$.
   - $u$ est un _facteur_ (_substring_ en anglais) de $m$ s'il existe des mots $v, w$ tels que $m = v u w$.
@@ -198,28 +203,21 @@
 
 = Langage
 
-
-#definition[
+#definition(titre: [Langage])[
   Un _langage_ $L$ sur un alphabet $Σ$ est un ensemble de mots sur $Σ$, c'est-à-dire $L ⊂ Σ^*$ ou encore $L ∈ cal(P)(Σ^*)$
 ]
-Le nombre de langages sur $Σ$ est : #completer()
-#solution[
-  #pause
-  Il y en a $2^(abs(Σ^*))$, puisque les langages sont les parties de $Σ^*$.
-  Si $Σ = ∅$, alors $Σ^* = {ε}$ : il y a exactement deux langages.
-  Sinon, $Σ^*$ est infini dénombrable et son ensemble de parties est indénombrable, comme on le verra dans le complément.
-]
-#slide()
 
 #taille-presentation(0.85em)[
   #set par(justify: false)
   #figure(
     table(
-      columns: (1fr, 1fr, 1fr, 1.2fr, 1.2fr),
-      align: (left, center, center, center, center),
+      columns: (1fr, 0.6fr, 1.4fr, 1.2fr, 1.2fr),
+      align: (center, center, center, center, center),
       inset: 0.4em,
-      [*Description*], [$L_0 = {ε, a, b a b}$], [$L_1$ : mots du dictionnaire français], [$L_2$ : formules arithmétiques], [$L_3$ : programmes OCaml],
-      [*Alphabet*], [${a, b}$], [${a, b, …, z}$], [${0, …, 9}$ \ $∪ {"+", "-", "/", "*"}$ \ $∪ {"(", ")"}$], [Lettres, chiffres, espaces, ponctuation…],
+      [*Langage*], [${ε, a, b a b}$], [Mots du dictionnaire français], [Formules arithmétiques], [Programmes OCaml],
+
+      [*Alphabet*], [${a, b}$], [${a, b, …, z}$], [${0, …, 9, "+", "-", "/", "*", "(", ")"}$], [Symboles ASCII],
+
       [*Exemple de mot*], [$b a b$], [`chat`], [`(2+3)*4`], [`let x = 1`],
     ),
     caption: [Exemples de langages],
@@ -229,16 +227,17 @@ Le nombre de langages sur $Σ$ est : #completer()
 
 == Concaténation
 
-#definition[
-  La _concaténation_ de deux langages $L_1$ et $L_2$ est : $L_1 L_2 = {m_1 m_2 ∣ m_1 ∈ L_1, #sep m_2 ∈ L_2}$.
+#definition(titre: [Concaténation])[
+  La _concaténation_ de deux langages $L_1$ et $L_2$ est $L_1 L_2 = {m_1 m_2 ∣ m_1 ∈ L_1, #sep m_2 ∈ L_2}$.
 ]
 #underline[Remarque] : La concaténation de langages est associative, d'élément neutre ${ε}$ et d'élément absorbant $∅$.
 
 #slide()
 
-#exercice[
-  + Soit $L_1 = {a, a b}$ et $L_2 = {ε, b, b b a}$. Déterminer $L_1 L_2$ et $L_2 L_1$. Comparer.
-  + Quel lien a-t-on entre $abs(L_1 L_2)$ et $abs(L_1) abs(L_2)$ dans le cas général ?
+#exercice[#liste-cours(
+    text(0.96em)[Comparer $L_1 L_2$ et $L_2 L_1$ où $L_1 = {a, a b}, L_2 = {ε, b, b b a}$.],
+    [Quel lien a-t-on entre $abs(L_1 L_2)$ et $abs(L_1) abs(L_2)$, en général ?],
+  )
 ]
 #solution[
   #slides-only[== Concaténation : corrigé]
@@ -252,24 +251,22 @@ Le nombre de langages sur $Σ$ est : #completer()
 ]
 
 #slide()
-
 #exercice[
-  Les propositions suivantes sont-elles vraies ?
-  + $∀ u, v, w ∈ Σ^*, #sep u v = u w ==> v = w$.
-  + $∀ L_1, L_2, L_3 ⊂ Σ^*, #sep L_1 L_2 = L_1 L_3 ==> L_2 = L_3$.
+  Lequelles de ces propositions sont vraies ?
+  #liste-cours(
+    [$∀ u, v, w ∈ Σ^* : #sep u v = u w ==> v = w$.],
+    [$∀ L_1, L_2, L_3 ⊂ Σ^* : #sep L_1 L_2 = L_1 L_3 ==> L_2 = L_3$.],
+  )
 ]
 #solution[
-  #slides-only[== Simplification : corrigé]
   + Vrai : après les $abs(u)$ premières lettres communes, les suites de lettres restantes sont égales.
-  #pause
   + Faux : si $L_1 = ∅$, les deux produits sont vides quels que soient $L_2$ et $L_3$.
-    Même avec des langages non vides, sur $Σ = {a}$, on peut prendre
-    $L_1 = Σ^*$, $L_2 = {ε}$ et $L_3 = {ε, a}$ : les deux produits valent $Σ^*$.
+    Même avec des langages non vides, sur $Σ = {a}$, on peut prendre $L_1 = Σ^*$, $L_2 = {ε}$ et $L_3 = {ε, a}$ : les deux produits valent $Σ^*$.
 ]
 
 == Puissance
 
-#definition[
+#definition(titre: [Puissance])[
   Si $L ⊂ Σ^*$, on définit sa _puissance_ par récurrence : $L^0 = {ε}$ et $L^k = L L^(k - 1)$ pour $k ≥ 1$.
 ]
 Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_n ∈ L}.$
@@ -278,10 +275,10 @@ Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1
 
 #slide()
 
-#exercice[
-  + Montrer que $L ⊂ L^2$ si et seulement si $L = ∅$ ou $ε ∈ L$.
-  + Comparer $L^2$ et ${u^2 ∣ u ∈ L}$.
-]
+#exercice(liste-cours(
+  [Montrer que $L ⊂ L^2$ si et seulement si $L = ∅$ ou $ε ∈ L$.],
+  [Comparer $L^2$ et ${u^2 ∣ u ∈ L}$.],
+))
 #solution[
   #slides-only[== Puissances : corrigé]
   + Si $L = ∅$, l'inclusion est vraie. Si $ε ∈ L$, tout $u ∈ L$ s'écrit $u ε ∈ L^2$.
@@ -295,7 +292,8 @@ Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1
 
 == Étoile de Kleene
 
-#definition[
+
+#definition(titre: [Étoile de Kleene])[
   L'_étoile de Kleene_ d'un langage $L$ est $L^* = display(union.big_(k ∈ ℕ)) L^k$.
 ]
 $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelconque de mots de $L$. \
@@ -304,7 +302,7 @@ $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelco
 #pause
 #exercice[
   + Montrer que $(L^*)^* = L^*$.
-  + Montrer que $L^* = L$ si et seulement si $L$ est un sous-monoïde de $Σ^*$, c'est-à-dire $L$ stable par concaténation et $ε ∈ L$.
+  + Montrer que $L^* = L$ si et seulement si $L$ est un _sous-monoïde_ de $Σ^*$, c'est-à-dire $L$ stable par concaténation et $ε ∈ L$.
 ]
 #solution[
   #slides-only[== Étoile de Kleene : corrigé]
@@ -319,8 +317,7 @@ $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelco
 
 = Langages réguliers
 
-
-#definition(coeur: true)[
+#definition(coeur: true, titre: [Langages réguliers])[
   L'ensemble $Lreg$ des _langages réguliers_ sur $Σ$ est le plus petit ensemble de langages, pour l'inclusion, contenant les langages finis sur $Σ$ et stable par union, concaténation et étoile de Kleene.
 ]
 
@@ -330,8 +327,7 @@ $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelco
 
 En particulier :
 - Si $L$ est un langage fini alors $L ∈ Lreg$.
-- Si $L_1 ∈ Lreg$ et $L_2 ∈ Lreg$ alors $L_1 ∪ L_2 ∈ Lreg$.
-- Si $L_1 ∈ Lreg$ et $L_2 ∈ Lreg$ alors $L_1 L_2 ∈ Lreg$.
+- Si $L_1 ∈ Lreg$ et $L_2 ∈ Lreg$ alors $L_1 ∪ L_2 ∈ Lreg$ et $L_1 L_2 ∈ Lreg$.
 - Si $L ∈ Lreg$ alors $L^* ∈ Lreg$.
 
 #exercice[
@@ -357,7 +353,7 @@ En particulier :
 
 #slide()
 
-#underline[Exemple] :
+#underline[Exemples] :
 + Soit $m$ un mot. Alors ${m}$ est fini, donc régulier. On le note aussi $m$ par abus de notation.
 #pause
 + $Σ$ est fini donc régulier. Donc $Σ^*$ est régulier.
@@ -397,8 +393,7 @@ En particulier :
 
 = Expressions régulières
 
-Les expressions régulières sont une notation plus concise pour représenter un langage régulier.
-
+Une expression régulière est une notation concise pour décrire un langage régulier, utilisée dans les éditeurs de texte.
 #colonnes-cours(
   columns: (1fr, 2fr),
   encadrer: regles => definition[
@@ -417,16 +412,16 @@ Les expressions régulières sont une notation plus concise pour représenter un
 
 #slide()
 
-#underline[Exemple] : $a^*$, $(a | a b a)^*$ et $a (a | b)^* b$ sont des expressions régulières.
+#underline[Exemples] : $a^*$, $(a | a b a)^*$ et $a (a | b)^* b$ sont des expressions régulières.
 
-#underline[Remarque] :
+#underline[Remarques] :
 - On utilise seulement les parenthèses nécessaires : $(((a b) c) | d)$ sera noté $a b c | d$.
 - On utilise parfois $+$ à la place de $|$.
 
 #slide()
 
 #colonnes-cours(
-  encadrer: regles => definition[
+  encadrer: regles => definition(titre: [Langage dénoté par une expression régulière])[
     Le _langage_ $LL(e)$ dénoté par une expression régulière $e$ est défini récursivement :
     #regles
   ],
@@ -498,22 +493,25 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
 
 #colonnes-cours(
   encadrer: exercice,
+  columns: (1.2fr, 1fr),
   [
-    + Écrire ```ocaml epsilon : 'a regexp -> bool``` qui teste $ε ∈ LL(e)$.
-    + Écrire ```ocaml vide : 'a regexp -> bool``` qui teste $LL(e) = ∅$.
+    Écrire les fonctions suivantes sur une expression régulière $e$ :
+    + ```ocaml vide : 'a regexp -> bool``` qui teste $LL(e) = ∅$.
+    + ```ocaml epsilon : 'a regexp -> bool``` qui teste $LL(e) = {ε}$.
+    + ```ocaml fini : 'a regexp -> bool``` qui teste si $LL(e)$ est fini.
   ],
   code-extrait(corrige-ocaml, "regexp"),
 )
 #solution[
   #slides-only[== Test du mot vide : corrigé]
-  #code-extrait(corrige-ocaml, "epsilon")
+  #code-extrait(corrige-ocaml, "vide")
   #pause
   Le mot vide appartient à une union si et seulement s'il appartient à l'un des deux langages.
   Il appartient à une concaténation si et seulement s'il appartient aux deux langages, car $u v = ε$ impose $u = v = ε$.
 ]
 #solution[
   #slides-only[== Test du langage vide : corrigé]
-  #code-extrait(corrige-ocaml, "vide")
+  #code-extrait(corrige-ocaml, "epsilon")
   #pause
   Une concaténation est vide si et seulement si l'un des facteurs l'est.
   Une étoile contient toujours $ε$.
@@ -566,8 +564,7 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
     columns: (1fr, 1fr),
     column-gutter: 2em,
     align: top,
-    liste-a-completer($e ∅ ≡$, $e ε ≡$, $e | ∅ ≡$, $∅^* ≡$),
-    liste-a-completer(start: 5, $ε^* ≡$, $(e_1 | e_2) e_3 ≡$, $e_1 (e_2 e_3) ≡$),
+    liste-a-completer($e ∅ ≡$, $e ε ≡$, $e | ∅ ≡$), liste-a-completer(start: 4, $∅^* ≡$, $ε^* ≡$, $(e_1 | e_2) e_3 ≡$),
   ))
 ]
 #solution[
@@ -629,7 +626,6 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
 
 #exercice([Miroir])[
   On note $widetilde(m) = m_n … m_1$ le _miroir_ d'un mot $m = m_1 … m_n$ et $widetilde(L) = {widetilde(m) ∣ m ∈ L}$ celui d'un langage $L$.
-
   + Donner une expression régulière du miroir de $a (a | b)^* b$.
   + Soit $L$ un langage régulier. Montrer que $widetilde(L)$ est régulier.
   + Écrire une fonction OCaml ```ocaml miroir : 'a regexp -> 'a regexp``` renvoyant le miroir d'une expression régulière.
@@ -654,24 +650,6 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
 ]
 
 #slides-only[
-  #slide()
-  - Pour montrer une égalité de deux mots, on peut faire une récurrence sur la taille du mot.
-  - Pour montrer une égalité de deux langages, on peut montrer une double inclusion.
-
-  #exercice[
-    Soient $e_1$ et $e_2$ deux expressions régulières.
-    Montrer que $(e_1^* e_2)^* e_1^* ≡ (e_1 | e_2)^*$.
-  ]
-  #solution[
-    == Équivalence : corrigé
-    Posons $A = LL(e_1)$ et $B = LL(e_2)$.
-    - Tout mot de $(A^* B)^* A^*$ est un produit de mots de $A$ ou de $B$, donc appartient à $(A ∪ B)^*$.
-    #pause
-    - Réciproquement, choisissons une décomposition en facteurs de $A ∪ B$, puis affectons chaque facteur à $A$ ou à $B$.
-      Regroupons chaque facteur de $B$ avec les facteurs de $A$ qui le précèdent depuis le dernier facteur de $B$.
-      Ces groupes appartiennent à $A^* B$, et les facteurs de $A$ restants forment un mot de $A^*$.
-  ]
-
   = Complément : Expressions régulières en pratique
 
   ```sh grep -E``` est une commande qui permet de chercher des motifs dans un texte en utilisant des expressions régulières étendues :
@@ -687,7 +665,6 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
   )
 
   = Complément : dénombrabilité et langages non réguliers
-
 
   Soit $Σ$ un alphabet non vide.
 
