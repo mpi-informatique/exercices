@@ -13,7 +13,7 @@ import shutil
 import subprocess
 import sys
 
-from sources import ROOT, pdf_filename, sources, variants
+from sources import ROOT, document_url, pdf_filename, sources, variants
 
 TYPST = os.environ.get('TYPST', 'typst')
 OCAML = os.environ.get('OCAML', 'ocaml')
@@ -44,6 +44,7 @@ def compiler(source, output, signature, *inputs, exercice=False):
         return
     output.parent.mkdir(parents=True, exist_ok=True)
     command = [TYPST, 'compile', '--root', ROOT, '--ignore-system-fonts']
+    command += ['--input', 'url-document=' + document_url(source)]
     for value in inputs:
         command += ['--input', value]
     if exercice:

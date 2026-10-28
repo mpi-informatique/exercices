@@ -5,6 +5,7 @@ import argparse
 from pathlib import Path
 import re
 import subprocess
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED = {"build", "lib", "templates", "ressources", "docs", "scripts", "tmp", "node_modules", "web", "shared"}
@@ -92,6 +93,14 @@ def pdf_filename(source, variant, kind=None):
     return stem + ('-cor' if variant == 'corrige' else '') + '.pdf'
 
 
+def document_url(source):
+    """Adresse publique d'une source de la banque ; les modèles et tests n'ont pas de page."""
+    source = Path(source)
+    if any(part.startswith('.') or part in IGNORED for part in source.parts[:-1]):
+        return ''
+    return f'https://mpi-informatique.github.io/exercices/{quote(source.stem)}/'
+
+
 def sources():
     for file in sorted(ROOT.rglob("*.typ")):
         relative = file.relative_to(ROOT)
@@ -131,6 +140,7 @@ def main():
     output = ROOT / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
     command = [args.typst, 'watch' if args.watch else 'compile', '--root', str(ROOT), '--ignore-system-fonts']
+    command += ['--input', 'url-document=' + document_url(source.relative_to(ROOT))]
     for value in available[variant]:
         command += ['--input', value]
     if kind != 'exercice':

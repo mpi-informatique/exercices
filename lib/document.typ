@@ -53,6 +53,17 @@
 
 #let auteur-par-defaut = "Q. Fortier"
 
+/// Rend un titre cliquable vers sa page sur le site, sans changer son style.
+/// L'entrée système `url-document` est renseignée par les outils de compilation de la banque.
+/// Sans cette entrée, le titre reste du texte simple.
+///
+/// - body (content, str): Titre affiché.
+/// -> content
+#let titre-lie(body) = {
+  let url = sys.inputs.at("url-document", default: "")
+  if url == "" { body } else { context link(url, text(fill: text.fill, body)) }
+}
+
 /// Formate le couple `(heures, minutes)` en durée lisible.
 ///
 /// - duree (array): Couple de deux entiers.
@@ -114,7 +125,7 @@
           align: (left, center, right),
           if niveau != none { niveau },
           text(size: 1.2em, weight: "bold")[
-            #if titre-entete == none { titre } else { titre-entete }#if duree != none [ (#texte-duree(duree))]
+            #titre-lie([#if titre-entete == none { titre } else { titre-entete }#if duree != none [ (#texte-duree(duree))]])
           ],
           if attribution != none { attribution } else if auteur != none {
             link("https://mpi-informatique.github.io", auteur)

@@ -286,6 +286,21 @@ Contenu de la nouvelle diapositive.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
                         str(source), str(racine / ('saut-' + variante + '.pdf'))], check=True)
+    for modele, options in (('cours', ''), ('feuille', 'type: "devoir", duree: (2, 0),'), ('presentation', 'animations: false,')):
+        source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, feuille, presentation
+#show: ''' + modele + '''.with(titre: "Titre du document", ''' + options + ''')
+Contenu du document.
+#context {
+  let url = sys.inputs.at("url-document")
+  let titres = query(link).filter(it => type(it.dest) == str and it.dest.starts-with("https://mpi-informatique.github.io/exercices/"))
+  assert(titres.len() == if url == "" { 0 } else { 1 })
+  if url != "" { assert(titres.first().dest == url) }
+}
+''', encoding='utf-8')
+        for lien in ('', 'https://mpi-informatique.github.io/exercices/document-test/'):
+            subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                            '--package-path', str(racine / 'packages'), '--input', 'url-document=' + lien,
+                            str(source), str(racine / ('titre-' + modele + ('-lie' if lien else '') + '.pdf'))], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": hp, tp, coeur-en-marge, marge
 #let corps = if sys.inputs.at("format") == "presentation" { 22pt } else { 10pt }
 #set text(font: "New Computer Modern", size: corps)

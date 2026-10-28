@@ -2,7 +2,7 @@ import { createTypstCompiler } from '@myriaddreamin/typst.ts/compiler';
 import { loadFonts, withAccessModel, withPackageRegistry } from '@myriaddreamin/typst.ts/options.init';
 import { MemoryAccessModel } from '@myriaddreamin/typst.ts/fs/memory';
 import type { WebAssemblyModuleRef } from '@myriaddreamin/typst.ts/wasm';
-import { compilationInputs, type Resource, type Variant } from '@mpi-informatique/exercices-core';
+import { compilationInputs, sourceId, type Resource, type Variant } from '@mpi-informatique/exercices-core';
 
 interface Assets {
   bundle: Record<string, string>;
@@ -58,8 +58,9 @@ export async function createEngine({ bundle, fonts, wasm }: Assets) {
         ...Object.fromEntries(fields.map(field => [field, [...new Set<string>(meta.exercises.flatMap((ex: Record<string, string[]>) => ex[field] ?? []))]])) as Pick<Resource, typeof fields[number]>,
       };
     },
-    async compile(resource: Pick<Resource, 'fichier' | 'kind'> & Partial<Pick<Resource, 'type'>>, source: string, variant: Variant) {
+    async compile(resource: Pick<Resource, 'fichier' | 'kind'> & Partial<Pick<Resource, 'type' | 'id'>>, source: string, variant: Variant) {
       const path = `/@memory/workspace/${resource.fichier}`;
+      const id = sourceId(resource.fichier);
       // Une feuille peut importer l'exercice précédemment édité : restaurer sa source.
       if (previousSource && previousSource !== path) compiler.unmapShadow(previousSource);
       previousSource = path;
@@ -68,7 +69,10 @@ export async function createEngine({ bundle, fonts, wasm }: Assets) {
       const result = await compiler.runWithWorld({
         mainFilePath: resource.kind === 'exercice' ? '/@memory/workspace/templates/fiche.typ' : path,
         root: '/@memory/workspace',
-        inputs: { ...compilationInputs(variant, resource.type), exercice: `/${resource.fichier}` },
+        inputs: {
+          ...compilationInputs(variant, resource.type), exercice: `/${resource.fichier}`,
+          'url-document': resource.id === id ? `https://mpi-informatique.github.io/exercices/${encodeURIComponent(id)}/` : '',
+        },
       }, world => world.pdf({ diagnostics: 'unix' }));
       if (!result.result) throw new Error(result.diagnostics?.join('\n') || 'La compilation a échoué.');
       return { pdf: new Uint8Array(result.result), diagnostics: result.diagnostics ?? [], duration: Math.round(performance.now() - start) };
