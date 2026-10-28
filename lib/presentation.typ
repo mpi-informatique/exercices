@@ -160,7 +160,11 @@
   encadrer: body => body,
   ..contenus,
 ) = {
-  article-only(encadrer(grid(columns: columns, column-gutter: column-gutter, align: align, ..contenus)))
+  // Résoudre les solutions et animations avant de les enfermer dans la grille ou le cadre.
+  let composer-colonnes(self: none, ..cellules) = encadrer(grid(columns: columns, column-gutter: column-gutter, align: align, ..cellules))
+  if not est-presentation() {
+    return touying.touying-fn-wrapper-raw(composer-colonnes, ..contenus)
+  }
   slides-only(if saut-slide {
     contenus.pos().map(encadrer).join(slide() + parbreak())
   } else {

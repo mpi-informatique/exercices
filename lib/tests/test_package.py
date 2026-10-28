@@ -146,10 +146,14 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   columns: (1.15fr, 1fr),
   encadrer: theoremes.exercice-sans-numero.with(full-title: ""),
   [#metadata("gauche") <colonne-test> Contenu de gauche.],
-  [#metadata("droite") <colonne-test> Contenu de droite.],
+  [
+    #metadata("droite") <colonne-test> Contenu de droite.
+    #solution[#metadata("solution") <solution-colonne-test> Solution dans une colonne.]
+  ],
 )
 #context {
   let cellules = query(<colonne-test>)
+  assert(query(<solution-colonne-test>).len() == if sys.inputs.at("corrige", default: "false") == "true" { 1 } else { 0 })
   assert(cellules.map(it => it.value) == ("gauche", "droite"))
   let gauche = cellules.first().location().position()
   let droite = cellules.last().location().position()
