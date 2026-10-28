@@ -564,13 +564,13 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
 
 #exercice[
   Pour des expressions régulières $e$, $e_1$, $e_2$ et $e_3$ :
-  #grid(
+  #context block(above: par.leading, grid(
     columns: (1fr, 1fr),
     column-gutter: 2em,
     align: top,
     liste-a-completer($e ∅ ≡$, $e ε ≡$, $e | ∅ ≡$, $∅^* ≡$),
     liste-a-completer(start: 5, $ε^* ≡$, $(e_1 | e_2) e_3 ≡$, $e_1 (e_2 e_3) ≡$),
-  )
+  ))
 ]
 #solution[
   #slides-only[== Identités : corrigé]
