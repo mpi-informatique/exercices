@@ -47,7 +47,7 @@
 )
 
 #slide()
-#exercice(pause: false)[
+#exercice[
   En notant $n = |Q|$ et $p = |Σ|$, combien existe t-il d'automates à $Σ$ et $Q$ fixés ? #completer()
 ]
 

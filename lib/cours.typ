@@ -1,6 +1,7 @@
 #import "options.typ": est-corrige, est-presentation
 #import "blocs.typ": bloc-solution, coeur-en-marge, epaisseur-trait
-#import "@preview/touying:0.8.0": slides-only, touying-fn-wrapper-raw, utils, pause as pause-touying
+#import "@preview/touying:0.8.0": slides-only, touying-fn-wrapper-raw, utils
+#import "animations.typ": pause-automatique
 #import "document.typ": auteur-par-defaut, document-pedagogique
 
 /// Résout les marques Touying puis compose le bloc de solution.
@@ -69,7 +70,7 @@
 /// - body (content): Solution ou preuve.
 /// -> content, none
 #let solution(cours: false, presentation: false, coeur: false, pause: true, body) = {
-  if est-presentation() and pause { body += pause-touying }
+  if est-presentation() and pause { body += pause-automatique }
   if est-corrige() or (cours and sys.inputs.at("format", default: "cours") == "cours") {
     // Le filtre article de Touying ne descend pas dans les arguments des fonctions différées.
     body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
