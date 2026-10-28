@@ -464,34 +464,34 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
 
 #exercice[
   #set par(justify: false)
-  Donner une expression régulière pour les langages suivants sur $Σ = {a, b}$ :
+  Donner une expression régulière pour les langages suivants sur $Σ = {0, 1}$ :
   #colonnes-cours(
     [
-      + Mots contenant au plus un $a$.
+      + Mots contenant au plus un $1$.
       + Mots dont la taille est congrue à $1$ modulo $3$.
     ],
     [
       #enum(
         start: 3,
-      )[Sur $Σ = {0, 1}$ : écritures en base $2$ des entiers divisibles par $4$.][Sur $Σ = {a, b}$ : mots ne contenant pas le facteur $a a$.]
+      )[Écritures en base $2$ des entiers divisibles par $4$.][Mots ne contenant pas le facteur $1 1$.]
     ],
   )
 ]
 
 #solution[
   #slides-only[== Expressions régulières : corrigé]
-  + $b^* (ε | a) b^*$
+  + $0^* (ε | 1) 0^*$
   #pause
-  + $(a | b) ((a | b) (a | b) (a | b))^*$
+  + $(0 | 1) ((0 | 1) (0 | 1) (0 | 1))^*$
   #pause
   + Pour les écritures canoniques, sans zéro initial, avec $0$ écrit $0$ : $0 | 1 (0 | 1)^* 0 0$.
     Si les zéros initiaux sont autorisés : $0 | (0 | 1)^* 0 0$.
     Un entier binaire non nul est divisible par $4$ si et seulement si ses deux derniers chiffres sont $0$.
   #pause
-  + $(b | a b)^* (ε | a)$.
-    Chaque $a$, sauf éventuellement la dernière lettre du mot, est suivi d'un $b$.
-    Le mot se découpe donc en blocs $b$ ou $a b$, avec éventuellement un $a$ final.
-    Réciproquement, une telle concaténation ne contient pas $a a$, y compris à la jonction des blocs.
+  + $(0 | 1 0)^* (ε | 1)$.
+    Chaque $1$, sauf éventuellement la dernière lettre du mot, est suivi d'un $0$.
+    Le mot se découpe donc en blocs $0$ ou $1 0$, avec éventuellement un $1$ final.
+    Réciproquement, une telle concaténation ne contient pas $1 1$, y compris à la jonction des blocs.
 ]
 
 #slide()
