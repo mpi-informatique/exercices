@@ -258,14 +258,16 @@ Intuitivement, un automate est déterministe s'il n'y a jamais plusieurs possibi
       - Il y a au plus une transition $q limits(⟶)^(a) …$ : $∀ q ∈ Q, a ∈ Σ, #sep |δ(q, a)| ≤ 1$
     ]
   },
-  figure(
-    dessiner-automate(
-      (("q", (0, 0), false, false), ("q_1", (2.5, 0.75), false, false), ("q_2", (2.5, -0.75), false, false)),
-      (("q", "q_1", "a", (curve: 0)), ("q", "q_2", "a", (curve: 0))),
-    ),
-    numbering: none,
-    caption: [Automate non déterministe],
-  ),
+  if not est-presentation() {
+    figure(
+      dessiner-automate(
+        (("q", (0, 0), false, false), ("q_1", (2.5, 0.75), false, false), ("q_2", (2.5, -0.75), false, false)),
+        (("q", "q_1", "a", (curve: 0)), ("q", "q_2", "a", (curve: 0))),
+      ),
+      numbering: none,
+      caption: [Automate non déterministe],
+    )
+  },
 )
 
 Un automate déterministe complet (ADC) a une fonction de transition de la forme $δ : Q timess Σ → Q$ et $δ^* : Q timess Σ^* → Q$.
