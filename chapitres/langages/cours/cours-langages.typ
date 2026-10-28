@@ -211,28 +211,19 @@ Le nombre de langages sur $Σ$ est : #completer()
 ]
 #slide()
 
-#underline[Exemples de langages] :
 #taille-presentation(0.85em)[
   #set par(justify: false)
-  #table(
-    columns: (1fr, 1fr, 1fr, 1.2fr, 1.2fr),
-    align: (left, center, center, center, center),
-    inset: 0.4em,
-    [*Description*],
-    [$L_0 = {ε, a, b a b}$],
-    [$L_1$ : mots du dictionnaire français],
-    [$L_2$ : formules arithmétiques],
-    [$L_3$ : programmes OCaml],
-    [*Alphabet*],
-    [${a, b}$],
-    [${a, b, …, z}$],
-    [${0, …, 9}$ \ $∪ {"+", "-", "/", "*"}$ \ $∪ {"(", ")"}$],
-    [Lettres, chiffres, espaces, ponctuation…],
-    [*Exemple de mot*],
-    [$b a b$],
-    [`chat`],
-    [`(2+3)*4`],
-    [`let x = 1`],
+  #figure(
+    table(
+      columns: (1fr, 1fr, 1fr, 1.2fr, 1.2fr),
+      align: (left, center, center, center, center),
+      inset: 0.4em,
+      [*Description*], [$L_0 = {ε, a, b a b}$], [$L_1$ : mots du dictionnaire français], [$L_2$ : formules arithmétiques], [$L_3$ : programmes OCaml],
+      [*Alphabet*], [${a, b}$], [${a, b, …, z}$], [${0, …, 9}$ \ $∪ {"+", "-", "/", "*"}$ \ $∪ {"(", ")"}$], [Lettres, chiffres, espaces, ponctuation…],
+      [*Exemple de mot*], [$b a b$], [`chat`], [`(2+3)*4`], [`let x = 1`],
+    ),
+    caption: [Exemples de langages],
+    numbering: none,
   )
 ]
 
