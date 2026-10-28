@@ -7,12 +7,13 @@
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
 /// Les appels acceptent un contenu et les options communes `titre`, `coeur` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
+/// En présentation, une pause suit chaque cadre ; `pause: false` la désactive.
 /// Les références `@etiquette` suivent le type et le numéro, y compris pendant
 /// les animations. Dans `algorithme`, les listes imbriquées décrivent le pseudocode.
 
 #import "@preview/lovelace:0.3.1": pseudocode-list
 #import "@preview/theorion:0.6.0" as theorion
-#import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils
+#import "@preview/touying:0.8.0": touying-fn-wrapper-raw, utils, pause as pause-touying
 #import theorion.cosmos.fancy: (
   fancy-box, get-fancy-radius, set-primary-body-color, set-primary-border-color, set-quaternary-body-color,
   set-quaternary-border-color, set-secondary-body-color, set-secondary-border-color, set-tertiary-body-color,
@@ -230,9 +231,11 @@
 ///
 /// - nom (str): Type du cadre.
 /// - body (content): Contenu à résoudre.
+/// - pause (bool): Ajouter une pause après le cadre en présentation.
 /// - ..options (arguments): Options de `composer-cadre`.
 /// -> content
-#let rendre-cadre(nom, body, ..options) = {
+#let rendre-cadre(nom, body, pause: true, ..options) = {
+  if est-presentation() and pause { body += pause-touying }
   if not utils.tree.has-touying-mark(body) {
     composer-cadre(body, nom: nom, ..options)
   } else {
@@ -259,9 +262,10 @@
 /// - titre (content, str): Titre facultatif après « Méthode ».
 /// - coeur (bool): Signaler une méthode à connaître.
 /// - marge (bool): Ajouter la marge supérieure du bloc A4.
+/// - pause (bool): Ajouter une pause après la méthode en présentation.
 /// - body (content): Démarche, éventuellement sous forme d'étapes numérotées.
 /// -> content
-#let methode(titre: "", coeur: false, marge: true, body) = {
+#let methode(titre: "", coeur: false, marge: true, pause: true, body) = {
   // Le filtre de Touying ne descend pas dans les arguments des fonctions différées.
   body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
     if (marque.kind == "touying-slides-only") == est-presentation() { marque.body } else { [] }
@@ -272,6 +276,7 @@
     full-title: [#underline[Méthode] :#if titre != "" and titre != [] { [ #titre] }],
     coeur: coeur,
     marge: marge,
+    pause: pause,
   )
 }
 
