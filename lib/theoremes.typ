@@ -7,6 +7,7 @@
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
 /// Les appels acceptent un contenu et les options communes `titre`, `coeur` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
+/// `algorithme` accepte aussi `entree` et `sortie` : les descriptions sont alignées après des libellés en gras, avant les étapes.
 /// En présentation, une pause suit chaque cadre si du contenu reste sur la diapositive ; `pause: false` la désactive.
 /// Les références `@etiquette` suivent le type et le numéro, y compris pendant
 /// les animations. Dans `algorithme`, les listes imbriquées décrivent le pseudocode.
@@ -102,6 +103,8 @@
 /// - full-title (content, str, auto): Titre complet ou composition automatique.
 /// - coeur (bool): Signaler un résultat à connaître.
 /// - marge (bool): Ajouter la marge supérieure du cadre A4.
+/// - entree (content, none): Données d'entrée de l'algorithme, ou aucune ligne si `none`.
+/// - sortie (content, none): Résultat de l'algorithme, ou aucune ligne si `none`.
 /// - ..args (arguments): Options transmises à Theorion.
 /// -> content
 #let composer-cadre(
@@ -113,6 +116,8 @@
   full-title: auto,
   coeur: false,
   marge: true,
+  entree: none,
+  sortie: none,
   ..args,
 ) = {
   if self != none {
@@ -122,14 +127,28 @@
     })
   }
   if nom == "algorithm" {
-    body = context pseudocode-list(
-      indentation: 1.5em,
-      line-gap: par.leading,
-      line-numbering: none,
-      stroke: epaisseur-trait + luma(65%),
-      line-number-supplement: [Ligne],
-      body,
-    )
+    body = context {
+      if entree != none or sortie != none {
+        let lignes = ()
+        if entree != none { lignes += (strong[Entrée :], entree) }
+        if sortie != none { lignes += (strong[Sortie :], sortie) }
+        block(above: 0pt, below: 0.6em, grid(
+          columns: (auto, 1fr),
+          column-gutter: 0.8em,
+          row-gutter: 0.25em,
+          align: left + top,
+          ..lignes,
+        ))
+      }
+      pseudocode-list(
+        indentation: 1.5em,
+        line-gap: par.leading,
+        line-numbering: none,
+        stroke: epaisseur-trait + luma(65%),
+        line-number-supplement: [Ligne],
+        body,
+      )
+    }
   }
   context {
     let palette = style-cadres.get()
