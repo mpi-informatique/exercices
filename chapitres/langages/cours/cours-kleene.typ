@@ -28,7 +28,7 @@ On va montrer qu'un langage est régulier si et seulement s'il est reconnaissabl
   Pour $L ⊂ Σ^*$, on définit :
   - $P(L) = {a ∈ Σ ∣ a Σ^* ∩ L ≠ ∅}$ : premières lettres.
   - $S(L) = {a ∈ Σ ∣ Σ^* a ∩ L ≠ ∅}$ : dernières lettres.
-  - $F(L) = {u ∈ Σ^2 ∣ Σ^* u Σ^* ∩ L ≠ ∅}$ : facteurs de taille $2$.
+  - $F(L) = {m ∈ Σ^2 ∣ Σ^* m Σ^* ∩ L ≠ ∅}$ : facteurs de taille $2$.
 ]
 #slide()
 #exercice[Donner $P(L)$, $S(L)$ et $F(L)$ pour $L = a^* b (a b)^* c$.]
@@ -36,8 +36,8 @@ On va montrer qu'un langage est régulier si et seulement s'il est reconnaissabl
 
 == Langages locaux
 #definition[
-  Un langage $L$ est local si, pour tout mot non vide $u = u_1 … u_n$ :
-  $ u ∈ L ⟺ u_1 ∈ P(L) ∧ u_n ∈ S(L) ∧ (∀ k ∈ {1, …, n - 1}, #sep u_k u_(k + 1) ∈ F(L)). $
+  Un langage $L$ est local si, pour tout mot non vide $m = m_1 … m_n$ :
+  $ m ∈ L ⟺ m_1 ∈ P(L) ∧ m_n ∈ S(L) ∧ (∀ k ∈ {1, …, n - 1}, #sep m_k m_(k + 1) ∈ F(L)). $
 ]
 L'implication de gauche à droite est toujours vraie. Il suffit donc de prouver l'autre sens.
 L'appartenance de $ε$ est traitée séparément.
@@ -125,7 +125,7 @@ Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réc
 #slide()
 #exercice(title: "Morphismes de mots")[
   Un _morphisme de monoïdes_ $h : Σ^* → Γ^*$ vérifie $h(ε) = ε$ et $h(u v) = h(u) h(v)$ pour tous mots $u, v$.
-  Pour $L ⊂ Σ^*$, on note $h(L) = {h(u) | u ∈ L}$.
+  Pour $L ⊂ Σ^*$, on note $h(L) = {h(m) | m ∈ L}$.
 
   + Montrer que toute application $Σ → Γ^*$ se prolonge de manière unique en un morphisme.
   + Pour $L_1, L_2 ⊂ Σ^*$, exprimer $h(L_1 ∪ L_2)$, $h(L_1 L_2)$ et $h(L_1^*)$ en fonction des images de $L_1$ et $L_2$.
@@ -155,8 +155,8 @@ Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réc
   + On pose $π(ε) = ε$ et $π(a_1 … a_n) = π(a_1) … π(a_n)$.
     Il s'agit d'un morphisme alphabétique non effaçant. Il n'est pas injectif dès que deux occurrences de $e$ portent la même lettre, par exemple $π(a_0) = π(a_1) = a$.
     La projection de l'expression $e'$ redonne $e$. La dernière question de @exo-morphismes-mots donne donc $π(cal(L)(e')) = cal(L)(e)$.
-  + Tout chemin acceptant de $A'$ lisant $u$ devient un chemin acceptant de $A$ lisant $π(u)$.
-    Réciproquement, chaque transition d'un chemin acceptant de $A$ provient d'au moins une transition de $A'$ entre les mêmes états. En choisissant ces transitions, on obtient un chemin acceptant de $A'$ lisant un mot $u$ dont l'image est le mot lu dans $A$.
+  + Tout chemin acceptant de $A'$ lisant $m$ devient un chemin acceptant de $A$ lisant $π(m)$.
+    Réciproquement, chaque transition d'un chemin acceptant de $A$ provient d'au moins une transition de $A'$ entre les mêmes états. En choisissant ces transitions, on obtient un chemin acceptant de $A'$ lisant un mot $m$ dont l'image est le mot lu dans $A$.
     Les états initiaux et finaux sont inchangés, donc ce raisonnement vaut aussi pour les chemins de taille nulle.
   + Comme $e'$ est linéaire, $cal(L)(e')$ est local.
     Par construction de $A'$, un mot non vide $a_1 … a_n$ est accepté exactement lorsque sa première lettre appartient à $P(cal(L)(e'))$, sa dernière à $S(cal(L)(e'))$ et tous ses facteurs $a_k a_(k + 1)$ à $F(cal(L)(e'))$.

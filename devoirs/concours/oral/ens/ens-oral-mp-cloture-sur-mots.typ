@@ -44,7 +44,7 @@
       ],
       solution: [
         Oui : tout langage fini non vide convient.
-        Si $L$ est non vide et $u in L$, alors $u Sigma^* subset.eq overline(L)$, donc $overline(L)$ est infini puisque l'alphabet est non vide.
+        Si $L$ est non vide et $m in L$, alors $m Sigma^* subset.eq overline(L)$, donc $overline(L)$ est infini puisque l'alphabet est non vide.
         Si $L=emptyset$, sa clôture est vide.
 
         On peut aussi prendre $L'=L_0$ : si $overline(L)=L_0$, l'idempotence donnerait $L_0=overline(L_0)$, ce qui est faux d'après la question 1.

@@ -52,17 +52,17 @@
     ),
     question(
       [
-        Pour $u=b_1 … b_m$, on note $overline(u)=b_m … b_1$ son miroir.
-        Étant donné $A$, peut-on calculer un automate $A'_Π$ reconnaissant ${u∈Σ^* | u overline(u)∈cal(L)(A)}$ ?
+        Pour $m=b_1 … b_n$, on note $overline(m)=b_n … b_1$ son miroir.
+        Étant donné $A$, peut-on calculer un automate $A'_Π$ reconnaissant ${m∈Σ^* | m overline(m)∈cal(L)(A)}$ ?
       ],
       solution: [
         Oui. Écrivons $A=(Q,I,F,δ)$ et renversons ses transitions pour obtenir l'automate miroir $overline(A)$.
         Construisons le produit $B$ d'états $Q×Q$, initiaux $I×F$ et finaux $D={(q,q) | q∈Q}$, avec
         $ (p,r) arrow.r.long^(a) (p',r') ⟺ (p,a,p')∈δ " et " (r',a,r)∈δ. $
-        Par récurrence sur la taille de $u$, un chemin de $B$ étiqueté $u$ de $(i,f)$ à $(p,r)$ correspond exactement à un chemin $i arrow.r.long^(u) p$ et à un chemin $r arrow.r.long^(overline(u)) f$ dans $A$.
-        Il est acceptant si et seulement si $p=r$, ce qui permet de concaténer ces deux chemins en un chemin acceptant de $A$ étiqueté $u overline(u)$.
-        Réciproquement, scinder un chemin acceptant de $A$ étiqueté $u overline(u)$ après la lecture de $u$ donne un tel chemin acceptant de $B$.
-        Ainsi $cal(L)(B)={u∈Σ^* | u overline(u)∈cal(L)(A)}$ : prendre $A'_Π=B$.
+        Par récurrence sur la taille de $m$, un chemin de $B$ étiqueté $m$ de $(i,f)$ à $(p,r)$ correspond exactement à un chemin $i arrow.r.long^(m) p$ et à un chemin $r arrow.r.long^(overline(m)) f$ dans $A$.
+        Il est acceptant si et seulement si $p=r$, ce qui permet de concaténer ces deux chemins en un chemin acceptant de $A$ étiqueté $m overline(m)$.
+        Réciproquement, scinder un chemin acceptant de $A$ étiqueté $m overline(m)$ après la lecture de $m$ donne un tel chemin acceptant de $B$.
+        Ainsi $cal(L)(B)={m∈Σ^* | m overline(m)∈cal(L)(A)}$ : prendre $A'_Π=B$.
       ],
     ),
     question(
@@ -71,7 +71,7 @@
       ],
       jury: [Les parcours doivent être décrits avec leur structure de données et leur complexité.],
       solution: [
-        La fonction $u↦u overline(u)$ est une bijection de $cal(L)(B)$ vers $cal(L)(A)∩Π_"pair"$.
+        La fonction $m↦m overline(m)$ est une bijection de $cal(L)(B)$ vers $cal(L)(A)∩Π_"pair"$.
         Dans $B$, calculer les états accessibles et coaccessibles par deux parcours, puis conserver leur intersection.
         Si elle est vide, le langage est vide. Sinon, il est infini exactement lorsque ce sous-automate contient un cycle : on peut alors répéter ce cycle sur un chemin acceptant ; sans cycle, tout chemin a une longueur bornée.
         Un parcours en profondeur détecte les cycles.
@@ -87,7 +87,7 @@
         Modifier l'algorithme de la question 5 pour calculer la cardinalité de $cal(L)(A)∩Π_"pair"$ lorsqu'elle est finie, en supposant $A$ déterministe. Comment la complexité est-elle affectée ?
       ],
       solution: [
-        Même si $A$ est déterministe, $B$ ne l'est pas nécessairement. En revanche, chaque chemin acceptant de $B$ étiqueté $u$ correspond bijectivement à un chemin acceptant de $A$ étiqueté $u overline(u)$ : il est unique.
+        Même si $A$ est déterministe, $B$ ne l'est pas nécessairement. En revanche, chaque chemin acceptant de $B$ étiqueté $m$ correspond bijectivement à un chemin acceptant de $A$ étiqueté $m overline(m)$ : il est unique.
         Après émondage, le graphe est acyclique dans le cas fini. Dans l'ordre topologique inverse, calculer
         $ c(s)=bold(1)_(s∈D)+∑_(s arrow.r.long^(a) t)c(t). $
         La somme porte sur les transitions, y compris lorsque plusieurs lettres mènent au même état.
@@ -103,7 +103,7 @@
       ],
       solution: [
         Pour chaque $a∈Σ$, garder le même produit et remplacer $D$ par $D_a={(p,r) | (p,a,r)∈δ}$.
-        Il reconnaît ${u | u a overline(u)∈cal(L)(A)}$, avec la même correspondance entre chemins acceptants.
+        Il reconnaît ${m | m a overline(m)∈cal(L)(A)}$, avec la même correspondance entre chemins acceptants.
         Appliquer les tests et le comptage au cas pair et à chaque lettre centrale, puis sommer les cardinalités.
         Les palindromes ainsi obtenus sont disjoints selon leur parité et leur lettre centrale, même si les langages de demi-mots se recoupent.
         Le temps est multiplié au plus par $1+abs(Σ)$ ; les calculs successifs réutilisent le même graphe et le même espace de travail.

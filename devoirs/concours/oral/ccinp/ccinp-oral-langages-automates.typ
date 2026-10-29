@@ -40,9 +40,9 @@
           [$L_1$ est régulier : il est dénoté par $a^* b a^*$.],
           [Supposons $L_2$ régulier.
             Par le théorème de Kleene, il est reconnaissable par un automate à $n ≥ 1$ états.
-            Soit $u=a^n b a^n ∈ L_2$ ; on a $abs(u)=2n+1 ≥ n$.
-            Soit $u=x y z$ la décomposition donnée par le lemme de l'étoile : $abs(x y) ≤ n$, $y ≠ ε$ et $x y^* z ⊂ L_2$.
-            Comme les $n$ premières lettres de $u$ sont des $a$, on a $y=a^r$ pour un entier $r ≥ 1$.
+            Soit $m=a^n b a^n ∈ L_2$ ; on a $abs(m)=2n+1 ≥ n$.
+            Soit $m=x y z$ la décomposition donnée par le lemme de l'étoile : $abs(x y) ≤ n$, $y ≠ ε$ et $x y^* z ⊂ L_2$.
+            Comme les $n$ premières lettres de $m$ sont des $a$, on a $y=a^r$ pour un entier $r ≥ 1$.
             Pour $k=2$, on obtient
             $ x y^2 z=a^(n+r) b a^n ∉ L_2, $
             puisque $n+r>n$.

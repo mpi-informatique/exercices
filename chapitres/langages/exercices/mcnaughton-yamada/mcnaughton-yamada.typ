@@ -27,8 +27,8 @@
       Dans les deux cas, le langage est fini donc régulier.
     ]),
     question([Donner une équation de récurrence sur $L(i, j, k)$.], solution: [
-      Soit $u ∈ L(i, j, k + 1)$ l'étiquette d'un chemin $C$ de $i$ à $j$ avec des états intermédiaires inférieurs ou égaux à $k$.
-      - Si $C$ n'utilise pas l'état $k$ comme état intermédiaire : $u ∈ L(i, j, k)$
+      Soit $m ∈ L(i, j, k + 1)$ l'étiquette d'un chemin $C$ de $i$ à $j$ avec des états intermédiaires inférieurs ou égaux à $k$.
+      - Si $C$ n'utilise pas l'état $k$ comme état intermédiaire : $m ∈ L(i, j, k)$
       - Sinon, en coupant à chaque passage intermédiaire par $k$, on décompose $C$ en un chemin de $i$ à $k$, zéro ou plusieurs chemins de $k$ à $k$, puis un chemin de $k$ à $j$. Chacun n'a que des états intermédiaires strictement inférieurs à $k$.
 
       #dessiner-automate(

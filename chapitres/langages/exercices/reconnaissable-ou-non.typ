@@ -71,14 +71,14 @@
         Cet invariant prouve que l'automate reconnaît exactement $L_2$.
       ],
     ),
-    question([$L_3={u∈{a,b}^* | abs(u)_a mod 2=abs(u)_b mod 3}$.], solution: [
+    question([$L_3={m∈{a,b}^* | abs(m)_a mod 2=abs(m)_b mod 3}$.], solution: [
       Le même automate, avec $(0,0)$ et $(1,1)$ comme états finaux, reconnaît $L_3$ :
       #produit-modulo(((0, 0), (1, 1)))
     ]),
     question([$L_4={m∈{a,b}^* | abs(m)_a=abs(m)_b}$.], solution: [
       Supposons $L_4$ reconnaissable et soit $n≥1$ une taille de pompage.
-      Le mot $u=a^n b^n$ appartient à $L_4$ et a une taille au moins $n$.
-      Le lemme de l'étoile donne $u=x y z$ avec $abs(x y)≤n$, $y≠ε$ et $x y^k z∈L_4$ pour tout $k∈NN$.
+      Le mot $m=a^n b^n$ appartient à $L_4$ et a une taille au moins $n$.
+      Le lemme de l'étoile donne $m=x y z$ avec $abs(x y)≤n$, $y≠ε$ et $x y^k z∈L_4$ pour tout $k∈NN$.
       Le mot $y$ ne contient que des $a$ ; pour $k=0$, $x z$ contient strictement moins de $a$ que de $b$.
       Contradiction : $L_4$ n'est pas reconnaissable.
     ]),

@@ -55,7 +55,7 @@
   ),
   [
     _Distinguer par des préfixes et des contextes._ Dans les deux questions suivantes, $D ⊂ Σ^*$ est infini.
-    On note $widetilde(u)$ le miroir de $u$ et $widetilde(L) = {widetilde(u) | u ∈ L}$.
+    On note $widetilde(m)$ le miroir de $m$ et $widetilde(L) = {widetilde(m) | m ∈ L}$.
     On rappelle que le miroir d'un langage régulier est régulier.
   ],
   question(
@@ -134,18 +134,18 @@
   question(
     [
       On suppose $cal(R)_L$ fini.
-      Construire un ADC $M_L$ d'ensemble d'états $cal(R)_L$ tel que la lecture de tout mot $u$ depuis l'état initial conduise à $u^(-1)L$.
+      Construire un ADC $M_L$ d'ensemble d'états $cal(R)_L$ tel que la lecture de tout mot $m$ depuis l'état initial conduise à $m^(-1)L$.
       Préciser l'état initial, les états finaux et les transitions, puis montrer que $M_L$ est accessible et reconnaît $L$.
     ],
     solution: [
       On prend $L$ pour état initial, $F_L = {R ∈ cal(R)_L | ε ∈ R}$ et $δ_L(R, c) = c^(-1)R$ pour $c ∈ Σ$.
-      La @residuels-calcul donne $δ_L(u^(-1)L, c) = (u c)^(-1)L$.
+      La @residuels-calcul donne $δ_L(m^(-1)L, c) = (m c)^(-1)L$.
       La transition ne dépend donc que du résiduel et son image appartient à $cal(R)_L$.
       L'ensemble des états est fini et $δ_L$ est une application de $cal(R)_L × Σ$ dans $cal(R)_L$ : $M_L$ est un ADC.
 
-      Par récurrence sur la taille de $u$, $δ_L^*(L, u) = u^(-1)L$.
+      Par récurrence sur la taille de $m$, $δ_L^*(L, m) = m^(-1)L$.
       Tout résiduel est donc accessible.
-      Enfin, $u$ est accepté si et seulement si $ε ∈ u^(-1)L$, c'est-à-dire si et seulement si $u ∈ L$.
+      Enfin, $m$ est accepté si et seulement si $ε ∈ m^(-1)L$, c'est-à-dire si et seulement si $m ∈ L$.
     ],
     label: <residuels-automate>,
   ),
@@ -173,18 +173,18 @@
   question(
     [
       Soit $A = (Q, Σ, q_0, F, δ)$ un ADC accessible reconnaissant $L$.
-      Montrer que $φ : δ^*(q_0, u) ⟼ u^(-1)L$ est bien définie et surjective.
+      Montrer que $φ : δ^*(q_0, m) ⟼ m^(-1)L$ est bien définie et surjective.
       Vérifier qu'elle préserve l'état initial, les transitions et l'appartenance aux états finaux.
 
       Un ADC reconnaissant $L$ est _minimal_ s'il a le moins d'états possible parmi les ADC reconnaissant $L$.
       En déduire la minimalité de $M_L$, puis l'unicité de l'ADC minimal à renommage des états près.
     ],
     solution: [
-      Le résiduel $u^(-1)L$ est exactement le langage accepté depuis $δ^*(q_0, u)$, donc ne dépend que de cet état.
+      Le résiduel $m^(-1)L$ est exactement le langage accepté depuis $δ^*(q_0, m)$, donc ne dépend que de cet état.
       L'accessibilité définit $φ$ sur tout $Q$, et chaque résiduel a un antécédent.
-      Pour $q = δ^*(q_0, u)$ et $c ∈ Σ$,
-      $ φ(q_0) = L, quad φ(δ(q, c)) = (u c)^(-1)L = δ_L(φ(q), c), $
-      et $q ∈ F ⟺ u ∈ L ⟺ ε ∈ φ(q) ⟺ φ(q) ∈ F_L$.
+      Pour $q = δ^*(q_0, m)$ et $c ∈ Σ$,
+      $ φ(q_0) = L, quad φ(δ(q, c)) = (m c)^(-1)L = δ_L(φ(q), c), $
+      et $q ∈ F ⟺ m ∈ L ⟺ ε ∈ φ(q) ⟺ φ(q) ∈ F_L$.
 
       La surjectivité donne $abs(Q) ≥ abs(cal(R)_L)$.
       Supprimer les états inaccessibles d'un ADC conserve son langage et sa complétude, car les transitions issues d'états accessibles restent dans cet ensemble.

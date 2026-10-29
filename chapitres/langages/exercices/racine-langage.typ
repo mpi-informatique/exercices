@@ -9,7 +9,7 @@
   ),
   contenu: (
     [Soit $L$ un langage régulier sur un alphabet $Σ$.
-      On définit $sqrt(L)={u ∈ Σ^* | u^2 ∈ L}$ et $L_2={u^2 | u ∈ L}$.],
+      On définit $sqrt(L)={m ∈ Σ^* | m^2 ∈ L}$ et $L_2={m^2 | m ∈ L}$.],
     question([Est-il toujours vrai que $L^2=L_2$ ?], solution: [
       Non. Pour $L = {a, b}$ sur $Σ = {a, b}$, on a $L^2 = {a a, a b, b a, b b}$, tandis que $L_2 = {a a, b b}$.
       En général, $L_2 ⊆ L^2$, mais les deux facteurs d'un mot de $L^2$ peuvent être différents.
@@ -17,11 +17,11 @@
     question([Montrer que $sqrt(L)$ est régulier.], solution: [
       Soit $A = (Q, Σ, δ, q_0, F)$ un ADC reconnaissant $L$.
       On note $δ^*$ sa fonction de transition étendue aux mots.
-      Pour $p, q ∈ Q$, on pose $K_(p, q) = {u ∈ Σ^* | δ^*(p, u) = q}$.
+      Pour $p, q ∈ Q$, on pose $K_(p, q) = {m ∈ Σ^* | δ^*(p, m) = q}$.
       Ce langage est régulier : il est reconnu par l'automate obtenu à partir de $A$ en prenant $p$ pour état initial et $q$ pour unique état final.
 
-      Un mot $u$ appartient à $sqrt(L)$ si et seulement s'il existe $q ∈ Q$ et $f ∈ F$ tels que $δ^*(q_0, u) = q$ et $δ^*(q, u) = f$.
-      En effet, $δ^*(q_0, u u) = δ^*(δ^*(q_0, u), u)$.
+      Un mot $m$ appartient à $sqrt(L)$ si et seulement s'il existe $q ∈ Q$ et $f ∈ F$ tels que $δ^*(q_0, m) = q$ et $δ^*(q, m) = f$.
+      En effet, $δ^*(q_0, m m) = δ^*(δ^*(q_0, m), m)$.
       Ainsi :
       $ sqrt(L) = union.big_(q ∈ Q) union.big_(f ∈ F) (K_(q_0, q) ∩ K_(q, f)). $
       Les langages réguliers étant stables par intersection et union finie, $sqrt(L)$ est régulier.
@@ -37,7 +37,7 @@
       C'est une contradiction, donc $L_2$ n'est pas régulier.
     ]),
     question([Est-il toujours vrai que $sqrt(L_2)=L$ ?], solution: [
-      Oui. Si $u ∈ L$, alors $u^2 ∈ L_2$, donc $u ∈ sqrt(L_2)$.
+      Oui. Si $m ∈ L$, alors $m^2 ∈ L_2$, donc $m ∈ sqrt(L_2)$.
 
       Réciproquement, si $u ∈ sqrt(L_2)$, il existe $v ∈ L$ tel que $u^2 = v^2$.
       L'égalité des tailles donne $abs(u) = abs(v)$.

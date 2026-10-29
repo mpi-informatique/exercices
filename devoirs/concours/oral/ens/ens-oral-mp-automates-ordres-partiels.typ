@@ -64,7 +64,7 @@
   contenu: (
     [
       Soit $cal(A)=(Q,A,δ,I,F)$ un automate fini sans transitions $ε$, non nécessairement déterministe.
-      On note $q · u$ l'ensemble des états atteints depuis $q$ en lisant $u$ ; dans le cas déterministe, on désigne aussi ainsi l'unique état atteint lorsqu'il existe.
+      On note $q · m$ l'ensemble des états atteints depuis $q$ en lisant $m$ ; dans le cas déterministe, on désigne aussi ainsi l'unique état atteint lorsqu'il existe.
       L'automate est partiellement ordonné si tous ses cycles ne visitent qu'un état : si $q'∈q · u$ et $q∈q' · v$, alors $q=q'$.
       Les automates peuvent être incomplets.
     ],
@@ -79,7 +79,7 @@
         )
       ],
       solution: [
-        a) La relation $q≤q'⇔∃u∈A^*,q'∈q · u$ est réflexive et transitive. L'hypothèse est exactement son antisymétrie.
+        a) La relation $q≤q'⇔∃m∈A^*,q'∈q · m$ est réflexive et transitive. L'hypothèse est exactement son antisymétrie.
 
         b) L'automate des préfixes suivant convient ; toute transition non dessinée est absente.
         #fini
@@ -123,8 +123,8 @@
       ],
     ),
     [
-      Pour $u=a_1 … a_n∈A^*$, on note $↑u=A^* a_1 A^* … a_n A^*$ (et $↑ε=A^*$).
-      Un langage est clos par sur-mots si $u∈L$ implique $↑u⊂L$.
+      Pour $m=a_1 … a_n∈A^*$, on note $↑m=A^* a_1 A^* … a_n A^*$ (et $↑ε=A^*$).
+      Un langage est clos par sur-mots si $m∈L$ implique $↑m⊂L$.
       On veut prouver qu'un tel langage est régulier et reconnu par un automate déterministe partiellement ordonné.
       On admet le lemme de Higman : pour toute suite infinie $(w_i)_(i∈NN)$ sur un alphabet fini, il existe $i<j$ tels que $w_j∈↑w_i$.
     ],
@@ -133,21 +133,21 @@
         #enum(
           numbering: "a)",
           [Montrer que l'intersection de deux langages clos par sur-mots est close par sur-mots.],
-          [Pour $F⊂A^*$ fini, reconnaître $⋃_(u∈F)↑u$ par un automate déterministe partiellement ordonné.],
-          [Montrer qu'un langage $L$ est clos par sur-mots si et seulement s'il existe un ensemble fini $F$ tel que $L=⋃_(u∈F)↑u$. Conclure.],
+          [Pour $F⊂A^*$ fini, reconnaître $⋃_(m∈F)↑m$ par un automate déterministe partiellement ordonné.],
+          [Montrer qu'un langage $L$ est clos par sur-mots si et seulement s'il existe un ensemble fini $F$ tel que $L=⋃_(m∈F)↑m$. Conclure.],
         )
       ],
       solution: [
         a) Un sur-mot d'un mot de l'intersection appartient à chacun des deux langages.
 
-        b) Pour $u=a_1…a_n$, prendre les états $0,…,n$, initial $0$, seul final $n$.
+        b) Pour $m=a_1…a_n$, prendre les états $0,…,n$, initial $0$, seul final $n$.
         Depuis $k<n$, avancer à $k+1$ sur $a_(k+1)$ et boucler sur toute autre lettre ; depuis $n$, boucler sur toutes les lettres.
-        Après chaque préfixe lu, l'état est la taille du plus long préfixe de $u$ déjà rencontré comme sous-mot, par récurrence.
-        Cet automate reconnaît $↑u$ et ses états ne peuvent que croître. Appliquer la stabilité par union finie de la question 2, y compris pour $F=∅$.
+        Après chaque préfixe lu, l'état est la taille du plus long préfixe de $m$ déjà rencontré comme sous-mot, par récurrence.
+        Cet automate reconnaît $↑m$ et ses états ne peuvent que croître. Appliquer la stabilité par union finie de la question 2, y compris pour $F=∅$.
 
         c) Si aucune famille finie ne suffit, choisir $w_0∈L$, puis $w_j∈L$ hors de $⋃_(i<j)↑w_i$.
         Cette suite contredit Higman. Il existe donc une famille finie $F⊂L$ couvrant $L$ par ses sur-mots ; l'inclusion inverse vient de la clôture.
-        Réciproquement, toute union de langages $↑u$ est close par sur-mots, par transitivité de la relation de sous-mot.
+        Réciproquement, toute union de langages $↑m$ est close par sur-mots, par transitivité de la relation de sous-mot.
         La construction de b) conclut.
       ],
     ),

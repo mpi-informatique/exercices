@@ -13,7 +13,7 @@
   ),
   corrections: [
     - Numérotation : commencer à 1 et décaler les renvois d'une unité.
-    - Questions 2 et 3 : définir les morphismes et fixer le sens du produit des transformations pour que $u↦f_u$ soit un morphisme.
+    - Questions 2 et 3 : définir les morphismes et fixer le sens du produit des transformations pour que $m↦f_m$ soit un morphisme.
     - Question 3 : expliciter la dépendance en la taille de l'alphabet dans les complexités et détailler le parcours des transformations en b), avec un contre-exemple au choix d'un seul mot depuis l'état initial.
     - Question 3.e) : démontrer directement les deux inclusions, sans utiliser la notion de fibre.
     - Question 6 : corriger les types de $I$, $δ$ et la définition de $R_u$.
@@ -59,8 +59,8 @@
     ),
     [
       Soit $cal(A)=(Q,A,δ,i,F)$ un ADC.
-      On note $q · a=δ(q,a)$ et $q · u$ l'état obtenu après lecture de $u$ depuis $q$.
-      Une fonction de transition est une fonction $f_u:q↦q · u$, pour un mot $u∈A^*$.
+      On note $q · a=δ(q,a)$ et $q · m$ l'état obtenu après lecture de $m$ depuis $q$.
+      Une fonction de transition est une fonction $f_m:q↦q · m$, pour un mot $m∈A^*$.
       Dans les complexités, $n=abs(Q)≥1$, $k=abs(A)≥1$ et $N$ est le nombre de fonctions de transition distinctes.
     ],
     question(
@@ -77,12 +77,12 @@
       solution: [
         a) $f_ε="id"$ et $f_(u v)=f_v∘f_u=f_u · f_v$. Il y a au plus $n^n$ fonctions de $Q$ dans $Q$.
 
-        b) Il faut trouver un même mot $u$ tel que $f(q)=q · u$ pour tous les états $q$.
-        Trouver seulement un mot vérifiant $f(i)=i · u$, puis le tester sur les autres états, ne suffit pas : un échec peut venir du choix de $u$, alors qu'un autre mot convient.
+        b) Il faut trouver un même mot $m$ tel que $f(q)=q · m$ pour tous les états $q$.
+        Trouver seulement un mot vérifiant $f(i)=i · m$, puis le tester sur les autres états, ne suffit pas : un échec peut venir du choix de $m$, alors qu'un autre mot convient.
 
         Explorer plutôt un graphe dont les sommets sont les fonctions $Q→Q$, représentées par les tableaux de leurs $n$ images.
         Depuis un sommet $g$, la lettre $a$ mène à $h=f_(a)∘g$, dont le tableau se calcule par $h(q)=δ(g(q),a)$.
-        Si $g=f_(u)$, alors $h=f_(u a)$ : cette étape ajoute la même lettre à droite du mot, pour tous les états à la fois.
+        Si $g=f_(m)$, alors $h=f_(m a)$ : cette étape ajoute la même lettre à droite du mot, pour tous les états à la fois.
 
         Partir de l'identité, correspondant au mot vide, et effectuer un parcours en largeur :
         - conserver une liste des fonctions découvertes et une file des fonctions à traiter, initialement réduites à l'identité.
@@ -125,7 +125,7 @@
       solution: [
         Un automate fini peut être déterminisé et complété ; la question 3 donne alors un monoïde fini reconnaissant son langage.
         Réciproquement, si $φ:A^*→M$ reconnaît $L$, prendre les états $M$, l'état initial $e$, les finaux $φ(L)$ et $δ(m,a)=m · φ(a)$.
-        Après lecture de $u$, l'état est $φ(u)$, par récurrence. Il est final exactement lorsque $u∈φ^(-1)(φ(L))=L$.
+        Après lecture de $m$, l'état est $φ(m)$, par récurrence. Il est final exactement lorsque $m∈φ^(-1)(φ(L))=L$.
       ],
     ),
     [
@@ -148,8 +148,8 @@
     ),
     [
       Soit maintenant $cal(A)=(Q,A,δ,I,F)$ un automate fini non déterministe, avec $I,F⊂Q$ et $δ⊂Q×A×Q$.
-      Pour $u∈A^*$, $q · u$ désigne l'ensemble des états atteignables en lisant $u$ depuis $q$.
-      La relation de transition de $u$ est $R_u={(q,r)∈Q×Q | r∈q · u}$.
+      Pour $m∈A^*$, $q · m$ désigne l'ensemble des états atteignables en lisant $m$ depuis $q$.
+      La relation de transition de $m$ est $R_m={(q,r)∈Q×Q | r∈q · m}$.
     ],
     question(
       [
@@ -163,7 +163,7 @@
       solution: [
         a) $R_ε$ est la diagonale et $R_(u v)=R_u∘R_v$. C'est donc un sous-monoïde des relations sur $Q$.
 
-        b) Le mot $u$ est accepté si et seulement si $R_u∩(I×F)≠∅$. Cette condition ne dépend que de $R_u$, donc le morphisme $u↦R_u$ reconnaît le langage.
+        b) Le mot $m$ est accepté si et seulement si $R_m∩(I×F)≠∅$. Cette condition ne dépend que de $R_m$, donc le morphisme $m↦R_m$ reconnaît le langage.
 
         c) Représenter une relation par sa matrice booléenne $n×n$. La composition se calcule par trois boucles en $O(n^3)$.
         Saturer depuis la diagonale par composition à droite avec chaque $R_a$.

@@ -44,7 +44,7 @@
 
 #definition(title: [Concaténation, Puissance])[
   - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est : #equation-slide($u v = u_1 … u_n v_1 … v_p$)
-  - Si $u in Σ^*$, on définit sa _puissance_ par récurrence : $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
+  - Si $m in Σ^*$, on définit sa _puissance_ par récurrence : $m^0 = ε$ et $m^k = m m^(k - 1)$ pour $k ≥ 1$.
 ]
 
 #underline[Remarques] :
@@ -54,15 +54,15 @@
 #slide()
 
 #exercice[
-  Soient $a, b ∈ Σ$ et $u ∈ Σ^*$ tels que $a u = u b$. #slides-only[\ ]
-  Montrer que $a = b$ et : $exists k ∈ ℕ, #sep u = a^k$.
+  Soient $a, b ∈ Σ$ et $m ∈ Σ^*$ tels que $a m = m b$. #slides-only[\ ]
+  Montrer que $a = b$ et : $exists k ∈ ℕ, #sep m = a^k$.
 ]
 #solution[
-  Raisonnons par récurrence sur $abs(u)$.
-  - Si $u = ε$, l'égalité donne $a = b$ et $u = a^0$.
-  - Sinon, en comparant les premières lettres de $a u$ et $u b$, on obtient $u = a v$.
+  Raisonnons par récurrence sur $abs(m)$.
+  - Si $m = ε$, l'égalité donne $a = b$ et $m = a^0$.
+  - Sinon, en comparant les premières lettres de $a m$ et $m b$, on obtient $m = a v$.
     L'égalité $a a v = a v b$ donne $a v = v b$ après simplification par $a$.
-    Par hypothèse de récurrence, $a = b$ et $v = a^k$, donc $u = a^(k + 1)$.
+    Par hypothèse de récurrence, $a = b$ et $v = a^k$, donc $m = a^(k + 1)$.
 ]
 
 #slide()
@@ -277,16 +277,16 @@ Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1
 
 #exercice(liste-cours(
   [Montrer que $L ⊂ L^2$ si et seulement si $L = ∅$ ou $ε ∈ L$.],
-  [Comparer $L^2$ et ${u^2 ∣ u ∈ L}$.],
+  [Comparer $L^2$ et ${m^2 ∣ m ∈ L}$.],
 ))
 #solution[
   #slides-only[== Puissances : corrigé]
-  + Si $L = ∅$, l'inclusion est vraie. Si $ε ∈ L$, tout $u ∈ L$ s'écrit $u ε ∈ L^2$.
+  + Si $L = ∅$, l'inclusion est vraie. Si $ε ∈ L$, tout $m ∈ L$ s'écrit $m ε ∈ L^2$.
     Réciproquement, supposons $L ≠ ∅$ et $L ⊂ L^2$.
     Un mot de taille minimale $d$ dans $L$ est le produit de deux mots de $L$, donc $d ≥ 2 d$.
     Ainsi $d = 0$ et $ε ∈ L$.
   #pause
-  + On a toujours ${u^2 ∣ u ∈ L} ⊂ L^2$.
+  + On a toujours ${m^2 ∣ m ∈ L} ⊂ L^2$.
     L'inclusion peut être stricte : pour $L = {a, b}$, $a b ∈ L^2$ mais $a b ∉ {a a, b b}$.
 ]
 

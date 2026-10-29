@@ -65,8 +65,8 @@
     ),
     [
       Notons $Q$ l'ensemble des états et $δ:Q×Σ→Q$ la transition. On définit
-      $ δ^*(q,ε)=q, #sep δ^*(q,a u)=δ^*(δ(q,a),u). $
-      L'effet de transition de $u$ est la fonction $f_u:Q→Q$ donnée par $f_u(q)=δ^*(q,u)$.
+      $ δ^*(q,ε)=q, #sep δ^*(q,a m)=δ^*(δ(q,a),m). $
+      L'effet de transition de $m$ est la fonction $f_m:Q→Q$ donnée par $f_m(q)=δ^*(q,m)$.
     ],
     question(
       [

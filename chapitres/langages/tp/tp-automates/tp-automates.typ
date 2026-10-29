@@ -50,14 +50,14 @@
       )
     ], solution: [#code-extrait(corrige, ("a1", "a2"))]),
     question([
-      Définir `delta_etoile : adc -> int -> int list -> int` telle que `delta_etoile a q u` renvoie l'état atteint depuis `q` après lecture de `u`, c'est-à-dire $δ^*(q, u)$. Vérifier avec `a1`.
+      Définir `delta_etoile : adc -> int -> int list -> int` telle que `delta_etoile a q m` renvoie l'état atteint depuis `q` après lecture de `m`, c'est-à-dire $δ^*(q, m)$. Vérifier avec `a1`.
     ], solution: [#code-extrait(corrige, "delta_etoile")]),
     question([
-      Définir `accepte : adc -> int list -> bool` telle que `accepte a u` détermine si `u` est reconnu par `a`. Vérifier avec `a1`. Quelle est sa complexité ?
+      Définir `accepte : adc -> int list -> bool` telle que `accepte a m` détermine si `m` est reconnu par `a`. Vérifier avec `a1`. Quelle est sa complexité ?
     ], solution: [
       #code-extrait(corrige, "accepte")
-      La lecture du mot coûte $O(abs(u))$ et la recherche de l'état final coûte $O(abs(F))$.
-      La complexité totale est $O(abs(u) + abs(F))$.
+      La lecture du mot coûte $O(abs(m))$ et la recherche de l'état final coûte $O(abs(F))$.
+      La complexité totale est $O(abs(m) + abs(F))$.
     ]),
     question([
       Définir `complementaire : adc -> adc` qui construit un automate reconnaissant le complémentaire du langage reconnu par `a`. Vérifier avec `a1`.

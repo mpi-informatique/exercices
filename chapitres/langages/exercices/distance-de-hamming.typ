@@ -43,7 +43,7 @@
       ],
       solution: [
         On raisonne par induction structurelle sur les expressions régulières.
-        Si $L$ est fini, $cal(H)(L)$ est fini : pour un mot $u$, il y a $1+abs(u)(abs(Sigma)-1)$ mots à distance au plus $1$ de $u$.
+        Si $L$ est fini, $cal(H)(L)$ est fini : pour un mot $m$, il y a $1+abs(m)(abs(Sigma)-1)$ mots à distance au plus $1$ de $m$.
 
         Pour l'union et la concaténation, on utilise les identités
         $ cal(H)(L_1 union L_2)=cal(H)(L_1) union cal(H)(L_2), $

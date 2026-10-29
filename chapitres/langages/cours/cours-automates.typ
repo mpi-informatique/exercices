@@ -87,7 +87,7 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
   align: center + horizon,
   definition[Fonction de transition étendue $δ^*$][
     On définit récursivement l'ensemble $δ^*(q, m)$ des états atteignables par un chemin d'étiquette $m ∈ Σ^*$ depuis $q ∈ Q$ :
-    $ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a u) = ⋃_(q' ∈ δ(q, a)) δ^*(q', u) $
+    $ δ^*(q, ε) = {q} quad "et" quad δ^*(q, a m) = ⋃_(q' ∈ δ(q, a)) δ^*(q', m) $
   ],
   [
     #exercice[Donner $δ^*(1, a b)$ pour l'automate ci-dessus.\ #completer()]
@@ -293,17 +293,17 @@ Un automate déterministe complet (ADC) a une fonction de transition de la forme
   Soit $A = (Q, Σ, q_0, F, δ)$ un ADC. Pour $a ∈ Σ$, on note $δ_a (q) = δ(q, a)$.\
   On suppose que $A$ est un _automate à permutations_, c'est-à-dire que chaque $δ_a$ est bijective.
   + Peut-on remplacer « bijective » par « injective » ou « surjective » dans cette définition ?
-  + Soit $u ∈ Σ^*$. Montrer que $δ^*(⋅, u)$ est une permutation de $Q$.
-  + En déduire : $∀q ∈ Q, ∃k ≥ 1, #sep δ^*(q, u^k) = q$.
+  + Soit $m ∈ Σ^*$. Montrer que $δ^*(⋅, m)$ est une permutation de $Q$.
+  + En déduire : $∀q ∈ Q, ∃k ≥ 1, #sep δ^*(q, m^k) = q$.
   + Soit $a ∈ Σ$. $Σ^* a Σ^*$ est-il reconnaissable par un automate à permutations ?
 ]
 #solution[
   + Oui : une application de l'ensemble fini $Q$ dans lui-même est injective si et seulement si elle est surjective, donc bijective.
-  + Notons $f_u = δ^*(⋅, u)$. On a $f_ε = id_Q$ et $f_(v a) = δ_a ∘ f_v$.
-    Par récurrence sur la taille de $u$, $f_u$ est une permutation de $Q$, car composée de permutations.
-  + Soit $q ∈ Q$. La finitude de $Q$ donne $0 ≤ i < j$ tels que $f_u^i (q) = f_u^j (q)$.
-    Comme $f_u^i$ est injective, $f_u^(j - i) (q) = q$.
-    D'après @lem-delta-etoile, $f_u^k (q) = δ^*(q, u^k)$ pour tout $k ∈ ℕ$. Prendre $k = j - i ≥ 1$.
+  + Notons $f_m = δ^*(⋅, m)$. On a $f_ε = id_Q$ et $f_(v a) = δ_a ∘ f_v$.
+    Par récurrence sur la taille de $m$, $f_m$ est une permutation de $Q$, car composée de permutations.
+  + Soit $q ∈ Q$. La finitude de $Q$ donne $0 ≤ i < j$ tels que $f_m^i (q) = f_m^j (q)$.
+    Comme $f_m^i$ est injective, $f_m^(j - i) (q) = q$.
+    D'après @lem-delta-etoile, $f_m^k (q) = δ^*(q, m^k)$ pour tout $k ∈ ℕ$. Prendre $k = j - i ≥ 1$.
   + Non. Supposons $LA = Σ^* a Σ^*$. Comme $ε ∉ LA$, l'état initial $q_0$ n'est pas final.
     La question précédente donne $k ≥ 1$ tel que $δ^*(q_0, a^k) = q_0$.
     Le mot $a^k$ est donc refusé, alors qu'il appartient à $Σ^* a Σ^*$ : contradiction.
@@ -347,7 +347,7 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ LA$ en O($abs(m)$) en tem
   Soit $PP(A) = (Σ, PP(Q), {I}, F', δ)$ l'_automate des parties_, où chaque état est un ensemble d'états de $A$,\ $F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}$ et $δ : PP(Q) timess Σ → PP(Q)$ est définie comme dans @def-delta-ens. \
   $PP(A)$ a un seul état initial $I$ et chaque $δ(X, a)$ est un unique ensemble d'états donc $A'$ est un ADC. \
   $PP(A)$ est équivalent à $A$ car :
-  $ u ∈ cal(L)(PP(A)) <==> δ^*(I, u) ∈ F' <==> δ^*(I, u) ∩ F ≠ ∅ <==> u ∈ LA $
+  $ m ∈ cal(L)(PP(A)) <==> δ^*(I, m) ∈ F' <==> δ^*(I, m) ∩ F ≠ ∅ <==> m ∈ LA $
 ]
 
 L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construit que les états accessibles.
@@ -506,11 +506,11 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 = Lemme de l'étoile
 
 #lemme(coeur: true, title: [Lemme de l'étoile])[
-  Soit $L$ reconnu par un automate à $n$ états. Pour tout $u ∈ L$ de taille au moins $n$, il existe des mots $x, y, z$ tels que :
-  $ u = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad x y^* z ⊂ L. $
+  Soit $L$ reconnu par un automate à $n$ états. Pour tout $m ∈ L$ de taille au moins $n$, il existe des mots $x, y, z$ tels que :
+  $ m = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad x y^* z ⊂ L. $
 ]<lem-etoile>
 // #solution[
-//   prendre un chemin acceptant d'étiquette $u$.
+//   prendre un chemin acceptant d'étiquette $m$.
 //   Parmi ses $n + 1$ premiers états, deux sont égaux : $q_i = q_j$, avec $0 ≤ i < j ≤ n$.
 //   Décomposer le mot en $x$, avant $q_i$, $y$, entre $q_i$ et $q_j$, et $z$, après $q_j$.
 
@@ -525,12 +525,12 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 #slide()
 #underline[Attention] :
 - La réciproque du lemme de l'étoile est fausse.
-- On peut choisir $u$ mais pas sa décomposition $x y z$.
+- On peut choisir $m$ mais pas sa décomposition $x y z$.
 
 #methode(title: [Montrer que $L$ n'est pas reconnaissable.])[
   + Supposer par l'absurde que $L$ est reconnu par un automate à $n$ états.
-  + Choisir $u ∈ L$ avec $abs(u) ≥ n$.
-  + Appliquer le lemme de l'étoile pour obtenir une décomposition $u = x y z$.
+  + Choisir $m ∈ L$ avec $abs(m) ≥ n$.
+  + Appliquer le lemme de l'étoile pour obtenir une décomposition $m = x y z$.
   + Trouver $k$ tel que $x y^k z ∉ L$ pour aboutir à une contradiction.
 ]
 
@@ -545,7 +545,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 #solution[
   == Correction : autant de a que de b
   Supposer que $L_1$ est reconnu par un automate à $n ≥ 1$ états.
-  Prendre $u = a^n b^n$. Comme $abs(x y) ≤ n$, on a $y = a^j$ avec $j > 0$.
+  Prendre $m = a^n b^n$. Comme $abs(x y) ≤ n$, on a $y = a^j$ avec $j > 0$.
   Alors $x z = a^(n - j) b^n ∉ L_1$, contradiction pour $k = 0$.
 
   == Correction : des nombres différents

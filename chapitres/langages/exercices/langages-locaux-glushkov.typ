@@ -53,16 +53,16 @@
         $ P(L) ⊂ P(L_1) ∩ P(L_2), #sep S(L) ⊂ S(L_1) ∩ S(L_2), $
         $ F(L) ⊂ F(L_1) ∩ F(L_2). $
 
-        Soit $u = u_1 … u_n in Sigma^*$ avec $n ≥ 1$.
-        Supposons que $u_1 ∈ P(L)$, $u_n ∈ S(L)$ et que tous les facteurs $u_k u_(k+1)$ de taille deux de $u$ appartiennent à $F(L)$.
+        Soit $m = m_1 … m_n in Sigma^*$ avec $n ≥ 1$.
+        Supposons que $m_1 ∈ P(L)$, $m_n ∈ S(L)$ et que tous les facteurs $m_k m_(k+1)$ de taille deux de $m$ appartiennent à $F(L)$.
 
         Les inclusions précédentes donnent, pour chaque $i ∈ {1,2}$ :
         $
-          u_1 ∈ P(L_i), #sep u_n ∈ S(L_i), #sep
-          ∀ k ∈ {1, …, n-1}, u_k u_(k+1) ∈ F(L_i).
+          m_1 ∈ P(L_i), #sep m_n ∈ S(L_i), #sep
+          ∀ k ∈ {1, …, n-1}, m_k m_(k+1) ∈ F(L_i).
         $
-        Comme $L_i$ est local, ces conditions entraînent $u ∈ L_i$.
-        Ainsi $u ∈ L_1$ et $u ∈ L_2$, donc $u ∈ L$.
+        Comme $L_i$ est local, ces conditions entraînent $m ∈ L_i$.
+        Ainsi $m ∈ L_1$ et $m ∈ L_2$, donc $m ∈ L$.
 
         Enfin, $ε ∈ L$ si et seulement si $ε ∈ L_1$ et
         $ε ∈ L_2$. Le langage $L = L_1 ∩ L_2$ est donc local.

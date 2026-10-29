@@ -137,16 +137,16 @@
       - Pour un état $q$ et une lettre $x$, on note $q.x=δ(q,x)$.
       - L'ensemble des mots (c'est-à-dire des concaténations de lettres) sur l'alphabet $Σ$ est noté $Σ^*$.
       - Le mot vide est noté $ε$.
-      - On note $u x$ le mot obtenu par la concaténation du mot $u$ et de la lettre $x$.
+      - On note $m x$ le mot obtenu par la concaténation du mot $m$ et de la lettre $x$.
       - On note $δ^*$ l'extension à $Q × Σ^*$ de la fonction de transition $δ$ définie par
         $
           cases(
             ∀q ∈ Q\, #sep δ^*(q,ε)=q,
-            ∀(q,x,u) ∈ Q × Σ × Σ^*\, #sep δ^*(q,x u)=δ^*(δ(q,x),u)
+            ∀(q,x,m) ∈ Q × Σ × Σ^*\, #sep δ^*(q,x m)=δ^*(δ(q,x),m)
           ).
         $
       - Pour un état $q$ de $Q$ et un mot $m$ de $Σ^*$, on note encore $q.m$ pour désigner $δ^*(q,m)$.
-      - Pour deux états $q$ et $q'$, on dit que $q'$ est *accessible* depuis $q$ s'il existe un mot $u$ tel que $q'=q.u$.
+      - Pour deux états $q$ et $q'$, on dit que $q'$ est *accessible* depuis $q$ s'il existe un mot $m$ tel que $q'=q.m$.
       - On dit qu'un mot $m$ de $Σ^*$ est *synchronisant* pour une machine $(Q,Σ,δ)$ s'il existe un état $q_0$ de $Q$ tel que pour tout état $q$ de $Q$, $q.m=q_0$.
 
       L'existence de tels mots dans certaines machines est utile car elle permet de ramener une machine dans un état particulier connu en lisant un mot donné (donc en pratique de la « réinitialiser » par une succession précise d'ordres passés à la machine réelle).
@@ -213,14 +213,14 @@
           solution: [Le mot $a c a$ convient : $Q.a={2,3}$, $Q.(a c)={1,2}$ et $Q.(a c a)={2}$.],
         ),
         question(
-          [Écrire une fonction ```ocaml delta_etoile``` qui, prenant en entrée une machine $M$, un état $q$ et un mot $u$, renvoie l'état atteint par la machine $M$ en partant de l'état $q$ et en lisant le mot $u$.
+          [Écrire une fonction ```ocaml delta_etoile``` qui, prenant en entrée une machine $M$, un état $q$ et un mot $m$, renvoie l'état atteint par la machine $M$ en partant de l'état $q$ et en lisant le mot $m$.
             ```ocaml
             val delta_etoile : machine -> etat -> mot -> etat
             ```],
           solution: [#code("delta_etoile")],
         ),
         question(
-          [Écrire une fonction ```ocaml est_synchronisant``` qui, prenant en entrée une machine $M$ et un mot $u$, dit si le mot est synchronisant pour $M$.
+          [Écrire une fonction ```ocaml est_synchronisant``` qui, prenant en entrée une machine $M$ et un mot $m$, dit si le mot est synchronisant pour $M$.
             ```ocaml
             val est_synchronisant : machine -> mot -> bool
             ```],
@@ -229,13 +229,13 @@
         ),
         question(
           [Montrer que pour qu'une machine ait un mot synchronisant, il faut qu'il existe une lettre $x$ et deux états distincts de $Q$, $q$ et $q'$, tels que $q.x=q'.x$.],
-          solution: [Soient $r ≠ r'$ et $u=x_1…x_k$ un mot synchronisant. Il existe un premier indice $j ≥ 1$ auquel les images de $r$ et $r'$ par le préfixe de taille $j$ coïncident. Juste avant cette lettre, les états $q=r.(x_1…x_(j-1))$ et $q'=r'.(x_1…x_(j-1))$ sont distincts, et $q.x_j=q'.x_j$.],
+          solution: [Soient $r ≠ r'$ et $m=x_1…x_k$ un mot synchronisant. Il existe un premier indice $j ≥ 1$ auquel les images de $r$ et $r'$ par le préfixe de taille $j$ coïncident. Juste avant cette lettre, les états $q=r.(x_1…x_(j-1))$ et $q'=r'.(x_1…x_(j-1))$ sont distincts, et $q.x_j=q'.x_j$.],
         ),
         [Soit $L S(M)$ le langage des mots synchronisants d'une machine $M=(Q,Σ,δ)$. On introduit la machine des parties $hat(M)=(hat(Q),Σ,hat(δ))$ où $hat(Q)$ est l'ensemble des parties de $Q$ et où $hat(δ)$ est définie par
           $ ∀P ⊂ Q, #sep ∀x ∈ Σ, #sep hat(δ)(P,x)={δ(p,x) | p ∈ P}. $],
         question(
           [Justifier que l'existence d'un mot synchronisant pour $M$ se ramène à un problème d'accessibilité de certain(s) état(s) depuis certain(s) état(s) dans la machine des parties.],
-          solution: [Une récurrence sur la taille de $u$ donne $hat(δ)^*(P,u)={δ^*(q,u) | q ∈ P}$. Ainsi $u$ est synchronisant si et seulement si $hat(δ)^*(Q,u)$ est un singleton. Il suffit donc de chercher si un singleton est accessible depuis l'état $Q$.],
+          solution: [Une récurrence sur la taille de $m$ donne $hat(δ)^*(P,m)={δ^*(q,m) | q ∈ P}$. Ainsi $m$ est synchronisant si et seulement si $hat(δ)^*(Q,m)$ est un singleton. Il suffit donc de chercher si un singleton est accessible depuis l'état $Q$.],
         ),
         question(
           [En déduire que le langage $L S(M)$ des mots synchronisants de la machine $M$ est reconnaissable.],
@@ -251,9 +251,9 @@
             $ L S(M_0)=0^*1(0 | 1)^+. $],
         ),
         question(
-          [Montrer que si l'on sait résoudre le problème de l'existence d'un mot synchronisant, on sait dire, pour une machine $M$ et un état $q_0$ de $M$ choisi, s'il existe un mot $u$ tel que pour tout état $q$ de $Q$, le chemin menant de $q$ à $q.u$ passe forcément par $q_0$.],
+          [Montrer que si l'on sait résoudre le problème de l'existence d'un mot synchronisant, on sait dire, pour une machine $M$ et un état $q_0$ de $M$ choisi, s'il existe un mot $m$ tel que pour tout état $q$ de $Q$, le chemin menant de $q$ à $q.m$ passe forcément par $q_0$.],
           solution: [Construire $M'=(Q,Σ,η)$ en rendant $q_0$ absorbant : $η(q_0,x)=q_0$ et $η(q,x)=δ(q,x)$ pour $q ≠ q_0$.
-            La lecture de $u$ depuis $q$ dans $M'$ aboutit à $q_0$ si et seulement si le chemin correspondant dans $M$ passe par $q_0$, éventuellement dès le départ.
+            La lecture de $m$ depuis $q$ dans $M'$ aboutit à $q_0$ si et seulement si le chemin correspondant dans $M$ passe par $q_0$, éventuellement dès le départ.
 
             Si $M'$ possède un mot synchronisant, il synchronise nécessairement sur $q_0$, puisque $q_0$ est absorbant : ce mot convient dans $M$.
             Réciproquement, un mot faisant passer tous les chemins par $q_0$ dans $M$ synchronise $M'$ sur $q_0$.

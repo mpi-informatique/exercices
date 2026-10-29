@@ -26,10 +26,10 @@
       solution: [
         $==>$ : immédiat.
 
-        $⇐$ : supposons $cal(L)(A)≠∅$ et choisissons un mot accepté $u$ de taille minimale.
-        Si $abs(u)≥n$, son chemin acceptant passe par au moins $n+1$ occurrences d'états.
+        $⇐$ : supposons $cal(L)(A)≠∅$ et choisissons un mot accepté $m$ de taille minimale.
+        Si $abs(m)≥n$, son chemin acceptant passe par au moins $n+1$ occurrences d'états.
         Deux sont égales par le principe des tiroirs. Supprimer le cycle entre elles donne un chemin acceptant de longueur strictement plus petite, contradiction.
-        Ainsi $abs(u)<n$. Si $n=0$, il n'existe aucun chemin acceptant et le résultat reste valable.
+        Ainsi $abs(m)<n$. Si $n=0$, il n'existe aucun chemin acceptant et le résultat reste valable.
       ],
     ),
     question(

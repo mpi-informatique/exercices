@@ -180,12 +180,12 @@
         $ cal(L)(A)=union_(i ∈ I) union_(f ∈ F) L_(i,f). $
       ],
     ),
-    question([Montrer que $"Pal"(Σ) ∩ (Σ^2)^*={u widetilde(u) | u ∈ Σ^*}$.], solution: [
+    question([Montrer que $"Pal"(Σ) ∩ (Σ^2)^*={m widetilde(m) | m ∈ Σ^*}$.], solution: [
       Le langage $(Σ^2)^*$ contient exactement les mots de taille paire.
-      Tout $u widetilde(u)$ est un palindrome de taille $2 abs(u)$.
-      Réciproquement, si un palindrome a pour taille $2n$, sa seconde moitié est le miroir de sa première moitié $u$.
-      Il vaut donc $u widetilde(u)$.
-      L'égalité reste vraie pour $u=ε$.
+      Tout $m widetilde(m)$ est un palindrome de taille $2 abs(m)$.
+      Réciproquement, si un palindrome a pour taille $2n$, sa seconde moitié est le miroir de sa première moitié $m$.
+      Il vaut donc $m widetilde(m)$.
+      L'égalité reste vraie pour $m=ε$.
     ]),
     [Soit $L$ un langage régulier reconnu par $A=(Q,I,F,T)$.
       On définit $D(L)={w widetilde(w) | w ∈ L}$ et $R(L)={w ∈ Σ^* | w widetilde(w) ∈ L}$.],

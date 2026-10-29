@@ -222,9 +222,9 @@
         Sinon, $epsilon$ évite $S$ ; l'ensemble fini $"Av"(S)$ est donc non vide.
         Notons $n$ la taille maximale de ses éléments.
 
-        Chaque mot $u$ de taille $n+1$ possède un facteur $s_u in S$.
+        Chaque mot $m$ de taille $n+1$ possède un facteur $s_m in S$.
         On choisit un tel facteur pour chacun de ces mots et on pose
-        $ S' = {s_u | u in Sigma^(n+1)}. $
+        $ S' = {s_m | m in Sigma^(n+1)}. $
         Cet ensemble est fini, inclus dans $S$ et inévitable : tout mot de taille au moins $n+1$ possède un préfixe de taille $n+1$, qui contient l'un des facteurs choisis.
         Il ne reste qu'un nombre fini de mots plus courts.
       ],
@@ -239,7 +239,7 @@
 
         Son graphe utile est un graphe orienté acyclique.
         Un calcul de plus long chemin dans un ordre topologique donne la taille maximale $n$ d'un mot accepté.
-        On énumère alors les mots $u$ de taille $n+1$ ; pour chacun, on énumère ses facteurs et on en retient un accepté par un automate de $cal(L)(e)$.
+        On énumère alors les mots $m$ de taille $n+1$ ; pour chacun, on énumère ses facteurs et on en retient un accepté par un automate de $cal(L)(e)$.
         Un tel facteur existe par définition de $n$.
 
         L'ensemble des facteurs retenus, après suppression des doublons, est une réponse par la question 11.

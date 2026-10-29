@@ -90,8 +90,8 @@
         Montrer que l'existence d'un morphisme $A→A'$ implique $cal(L)(A)=cal(L)(A')$. La réciproque est-elle vraie ?
       ],
       solution: [
-        Par récurrence sur $abs(u)$, les propriétés (i) et (ii) donnent
-        $ f(δ_A^*(i_A,u))=δ_(A')^*(i_(A'),u). $
+        Par récurrence sur $abs(m)$, les propriétés (i) et (ii) donnent
+        $ f(δ_A^*(i_A,m))=δ_(A')^*(i_(A'),m). $
         Par (iii), le membre de gauche est final exactement lorsque l'état atteint dans $A$ l'est, donc les deux automates acceptent les mêmes mots.
         La réciproque est fausse : $A_3$ et $A_1$ reconnaissent tous deux les mots comportant un nombre impair de $b$, car l'état 2 de $A_3$ est inaccessible ; la question 2 exclut pourtant un morphisme $A_3→A_1$.
       ],
@@ -105,7 +105,7 @@
         Si $f:A→A'$ est un morphisme, montrer qu'il est surjectif.
       ],
       solution: [
-        Pour $q'∈Q_(A')$, l'accessibilité fournit $u$ avec $δ_(A')^*(i_(A'),u)=q'$. L'identité précédente donne $q'=f(δ_A^*(i_A,u))$. Ici l'accessibilité de $A'$ seule suffit.
+        Pour $q'∈Q_(A')$, l'accessibilité fournit $m$ avec $δ_(A')^*(i_(A'),m)=q'$. L'identité précédente donne $q'=f(δ_A^*(i_A,m))$. Ici l'accessibilité de $A'$ seule suffit.
       ],
     ),
     question(
@@ -133,7 +133,7 @@
       ],
       solution: [
         Prendre la première projection $(q,q')↦q$. Elle conserve l'état initial et les transitions.
-        Comme $(q,q')$ est accessible, il existe un mot $u$ atteignant ce couple. L'égalité des langages donne $q∈F_A⇔q'∈F_(A')$.
+        Comme $(q,q')$ est accessible, il existe un mot $m$ atteignant ce couple. L'égalité des langages donne $q∈F_A⇔q'∈F_(A')$.
         Ainsi $(q,q')∈F_A×F_(A')⇔q∈F_A$, ce qui prouve la propriété finale.
         La seconde projection se traite de même. L'argument s'applique également à la partie accessible du produit si le produit entier n'est pas accessible.
       ],

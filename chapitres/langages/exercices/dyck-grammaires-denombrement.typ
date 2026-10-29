@@ -20,7 +20,7 @@
       - il contient autant de $a$ que de $b$ ;
       - chacun de ses préfixes contient au moins autant de $a$ que de $b$.
 
-      On note $D$ le langage de ces mots et $h(u)=abs(u)_a-abs(u)_b$ la hauteur d'un mot $u$.
+      On note $D$ le langage de ces mots et $h(m)=abs(m)_a-abs(m)_b$ la hauteur d'un mot $m$.
       La lettre $a$ représente une parenthèse ouvrante et $b$ une parenthèse fermante.],
     question([Montrer que $D$ n'est pas régulier.], solution: [
       Supposer $D$ régulier et prendre $p ≥ 1$ donné par le lemme de l'étoile.
