@@ -107,6 +107,7 @@
   show: configurer-code
   set text(font: "New Computer Modern", size: taille, lang: "fr")
   set par(justify: true)
+  show math.equation.where(block: true): set block(above: 0.5em)
   set heading(numbering: "I.1.1 –")
   show heading: set block(below: 0.8em)
   show heading.where(level: 1): set text(size: 1.1 * taille)

@@ -100,6 +100,7 @@
           + palette,
       )
       show: configurer-code
+      show math.equation.where(block: true): set block(above: 0.5em)
       body
     },
     touying.config-info(title: titre, author: auteur, date: none),
