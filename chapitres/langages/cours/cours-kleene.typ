@@ -295,6 +295,25 @@ Noter $R_(p, r)$ l'union des étiquettes des transitions de $p$ à $r$, et $∅$
   Supprimer ensuite $q$ et ses transitions.
 ]
 #slide()
+#grid(
+  columns: (1fr, auto, 1fr),
+  column-gutter: 0.5em,
+  align: horizon,
+  dessiner-automate(
+    (("p", (0, 0), false, false), ("q", (2.5, 0), false, false), ("r", (5, 0), false, false)),
+    (
+      ("p", "q", "e", (:)),
+      ("q", "q", "f", (curve: 1)),
+      ("q", "r", "g", (:)),
+      ("p", "r", "h", (curve: -1.7)),
+    ),
+  ),
+  $==>$,
+  dessiner-automate(
+    (("p", (0, 0), false, false), ("r", (5, 0), false, false)),
+    (("p", "r", "h | e f^* g", (:)),),
+  ),
+)
 Tout passage par $q$ consiste à entrer dans $q$, parcourir sa boucle un nombre quelconque de fois, puis sortir de $q$.
 Les chemins qui évitent $q$ sont conservés par le premier terme de l'union.
 
