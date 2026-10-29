@@ -479,17 +479,14 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   + Dessiner un automate reconnaissant les mots sur $Σ = {a, b}$ n'ayant pas $a a a$ comme facteur.
 ]
 
-#tp(id: "tp-automates")[== Automate produit]
+== Automate produit
 #theoreme(
   coeur: true,
   titre: [Stabilité par intersection, union et différence],
 )[$Lrec(Σ)$ est stable par intersection, union et différence.] <thm-operations>
 #solution(cours: true)[
   On considère deux ADC $A_k = (Q_k, Σ, i_k, F_k, δ_k)$ de langage $L_k$, pour $k ∈ {1, 2}$.\
-  #hp[
-    Leur _automate produit_ est $A_1 timess A_2 = (Q_1 timess Q_2, Σ, (i_1, i_2), F, δ)$ avec
-    $δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)).$
-  ]
+  Leur _automate produit_ est $A_1 timess A_2 = (Q_1 timess Q_2, Σ, (i_1, i_2), F, δ)$ avec $δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)).$
   Le produit simule les deux lectures en parallèle. Chaque opérateur correspond à un choix de $F$ :
   #align(center, table(
     columns: (auto, ..(10em,) * 3),
@@ -508,13 +505,10 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   ))
 ]
 
-#underline[Remarque] : en supposant $Q_1 ∩ Q_2 = ∅$ (quitte à renommer les états), $L_1 ∪ L_2$ est reconnu plus simplement par l'automate non déterministe $A_1 ∪ A_2 = (Q_1 ∪ Q_2, Σ, {i_1, i_2}, F_1 ∪ F_2, δ)$ où :
-$δ(q, a) = display(
-  cases(
-    δ_1(q, a) & "si" q ∈ Q_1,
-    δ_2(q, a) & "si" q ∈ Q_2,
-  )
-)$
+#exercice[
+  + Donner une construction plus simple pour reconnaître $L_1 ∪ L_2$.
+  + En déduire que $Lrec(Σ)$ est stable par intersection et différence, sans utiliser l'automate produit.
+]
 
 #exercice[
   + Montrer que $L = {m | |m|_a ≡ 0 #sep mod #sep 2, #sep |m|_b ≡ 1 #sep mod #sep 3}$ est reconnaissable.
@@ -571,10 +565,11 @@ $δ(q, a) = display(
 ]
 
 #underline[Remarques] :
-- Les automates sont sans mémoire : le choix d'une transition dépend uniquement de l'état actuel et de la lettre lue, pas du chemin déjà parcouru. Ils ne peuvent donc pas compter, d'où $L_1, L_2 ∉ Lrec(Σ)$.
-- Par contre, ${a^n b^p | n ≡ p mod 2} ∈ Lrec(Σ)$ car il suffit de mémoriser la parité du nombre de $a$ et $b$ et pas une infinité de valeurs possibles.
+- Les automates sont sans mémoire : le choix d'une transition dépend uniquement de l'état actuel et de la lettre lue, pas du chemin déjà parcouru. Ils ne peuvent donc pas compter un nombre arbitraire, d'où $L_1, L_2 ∉ Lrec(Σ)$.
+- Mais ${a^n b^p | n ≡ p mod 2} ∈ Lrec(Σ)$ car il suffit de mémoriser la parité du nombre de $a$ et de $b$ lus.
 
 #hp[= Compléments]
 
-- #lien("residuels-minimisation")[Théorème de Myhill-Nerode] : condition nécessaire et suffisante pour qu'un langage soit reconnaissable, exprimée par une relation d'équivalence $∼$ sur $Q$.
-- #lien("residuels-minimisation")[Minimisation d'automate] : chaque automate $A$ est équivalent à un unique ADC minimal (en nombre d'états) $M(A)$, dont les état sont $Q\\∼$. Plusieurs algorithmes permettent de le construire : Moore et Hopcroft calculent $∼$ par raffinement de partition, Brzozowski calcule $M(A) = PP((PP(A^top))^top).$
+- #lien("residuels-minimisation")[Théorème de Myhill-Nerode] : condition nécessaire et suffisante pour qu'un langage soit reconnaissable.
+- #lien("residuels-minimisation")[Automate minimal] : un automate $A$ est équivalent à un unique ADC minimal $M(A)$. Les algorithmes de Moore et Hopcroft calculent une relation d'équivalence par raffinement de partition, Brzozowski calcule $M(A) = PP((PP(A^top))^top).$
+- Machine de Turing : modélise un ordinateur avec un automate et une mémoire infinie.

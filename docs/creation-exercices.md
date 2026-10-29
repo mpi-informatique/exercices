@@ -4,7 +4,7 @@ Choix pédagogiques et éditoriaux de la banque. Les commandes sont dans le [gui
 
 ## Organisation et réutilisation
 
-- Vérifier qu'un exercice n'existe pas déjà avant de le créer. Choisir le dépôt et la branche selon le [circuit de relecture](#relecture-et-intégration), y compris pour les créations par IA.
+- Vérifier qu'un exercice n'existe pas déjà avant de le créer, y compris dans une brance. Choisir le dépôt et la branche selon le [circuit de relecture](#relecture-et-intégration), y compris pour les créations par IA.
 - Ranger les contenus par chapitre : exercices dans `chapitres/<chapitre>/exercices/`, cours et TD de langages dans `cours/` et `td/`, TP dans `tp/<identifiant>/`. Les mathématiques conservent leurs sous-dossiers et leurs feuilles à la racine de `chapitres/maths/`.
 - Ranger les écrits dans `devoirs/concours/` par année, les oraux dans `devoirs/concours/oral/<concours>/`. Nommer un oral `<concours>-oral-<filiere>-<theme>.typ` ; la filière MPI peut être omise. Conserver l'année dans les métadonnées.
 - Garder un exercice simple dans un fichier. S'il possède des ressources, les regrouper dans un dossier `<identifiant>/` avec `<identifiant>.typ`, le code et les tests. Partir du modèle adapté.

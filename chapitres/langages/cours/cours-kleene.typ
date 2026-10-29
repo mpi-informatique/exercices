@@ -57,10 +57,7 @@ $ L ∖ {ε} = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^*. $
       + $L_1 = a^*$
       + $L_2 = (a b)^*$
     ],
-    enum(start: 3,
-      [$L_3 = a^* | (a b)^*$],
-      [$L_4 = a^* (a b)^*$],
-    ),
+    enum(start: 3, [$L_3 = a^* | (a b)^*$], [$L_4 = a^* (a b)^*$]),
   )
 ]
 #solution[#pause Les trois premiers donnent deux langages locaux puis un contre-exemple : $a a b$ respecte les conditions locales de $L_3$ sans lui appartenir. $L_4$ est local.]
@@ -181,7 +178,7 @@ Un automate possédant de telles transitions n'est pas déterministe au sens du 
 Cet automate reconnaît ${ε, b, a c, a a, a a b}$.
 
 #slide()
-#theoreme[Tout automate avec $ε$-transitions est équivalent à un automate sans $ε$-transition.]
+#theoreme[Tout automate avec $ε$-transitions est équivalent à un automate sans $ε$-transition.]<thm-epsilon>
 #article-only[*Preuve* :]
 #solution[
   #pause
@@ -194,6 +191,8 @@ Cet automate reconnaît ${ε, b, a c, a a, a a b}$.
 #exercice[Donner un automate sans $ε$-transition équivalent à l'exemple précédent.]
 #article-only[#epsilon]
 Pour déterminiser directement, partir de $C(I)$ et prendre la $ε$-fermeture après chaque lecture.
+
+#underline[Remarque] : un automate avec $ε$-transitions n'est pas déterministe, mais il peut être déterminisé en adaptant l'algorithme de déterminisation ou en utilisant préalablement @thm-epsilon.
 
 == Construction de Thompson (exemples non exigibles)
 La construction récursive d'un automate avec $ε$-transitions fournit une autre preuve de régulier ⟹ reconnaissable.
