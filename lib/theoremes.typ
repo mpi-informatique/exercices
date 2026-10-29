@@ -81,7 +81,8 @@
   let titre = box(fill: white, inset: frame.title-inset, text(weight: "semibold", full-title))
   let hauteur = measure(titre).height
   let inset = frame.inset
-  if full-title != "" { v(hauteur / 2) }
+  // Réserver la place du titre sans cumuler cet espace avec la marge du bloc précédent.
+  if full-title != "" { v(hauteur / 2, weak: true) }
   fancy-box(..args, full-title: "", {
     if full-title != "" {
       place(top + left, dx: 1em - inset.x, dy: -inset.top - hauteur / 2, titre)
