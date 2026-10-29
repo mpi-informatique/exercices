@@ -215,15 +215,15 @@ Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
 ]
 
 #solution[
-  On note $n = |m|$, $s = |Q|$ et $t = |Δ|$. Les mémoires indiquées sont auxiliaires, hors stockage de l'automate et du mot.
+  On note $n = |m|$, $k = |Q|$ et $p = |Δ|$. Les mémoires indiquées sont auxiliaires, hors stockage de l'automate et du mot.
 
   + *Par ensembles (parcours en largeur).* On calcule les états atteignables après chaque préfixe :
-    $ Q_0 = I, quad Q_(k+1) = δ(Q_k, m_(k+1)). $
-    On accepte si $Q_n ∩ F ≠ ∅$. Deux tableaux de booléens de taille $s$ représentent les ensembles courant et suivant, sans doublons. À chaque étape, on réinitialise le tableau suivant et parcourt les transitions sortant des états courants, en gardant celles étiquetées par la lettre lue. Temps : $O((n+1)(s+t))$ ; mémoire : $O(s)$. On peut rejeter dès que l'ensemble courant est vide.
-  + *DFS sans mémoïsation.* Une configuration $(q, k)$ signifie que l'on est dans l'état $q$ après avoir lu $k$ lettres. Depuis chaque état initial, on explore récursivement les configurations $(q', k+1)$ pour $q' ∈ δ(q, m_(k+1))$. Si $k = n$, on teste $q ∈ F$. On accepte dès qu'un appel réussit. Des chemins différents peuvent rejoindre la même configuration et refaire les mêmes calculs : le temps peut être exponentiel en $n$. Mémoire : $O(n+1)$ pour la pile, si l'on parcourt les successeurs sans recopier les listes d'adjacence.
-  + *DFS avec mémoïsation.* On mémorise le résultat booléen de chaque configuration $(q, k)$. Chaque configuration est traitée au plus une fois ; la position augmente strictement à chaque appel. Temps : $O((n+1)(s+t))$ ; mémoire : $O((n+1)s)$, pile comprise, pour un automate non vide.
+    $ Q_0 = I, quad Q_(i+1) = δ(Q_i, m_(i+1)). $
+    On accepte si $Q_n ∩ F ≠ ∅$. Deux tableaux de booléens de taille $k$ représentent les ensembles courant et suivant, sans doublons. À chaque étape, on réinitialise le tableau suivant et parcourt les transitions sortant des états courants, en gardant celles étiquetées par la lettre lue. Temps : $O((n+1)(k+p))$ ; mémoire : $O(k)$. On peut rejeter dès que l'ensemble courant est vide.
+  + *DFS sans mémoïsation.* Une configuration $(q, i)$ signifie que l'on est dans l'état $q$ après avoir lu $i$ lettres. Depuis chaque état initial, on explore récursivement les configurations $(q', i+1)$ pour $q' ∈ δ(q, m_(i+1))$. Si $i = n$, on teste $q ∈ F$. On accepte dès qu'un appel réussit. Des chemins différents peuvent rejoindre la même configuration et refaire les mêmes calculs : le temps peut être exponentiel en $n$. Mémoire : $O(n+1)$ pour la pile, si l'on parcourt les successeurs sans recopier les listes d'adjacence.
+  + *DFS avec mémoïsation.* On mémorise le résultat booléen de chaque configuration $(q, i)$. Chaque configuration est traitée au plus une fois ; la position augmente strictement à chaque appel. Temps : $O((n+1)(k+p))$ ; mémoire : $O((n+1)k)$, pile comprise, pour un automate non vide.
 
-  La méthode par ensembles déduplique déjà les configurations à chaque position et oublie les couches précédentes : elle est généralement préférable pour sa simplicité et sa mémoire $O(s)$. Le DFS mémoïsé peut trouver un chemin acceptant sans explorer toutes les configurations atteignables. La mémoïsation évite les calculs répétés du DFS, mais n'apporte rien à la méthode par ensembles pour un seul mot.
+  La méthode par ensembles déduplique déjà les configurations à chaque position et oublie les couches précédentes : elle est généralement préférable pour sa simplicité et sa mémoire $O(k)$. Le DFS mémoïsé peut trouver un chemin acceptant sans explorer toutes les configurations atteignables. La mémoïsation évite les calculs répétés du DFS, mais n'apporte rien à la méthode par ensembles pour un seul mot.
 
   *Exemple de temps exponentiel.* Considérons l'automate suivant et le mot $m = a^n$ :
   #dessiner-automate(
@@ -236,9 +236,9 @@ Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
       ("q_1", "f", "b", (:)),
     ),
   )
-  À chaque lettre $a$, chacun des états $q_0$ et $q_1$ offre deux choix. Le mot est rejeté, car atteindre l'état final exige de lire un $b$ : aucun appel ne réussit et le DFS sans mémoïsation explore tous les choix. Son arbre d'appels est binaire complet, avec $2^k$ appels à la profondeur $k$, donc
+  À chaque lettre $a$, chacun des états $q_0$ et $q_1$ offre deux choix. Le mot est rejeté, car atteindre l'état final exige de lire un $b$ : aucun appel ne réussit et le DFS sans mémoïsation explore tous les choix. Son arbre d'appels est binaire complet, avec $2^i$ appels à la profondeur $i$, donc
   $ T(n) = 1 + 2 + 2^2 + dots + 2^n = 2^(n+1) - 1 = Θ(2^n). $
-  Par exemple, pour $m = a^3$, il effectue $15$ appels alors qu'il n'y a que $7$ configurations distinctes : $(q_0, 0)$, puis $(q_0, k)$ et $(q_1, k)$ pour $1 ≤ k ≤ 3$. Avec mémoïsation, seules $2n+1$ configurations sont calculées, d'où un temps $Θ(n+1)$ pour cet automate fixé. La méthode par ensembles obtient aussi ce temps : $Q_0 = {q_0}$, puis $Q_k = {q_0, q_1}$ pour $1 ≤ k ≤ n$.
+  Par exemple, pour $m = a^3$, il effectue $15$ appels alors qu'il n'y a que $7$ configurations distinctes : $(q_0, 0)$, puis $(q_0, i)$ et $(q_1, i)$ pour $1 ≤ i ≤ 3$. Avec mémoïsation, seules $2n+1$ configurations sont calculées, d'où un temps $Θ(n+1)$ pour cet automate fixé. La méthode par ensembles obtient aussi ce temps : $Q_0 = {q_0}$, puis $Q_i = {q_0, q_1}$ pour $1 ≤ i ≤ n$.
 ]
 
 = Automate complet
