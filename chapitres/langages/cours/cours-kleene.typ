@@ -115,12 +115,40 @@ Pour reconnaître un langage local $L$, utiliser $Q = Σ ∪ {q_0}$, avec $q_0 �
 #algorithme(coeur: true)[
   #underline[Entrée] : une expression régulière $e$.\
   #underline[Sortie] : un automate de Glushkov reconnaissant $cal(L)(e)$.
-  + Linéariser $e$ en $e'$ en remplaçant chaque lettre $a$ par une nouvelle lettre $phi(a)$.
+  + Linéariser $e$ en $e'$ en remplaçant chaque occurrence de lettre par une lettre distincte d'un alphabet $Σ'$.
   + Calculer $P(cal(L)(e'))$, $S(cal(L)(e'))$ et $F(cal(L)(e'))$, et tester $ε ∈ cal(L)(e')$.
   + Construire l'automate local reconnaissant $cal(L)(e')$.
-  + Remplacer chaque étiquette $a' ∈ Σ'$ par $π(a')$.
+  + Remplacer chaque étiquette $a'$ par $π(a')$, où $π : Σ' → Σ$ associe à chaque nouvelle lettre sa lettre d'origine.
 ]
 Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réciproquement. Le langage reconnu est donc $cal(L)(e)$.
+
+#slide()
+#lemme(titre: "Projection des étiquettes")[
+  Soit $π : Σ' → Σ$, prolongée aux mots par $π(ε) = ε$ et $π(a_1 … a_n) = π(a_1) … π(a_n)$.
+  Si l'on remplace chaque étiquette $a'$ d'un automate $A'$ par $π(a')$, sans changer les états initiaux et finaux, l'automate obtenu $A$ vérifie :
+  $ cal(L)(A) = π(cal(L)(A')). $
+] <lemme-projection-etiquettes>
+#solution(cours: true, presentation: true)[
+  Les chemins de $A'$ sont conservés dans $A$ : seul le mot lu change, de $u$ en $π(u)$.
+  Réciproquement, chaque transition d'un chemin de $A$ provient d'au moins une transition de $A'$ entre les mêmes états. En choisissant ces transitions, on retrouve un chemin de $A'$.
+  Les extrémités sont inchangées, donc les chemins acceptants de $A$ lisent exactement les images des mots de $cal(L)(A')$.
+  Cela vaut aussi pour le chemin de taille nulle, qui lit $ε$.
+]
+
+#slide()
+#underline[Correction de l'algorithme de Berry-Sethi]
+#solution(cours: true, presentation: true)[
+  Notons $e'$ l'expression linéarisée, $A'$ l'automate construit avant projection et $A$ l'automate renvoyé.
+
+  *Avant projection.* Comme $e'$ est linéaire, $cal(L)(e')$ est local.
+  Par construction de $A'$, un mot non vide $a_1 … a_n$ est accepté exactement lorsque sa première lettre appartient à $P(cal(L)(e'))$, sa dernière à $S(cal(L)(e'))$ et tous ses facteurs $a_k a_(k + 1)$ à $F(cal(L)(e'))$.
+  La localité donne donc l'équivalence avec $a_1 … a_n ∈ cal(L)(e')$.
+  De plus, l'état initial est final exactement lorsque $ε ∈ cal(L)(e')$. Ainsi, $cal(L)(A') = cal(L)(e')$.
+
+  *Après projection.* On a $π(cal(L)(e')) = cal(L)(e)$ : cela se démontre par induction sur l'expression, car l'image par $π$ respecte l'union, la concaténation et l'étoile, et redonne chaque lettre d'origine.
+  Le @lemme-projection-etiquettes permet de conclure :
+  $ cal(L)(A) = π(cal(L)(A')) = π(cal(L)(e')) = cal(L)(e). $
+]
 
 #slide()
 #exercice[Appliquer l'algorithme à $e = a (a | b)^*$.]
