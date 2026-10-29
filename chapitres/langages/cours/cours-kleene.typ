@@ -112,11 +112,9 @@ Pour reconnaître un langage local $L$, utiliser $Q = Σ ∪ {q_0}$, avec $q_0 �
 ]
 
 == Algorithme de Berry-Sethi
-#algorithme(
-  coeur: true,
-  entree: [Une expression régulière $e$.],
-  sortie: [Un automate de Glushkov reconnaissant $cal(L)(e)$.],
-)[
+#algorithme(coeur: true)[
+  #underline[Entrée] : une expression régulière $e$.\
+  #underline[Sortie] : un automate de Glushkov reconnaissant $cal(L)(e)$.
   + Linéariser $e$ en $e'$ en remplaçant chaque lettre $a$ par une nouvelle lettre $phi(a)$.
   + Calculer $P(cal(L)(e'))$, $S(cal(L)(e'))$ et $F(cal(L)(e'))$, et tester $ε ∈ cal(L)(e')$.
   + Construire l'automate local reconnaissant $cal(L)(e')$.
