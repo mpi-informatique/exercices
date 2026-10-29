@@ -195,28 +195,16 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 
 #slide()
 
-#{
-  let questions = (
-    [$a b | a b c | c$],
-    [Mots de taille paire sur $Σ = {a, b}$.],
-    [$(b | a b | a b a)^*$],
-    [Mots sur $Σ = {a, b}$ dont l'avant-dernière lettre est $a$.],
-  )
-  let enonce(contenu) = exercice[
+#liste-cours(
+  encadrer: contenu => exercice[
     Montrer que les langages suivants sont reconnaissables :
     #contenu
-  ]
-  if est-presentation() {
-    enonce(enum(..questions))
-  } else {
-    colonnes-cours(
-      align: left + top,
-      encadrer: enonce,
-      enum(..questions.slice(0, 2)),
-      enum(start: 3, ..questions.slice(2)),
-    )
-  }
-}
+  ],
+  [$a b | a b c | c$],
+  [Mots de taille paire sur $Σ = {a, b}$.],
+  [$(b | a b | a b a)^*$],
+  [Mots sur $Σ = {a, b}$ dont l'avant-dernière lettre est $a$.],
+)
 
 Pour déterminer si $m = m_1 … m_n ∈ LA$, on peut calculer itérativement l'ensemble $Q_k$ des états atteignables après lecture de $m_1 … m_k$ : $Q_0 = I$ et $Q_k = δ(Q_(k-1), m_k)$.
 Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
