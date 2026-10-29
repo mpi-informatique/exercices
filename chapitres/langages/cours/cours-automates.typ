@@ -224,6 +224,21 @@ Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
   + *DFS avec mémoïsation.* On mémorise le résultat booléen de chaque configuration $(q, k)$. Chaque configuration est traitée au plus une fois ; la position augmente strictement à chaque appel. Temps : $O((n+1)(s+t))$ ; mémoire : $O((n+1)s)$, pile comprise, pour un automate non vide.
 
   La méthode par ensembles déduplique déjà les configurations à chaque position et oublie les couches précédentes : elle est généralement préférable pour sa simplicité et sa mémoire $O(s)$. Le DFS mémoïsé peut trouver un chemin acceptant sans explorer toutes les configurations atteignables. La mémoïsation évite les calculs répétés du DFS, mais n'apporte rien à la méthode par ensembles pour un seul mot.
+
+  *Exemple de temps exponentiel.* Considérons l'automate suivant et le mot $m = a^n$ :
+  #dessiner-automate(
+    (("q_0", (0, 0), true, false), ("q_1", (3, 0), false, false), ("f", (6, 0), false, true)),
+    (
+      ("q_0", "q_0", "a", (:)),
+      ("q_0", "q_1", "a", (curve: 0.4)),
+      ("q_1", "q_0", "a", (curve: 0.4)),
+      ("q_1", "q_1", "a", (:)),
+      ("q_1", "f", "b", (:)),
+    ),
+  )
+  À chaque lettre $a$, chacun des états $q_0$ et $q_1$ offre deux choix. Le mot est rejeté, car atteindre l'état final exige de lire un $b$ : aucun appel ne réussit et le DFS sans mémoïsation explore tous les choix. Son arbre d'appels est binaire complet, avec $2^k$ appels à la profondeur $k$, donc
+  $ T(n) = 1 + 2 + 2^2 + dots + 2^n = 2^(n+1) - 1 = Θ(2^n). $
+  Par exemple, pour $m = a^3$, il effectue $15$ appels alors qu'il n'y a que $7$ configurations distinctes : $(q_0, 0)$, puis $(q_0, k)$ et $(q_1, k)$ pour $1 ≤ k ≤ 3$. Avec mémoïsation, seules $2n+1$ configurations sont calculées, d'où un temps $Θ(n+1)$ pour cet automate fixé. La méthode par ensembles obtient aussi ce temps : $Q_0 = {q_0}$, puis $Q_k = {q_0, q_1}$ pour $1 ≤ k ≤ n$.
 ]
 
 = Automate complet
