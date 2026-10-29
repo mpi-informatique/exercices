@@ -484,10 +484,12 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
   coeur: true,
   titre: [Stabilité par intersection, union et différence],
 )[$Lrec(Σ)$ est stable par intersection, union et différence.] <thm-operations>
-#solution(cours: true, coeur: true)[
+#solution(cours: true)[
   On considère deux ADC $A_k = (Q_k, Σ, i_k, F_k, δ_k)$ de langage $L_k$, pour $k ∈ {1, 2}$.\
-  Leur _automate produit_ est $A_1 timess A_2 = (Q_1 timess Q_2, Σ, (i_1, i_2), F, δ)$ avec
-  $δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)).$
+  #hp[
+    Leur _automate produit_ est $A_1 timess A_2 = (Q_1 timess Q_2, Σ, (i_1, i_2), F, δ)$ avec
+    $δ((q_1, q_2), a) = (δ_1(q_1, a), δ_2(q_2, a)).$
+  ]
   Le produit simule les deux lectures en parallèle. Chaque opérateur correspond à un choix de $F$ :
   #align(center, table(
     columns: (auto, ..(10em,) * 3),
