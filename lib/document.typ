@@ -51,6 +51,16 @@
 /// -> content
 #let widetilde(body) = math.accent(body, sym.tilde, size: 150%)
 
+/// Désactive par défaut la numérotation des figures dans les documents et les présentations.
+/// Un argument `numbering` explicite reste prioritaire.
+///
+/// - body (content): Contenu à mettre en forme.
+/// -> content
+#let configurer-figures(body) = {
+  set figure(numbering: none)
+  body
+}
+
 /// Applique l'espacement commun des formules centrées aux documents et aux présentations.
 /// À utiliser comme règle `show`.
 ///
@@ -115,6 +125,7 @@
   set document(author: auteur) if auteur != none
   show: configurer-theoremes
   show: configurer-code
+  show: configurer-figures
   set text(font: "New Computer Modern", size: taille, lang: "fr")
   set par(justify: true)
   show: configurer-formules
