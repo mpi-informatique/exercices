@@ -120,7 +120,16 @@ Pour reconnaître un langage local $L$, utiliser $Q = Σ ∪ {q_0}$, avec $q_0 �
   + Construire l'automate local reconnaissant $cal(L)(e')$.
   + Remplacer chaque étiquette $a'$ par $π(a')$, où $π : Σ' → Σ$ associe à chaque nouvelle lettre sa lettre d'origine.
 ]
-Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réciproquement. Le langage reconnu est donc $cal(L)(e)$.
+#solution(cours: true)[
+  Notons $A'$ l'automate avant réétiquetage et $A$ l'automate renvoyé.
+  Comme $e'$ est linéaire, $cal(L)(e')$ est local : la construction précédente donne donc $cal(L)(A') = cal(L)(e')$.
+  Le cas de $ε$ est assuré par le choix de l'état initial comme état final exactement lorsque $ε ∈ cal(L)(e')$.
+
+  Prolongeons $π$ aux mots lettre à lettre. Une induction sur $e$ donne $π(cal(L)(e')) = cal(L)(e)$ : la projection redonne chaque lettre d'origine et respecte l'union, la concaténation et l'étoile.
+
+  Le réétiquetage conserve les chemins et leurs extrémités : un chemin acceptant lisant $m$ dans $A'$ lit $π(m)$ dans $A$, et tout chemin acceptant de $A$ provient d'un tel chemin de $A'$. Ainsi :
+  $ cal(L)(A) = π(cal(L)(A')) = π(cal(L)(e')) = cal(L)(e). $
+]
 
 #slide()
 #exercice(title: "Morphismes de mots")[
