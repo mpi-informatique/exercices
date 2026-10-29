@@ -5,7 +5,7 @@
 ///
 /// Chaque famille expose `compteur-<nom>`, `<nom>`, `<nom>-sans-numero` et
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
-/// Les appels acceptent un contenu et les options communes `titre`, `coeur` et
+/// Les appels acceptent un contenu et les options communes `title`, `coeur` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
 /// En présentation, une pause suit chaque cadre si du contenu reste sur la diapositive ; `pause: false` la désactive.
 /// Les références `@etiquette` suivent le type et le numéro, y compris pendant
@@ -260,13 +260,13 @@
 /// Le rendu A4 est monochrome ; la présentation utilise la couleur `method` de la palette,
 /// ou celle des théorèmes par défaut. Les animations Touying sont prises en charge.
 ///
-/// - titre (content, str): Titre facultatif après « Méthode ».
+/// - title (content, str): Titre facultatif après « Méthode ».
 /// - coeur (bool): Signaler une méthode à connaître.
 /// - marge (bool): Ajouter la marge supérieure du bloc A4.
 /// - pause (bool): Ajouter une pause après la méthode en présentation.
 /// - body (content): Démarche, éventuellement sous forme d'étapes numérotées.
 /// -> content
-#let methode(titre: "", coeur: false, marge: true, pause: true, body) = {
+#let methode(title: "", coeur: false, marge: true, pause: true, body) = {
   // Le filtre de Touying ne descend pas dans les arguments des fonctions différées.
   body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
     if (marque.kind == "touying-slides-only") == est-presentation() { marque.body } else { [] }
@@ -274,7 +274,7 @@
   rendre-cadre(
     "method",
     body,
-    full-title: [#underline[Méthode] :#if titre != "" and titre != [] { [ #titre] }],
+    full-title: [#underline[Méthode] :#if title != "" and title != [] { [ #title] }],
     coeur: coeur,
     marge: marge,
     pause: pause,
@@ -294,11 +294,10 @@
     numbering: "1",
     render: rendre-cadre.with(nom),
   )
-  let francais(cadre, titre: "", ..args) = cadre(title: titre, ..args)
   (
     compteur,
-    francais.with(numerote.with(get-full-title: titre-cadre)),
-    francais.with(sans-numero.with(get-full-title: titre-cadre)),
+    numerote.with(get-full-title: titre-cadre),
+    sans-numero.with(get-full-title: titre-cadre),
     afficher,
   )
 }

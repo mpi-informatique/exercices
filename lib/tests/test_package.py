@@ -81,14 +81,14 @@ Voir @question-mobile avant son énoncé.
   + *Renvoyer* $s$.
 ]
 == Méthode
-#theoremes.methode(titre: [Construire une preuve])[
+#theoremes.methode(title: [Construire une preuve])[
   #context { assert(text.style == "normal") }
   + Fixer les hypothèses.
   #pause
   + Établir la conclusion. #article-only[Version imprimée.] #slides-only[Version projetée.]
 ]
 == Application
-#theoremes.exercice(titre: [Monoïdes et taille])[
+#theoremes.exercice(title: [Monoïdes et taille])[
   Un exercice. #slides-only[#linebreak()#metadata("presentation") <retour-exercice-test>]
   Une suite commune. #article-only[#metadata("cours") <retour-exercice-test>]
 ]

@@ -27,7 +27,7 @@
 
 = Alphabet et mot
 
-#definition(titre: [Alphabet, lettre, mot], item-by-item[
+#definition(title: [Alphabet, lettre, mot], item-by-item[
   - Un _alphabet_ est un ensemble $Σ$ fini, dont les éléments sont des _lettres_.
   - #taille-presentation(
       0.92em,
@@ -42,7 +42,7 @@
 
 #slide()
 
-#definition(titre: [Concaténation, Puissance])[
+#definition(title: [Concaténation, Puissance])[
   - La _concaténation_ de deux mots $u = u_1 … u_n$ et $v = v_1 … v_p$ est : #equation-slide($u v = u_1 … u_n v_1 … v_p$)
   - Si $u in Σ^*$, on définit sa _puissance_ par récurrence : $u^0 = ε$ et $u^k = u u^(k - 1)$ pour $k ≥ 1$.
 ]
@@ -127,7 +127,7 @@
 
 #slide()
 
-#definition(titre: [Préfixe, Suffixe, Facteur, Sous-mot])[
+#definition(title: [Préfixe, Suffixe, Facteur, Sous-mot])[
   - $u$ est un _préfixe_ de $m$ s'il existe un mot $v$ tel que $m = u v$.
   - $u$ est un _suffixe_ de $m$ s'il existe un mot $v$ tel que $m = v u$.
   - $u$ est un _facteur_ (_substring_ en anglais) de $m$ s'il existe des mots $v, w$ tels que $m = v u w$.
@@ -203,7 +203,7 @@
 
 = Langage
 
-#definition(titre: [Langage])[
+#definition(title: [Langage])[
   Un _langage_ $L$ sur un alphabet $Σ$ est un ensemble de mots sur $Σ$, c'est-à-dire $L ⊂ Σ^*$ ou encore $L ∈ cal(P)(Σ^*)$
 ]
 
@@ -227,7 +227,7 @@
 
 == Concaténation
 
-#definition(titre: [Concaténation])[
+#definition(title: [Concaténation])[
   La _concaténation_ de deux langages $L_1$ et $L_2$ est $L_1 L_2 = {m_1 m_2 ∣ m_1 ∈ L_1, #sep m_2 ∈ L_2}$.
 ]
 #underline[Remarque] : La concaténation de langages est associative, d'élément neutre ${ε}$ et d'élément absorbant $∅$.
@@ -266,7 +266,7 @@
 
 == Puissance
 
-#definition(titre: [Puissance])[
+#definition(title: [Puissance])[
   Si $L ⊂ Σ^*$, on définit sa _puissance_ par récurrence : $L^0 = {ε}$ et $L^k = L L^(k - 1)$ pour $k ≥ 1$.
 ]
 Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1 ∈ L, …, m_n ∈ L}.$
@@ -293,7 +293,7 @@ Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1
 == Étoile de Kleene
 
 
-#definition(titre: [Étoile de Kleene])[
+#definition(title: [Étoile de Kleene])[
   L'_étoile de Kleene_ d'un langage $L$ est $L^* = display(union.big_(k ∈ ℕ)) L^k$.
 ]
 $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelconque de mots de $L$. \
@@ -317,7 +317,7 @@ $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelco
 
 = Langages réguliers
 
-#definition(coeur: true, titre: [Langages réguliers])[
+#definition(coeur: true, title: [Langages réguliers])[
   L'ensemble $Lreg$ des _langages réguliers_ sur $Σ$ est le plus petit ensemble de langages, pour l'inclusion, contenant les langages finis sur $Σ$ et stable par union, concaténation et étoile de Kleene.
 ]
 
@@ -421,7 +421,7 @@ Une expression régulière est une notation concise pour décrire un langage ré
 #slide()
 
 #colonnes-cours(
-  encadrer: regles => definition(titre: [Langage dénoté par une expression régulière])[
+  encadrer: regles => definition(title: [Langage dénoté par une expression régulière])[
     Le _langage_ $LL(e)$ dénoté par une expression régulière $e$ est défini récursivement :
     #regles
   ],

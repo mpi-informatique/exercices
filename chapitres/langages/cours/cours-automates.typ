@@ -289,7 +289,7 @@ Un automate déterministe complet (ADC) a une fonction de transition de la forme
 ]
 
 #slide()
-#exercice(titre: [Automates à permutations])[
+#exercice(title: [Automates à permutations])[
   Soit $A = (Q, Σ, q_0, F, δ)$ un ADC. Pour $a ∈ Σ$, on note $δ_a (q) = δ(q, a)$.\
   On suppose que $A$ est un _automate à permutations_, c'est-à-dire que chaque $δ_a$ est bijective.
   + Peut-on remplacer « bijective » par « injective » ou « surjective » dans cette définition ?
@@ -452,7 +452,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 
 == Complémentaire
 
-#theoreme(coeur: true, titre: [Stabilité par complémentaire])[
+#theoreme(coeur: true, title: [Stabilité par complémentaire])[
   Si $L ∈ Lrec(Σ)$ alors $Σ^* ∖ L ∈ Lrec(Σ)$.
 ] <thm-complementaire>
 
@@ -470,7 +470,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 == Automate produit
 #theoreme(
   coeur: true,
-  titre: [Stabilité par intersection, union et différence],
+  title: [Stabilité par intersection, union et différence],
 )[$Lrec(Σ)$ est stable par intersection, union et différence.] <thm-operations>
 #solution(cours: true)[
   On considère deux ADC $A_k = (Q_k, Σ, i_k, F_k, δ_k)$ de langage $L_k$, pour $k ∈ {1, 2}$.\
@@ -505,7 +505,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 
 = Lemme de l'étoile
 
-#lemme(coeur: true, titre: [Lemme de l'étoile])[
+#lemme(coeur: true, title: [Lemme de l'étoile])[
   Soit $L$ reconnu par un automate à $n$ états. Pour tout $u ∈ L$ de taille au moins $n$, il existe des mots $x, y, z$ tels que :
   $ u = x y z, quad abs(x y) ≤ n, quad y ≠ ε, quad x y^* z ⊂ L. $
 ]<lem-etoile>
@@ -527,7 +527,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 - La réciproque du lemme de l'étoile est fausse.
 - On peut choisir $u$ mais pas sa décomposition $x y z$.
 
-#methode(titre: [Montrer que $L$ n'est pas reconnaissable.])[
+#methode(title: [Montrer que $L$ n'est pas reconnaissable.])[
   + Supposer par l'absurde que $L$ est reconnu par un automate à $n$ états.
   + Choisir $u ∈ L$ avec $abs(u) ≥ n$.
   + Appliquer le lemme de l'étoile pour obtenir une décomposition $u = x y z$.

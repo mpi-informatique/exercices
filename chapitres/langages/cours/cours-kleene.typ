@@ -123,7 +123,7 @@ Pour reconnaître un langage local $L$, utiliser $Q = Σ ∪ {q_0}$, avec $q_0 �
 Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réciproquement. Le langage reconnu est donc $cal(L)(e)$.
 
 #slide()
-#lemme(titre: "Projection des étiquettes")[
+#lemme(title: "Projection des étiquettes")[
   Soit $π : Σ' → Σ$, prolongée aux mots par $π(ε) = ε$ et $π(a_1 … a_n) = π(a_1) … π(a_n)$.
   Si l'on remplace chaque étiquette $a'$ d'un automate $A'$ par $π(a')$, sans changer les états initiaux et finaux, l'automate obtenu $A$ vérifie :
   $ cal(L)(A) = π(cal(L)(A')). $
