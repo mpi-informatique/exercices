@@ -78,14 +78,14 @@
 /// -> content
 #let rendre-exercice(body, full-title: auto, ..args) = context {
   let frame = args.named().frame
-  let titre = box(fill: white, inset: (x: frame.title-inset.x), text(weight: "semibold", full-title))
+  let titre = box(fill: white, inset: frame.title-inset, text(weight: "semibold", full-title))
   let hauteur = measure(titre).height
   let inset = frame.inset
   if full-title != "" { v(hauteur / 2) }
   fancy-box(..args, full-title: "", {
     if full-title != "" {
       place(top + left, dx: 1em - inset.x, dy: -inset.top - hauteur / 2, titre)
-      v(0.5em)
+      v(hauteur / 2)
     }
     body
   })
