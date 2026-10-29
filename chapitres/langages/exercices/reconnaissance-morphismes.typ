@@ -16,10 +16,10 @@
       L'ensemble $Σ^*$, muni de la concaténation et du mot vide $ε$, est un monoïde.
 
       Un morphisme $h : Σ^* → M$ _reconnaît_ un langage $L ⊂ Σ^*$ s'il existe une partie $P ⊂ M$ telle que
-      $ L = h^(-1)(P) = {u ∈ Σ^* | h(u) ∈ P}. $
+      $ L = h^(-1)(P) = {m ∈ Σ^* | h(m) ∈ P}. $
       On dit alors que $M$ reconnaît $L$. Le monoïde $M$ n'est supposé fini que lorsque cela est précisé.
 
-      L'objectif est de comprendre comment l'élément $h(u)$ peut résumer un mot, puis de montrer qu'un langage est reconnu par un monoïde fini si et seulement s'il est reconnu par un automate fini.
+      L'objectif est de comprendre comment l'élément $h(m)$ peut résumer un mot, puis de montrer qu'un langage est reconnu par un monoïde fini si et seulement s'il est reconnu par un automate fini.
       Les notions algébriques utilisées sont rappelées ici. On pourra utiliser le théorème de Kleene.
     ],
     partie("I", "Un résumé compatible avec la concaténation", contenu: (
@@ -55,7 +55,7 @@
           Si $u ∈ h^(-1)(h(L))$, il existe $v ∈ L$ tel que $h(u) = h(v)$. Par b), $u ∈ L$, ce qui prouve c).
           Enfin c) implique a) en prenant $P = h(L)$.
 
-          Le résumé $h(u)$ conserve toute l'information nécessaire pour décider si $u$ appartient à $L$. Il n'a pas à permettre de retrouver $u$.
+          Le résumé $h(m)$ conserve toute l'information nécessaire pour décider si $m$ appartient à $L$. Il n'a pas à permettre de retrouver $m$.
           Les valeurs de $P$ hors de $h(Σ^*)$ ne jouent aucun rôle : on peut les ajouter ou les enlever.
           La partie $P$ n'est donc pas unique si $h$ n'est pas surjectif, mais sa trace sur $h(Σ^*)$ est nécessairement $h(L)$.
         ],
@@ -63,21 +63,21 @@
       ),
       question(
         [
-          On prend $Σ = {a, b}$ et on note $abs(u)_a$ le nombre d'occurrences de $a$ dans $u$.
+          On prend $Σ = {a, b}$ et on note $abs(m)_a$ le nombre d'occurrences de $a$ dans $m$.
           Reconnaître chacun des langages suivants par un morphisme vers un monoïde fini. Préciser le produit, le neutre, les images de $a$ et $b$ et la partie $P$ :
           #enum(
             numbering: "a)",
-            [${u | abs(u)_a ≡ 0 mod 3}$],
-            [${u | u " contient au moins un " a}$],
+            [${m | abs(m)_a ≡ 0 mod 3}$],
+            [${m | m " contient au moins un " a}$],
           )
           Dans chaque cas, indiquer si $ε$ est accepté et expliquer pourquoi le morphisme n'a pas besoin d'être injectif.
         ],
         solution: [
           a) Prendre $M = ZZ / 3 ZZ$ avec l'addition, de neutre $0$, et $h(a) = 1$, $h(b) = 0$.
-          Le prolongement vérifie $h(u) = abs(u)_a mod 3$. La partie acceptante est $P = {0}$ et $ε$ est accepté.
+          Le prolongement vérifie $h(m) = abs(m)_a mod 3$. La partie acceptante est $P = {0}$ et $ε$ est accepté.
 
           b) Prendre $M = {0, 1}$ avec l'opération $max$, de neutre $0$, et $h(a) = 1$, $h(b) = 0$.
-          Alors $h(u) = 1$ si et seulement si $u$ contient un $a$. On prend $P = {1}$ et $ε$ est refusé.
+          Alors $h(m) = 1$ si et seulement si $m$ contient un $a$. On prend $P = {1}$ et $ε$ est refusé.
 
           Dans les deux exemples, $h(ε) = h(b)$ alors que $ε ≠ b$. Ces mots ont simplement le même statut d'acceptation.
         ],
@@ -103,26 +103,26 @@
         [
           Soient $M$ un monoïde fini, $h : Σ^* → M$ un morphisme et $P ⊂ M$.
           Construire un ADC d'ensemble d'états $M$ qui reconnaît $h^(-1)(P)$.
-          Justifier la construction en décrivant l'état atteint après lecture d'un mot $u$.
+          Justifier la construction en décrivant l'état atteint après lecture d'un mot $m$.
         ],
         solution: [
-          Prendre l'état initial $1_M$, l'ensemble d'états finaux $P$ et $δ(m, a) = m · h(a)$.
-          Cette transition est définie pour tout $(m, a) ∈ M × Σ$, donc l'automate est déterministe complet et fini.
-          Par récurrence sur la taille de $u$, l'état atteint depuis $1_M$ est $h(u)$ : c'est vrai pour $ε$, puis
-          $ δ(h(u), a) = h(u) · h(a) = h(u a). $
-          Le mot $u$ est donc accepté si et seulement si $h(u) ∈ P$.
+          Prendre l'état initial $1_M$, l'ensemble d'états finaux $P$ et $δ(s, a) = s · h(a)$.
+          Cette transition est définie pour tout $(s, a) ∈ M × Σ$, donc l'automate est déterministe complet et fini.
+          Par récurrence sur la taille de $m$, l'état atteint depuis $1_M$ est $h(m)$ : c'est vrai pour $ε$, puis
+          $ δ(h(m), a) = h(m) · h(a) = h(m a). $
+          Le mot $m$ est donc accepté si et seulement si $h(m) ∈ P$.
         ],
         label: <morphismes-vers-automates>,
       ),
       [
         Réciproquement, on considère un ADC $A = (Q, Σ, q_0, F, δ)$.
-        On note $δ^*$ sa transition étendue aux mots, et $t_u : Q → Q$ la transformation $q ⟼ δ^*(q, u)$.
+        On note $δ^*$ sa transition étendue aux mots, et $t_m : Q → Q$ la transformation $q ⟼ δ^*(q, m)$.
       ],
       question(
         [
           Exprimer $t_ε$ et $t_(u v)$ en fonction de $t_u$ et $t_v$.
-          Définir un produit $·$ sur les transformations de $Q$ tel que $u ⟼ t_u$ soit un morphisme.
-          Montrer que $T = {t_u | u ∈ Σ^*}$ est un monoïde fini pour ce produit et majorer sa taille en fonction de $n = abs(Q)$.
+          Définir un produit $·$ sur les transformations de $Q$ tel que $m ⟼ t_m$ soit un morphisme.
+          Montrer que $T = {t_m | m ∈ Σ^*}$ est un monoïde fini pour ce produit et majorer sa taille en fonction de $n = abs(Q)$.
         ],
         solution: [
           On a $t_ε = "id"_Q$ et, pour tout $q ∈ Q$,
@@ -130,19 +130,19 @@
           Ainsi $t_(u v) = t_v ∘ t_u$. On définit donc $f · g = g ∘ f$ : on applique d'abord $f$, puis $g$.
           Ce produit est associatif et son neutre est $"id"_Q$.
           L'ensemble $T$ contient le neutre et est stable par produit, puisque $t_u · t_v = t_(u v)$.
-          Il est donc un monoïde et l'application $u ⟼ t_u$ est un morphisme.
+          Il est donc un monoïde et l'application $m ⟼ t_m$ est un morphisme.
           Il existe $n^n$ applications de $Q$ dans $Q$, donc $abs(T) ≤ n^n$.
         ],
         label: <morphismes-transitions>,
       ),
       question(
         [
-          Déterminer une partie $P ⊂ T$ telle que le morphisme $u ⟼ t_u$ reconnaisse $cal(L)(A)$.
+          Déterminer une partie $P ⊂ T$ telle que le morphisme $m ⟼ t_m$ reconnaisse $cal(L)(A)$.
           Conclure qu'un langage est reconnu par un monoïde fini si et seulement s'il est reconnaissable, puis si et seulement s'il est régulier.
         ],
         solution: [
           Prendre $P = {t ∈ T | t(q_0) ∈ F}$.
-          En effet, $u ∈ cal(L)(A) ⟺ δ^*(q_0, u) ∈ F ⟺ t_u ∈ P$.
+          En effet, $m ∈ cal(L)(A) ⟺ δ^*(q_0, m) ∈ F ⟺ t_m ∈ P$.
           Tout langage reconnaissable possède un ADC, dont le monoïde $T$ reconnaît le langage.
           La construction de #ref(<morphismes-vers-automates>, supplement: [la question]) donne la réciproque.
           Le théorème de Kleene fournit enfin l'équivalence avec la régularité.
@@ -157,15 +157,15 @@
       question(
         [
           Les mots $ε$ et $b$ conduisent au même état depuis l'état initial. Existe-t-il un préfixe $x$ tel que $x ε$ et $x b$ aient des statuts d'acceptation différents ?
-          En déduire qu'il n'existe pas de produit de monoïde sur $Q$ rendant $u ⟼ δ^*(0, u)$ morphique.
-          Expliquer pourquoi on a conservé toute la transformation $t_u$ dans la partie II.
+          En déduire qu'il n'existe pas de produit de monoïde sur $Q$ rendant $m ⟼ δ^*(0, m)$ morphique.
+          Expliquer pourquoi on a conservé toute la transformation $t_m$ dans la partie II.
         ],
         solution: [
           Prendre $x = a$ : $a ε = a ∈ H$, mais $a b ∉ H$.
-          Si $s(u) = δ^*(0, u)$ était un morphisme pour un produit sur $Q$, l'égalité $s(ε) = s(b)$ donnerait
+          Si $s(m) = δ^*(0, m)$ était un morphisme pour un produit sur $Q$, l'égalité $s(ε) = s(b)$ donnerait
           $ s(a ε) = s(a) · s(ε) = s(a) · s(b) = s(a b), $
           alors que ces états sont respectivement $1$ et $0$. C'est impossible.
-          L'état atteint depuis $0$ résume un préfixe déjà lu. La transformation $t_u$ décrit l'effet de $u$ depuis chaque état possible, donc aussi lorsque $u$ est placé après un préfixe quelconque.
+          L'état atteint depuis $0$ résume un préfixe déjà lu. La transformation $t_m$ décrit l'effet de $m$ depuis chaque état possible, donc aussi lorsque $m$ est placé après un préfixe quelconque.
         ],
       ),
       question(
@@ -234,7 +234,7 @@
         solution: [
           Si $L = h^(-1)(P)$ avec $M$ fini, son complémentaire est $h^(-1)(M ∖ P)$.
           Pour $L_i = h_i^(-1)(P_i)$, le produit $(m_1, m_2) · (n_1, n_2) = (m_1 · n_1, m_2 · n_2)$ fait de $M_1 × M_2$ un monoïde fini de neutre $(1_(M_1), 1_(M_2))$.
-          L'application $h(u) = (h_1(u), h_2(u))$ est un morphisme.
+          L'application $h(m) = (h_1(m), h_2(m))$ est un morphisme.
           Elle reconnaît $L_1 ∩ L_2$ avec $P_1 × P_2$, et $L_1 ∪ L_2$ avec $(P_1 × M_2) ∪ (M_1 × P_2)$.
           La caractérisation de la partie II permet de conclure à la reconnaissabilité.
         ],
