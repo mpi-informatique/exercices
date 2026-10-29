@@ -7,7 +7,7 @@
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
 /// Les appels acceptent un contenu et les options communes `titre`, `coeur` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
-/// `algorithme` accepte aussi `entree` et `sortie` : les descriptions sont alignées après des libellés en gras, avant les étapes.
+/// `algorithme` accepte aussi `entree` et `sortie` : les descriptions précèdent les étapes, avec des libellés en italique et la barre d'indentation Lovelace.
 /// En présentation, une pause suit chaque cadre si du contenu reste sur la diapositive ; `pause: false` la désactive.
 /// Les références `@etiquette` suivent le type et le numéro, y compris pendant
 /// les animations. Dans `algorithme`, les listes imbriquées décrivent le pseudocode.
@@ -128,25 +128,16 @@
   }
   if nom == "algorithm" {
     body = context {
-      if entree != none or sortie != none {
-        let lignes = ()
-        if entree != none { lignes += (strong[Entrée :], entree) }
-        if sortie != none { lignes += (strong[Sortie :], sortie) }
-        block(above: 0pt, below: 0.6em, grid(
-          columns: (auto, 1fr),
-          column-gutter: 0.8em,
-          row-gutter: 0.25em,
-          align: left + top,
-          ..lignes,
-        ))
-      }
+      let lignes = ()
+      if entree != none { lignes.push([_Entrée :_ #entree]) }
+      if sortie != none { lignes.push([_Sortie :_ #sortie]) }
       pseudocode-list(
         indentation: 1.5em,
         line-gap: par.leading,
         line-numbering: none,
         stroke: epaisseur-trait + luma(65%),
         line-number-supplement: [Ligne],
-        body,
+        lignes.join(linebreak()) + (if lignes.len() > 0 { parbreak() } else { [] }) + body,
       )
     }
   }
