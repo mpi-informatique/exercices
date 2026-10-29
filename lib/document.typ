@@ -51,6 +51,16 @@
 /// -> content
 #let widetilde(body) = math.accent(body, sym.tilde, size: 150%)
 
+/// Applique l'espacement commun des formules centrées aux documents et aux présentations.
+/// À utiliser comme règle `show`.
+///
+/// - body (content): Contenu à mettre en forme.
+/// -> content
+#let configurer-formules(body) = {
+  show math.equation.where(block: true): set block(above: 0.8em)
+  body
+}
+
 #let auteur-par-defaut = "Q. Fortier"
 
 /// Rend un titre cliquable vers sa page sur le site, sans changer son style.
@@ -107,7 +117,7 @@
   show: configurer-code
   set text(font: "New Computer Modern", size: taille, lang: "fr")
   set par(justify: true)
-  show math.equation.where(block: true): set block(above: 0.5em)
+  show: configurer-formules
   set heading(numbering: "I.1.1 –")
   show heading: set block(below: 0.8em)
   show heading.where(level: 1): set text(size: 1.1 * taille)

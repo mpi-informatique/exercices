@@ -2,7 +2,7 @@
 #import "@preview/touying:0.8.0" as touying
 #import touying: article-only, item-by-item, only, pause, slide, slides-only, uncover
 #import "cours.typ": cours, espace-reponse
-#import "document.typ": auteur-par-defaut, titre-lie
+#import "document.typ": auteur-par-defaut, configurer-formules, titre-lie
 #import "theoremes.typ": configurer-theoremes
 #import "code.typ": configurer-code
 #import "themes/madrid.typ": theme-madrid, titre-madrid
@@ -100,7 +100,7 @@
           + palette,
       )
       show: configurer-code
-      show math.equation.where(block: true): set block(above: 0.5em)
+      show: configurer-formules
       body
     },
     touying.config-info(title: titre, author: auteur, date: none),
