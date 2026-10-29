@@ -57,7 +57,7 @@
 /// - body (content): Contenu à mettre en forme.
 /// -> content
 #let configurer-formules(body) = {
-  show math.equation.where(block: true): set block(above: 0.8em)
+  show math.equation.where(block: true): set block(spacing: 0.8em)
   body
 }
 
