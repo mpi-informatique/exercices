@@ -221,7 +221,6 @@
       [*Exemple de mot*], [$b a b$], [`chat`], [`(2+3)*4`], [`let x = 1`],
     ),
     caption: [Exemples de langages],
-    numbering: none,
   )
 ]
 

@@ -38,7 +38,6 @@
         ("2", "2", "b", (:)),
       ),
     ),
-    numbering: none,
     caption: [
       $Σ = {a, b}, Q = {0, 1, 2}, I = {0}, F = {2}$\
       $T = {(0, a, 0), (0, b, 1), (1, a, 0), (1, a, 2), (2, b, 2)}$
@@ -182,12 +181,10 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
     align: horizon,
     figure(
       block(height: hauteur, align(horizon, automates.at(0))),
-      numbering: none,
       caption: [$LL(A_1)$ = #completer(taille: 10em)],
     ),
     figure(
       block(height: hauteur, align(horizon, automates.at(1))),
-      numbering: none,
       caption: [$LL(A_2)$ = #completer(taille: 10em)],
     ),
   )
@@ -248,7 +245,6 @@ Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
         (("q", (0, 0), false, false), ("q_1", (2.5, 0.75), false, false), ("q_2", (2.5, -0.75), false, false)),
         (("q", "q_1", "a", (curve: 0)), ("q", "q_2", "a", (curve: 0))),
       ),
-      numbering: none,
       caption: [Automate non déterministe],
     )
   },
