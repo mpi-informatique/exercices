@@ -10,7 +10,7 @@
 #let dist-lettre = 0.33
 #let style-automates = (
   state: (radius: rayon-etat),
-  transition: (label: (angle: 0deg, dist: dist-lettre)),
+  transition: (curve: 0, label: (angle: 0deg, dist: dist-lettre)),
 )
 
 #import "@preview/cetz:0.4.2" as cetz
@@ -18,6 +18,7 @@
 
 /// Dessine un automate centré avec le style commun CeTZ/finite.
 /// Noms et étiquettes utilisent la syntaxe mathématique Typst.
+/// La courbure des transitions vaut `0` par défaut ; chaque arc peut définir `curve`.
 ///
 /// - etats (array): Tuples `(nom, position, initial, final)` ; `initial` accepte un booléen ou un alignement.
 /// - arcs (array): Tuples `(départ, arrivée, étiquette, style)` ; `inverser: true` change le côté de l'étiquette et `label: (dist: ...)` sa distance.
@@ -47,7 +48,7 @@
     for (p, q, etiquette, style) in arcs {
       let style-etiquette = style.remove("label", default: (:))
       let autre-cote = style.remove("inverser", default: false)
-      let courbure = style.at("curve", default: 1)
+      let courbure = style.at("curve", default: style-automates.transition.curve)
       // Pour une transition droite, finite calcule la normale à l'opposé du sens de lecture.
       let inverser = courbure < 0 or (courbure == 0 and positions.at(q).at(0) > positions.at(p).at(0))
       transition(
