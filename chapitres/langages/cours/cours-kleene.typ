@@ -123,31 +123,46 @@ Pour reconnaître un langage local $L$, utiliser $Q = Σ ∪ {q_0}$, avec $q_0 �
 Tout mot reconnu après projection est l'image d'un mot de $cal(L)(e')$, et réciproquement. Le langage reconnu est donc $cal(L)(e)$.
 
 #slide()
-#lemme(title: "Projection des étiquettes")[
-  Soit $π : Σ' → Σ$, prolongée aux mots par $π(ε) = ε$ et $π(a_1 … a_n) = π(a_1) … π(a_n)$.
-  Si l'on remplace chaque étiquette $a'$ d'un automate $A'$ par $π(a')$, sans changer les états initiaux et finaux, l'automate obtenu $A$ vérifie :
-  $ cal(L)(A) = π(cal(L)(A')). $
-] <lemme-projection-etiquettes>
-#solution(cours: true, presentation: true)[
-  Les chemins de $A'$ sont conservés dans $A$ : seul le mot lu change, de $u$ en $π(u)$.
-  Réciproquement, chaque transition d'un chemin de $A$ provient d'au moins une transition de $A'$ entre les mêmes états. En choisissant ces transitions, on retrouve un chemin de $A'$.
-  Les extrémités sont inchangées, donc les chemins acceptants de $A$ lisent exactement les images des mots de $cal(L)(A')$.
-  Cela vaut aussi pour le chemin de taille nulle, qui lit $ε$.
+#exercice(title: "Morphismes de mots")[
+  Un _morphisme de monoïdes_ $h : Σ^* → Γ^*$ vérifie $h(ε) = ε$ et $h(u v) = h(u) h(v)$ pour tous mots $u, v$.
+  Pour $L ⊂ Σ^*$, on note $h(L) = {h(u) | u ∈ L}$.
+
+  + Montrer que toute application $Σ → Γ^*$ se prolonge de manière unique en un morphisme.
+  + Pour $L_1, L_2 ⊂ Σ^*$, exprimer $h(L_1 ∪ L_2)$, $h(L_1 L_2)$ et $h(L_1^*)$ en fonction des images de $L_1$ et $L_2$.
+  + Pour une expression régulière $r$ sur $Σ$, on note $h(r)$ l'expression obtenue en remplaçant chaque lettre $a$ par le mot $h(a)$, éventuellement $ε$. Montrer que $cal(L)(h(r)) = h(cal(L)(r))$. En déduire que l'image d'un langage régulier par un morphisme est régulière.
+] <exo-morphismes-mots>
+#solution[
+  #pause
+  + Nécessairement, $h(a_1 … a_n) = h(a_1) … h(a_n)$, par récurrence sur $n$.
+    Réciproquement, cette formule, complétée par $h(ε) = ε$, définit un morphisme pour tout choix des images des lettres. Elle donne donc à la fois l'existence et l'unicité du prolongement.
+  + On a :
+    $ h(L_1 ∪ L_2) = h(L_1) ∪ h(L_2), #sep h(L_1 L_2) = h(L_1) h(L_2), #sep h(L_1^*) = h(L_1)^*. $
+    La première égalité vient de la définition de l'image directe. La deuxième utilise $h(u v) = h(u) h(v)$ dans les deux sens. La troisième s'obtient en appliquant cette propriété aux concaténations d'un nombre quelconque de mots, y compris zéro.
+  + Par induction structurelle sur $r$. Les cas $∅$, $ε$ et d'une lettre sont immédiats. Les trois identités précédentes traitent l'union, la concaténation et l'étoile.
+    Si $L = cal(L)(r)$, alors $h(L) = cal(L)(h(r))$ est donc régulier.
 ]
 
 #slide()
-#underline[Correction de l'algorithme de Berry-Sethi]
-#solution(cours: true, presentation: true)[
-  Notons $e'$ l'expression linéarisée, $A'$ l'automate construit avant projection et $A$ l'automate renvoyé.
+#exercice(title: "Application à Berry-Sethi")[
+  Notons $e'$ une linéarisation de $e$ sur un alphabet $Σ'$, $π : Σ' → Σ$ la projection vers les lettres d'origine, $A'$ l'automate construit avant projection et $A$ l'automate renvoyé.
 
-  *Avant projection.* Comme $e'$ est linéaire, $cal(L)(e')$ est local.
-  Par construction de $A'$, un mot non vide $a_1 … a_n$ est accepté exactement lorsque sa première lettre appartient à $P(cal(L)(e'))$, sa dernière à $S(cal(L)(e'))$ et tous ses facteurs $a_k a_(k + 1)$ à $F(cal(L)(e'))$.
-  La localité donne donc l'équivalence avec $a_1 … a_n ∈ cal(L)(e')$.
-  De plus, l'état initial est final exactement lorsque $ε ∈ cal(L)(e')$. Ainsi, $cal(L)(A') = cal(L)(e')$.
-
-  *Après projection.* On a $π(cal(L)(e')) = cal(L)(e)$ : cela se démontre par induction sur l'expression, car l'image par $π$ respecte l'union, la concaténation et l'étoile, et redonne chaque lettre d'origine.
-  Le @lemme-projection-etiquettes permet de conclure :
-  $ cal(L)(A) = π(cal(L)(A')) = π(cal(L)(e')) = cal(L)(e). $
+  + Prolonger $π$ en un morphisme $Σ'^* → Σ^*$. Ce morphisme est-il injectif ? Justifier $π(cal(L)(e')) = cal(L)(e)$ à l'aide de @exo-morphismes-mots.
+  + Montrer que le remplacement des étiquettes $a'$ de $A'$ par $π(a')$ donne $cal(L)(A) = π(cal(L)(A'))$. Raisonner sur les chemins acceptants dans les deux sens.
+  + Justifier $cal(L)(A') = cal(L)(e')$, en traitant aussi le mot vide. En déduire la correction de Berry-Sethi.
+] <exo-correction-berry-sethi>
+#solution[
+  #pause
+  + On pose $π(ε) = ε$ et $π(a_1 … a_n) = π(a_1) … π(a_n)$.
+    Il s'agit d'un morphisme alphabétique non effaçant. Il n'est pas injectif dès que deux occurrences de $e$ portent la même lettre, par exemple $π(a_0) = π(a_1) = a$.
+    La projection de l'expression $e'$ redonne $e$. La dernière question de @exo-morphismes-mots donne donc $π(cal(L)(e')) = cal(L)(e)$.
+  + Tout chemin acceptant de $A'$ lisant $u$ devient un chemin acceptant de $A$ lisant $π(u)$.
+    Réciproquement, chaque transition d'un chemin acceptant de $A$ provient d'au moins une transition de $A'$ entre les mêmes états. En choisissant ces transitions, on obtient un chemin acceptant de $A'$ lisant un mot $u$ dont l'image est le mot lu dans $A$.
+    Les états initiaux et finaux sont inchangés, donc ce raisonnement vaut aussi pour les chemins de taille nulle.
+  + Comme $e'$ est linéaire, $cal(L)(e')$ est local.
+    Par construction de $A'$, un mot non vide $a_1 … a_n$ est accepté exactement lorsque sa première lettre appartient à $P(cal(L)(e'))$, sa dernière à $S(cal(L)(e'))$ et tous ses facteurs $a_k a_(k + 1)$ à $F(cal(L)(e'))$.
+    La localité donne donc l'équivalence avec $a_1 … a_n ∈ cal(L)(e')$.
+    L'état initial est final exactement lorsque $ε ∈ cal(L)(e')$. Ainsi, $cal(L)(A') = cal(L)(e')$ et :
+    $ cal(L)(A) = π(cal(L)(A')) = π(cal(L)(e')) = cal(L)(e). $
 ]
 
 #slide()
