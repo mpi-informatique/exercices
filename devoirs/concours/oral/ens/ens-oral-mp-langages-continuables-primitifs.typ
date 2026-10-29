@@ -1,5 +1,29 @@
 #import "/load.typ": est-corrige
 #import "/load.typ": exercice, partie, question
+// Question exportée pour réutiliser la conclusion sans recopier l’oral.
+#let question-primitifs = question(
+  [
+    #enum(
+      numbering: "a)",
+      [Montrer que tout langage régulier continuable contient une infinité de mots primitifs.],
+      [Donner une borne supérieure sur la taille de son plus petit mot primitif.],
+      [La réciproque de a) est-elle vraie ?],
+    )
+  ],
+  solution: [
+    a) Soient $a≠b$ dans $Σ$ et $N$ le nombre d'états d'un automate reconnaissant $L$.
+    Pour chaque $i≥N-1$, la continuabilité donne un mot $w_i=b a^i x_i∈L$, avec $abs(x_i)≤N-1$ : choisir un plus court chemin vers un état final après $b a^i$.
+    Si $w_i=u^p$ avec $p≥2$, alors $abs(u)≤floor((i+N)/2)≤i$.
+    La lettre en position $1+abs(u)$ devrait être $b$, comme la première, mais cette position appartient au bloc de $a$. Contradiction.
+    Si $i=0=N-1$, $w_i=b$ est directement primitif.
+    Les tailles des $w_i$ sont non bornées, donc ces mots primitifs sont en nombre infini.
+
+    b) Prendre $i=N-1$ : $abs(w_i)≤2N-1$.
+
+    c) Non : $b a a^*$ contient une infinité de mots primitifs et aucun prolongement de $a$.
+  ],
+)
+
 #let ex = exercice(
   meta: (
     titre: "Langages continuables et mots primitifs",
@@ -83,28 +107,7 @@
         Ici $m=N abs(Σ)$ ; il faut compter les transitions, et pas seulement la taille de l'alphabet.
       ],
     ),
-    question(
-      [
-        #enum(
-          numbering: "a)",
-          [Montrer que tout langage régulier continuable contient une infinité de mots primitifs.],
-          [Donner une borne supérieure sur la taille de son plus petit mot primitif.],
-          [La réciproque de a) est-elle vraie ?],
-        )
-      ],
-      solution: [
-        a) Soient $a≠b$ dans $Σ$ et $N$ le nombre d'états d'un automate reconnaissant $L$.
-        Pour chaque $i≥N-1$, la continuabilité donne un mot $w_i=b a^i x_i∈L$, avec $abs(x_i)≤N-1$ : choisir un plus court chemin vers un état final après $b a^i$.
-        Si $w_i=u^p$ avec $p≥2$, alors $abs(u)≤floor((i+N)/2)≤i$.
-        La lettre en position $1+abs(u)$ devrait être $b$, comme la première, mais cette position appartient au bloc de $a$. Contradiction.
-        Si $i=0=N-1$, $w_i=b$ est directement primitif.
-        Les tailles des $w_i$ sont non bornées, donc ces mots primitifs sont en nombre infini.
-
-        b) Prendre $i=N-1$ : $abs(w_i)≤2N-1$.
-
-        c) Non : $b a a^*$ contient une infinité de mots primitifs et aucun prolongement de $a$.
-      ],
-    ),
+    question-primitifs,
   ),
 )
 
