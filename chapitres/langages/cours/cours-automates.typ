@@ -214,6 +214,18 @@ Alors $Q_k = δ^*(I, m_1 … m_k)$ et $m ∈ LA <==> Q_n ∩ F ≠ ∅$.
 #solution[
 ]
 
+#solution[
+  On note $n = |m|$, $s = |Q|$ et $t = |Δ|$. Les mémoires indiquées sont auxiliaires, hors stockage de l'automate et du mot.
+
+  + *Par ensembles (parcours en largeur).* On calcule les états atteignables après chaque préfixe :
+    $ Q_0 = I, quad Q_(k+1) = δ(Q_k, m_(k+1)). $
+    On accepte si $Q_n ∩ F ≠ ∅$. Deux tableaux de booléens de taille $s$ représentent les ensembles courant et suivant, sans doublons. À chaque étape, on réinitialise le tableau suivant et parcourt les transitions sortant des états courants, en gardant celles étiquetées par la lettre lue. Temps : $O((n+1)(s+t))$ ; mémoire : $O(s)$. On peut rejeter dès que l'ensemble courant est vide.
+  + *DFS sans mémoïsation.* Une configuration $(q, k)$ signifie que l'on est dans l'état $q$ après avoir lu $k$ lettres. Depuis chaque état initial, on explore récursivement les configurations $(q', k+1)$ pour $q' ∈ δ(q, m_(k+1))$. Si $k = n$, on teste $q ∈ F$. On accepte dès qu'un appel réussit. Des chemins différents peuvent rejoindre la même configuration et refaire les mêmes calculs : le temps peut être exponentiel en $n$. Mémoire : $O(n+1)$ pour la pile, si l'on parcourt les successeurs sans recopier les listes d'adjacence.
+  + *DFS avec mémoïsation.* On mémorise le résultat booléen de chaque configuration $(q, k)$. Chaque configuration est traitée au plus une fois ; la position augmente strictement à chaque appel. Temps : $O((n+1)(s+t))$ ; mémoire : $O((n+1)s)$, pile comprise, pour un automate non vide.
+
+  La méthode par ensembles déduplique déjà les configurations à chaque position et oublie les couches précédentes : elle est généralement préférable pour sa simplicité et sa mémoire $O(s)$. Le DFS mémoïsé peut trouver un chemin acceptant sans explorer toutes les configurations atteignables. La mémoïsation évite les calculs répétés du DFS, mais n'apporte rien à la méthode par ensembles pour un seul mot.
+]
+
 = Automate complet
 
 #definition[Automates équivalents][
