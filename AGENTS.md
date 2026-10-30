@@ -15,6 +15,7 @@ Ces consignes s'appliquent à `exercices` et `exercices-prive`. Le `AGENTS.md` d
 - Pour les changements de contenu pédagogique, compiler uniquement les fichiers et variantes concernés et tester le code modifié. Pour la documentation et les consignes seules, contrôler le diff et les liens modifiés. Réserver `just check` aux changements de bibliothèque ou d'outillage. Annoncer les vérifications effectuées ; inspecter les PDF seulement si utile.
 - Site, export ou compilation dans le navigateur : arrêter puis relancer le serveur avec `just web-stop` et `just web`, puis vérifier le comportement dans le navigateur intégré de Codex, en conservant si possible la ressource et la variante affichées.
 - Fournir les liens vers les PDF générés utiles à la demande.
+- Dans la réponse de livraison, toujours fournir un lien cliquable vers chaque fichier `.typ` créé ou modifié, même si un lien vers le PDF est également fourni.
 - Après les vérifications adaptées, contrôler le diff et faire un commit sur la branche adaptée au travail (`main` par défaut), récupérer et intégrer les commits distants de cette branche, puis pousser sans forcer. Préserver les modifications de l'utilisateur.
 
 Les commandes se lancent depuis la racine du dépôt. Si Just manque, utiliser `nix develop . -c just …` ; `just --list` décrit les recettes.
