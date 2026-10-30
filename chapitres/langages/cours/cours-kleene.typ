@@ -245,10 +245,23 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 
 #slide()
 #exercice[Montrer que tout automate généralisé ayant un nombre fini de transitions est équivalent à un automate fini classique.]
+#solution[
+  Pour chaque transition $p limits(⟶)^e q$, construire par Berry-Sethi un automate reconnaissant $cal(L)(e)$, avec des états nouveaux.
+  Remplacer la transition par cet automate, relier $p$ à ses états initiaux et ses états finaux à $q$ par des $ε$-transitions.
+  Conserver comme états initiaux et finaux ceux de l'automate d'origine.
+
+  Traverser ce nouvel automate revient à lire un mot de $cal(L)(e)$. Les chemins acceptants lisent donc les mêmes mots.
+  Il reste à supprimer les $ε$-transitions.
+]
 
 #exercice[Substitution régulière][
   Soit $L ⊂ Σ^*$ un langage régulier. Pour chaque $a ∈ Σ$, soit $K_a ⊂ Γ^*$ un langage régulier.
   Montrer que le langage obtenu en remplaçant, dans les mots de $L$, chaque occurrence d'une lettre $a$ par un mot quelconque de $K_a$ est régulier.
+]
+#solution[
+  Soit $e$ une expression régulière décrivant $L$. Pour chaque $a ∈ Σ$, choisir une expression $e_a$ décrivant $K_a$.
+  Remplacer chaque lettre $a$ de $e$ par $e_a$.
+  Une induction sur $e$ montre que l'expression obtenue décrit le langage cherché, qui est donc régulier.
 ]
 
 == Élimination d'un état
