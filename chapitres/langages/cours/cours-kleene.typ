@@ -410,6 +410,27 @@ Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemi
 ]
 
 #slide()
+#exercice[Implémentation de l'élimination des états][
+  Soit $A$ un automate normalisé à $n$ états, dont les étiquettes initiales sont de taille constante.
+  1. Décrire, sans code, une implémentation de l'élimination des états utilisant une matrice de transitions et un type persistant pour les expressions régulières. Justifier les mises à jour en place de la matrice.
+  2. Donner les complexités temporelle et spatiale en tenant compte du partage des sous-expressions.
+  3. Montrer, sur une famille d'automates, que la longueur de l'expression obtenue sans partage ni simplification peut être exponentielle.
+]
+#solution[
+  1. La matrice $R$ contient l'expression de chaque transition, ou $∅$ en son absence. Une union, une concaténation ou une étoile crée un nœud référençant ses opérandes, sans les recopier.
+    Pour éliminer $q$, calculer $(R_(q, q))^*$ puis mettre à jour $R_(p, r)$ pour les états restants $p, r ≠ q$. La ligne et la colonne de $q$ ne sont pas modifiées pendant cette étape, ce qui justifie les mises à jour en place. Marquer ensuite $q$ comme supprimé.
+  2. Il y a $O(n)$ éliminations, chacune mettant à jour $O(n^2)$ transitions. Chaque mise à jour prend un temps constant et crée un nombre constant de nœuds.
+    Le temps et le nombre total de nœuds créés sont donc $O(n^3)$. La matrice occupe $O(n^2)$ cases, d'où un espace total $O(n^3)$.
+  3. Prendre les états $s, t, q_1, …, q_k$, avec $s$ initial et $t$ final, et une transition étiquetée $a$ de chaque état de ${s, q_1, …, q_k}$ vers chaque état de ${q_1, …, q_k, t}$.
+    Après $j$ éliminations, les transitions entre états restants, hors celles entrant en $s$ ou sortant de $t$, portent la même expression $E_j$, où
+    $ E_0 = a, quad E_(j + 1) = E_j | E_j (E_j)^* E_j. $
+    Le nombre d'occurrences de $a$ est multiplié par $4$ à chaque étape. L'expression finale en contient donc $4^k$, pour un automate à $k + 2$ états.
+    Cette borne concerne l'expression produite sans simplification. Le langage reconnu est simplement $a a^*$.
+]
+#slide()
+#underline[Remarque] : l'intérêt du _type persistant_ est de conserver et partager les anciennes sous-expressions sans les recopier. La matrice est mutable, mais les expressions sont immuables et leur représentation partagée forme un graphe acyclique. Développer ce graphe en une expression écrite sans partage peut demander un temps et un espace exponentiels.
+
+#slide()
 #theoreme[
   Les langages réguliers sont stables par union finie, concaténation, étoile, intersection finie, complémentaire et différence.
 ]
