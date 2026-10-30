@@ -228,10 +228,10 @@ La construction de Thompson est une alternative récursive à l'algorithme de Be
 
 #slide()
 #definition([Langage reconnu])[
-  Le _langage reconnu_ $cal(L)(A)$ est l'ensemble des mots $m ∈ Σ^*$ pour lesquels il existe $n ∈ NN$, des états $q_0, …, q_n ∈ Q$, des expressions $e_1, …, e_n ∈ Ereg(Σ)$ et des mots $m_1, …, m_n ∈ Σ^*$ tels que :
-  $ q_0 ∈ I, quad q_n ∈ F, quad m = m_1 … m_n, $
-  $ ∀ k ∈ [|1, n|], quad q_k ∈ δ(q_(k - 1), e_k) ∧ m_k ∈ cal(L)(e_k). $
-  Pour $n = 0$, la concaténation vide vaut $ε$ : un état de $I ∩ F$ fournit donc un chemin acceptant $ε$ sans transition.
+  Un mot $m$ est _accepté_ par $A$ s'il existe un _chemin acceptant_ de $I$ à $F$
+  $ q_0 limits(⟶)^(e_1) q_1 limits(⟶)^(e_2) … limits(⟶)^(e_n) q_n $
+  tel que $m ∈ cal(L)(e_1) … cal(L)(e_n)$. Pour un chemin sans transition, ce produit vaut ${ε}$.\
+  Le _langage_ $cal(L)(A)$ _reconnu_ par $A$ est l'ensemble des mots acceptés par $A$.
 ]
 
 == Élimination d'un état
