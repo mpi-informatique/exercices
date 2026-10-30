@@ -2,6 +2,7 @@
 
 - Pour concevoir ou reformuler un sujet, suivre les [consignes de création](docs/creation-exercices.md). Pour les outils, consulter le [guide utilisateur](docs/utilisation.md).
 - Garder les Markdown concis : une information à un seul endroit, avec des liens depuis les autres guides. Documenter les fonctions dans les commentaires `///` de `lib/`, exploités par `docs/api.typ`, plutôt que recopier leur fonctionnement dans les consignes.
+- S'inspirer du style d'écriture du professeur pour rédiger ou reformuler un contenu. Lire des passages comparables dans les cours et corrigés existants, puis en reprendre les formulations, les notations, la concision et le niveau de détail, notamment pour les solutions.
 - Poser les questions nécessaires en cas d'ambiguïté. Expliquer brièvement les choix importants et les changements de contenu ou de présentation.
 - Ne fixer aucune longueur maximale aux lignes de code. Choisir les retours selon la structure et la lisibilité.
 - Avant toute modification, vérifier que la branche correspond au travail demandé. Prévenir l'utilisateur en cas de décalage, notamment pour du cours, de la bibliothèque ou du site sur une branche d'exercice, et proposer la branche adaptée.
