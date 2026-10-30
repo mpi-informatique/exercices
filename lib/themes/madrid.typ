@@ -1,5 +1,6 @@
 #import "@preview/touying:0.8.0" as touying
 #import "../animations.typ": nettoyer-pauses
+#import "../document.typ": configurer-liens
 
 /// Adapte les diapositives Touying au bandeau Madrid et au marqueur sans titre.
 ///
@@ -57,7 +58,7 @@
       show math.equation: set text(font: "New Computer Modern Math")
       set list(marker: text(fill: couleur)[•])
       set heading(numbering: (..n) => if n.pos().len() == 1 { numbering("I", ..n.pos()) })
-      show link: set text(fill: couleur)
+      show: configurer-liens
       show: style
       body
     }),
@@ -71,7 +72,7 @@
 /// - titre (content, str): Titre principal.
 /// - niveau (content, str, none): Niveau affiché.
 /// - auteur (content, str, none): Auteur affiché.
-/// - couleur (color): Couleur du cartouche.
+/// - couleur (color): Couleur du titre et teinte du fond clair du cartouche.
 /// -> content
 #let titre-madrid(titre, niveau: none, auteur: none, couleur: rgb("#233e6a")) = touying.slide(
   config: touying.utils.merge-dicts(
@@ -79,8 +80,8 @@
     touying.config-common(freeze-slide-counter: true),
   ),
   align(center + horizon)[
-    #block(width: 100%, fill: couleur, radius: 6pt, inset: (x: 28pt, y: 25pt),
-      text(size: 1.65em, fill: white, weight: "bold", titre),
+    #block(width: 100%, fill: couleur.lighten(90%), radius: 6pt, inset: (x: 28pt, y: 25pt),
+      text(size: 1.65em, fill: couleur, weight: "bold", titre),
     )
     #if niveau != none { block(above: 24pt, text(size: 0.9em, fill: couleur, niveau)) }
     #if auteur != none { block(above: 12pt, text(size: 0.7em, auteur)) }

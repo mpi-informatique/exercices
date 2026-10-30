@@ -5,6 +5,20 @@
 
 #let sep = h(0.5em)
 #let PP = $cal(P)$
+
+#let couleur-liens = rgb("#233e6a")
+
+/// Affiche tous les liens, internes comme externes, en bleu foncé.
+/// À utiliser comme règle `show` ; les modèles A4 et Madrid l'installent automatiquement.
+///
+/// - body (content): Contenu à mettre en forme.
+/// -> content
+#let configurer-liens(body) = {
+  show link: set text(fill: couleur-liens)
+  show ref: set text(fill: couleur-liens)
+  body
+}
+
 /// Signale un complément ou un contenu hors programme par « HP » dans la marge.
 /// Le repère utilise 70 % du corps courant.
 /// Exemple : `#hp[Théorème de Myhill-Nerode]`.
@@ -19,7 +33,7 @@
 /// - id (str): Identifiant de la ressource dans l'URL du site, sans barres obliques.
 /// - body (content): Texte cliquable.
 /// -> content
-#let lien(id, body) = link("https://mpi-informatique.github.io/exercices/" + id + "/", text(fill: rgb("#0645ad"), body))
+#let lien(id, body) = link("https://mpi-informatique.github.io/exercices/" + id + "/", text(fill: couleur-liens, body))
 
 /// Signale un travail pratique par « TP » dans la marge, au même corps que « HP ».
 /// Avec `id`, le repère devient un lien bleu vers la ressource correspondante.
@@ -73,7 +87,7 @@
 
 #let auteur-par-defaut = "Q. Fortier"
 
-/// Rend un titre cliquable vers sa page sur le site, sans changer son style.
+/// Rend un titre cliquable vers sa page sur le site, avec la couleur commune des liens.
 /// L'entrée système `url-document` est renseignée par les outils de compilation de la banque.
 /// Sans cette entrée, le titre reste du texte simple.
 ///
@@ -81,7 +95,7 @@
 /// -> content
 #let titre-lie(body) = {
   let url = sys.inputs.at("url-document", default: "")
-  if url == "" { body } else { context link(url, text(fill: text.fill, body)) }
+  if url == "" { body } else { link(url, body) }
 }
 
 /// Formate le couple `(heures, minutes)` en durée lisible.
@@ -126,6 +140,7 @@
   show: configurer-theoremes
   show: configurer-code
   show: configurer-figures
+  show: configurer-liens
   set text(font: "New Computer Modern", size: taille, lang: "fr")
   set par(justify: true)
   show: configurer-formules
