@@ -1,3 +1,5 @@
+#import "/load.typ": automate
+#import automate: Le
 #import "/load.typ": exercice, question
 #import "/load.typ": sep, widetilde
 
@@ -48,7 +50,7 @@
         Puisqu'on montrera que régulier et reconnaissable sont équivalents, il s'agit d'une preuve alternative.
       ],
       solution: [
-        Pour une expression régulière $e$, construisons par induction une expression $P(e)$ dénotant les préfixes de son langage $cal(L)(e)$ :
+        Pour une expression régulière $e$, construisons par induction une expression $P(e)$ dénotant les préfixes de son langage $Le$ :
         $ P(a)=ε|a, #sep P(ε)=ε, #sep P(∅)=∅, $
         $ P(e_1|e_2)=P(e_1)|P(e_2), $
         $ P(e_1 e_2)=cases(∅ & "si " cal(L)(e_2)=∅, P(e_1)|e_1 P(e_2) & "sinon"), $

@@ -1,3 +1,5 @@
+#import "/load.typ": automate
+#import automate: LA
 #import "/load.typ": est-corrige
 #import "/load.typ": exercice, partie, question
 #let ex = exercice(
@@ -20,12 +22,12 @@
   contenu: (
     [
       On fixe un alphabet fini $Σ$ avec $abs(Σ)>1$. Un mot $w=a_1 … a_n$ est un palindrome si $a_i=a_(n-i+1)$ pour tout $1≤i≤n$.
-      On note $Π$ le langage des palindromes et $cal(L)(A)$ le langage reconnu par un automate fini $A$ sur $Σ$.
+      On note $Π$ le langage des palindromes et $LA$ le langage reconnu par un automate fini $A$ sur $Σ$.
       Les automates sont sans transitions $ε$.
     ],
     question(
       [
-        Soit $Π_n=Π∩Σ^n$. Montrer que, pour tout ADC $A$ et tout $n∈NN$, si $cal(L)(A)∩Σ^(2n)=Π_(2n)$, alors $A$ a au moins $abs(Σ)^n$ états.
+        Soit $Π_n=Π∩Σ^n$. Montrer que, pour tout ADC $A$ et tout $n∈NN$, si $LA∩Σ^(2n)=Π_(2n)$, alors $A$ a au moins $abs(Σ)^n$ états.
       ],
       solution: [
         Associons à $u∈Σ^n$ l'état $f(u)$ atteint après sa lecture.
@@ -44,16 +46,16 @@
     ),
     question(
       [
-        Étant donné un automate fini $A$, peut-on calculer un automate $A_Π$ reconnaissant $cal(L)(A)∩Π$ ?
+        Étant donné un automate fini $A$, peut-on calculer un automate $A_Π$ reconnaissant $LA∩Π$ ?
       ],
       solution: [
-        Non en général : pour $cal(L)(A)=Σ^*$, ce langage serait $Π$, qui n'est pas régulier.
+        Non en général : pour $LA=Σ^*$, ce langage serait $Π$, qui n'est pas régulier.
       ],
     ),
     question(
       [
         Pour $m=b_1 … b_n$, on note $overline(m)=b_n … b_1$ son miroir.
-        Étant donné $A$, peut-on calculer un automate $A'_Π$ reconnaissant ${m∈Σ^* | m overline(m)∈cal(L)(A)}$ ?
+        Étant donné $A$, peut-on calculer un automate $A'_Π$ reconnaissant ${m∈Σ^* | m overline(m)∈LA}$ ?
       ],
       solution: [
         Oui. Écrivons $A=(Q,I,F,δ)$ et renversons ses transitions pour obtenir l'automate miroir $overline(A)$.
@@ -62,16 +64,16 @@
         Par récurrence sur la taille de $m$, un chemin de $B$ étiqueté $m$ de $(i,f)$ à $(p,r)$ correspond exactement à un chemin $i arrow.r.long^(m) p$ et à un chemin $r arrow.r.long^(overline(m)) f$ dans $A$.
         Il est acceptant si et seulement si $p=r$, ce qui permet de concaténer ces deux chemins en un chemin acceptant de $A$ étiqueté $m overline(m)$.
         Réciproquement, scinder un chemin acceptant de $A$ étiqueté $m overline(m)$ après la lecture de $m$ donne un tel chemin acceptant de $B$.
-        Ainsi $cal(L)(B)={m∈Σ^* | m overline(m)∈cal(L)(A)}$ : prendre $A'_Π=B$.
+        Ainsi $cal(L)(B)={m∈Σ^* | m overline(m)∈LA}$ : prendre $A'_Π=B$.
       ],
     ),
     question(
       [
-        On note $Π_"pair"=⋃_(n∈NN)Π_(2n)$. Proposer un algorithme déterminant si $cal(L)(A)∩Π_"pair"$ est vide, fini ou infini. Discuter ses complexités en temps et en espace.
+        On note $Π_"pair"=⋃_(n∈NN)Π_(2n)$. Proposer un algorithme déterminant si $LA∩Π_"pair"$ est vide, fini ou infini. Discuter ses complexités en temps et en espace.
       ],
       jury: [Les parcours doivent être décrits avec leur structure de données et leur complexité.],
       solution: [
-        La fonction $m↦m overline(m)$ est une bijection de $cal(L)(B)$ vers $cal(L)(A)∩Π_"pair"$.
+        La fonction $m↦m overline(m)$ est une bijection de $cal(L)(B)$ vers $LA∩Π_"pair"$.
         Dans $B$, calculer les états accessibles et coaccessibles par deux parcours, puis conserver leur intersection.
         Si elle est vide, le langage est vide. Sinon, il est infini exactement lorsque ce sous-automate contient un cycle : on peut alors répéter ce cycle sur un chemin acceptant ; sans cycle, tout chemin a une longueur bornée.
         Un parcours en profondeur détecte les cycles.
@@ -84,7 +86,7 @@
     ),
     question(
       [
-        Modifier l'algorithme de la question 5 pour calculer la cardinalité de $cal(L)(A)∩Π_"pair"$ lorsqu'elle est finie, en supposant $A$ déterministe. Comment la complexité est-elle affectée ?
+        Modifier l'algorithme de la question 5 pour calculer la cardinalité de $LA∩Π_"pair"$ lorsqu'elle est finie, en supposant $A$ déterministe. Comment la complexité est-elle affectée ?
       ],
       solution: [
         Même si $A$ est déterministe, $B$ ne l'est pas nécessairement. En revanche, chaque chemin acceptant de $B$ étiqueté $m$ correspond bijectivement à un chemin acceptant de $A$ étiqueté $m overline(m)$ : il est unique.
@@ -99,11 +101,11 @@
     ),
     question(
       [
-        Modifier les algorithmes des questions 5 et 6 pour traiter $cal(L)(A)∩Π$.
+        Modifier les algorithmes des questions 5 et 6 pour traiter $LA∩Π$.
       ],
       solution: [
         Pour chaque $a∈Σ$, garder le même produit et remplacer $D$ par $D_a={(p,r) | (p,a,r)∈δ}$.
-        Il reconnaît ${m | m a overline(m)∈cal(L)(A)}$, avec la même correspondance entre chemins acceptants.
+        Il reconnaît ${m | m a overline(m)∈LA}$, avec la même correspondance entre chemins acceptants.
         Appliquer les tests et le comptage au cas pair et à chaque lettre centrale, puis sommer les cardinalités.
         Les palindromes ainsi obtenus sont disjoints selon leur parité et leur lettre centrale, même si les langages de demi-mots se recoupent.
         Le temps est multiplié au plus par $1+abs(Σ)$ ; les calculs successifs réutilisent le même graphe et le même espace de travail.

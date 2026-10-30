@@ -5,13 +5,12 @@
   slides-only, solution, theoremes, tp,
 )
 #import theoremes: algorithme, definition, exercice, lemme, methode, theoreme
-#import automate: LL, Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
+#import automate: LA, LL, Lrec, cetz, dessiner-automate, finite, style-automates, unite-automates
 #import "@preview/touying:0.8.0": touying-reducer
 
 #show: cours-et-presentation.with(titre: "Automates", niveau: "MPI")
 
 #let colonnes-definition = (1.5fr, 1fr)
-#let LA = $cal(L)(A)$
 #let timess = $#h(0.08em) class(#"normal", ×) #h(0.08em)$
 
 = Automate non déterministe

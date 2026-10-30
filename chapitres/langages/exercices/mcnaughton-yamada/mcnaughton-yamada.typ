@@ -1,7 +1,7 @@
 #import "/load.typ": automate, code, exercice, question
 #import code: code-extrait
 
-#import automate: dessiner-automate
+#import automate: LA, dessiner-automate
 
 #let code = code-extrait.with(read("corrige.ml"))
 
@@ -48,7 +48,7 @@
       - $P(0)$ est vraie d'après la question 1.
       - Supposons $P(k)$ vraie pour un $k$ tel que $0 ≤ k < n$. Les langages $L(i, j, k)$, $L(i, k, k)$, $L(k, k, k)$ et $L(k, j, k)$ sont réguliers par hypothèse de récurrence. La relation de la question précédente montre que $L(i, j, k + 1)$ est régulier par stabilité par union, concaténation et étoile. Donc $P(k + 1)$ est vraie.
 
-      $cal(L)(A) = ⋃_(f ∈ F) L(0, f, n)$ est une union finie de langages réguliers donc est régulier. On conclut en utilisant le fait que tout langage reconnaissable est reconnu par un automate déterministe.
+      $LA = ⋃_(f ∈ F) L(0, f, n)$ est une union finie de langages réguliers donc est régulier. On conclut en utilisant le fait que tout langage reconnaissable est reconnu par un automate déterministe.
     ]),
     question(
       [

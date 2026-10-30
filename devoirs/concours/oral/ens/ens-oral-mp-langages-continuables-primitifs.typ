@@ -1,3 +1,5 @@
+#import "/load.typ": automate
+#import automate: LA
 #import "/load.typ": est-corrige
 #import "/load.typ": exercice, partie, question
 #let ex = exercice(
@@ -73,7 +75,7 @@
     ),
     question(
       [
-        Étant donné un automate $A$, décider si $cal(L)(A)$ est continuable. Justifier l'algorithme et ses complexités en temps et en espace.
+        Étant donné un automate $A$, décider si $LA$ est continuable. Justifier l'algorithme et ses complexités en temps et en espace.
       ],
       solution: [
         La condition équivaut à ce que tout état accessible soit coaccessible.

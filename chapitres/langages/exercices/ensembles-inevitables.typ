@@ -1,3 +1,5 @@
+#import "/load.typ": automate
+#import automate: Le
 #import "/load.typ": exercice, question
 #import "/load.typ": sep
 
@@ -153,7 +155,7 @@
     ),
     question(
       [
-        Une expression régulière $e$ est dite *inévitable* si son langage $cal(L)(e)$ est un ensemble inévitable.
+        Une expression régulière $e$ est dite *inévitable* si son langage $Le$ est un ensemble inévitable.
         Donner un exemple dont le langage ne contient pas le mot vide.
       ],
       solution: [
@@ -163,14 +165,14 @@
     ),
     question(
       [
-        Une expression régulière $e$ est *bornée* s'il existe $n in NN$ tel que tout mot de $cal(L)(e)$ soit de taille au plus $n$.
+        Une expression régulière $e$ est *bornée* s'il existe $n in NN$ tel que tout mot de $Le$ soit de taille au plus $n$.
         Si $e$ est bornée, comment déterminer si elle est inévitable ?
       ],
       solution: [
         Sur un alphabet fini, un langage borné est fini.
-        On peut donc énumérer $cal(L)(e)$ puis appliquer la question 6.
+        On peut donc énumérer $Le$ puis appliquer la question 6.
 
-        Pour rendre cette énumération effective sans connaître de borne à l'avance, on construit un automate déterministe pour $cal(L)(e)$ et on ne conserve que les états *utiles*, accessibles depuis l'état initial et depuis lesquels un état final est accessible.
+        Pour rendre cette énumération effective sans connaître de borne à l'avance, on construit un automate déterministe pour $Le$ et on ne conserve que les états *utiles*, accessibles depuis l'état initial et depuis lesquels un état final est accessible.
         Le graphe utile est acyclique puisque le langage est fini.
         On énumère ses chemins acceptants et les mots qu'ils portent.
         Si aucun état final n'est accessible, le langage est vide.
@@ -181,11 +183,11 @@
         Expliquer comment déterminer si une expression régulière quelconque $e$ est inévitable.
       ],
       solution: [
-        Les mots qui contiennent un facteur de $cal(L)(e)$ forment le langage régulier
-        $ B = Sigma^* cal(L)(e) Sigma^*. $
+        Les mots qui contiennent un facteur de $Le$ forment le langage régulier
+        $ B = Sigma^* Le Sigma^*. $
         On construit un automate pour $B$, on le déterminise, puis on le complète sur $Sigma$ avant d'échanger états finaux et non finaux.
         On obtient un ADC $A$ reconnaissant
-        $ "Av"(cal(L)(e)) = Sigma^* without B. $
+        $ "Av"(Le) = Sigma^* without B. $
 
         On conserve les états utiles de $A$.
         Son langage est infini si et seulement si ce graphe utile contient un cycle : un cycle utile peut être répété sur un chemin acceptant ; réciproquement, un chemin acceptant assez long répète un état.
@@ -197,20 +199,20 @@
     ),
     question(
       [
-        On dit que $S$ est *inévitable relativement à* $e$ si seuls un nombre fini de mots de $cal(L)(e)$ évitent $S$, c'est-à-dire si
-        $ cal(L)(e) ∩ "Av"(S) $
+        On dit que $S$ est *inévitable relativement à* $e$ si seuls un nombre fini de mots de $Le$ évitent $S$, c'est-à-dire si
+        $ Le ∩ "Av"(S) $
         est fini.
         Étant donnés $e$ et un ensemble fini $S$, expliquer comment décider cette propriété, ainsi que la propriété opposée.
       ],
       solution: [
-        On construit un automate déterministe pour $cal(L)(e)$ et un ADC pour $"Av"(S)$, comme à la question 9 en remplaçant $cal(L)(e)$ par l'union finie des mots de $S$.
+        On construit un automate déterministe pour $Le$ et un ADC pour $"Av"(S)$, comme à la question 9 en remplaçant $Le$ par l'union finie des mots de $S$.
 
-        Leur automate produit reconnaît $cal(L)(e) ∩ "Av"(S)$ : une paire d'états est finale lorsque ses deux composantes le sont.
+        Leur automate produit reconnaît $Le ∩ "Av"(S)$ : une paire d'états est finale lorsque ses deux composantes le sont.
         Après suppression des états inutiles, un cycle existe si et seulement si cette intersection est infinie.
         Son absence caractérise donc l'inévitabilité relative.
 
-        La propriété opposée signifie qu'une infinité de mots de $cal(L)(e)$ évitent $S$.
-        Si $cal(L)(e)$ est fini, tout ensemble $S$ est inévitable relativement à $e$ selon la définition retenue ici.
+        La propriété opposée signifie qu'une infinité de mots de $Le$ évitent $S$.
+        Si $Le$ est fini, tout ensemble $S$ est inévitable relativement à $e$ selon la définition retenue ici.
       ],
     ),
     question(
@@ -231,15 +233,15 @@
     ),
     question(
       [
-        Étant donnée une expression régulière inévitable $e$, expliquer comment calculer un sous-ensemble fini inévitable de $cal(L)(e)$.
+        Étant donnée une expression régulière inévitable $e$, expliquer comment calculer un sous-ensemble fini inévitable de $Le$.
       ],
       solution: [
-        On commence par tester si $epsilon in cal(L)(e)$ ; dans ce cas, ${epsilon}$ est une réponse.
-        Sinon, l'automate de la question 9 reconnaît un langage fini non vide, celui des mots évitant $cal(L)(e)$.
+        On commence par tester si $epsilon in Le$ ; dans ce cas, ${epsilon}$ est une réponse.
+        Sinon, l'automate de la question 9 reconnaît un langage fini non vide, celui des mots évitant $Le$.
 
         Son graphe utile est un graphe orienté acyclique.
         Un calcul de plus long chemin dans un ordre topologique donne la taille maximale $n$ d'un mot accepté.
-        On énumère alors les mots $m$ de taille $n+1$ ; pour chacun, on énumère ses facteurs et on en retient un accepté par un automate de $cal(L)(e)$.
+        On énumère alors les mots $m$ de taille $n+1$ ; pour chacun, on énumère ses facteurs et on en retient un accepté par un automate de $Le$.
         Un tel facteur existe par définition de $n$.
 
         L'ensemble des facteurs retenus, après suppression des doublons, est une réponse par la question 11.

@@ -4,7 +4,7 @@
   theoremes,
 )
 #import theoremes: algorithme, definition, exercice, lemme, theoreme
-#import automate: Ereg, Lrec, Lreg, dessiner-automate
+#import automate: LA, Le, Ereg, Lrec, Lreg, dessiner-automate
 
 #show: cours-et-presentation.with(titre: "Théorème de Kleene", niveau: "MPI")
 
@@ -92,7 +92,7 @@
   + $Lloc(Σ)$ est-il stable par complémentaire ?
 ]
 #slide()
-#theoreme[Linéaire $==>$ local][Si $e$ est une expression régulière linéaire alors $cal(L)(e)$ est local.]
+#theoreme[Linéaire $==>$ local][Si $e$ est une expression régulière linéaire alors $Le$ est local.]
 
 == Automate local
 
@@ -128,7 +128,7 @@
 == Algorithme de Berry-Sethi
 #algorithme(coeur: true, title: "Algorithme de Berry-Sethi")[
   - #underline[Entrée] : une expression régulière $e$.\
-  - #underline[Sortie] : un automate _de Glushkov_ reconnaissant $cal(L)(e)$.
+  - #underline[Sortie] : un automate _de Glushkov_ reconnaissant $Le$.
 
   + Linéariser $e$ en $e'$.
   + Calculer $P(cal(L)(e'))$, $S(cal(L)(e'))$ et $F(cal(L)(e'))$, et tester $ε ∈ cal(L)(e')$.
@@ -136,10 +136,10 @@
   + Renvoyer l'automate $A$ obtenu en remplaçant chaque étiquette $a'$ de $A'$ par sa lettre d'origine $π(a')$.
 ]<algorithme-berry-sethi>
 #solution(cours: true)[
-  Prolongeons $π$ aux mots avec $π(m) = π(m_1) … π(m_n)$ pour tout mot $m = m_1 … m_n$. Alors $π(L_1 ∪ L_2) = π(L_1) ∪ π(L_2)$, $π(L_1 L_2) = π(L_1) π(L_2)$ et $π(L_1^*) = π(L_1)^*$. Une induction sur $e$ donne donc $π(cal(L)(e')) = cal(L)(e)$.
+  Prolongeons $π$ aux mots avec $π(m) = π(m_1) … π(m_n)$ pour tout mot $m = m_1 … m_n$. Alors $π(L_1 ∪ L_2) = π(L_1) ∪ π(L_2)$, $π(L_1 L_2) = π(L_1) π(L_2)$ et $π(L_1^*) = π(L_1)^*$. Une induction sur $e$ donne donc $π(cal(L)(e')) = Le$.
 
   Remplacer $a'$ par $π(a')$ conserve les chemins et leurs extrémités : un chemin acceptant $m$ dans $A'$ accepte $π(m)$ dans $A$, et inversement. Ainsi :
-  $ cal(L)(A) = π(cal(L)(A')) = π(cal(L)(e')) = cal(L)(e). $
+  $ LA = π(cal(L)(A')) = π(cal(L)(e')) = Le. $
 ]
 
 #exercice[Appliquer @algorithme-berry-sethi à $e = a (a | b)^*$.]
@@ -222,7 +222,7 @@ La construction de Thompson est une alternative récursive à l'algorithme de Be
 #slide()
 #definition([Automate généralisé])[
   Un _automate généralisé_ $A = (Ereg(Σ), Q, I, F, δ)$ sur un alphabet $Σ$ permet des transitions étiquetées par des expressions régulières : $δ: Q × Ereg(Σ) → cal(P)(Q)$.\
-  Une transition de $p$ à $q$ étiquetée par $e$ peut être franchie en lisant un mot quelconque de $cal(L)(e)$.
+  Une transition de $p$ à $q$ étiquetée par $e$ peut être franchie en lisant un mot quelconque de $Le$.
   On note $R_(p, r)$ l'union des expressions étiquetant les transitions de $p$ à $r$, et $∅$ en l'absence de transition.
 ]
 
@@ -231,7 +231,7 @@ La construction de Thompson est une alternative récursive à l'algorithme de Be
   Un mot $m$ est _accepté_ par $A$ s'il existe un _chemin acceptant_ de $I$ à $F$
   $ q_0 limits(⟶)^(e_1) q_1 limits(⟶)^(e_2) … limits(⟶)^(e_n) q_n $
   tel que $m ∈ cal(L)(e_1) … cal(L)(e_n)$. Pour un chemin sans transition, ce produit vaut ${ε}$.\
-  Le _langage_ $cal(L)(A)$ _reconnu_ par $A$ est l'ensemble des mots acceptés par $A$.
+  Le _langage_ $LA$ _reconnu_ par $A$ est l'ensemble des mots acceptés par $A$.
 ]
 
 #slide()
@@ -246,11 +246,11 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 #slide()
 #exercice[Montrer que tout automate généralisé ayant un nombre fini de transitions est équivalent à un automate fini classique.]
 #solution[
-  Pour chaque transition $p limits(⟶)^e q$, construire par Berry-Sethi un automate reconnaissant $cal(L)(e)$, avec des états nouveaux.
+  Pour chaque transition $p limits(⟶)^e q$, construire par Berry-Sethi un automate reconnaissant $Le$, avec des états nouveaux.
   Remplacer la transition par cet automate, relier $p$ à ses états initiaux et ses états finaux à $q$ par des $ε$-transitions.
   Conserver comme états initiaux et finaux ceux de l'automate d'origine.
 
-  Traverser ce nouvel automate revient à lire un mot de $cal(L)(e)$. Les chemins acceptants lisent donc les mêmes mots.
+  Traverser ce nouvel automate revient à lire un mot de $Le$. Les chemins acceptants lisent donc les mêmes mots.
   Il reste à supprimer les $ε$-transitions.
 ]
 
@@ -274,7 +274,7 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 
   Construire $A'$ en supprimant $q$ et en mettant, pour chaque $p, r ∈ Q ∖ {q}$, une transition de $p$ à $r$ d'étiquette
   $ R'_(p, r) = R_(p, r) | R_(p, q) (R_(q, q))^* R_(q, r). $
-  Avec les mêmes états initiaux et finaux, $cal(L)(A') = cal(L)(A)$.
+  Avec les mêmes états initiaux et finaux, $cal(L)(A') = LA$.
 ]
 #slide()
 #grid(
@@ -303,7 +303,7 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 Dans un chemin acceptant de $A$, contracter chaque portion de $p$ à $r$ dont les états intermédiaires sont une ou plusieurs occurrences de $q$.
 Elle lit un mot de $cal(L)(R_(p, q) (R_(q, q))^* R_(q, r))$. Les transitions qui évitent $q$ sont conservées par $R_(p, r)$.
 On obtient donc un chemin acceptant de $A'$ lisant le même mot.
-Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemin de $A$ lisant le même mot. D'où $cal(L)(A') = cal(L)(A)$.
+Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemin de $A$ lisant le même mot. D'où $cal(L)(A') = LA$.
 
 #slide()
 #algorithme[

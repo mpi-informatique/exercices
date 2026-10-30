@@ -1,3 +1,5 @@
+#import "/load.typ": automate
+#import automate: LA
 #import "/load.typ": exercice, question
 
 #let ex = exercice(
@@ -21,12 +23,12 @@
       ],
     ),
     question(
-      [Soit $A$ un automate à $n$ états et de langage $cal(L)(A)$.
-        Montrer que $cal(L)(A)=∅$ si et seulement si $cal(L)(A)$ ne contient aucun mot de taille strictement inférieure à $n$.],
+      [Soit $A$ un automate à $n$ états et de langage $LA$.
+        Montrer que $LA=∅$ si et seulement si $LA$ ne contient aucun mot de taille strictement inférieure à $n$.],
       solution: [
         $==>$ : immédiat.
 
-        $⇐$ : supposons $cal(L)(A)≠∅$ et choisissons un mot accepté $m$ de taille minimale.
+        $⇐$ : supposons $LA≠∅$ et choisissons un mot accepté $m$ de taille minimale.
         Si $abs(m)≥n$, son chemin acceptant passe par au moins $n+1$ occurrences d'états.
         Deux sont égales par le principe des tiroirs. Supprimer le cycle entre elles donne un chemin acceptant de longueur strictement plus petite, contradiction.
         Ainsi $abs(m)<n$. Si $n=0$, il n'existe aucun chemin acceptant et le résultat reste valable.

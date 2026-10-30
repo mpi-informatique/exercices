@@ -1,6 +1,6 @@
 #import "/load.typ": est-corrige
 #import "/load.typ": exercice, feuille, question, code, automate
-#import automate: dessiner-automate
+#import automate: LA, dessiner-automate
 #import code: code-extrait
 #let corrige = read("corrige.ml")
 #let squelette = read("tp2.ml")
@@ -79,7 +79,7 @@
     question([
       En déduire `inclus : adc -> adc -> bool` qui teste l'inclusion des langages reconnus par `a` et `b`.
     ], solution: [
-      On utilise $cal(L)(A) ⊂ cal(L)(B) ⟺ cal(L)(A) ∩ overline(cal(L)(B)) = ∅$.
+      On utilise $LA ⊂ cal(L)(B) ⟺ LA ∩ overline(cal(L)(B)) = ∅$.
       #code-extrait(corrige, "inclus")
     ]),
     question([

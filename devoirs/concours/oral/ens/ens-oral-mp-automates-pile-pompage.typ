@@ -1,6 +1,6 @@
 #import "/load.typ": est-corrige
 #import "/load.typ": automate
-#import automate: dessiner-automate as dessiner
+#import automate: LA, dessiner-automate as dessiner
 #import "/load.typ": exercice, partie, question
 #import "/load.typ": sep
 #let anbn = dessiner(
@@ -106,10 +106,10 @@
     ],
     question(
       [
-        Quelle est la relation entre $cal(L)_(≤η)(A)$ et $cal(L)(A)$ ? Montrer que le premier langage est régulier et construire un automate fini qui le reconnaît.
+        Quelle est la relation entre $cal(L)_(≤η)(A)$ et $LA$ ? Montrer que le premier langage est régulier et construire un automate fini qui le reconnaît.
       ],
       solution: [
-        On a $cal(L)_(≤η)(A)⊂cal(L)(A)$ : reproduire un calcul tronqué avec la pile entière.
+        On a $cal(L)_(≤η)(A)⊂LA$ : reproduire un calcul tronqué avec la pile entière.
         À chaque instant, la pile tronquée est un suffixe non vide de la pile entière et possède donc le même sommet. Chaque transition choisie reste légale dans le calcul entier et conduit au même état.
         L'inclusion peut être stricte : dans l'automate de la question 2, le mot $a a b b$ ne peut être accepté pour $η=1$, car le premier $b$ viderait la pile tronquée.
 
@@ -125,7 +125,7 @@
     ],
     question(
       [
-        Montrer que, si $η>G$ et $w∈cal(L)(A)∖cal(L)_(≤η)(A)$, tout calcul acceptant de $w$ possède une $(η-G)$-montagne.
+        Montrer que, si $η>G$ et $w∈LA∖cal(L)_(≤η)(A)$, tout calcul acceptant de $w$ possède une $(η-G)$-montagne.
       ],
       solution: [
         Fixons un calcul acceptant. Sa simulation tronquée doit se bloquer en tentant de dépiler son dernier symbole ; sinon elle accepterait aussi $w$.

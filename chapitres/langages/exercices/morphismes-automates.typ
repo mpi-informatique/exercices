@@ -1,5 +1,5 @@
 #import "/load.typ": automate
-#import automate: dessiner-automate as dessiner
+#import automate: LA, dessiner-automate as dessiner
 #import "/load.typ": exercice, question
 
 #let a1 = dessiner(
@@ -87,7 +87,7 @@
     ),
     question(
       [
-        Montrer que l'existence d'un morphisme $A→A'$ implique $cal(L)(A)=cal(L)(A')$. La réciproque est-elle vraie ?
+        Montrer que l'existence d'un morphisme $A→A'$ implique $LA=cal(L)(A')$. La réciproque est-elle vraie ?
       ],
       solution: [
         Par récurrence sur $abs(m)$, les propriétés (i) et (ii) donnent
@@ -129,7 +129,7 @@
     ],
     question(
       [
-        Si $A×A'$ est accessible et $cal(L)(A)=cal(L)(A')$, montrer qu'il existe un morphisme $A×A'→A$, et de même vers $A'$.
+        Si $A×A'$ est accessible et $LA=cal(L)(A')$, montrer qu'il existe un morphisme $A×A'→A$, et de même vers $A'$.
       ],
       solution: [
         Prendre la première projection $(q,q')↦q$. Elle conserve l'état initial et les transitions.

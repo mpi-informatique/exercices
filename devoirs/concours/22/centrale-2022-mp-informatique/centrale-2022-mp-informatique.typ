@@ -2,7 +2,7 @@
 #import "/load.typ": code
 #import code: code-extrait
 #import "/load.typ": automate
-#import automate: rayon-etat, rayon-grand-etat, style-automates, unite-automates
+#import automate: LA, rayon-etat, rayon-grand-etat, style-automates, unite-automates
 #import "/load.typ": exercice, partie, question
 #import "/load.typ": sep, widetilde
 #import "@preview/cetz:0.4.2" as cetz
@@ -172,12 +172,12 @@
     [Soit $L ⊂ Σ^*$ un langage reconnu par $A=(Q,I,F,T)$.
       Pour $(q,q') ∈ Q^2$, on note $L_(q,q')$ le langage des mots étiquetant un chemin de $q$ à $q'$ dans $A$.],
     question(
-      [Montrer que $L_(q,q')$ est reconnaissable et exprimer $cal(L)(A)$ en fonction des langages $L_(q,q')$.],
+      [Montrer que $L_(q,q')$ est reconnaissable et exprimer $LA$ en fonction des langages $L_(q,q')$.],
       jury: [Distinguer une famille de langages de leur union.],
       solution: [
         L'automate $(Q,{q},{q'},T)$ reconnaît $L_(q,q')$.
         Un chemin est acceptant s'il part d'un état initial et arrive à un état final, d'où
-        $ cal(L)(A)=union_(i ∈ I) union_(f ∈ F) L_(i,f). $
+        $ LA=union_(i ∈ I) union_(f ∈ F) L_(i,f). $
       ],
     ),
     question([Montrer que $"Pal"(Σ) ∩ (Σ^2)^*={m widetilde(m) | m ∈ Σ^*}$.], solution: [
@@ -271,7 +271,7 @@
         #sep q_0 ∈ I, #sep q_n ∈ F.
       $
       On dit que $w$ étiquette un chemin de $q_0$ à $q_n$.
-      Le langage de l'automate, noté $cal(L)(A)$, est l'ensemble des mots reconnus par $A$.
+      Le langage de l'automate, noté $LA$, est l'ensemble des mots reconnus par $A$.
       Un langage est reconnaissable s'il est le langage d'un automate fini.
 
       Un automate déterministe est un quadruplet $A=(Q,{q_0},F,δ)$ avec un unique état initial et une fonction de transition $δ$ définie sur une partie de $Q × Σ$, à valeurs dans $Q$.
@@ -328,7 +328,7 @@
             #automate-a1(miroir: true)
           ],
         ),
-        [Soit $A=(Q,I,F,T)$ un automate non déterministe et $L=cal(L)(A)$ son langage.],
+        [Soit $A=(Q,I,F,T)$ un automate non déterministe et $L=LA$ son langage.],
         question(
           [Donner, en justifiant, la construction de l'automate miroir $widetilde(A)=(Q,I',F',T')$ reconnaissant $widetilde(L)$.],
           solution: [
@@ -718,14 +718,14 @@
           L'union vide vaut $∅$.
           On admet que $cal(L)([M_A^*]_(i,j))=L_(i,j)$, langage des chemins défini à la question 9.],
         question(
-          [Montrer que $cal(L)(A)=cal(L)([X M_A^* Y]_(0,0))$, où $X$ est une matrice ligne $(x_0,…,x_(n-1))$ et $Y$ une matrice colonne de coefficients $y_0,…,y_(n-1)$, avec $x_i,y_j ∈ {∅,ε}$.
+          [Montrer que $LA=cal(L)([X M_A^* Y]_(0,0))$, où $X$ est une matrice ligne $(x_0,…,x_(n-1))$ et $Y$ une matrice colonne de coefficients $y_0,…,y_(n-1)$, avec $x_i,y_j ∈ {∅,ε}$.
             Préciser les coefficients en fonction de l'automate.],
           solution: [
             On choisit $x_i=ε$ si $i ∈ I$, et $∅$ sinon ; $y_j=ε$ si $j ∈ F$, et $∅$ sinon.
             Le produit représente exactement
             $
               union_(i ∈ I) union_(j ∈ F) cal(L)([M_A^*]_(i,j))
-              =union_(i ∈ I) union_(j ∈ F) L_(i,j)=cal(L)(A).
+              =union_(i ∈ I) union_(j ∈ F) L_(i,j)=LA.
             $
           ],
         ),

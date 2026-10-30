@@ -1,3 +1,5 @@
+#import "/load.typ": automate
+#import automate: LA
 #import "/load.typ": exercice, question
 
 #let ex = exercice(
@@ -19,12 +21,12 @@
           column-gutter: 1.5em,
           align: top,
           [
-            + $cal(L)(A) = emptyset$ ?
-            + Plus petit mot de $cal(L)(A)$ ?
+            + $LA = emptyset$ ?
+            + Plus petit mot de $LA$ ?
           ],
           [
             #set enum(start: 3)
-            + $cal(L)(A)$ fini ?
+            + $LA$ fini ?
             + Pour deux automates $A_1, A_2$ : $cal(L)(A_1) = cal(L)(A_2)$ ?
           ],
         )
@@ -33,8 +35,8 @@
         + Il est vide si et seulement s'il n'existe aucun chemin de $I$ vers $F$.
           Faire un parcours (profondeur ou largeur) depuis $I$ et tester si un état final est atteint.
           Avec une représentation par liste d'adjacence, chaque état est visité au plus une fois et chaque transition examinée au plus une fois : temps $O(n + p)$, espace auxiliaire $O(n)$.
-        + Faire un parcours en largeur depuis $I$ et mémoriser pour chaque état visité le mot le plus court pour l'atteindre. Le plus petit mot de $cal(L)(A)$ est le plus court parmi ceux menant à un état final.
-        + $cal(L)(A)$ est infini exactement lorsqu'il existe un cycle accessible et coaccessible.
+        + Faire un parcours en largeur depuis $I$ et mémoriser pour chaque état visité le mot le plus court pour l'atteindre. Le plus petit mot de $LA$ est le plus court parmi ceux menant à un état final.
+        + $LA$ est infini exactement lorsqu'il existe un cycle accessible et coaccessible.
 
           Émonder $A$ puis réaliser un parcours en profondeur depuis $I$ : $A$ possède un cycle orienté si et seulement si un arc arrière (revenant sur un sommet en cours d'appel récursif) est trouvé.
           Avec une représentation par liste d'adjacence, le temps et l'espace total, émondage compris, sont $O(n + p)$.

@@ -1,4 +1,6 @@
 #let LL = $cal(L)$
+#let LA = $LL(A)$
+#let Le = $LL(e)$
 #let Lreg = $LL_("reg")$
 #let Lrec = $LL_("rec")$
 #let Lloc = $cal(L)_("loc")$
