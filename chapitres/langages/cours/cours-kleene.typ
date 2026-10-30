@@ -234,6 +234,15 @@ La construction de Thompson est une alternative récursive à l'algorithme de Be
   Le _langage_ $cal(L)(A)$ _reconnu_ par $A$ est l'ensemble des mots acceptés par $A$.
 ]
 
+#slide()
+#underline[Exemple] :
+#dessiner-automate(
+  (("q_0", (0, 0), true, false), ("q_1", (3, 0), false, false), ("q_2", (6, 0), false, true)),
+  (("q_0", "q_1", "a^*", (:)), ("q_1", "q_2", "b | ε", (:))),
+)
+Cet automate reconnaît $cal(L)(a^* (b | ε))$.
+Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$, mais aussi $ε$ en lisant $ε$ sur chacune des deux transitions.
+
 == Élimination d'un état
 
 #algorithme(coeur: true)[
