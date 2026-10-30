@@ -4,7 +4,7 @@
   theoremes,
 )
 #import theoremes: algorithme, definition, exercice, lemme, theoreme
-#import automate: Lrec, Lreg, dessiner-automate
+#import automate: Ereg, Lrec, Lreg, dessiner-automate
 
 #show: cours-et-presentation.with(titre: "Théorème de Kleene", niveau: "MPI")
 
@@ -221,11 +221,17 @@ La construction de Thompson est une alternative récursive à l'algorithme de Be
 
 #slide()
 #definition([Automate généralisé])[
-  Un _automate généralisé_ est un automate fini dont les transitions sont étiquetées par des expressions régulières.
+  Un _automate généralisé_ $A = (Ereg(Σ), Q, I, F, δ)$ sur un alphabet $Σ$ permet des transitions étiquetées par des expressions régulières : $δ: Q × Ereg(Σ) → cal(P)(Q)$.\
   Une transition de $p$ à $q$ étiquetée par $e$ peut être franchie en lisant un mot quelconque de $cal(L)(e)$.
-  Un mot est accepté s'il est la concaténation de mots lus le long d'un chemin d'un état initial à un état final ; un chemin sans transition lit $ε$.
-
   On note $R_(p, r)$ l'union des expressions étiquetant les transitions de $p$ à $r$, et $∅$ en l'absence de transition.
+]
+
+#slide()
+#definition([Langage reconnu])[
+  Le _langage reconnu_ $cal(L)(A)$ est l'ensemble des mots $m ∈ Σ^*$ pour lesquels il existe $n ∈ NN$, des états $q_0, …, q_n ∈ Q$, des expressions $e_1, …, e_n ∈ Ereg(Σ)$ et des mots $m_1, …, m_n ∈ Σ^*$ tels que :
+  $ q_0 ∈ I, quad q_n ∈ F, quad m = m_1 … m_n, $
+  $ ∀ k ∈ [|1, n|], quad q_k ∈ δ(q_(k - 1), e_k) ∧ m_k ∈ cal(L)(e_k). $
+  Pour $n = 0$, la concaténation vide vaut $ε$ : un état de $I ∩ F$ fournit donc un chemin acceptant $ε$ sans transition.
 ]
 
 == Élimination d'un état

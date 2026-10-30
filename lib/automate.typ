@@ -2,6 +2,7 @@
 #let Lreg = $LL_("reg")$
 #let Lrec = $LL_("rec")$
 #let Lloc = $cal(L)_("loc")$
+#let Ereg = $cal(R)$
 
 // Échelle commune proportionnelle au texte : 0.8cm à 10pt, agrandie en présentation.
 #let unite-automates = (0.8cm / 10pt) * 1em
