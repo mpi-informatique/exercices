@@ -219,6 +219,7 @@ La construction de Thompson est une alternative récursive à l'algorithme de Be
   - Un unique état final $q_f$ sans transition sortante.
 ]
 
+#slide()
 #definition([Automate généralisé])[
   Un _automate généralisé_ est un automate fini dont les transitions sont étiquetées par des expressions régulières.
   Une transition de $p$ à $q$ étiquetée par $e$ peut être franchie en lisant un mot quelconque de $cal(L)(e)$.
