@@ -35,9 +35,6 @@
         Le mot $a b^n c^n$ s'écrirait $x y z$ avec $abs(x y) ≤ n$, $y ≠ ε$ et $x y^* z ⊂ L_1$.
         Supprimer $y$ enlève soit l'unique $a$, soit uniquement des $b$, sans toucher aux $c$. Dans les deux cas, $x z ∉ L_1$, contradiction.
         Ainsi $L$ n'est pas régulier, bien qu'il vérifie la conclusion du lemme de l'étoile.
-        #context if query(<distinguants-anbn>).len() > 0 {
-          [Voir aussi #ref(<distinguants-anbn>, supplement: [la question]) de l'exercice sur les ensembles distinguants.]
-        }
 
         #underline[Remarque] : On peut aussi dire que ${b^n c^n | n ∈ NN} = a^(-1) L_1$ serait régulier si $L_1$ l'était, en utilisant #lien("residuels-minimisation")[l'exercice sur les résiduels].
       ],
