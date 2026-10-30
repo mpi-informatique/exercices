@@ -60,18 +60,18 @@
   }
 }
 
-/// Affiche la solution dans le corrigé et, sur demande, dans les autres sorties.
+/// Affiche la solution dans le corrigé ou, avec `presentation: true`, dans les diapositives.
 /// Les marques `article-only` et `slides-only` restent utilisables dans son contenu.
 ///
-/// - cours (bool): Afficher aussi dans le cours non corrigé.
-/// - presentation (bool): Afficher aussi dans les diapositives.
+/// - cours (bool): Afficher dans les deux versions imprimées, même avec `presentation: true`.
+/// - presentation (bool): Afficher dans les diapositives et masquer dans le corrigé, sauf si `cours: true`.
 /// - coeur (bool): Ajouter un cœur à gauche, centré sur la solution.
 /// - pause (bool): Ajouter une pause après la solution en présentation.
 /// - body (content): Solution ou preuve.
 /// -> content, none
 #let solution(cours: false, presentation: false, coeur: false, pause: true, body) = {
   if est-presentation() and pause { body += pause-automatique }
-  if est-corrige() or (cours and sys.inputs.at("format", default: "cours") == "cours") {
+  if (est-corrige() and not presentation) or (cours and not est-presentation()) {
     // Le filtre article de Touying ne descend pas dans les arguments des fonctions différées.
     body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
       if marque.kind == "touying-slides-only" { [] } else { marque.body }

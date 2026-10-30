@@ -127,7 +127,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 #article-only[Un détail du polycopié.]
 #solution(presentation: true, coeur: true)[
   #slides-only[== Solution projetée]
-  #metadata("solution") <solution-cours-test> Une solution réservée au corrigé et aux diapositives.
+  #metadata("solution") <solution-cours-test> Une solution réservée aux diapositives.
   #pause
   #block[#slides-only[Un détail projeté.] #article-only[Un détail imprimé.]]
   La fin de la solution.
@@ -146,7 +146,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   for cible in (<solution-masquee-test>, <solution-non-projetee-test>) {
     assert(query(cible).len() == if corrige { 1 } else { 0 })
   }
-  let visible = corrige or sys.inputs.at("format") == "presentation"
+  let visible = sys.inputs.at("format") == "presentation"
   assert((query(<solution-cours-test>).len() > 0) == visible)
   assert(query(<solution-cours-force-test>).len() == if sys.inputs.at("format") == "cours" { 1 } else { 0 })
   assert(query(<solution-partout-test>).len() > 0)
@@ -154,7 +154,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   if sys.inputs.at("format") == "presentation" {
     assert(coeurs.len() == 0)
   } else {
-    assert(coeurs.len() == if corrige { 2 } else { 1 })
+    assert(coeurs.len() == 1)
   }
 }
 == Colonnes du cours

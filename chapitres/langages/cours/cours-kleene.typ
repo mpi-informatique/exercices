@@ -332,7 +332,7 @@ Chaque élimination conserve le langage. À la fin, l'étiquette restante décri
 
 #dessiner-automate(elimination-etats, elimination-arcs)
 
-#solution[
+#solution(presentation: true)[
   == Normaliser l'exemple
   #dessiner-automate(
     (
