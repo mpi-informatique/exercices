@@ -305,16 +305,6 @@ Elle lit un mot de $cal(L)(R_(p, q) (R_(q, q))^* R_(q, r))$. Les transitions qui
 On obtient donc un chemin acceptant de $A'$ lisant le même mot.
 Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemin de $A$ lisant le même mot. D'où $cal(L)(A') = LA$.
 
-#slide()
-#algorithme[
-  + Normaliser l'automate.
-  + Tant qu'il reste au moins trois états, éliminer un état différent de $q_i$, $q_f$.
-  + Renvoyer l'étiquette de $q_i$ vers $q_f$, ou $∅$ s'il n'y a pas de transition.
-]
-Chaque élimination conserve le langage. À la fin, l'étiquette restante décrit donc le langage initial.
-
-#slide()
-#exercice[Donner une expression régulière pour l'automate suivant par élimination des états.]
 #let elimination-etats = (
   ("1", (0, 1.5), true, false),
   ("2", (3, 1.5), false, true),
@@ -330,7 +320,26 @@ Chaque élimination conserve le langage. À la fin, l'étiquette restante décri
   ("4", "4", "b", (anchor: right)),
 )
 
-#dessiner-automate(elimination-etats, elimination-arcs)
+#slide()
+#colonnes-cours(
+  columns: (1.25fr, 1fr),
+  align: left + top,
+  saut-slide: true,
+  [
+    #algorithme[
+      + Normaliser l'automate.
+      + Tant qu'il reste au moins trois états, éliminer un état différent de $q_i$, $q_f$.
+      + Renvoyer l'étiquette de $q_i$ vers $q_f$, ou $∅$ s'il n'y a pas de transition.
+    ]
+    Chaque élimination conserve le langage. À la fin, l'étiquette restante décrit donc le langage initial.
+  ],
+  [
+    #exercice[
+      Donner une expression régulière pour l'automate suivant par élimination des états.
+      #dessiner-automate(elimination-etats, elimination-arcs)
+    ]
+  ],
+)
 
 #solution(presentation: true)[
   == Normaliser l'exemple

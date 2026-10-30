@@ -127,14 +127,28 @@
     })
   }
   if nom == "algorithm" {
-    body = context pseudocode-list(
-      indentation: 1.5em,
-      line-gap: par.leading,
-      line-numbering: none,
-      stroke: epaisseur-trait + luma(65%),
-      line-number-supplement: [Ligne],
-      body,
-    )
+    body = context {
+      // Lovelace réserve une ligne d'en-tête et de pied, même sans titre ni filet.
+      // Supprimer leurs gouttières pour conserver seulement l'espacement entre les instructions.
+      show grid: it => {
+        if it.row-gutter.first() == 0pt { return it }
+        let pied = it.children.find(child => child.func() == grid.footer)
+        if pied == none { return it }
+        let derniere-ligne = pied.children.first().y
+        let options = it.fields()
+        let cellules = options.remove("children")
+        options.row-gutter = (0pt,) + (par.leading,) * calc.max(0, derniere-ligne - 2) + (0pt,)
+        grid(..options, ..cellules)
+      }
+      pseudocode-list(
+        indentation: 1.5em,
+        line-gap: par.leading,
+        line-numbering: none,
+        stroke: epaisseur-trait + luma(65%),
+        line-number-supplement: [Ligne],
+        body,
+      )
+    }
   }
   context {
     let palette = style-cadres.get()

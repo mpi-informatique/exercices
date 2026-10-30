@@ -267,6 +267,17 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante, '--input', 'corrige=' + corrige,
                         str(source), str(output)], check=True)
         assert output.stat().st_size > 0
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, theoremes
+#show: cours.with(titre: "Marges des algorithmes")
+#context {
+  let hauteur(contenu) = measure(contenu, width: 300pt).height
+  let reference = hauteur(theoremes.definition[Texte.])
+  let algorithme = hauteur(theoremes.algorithme[+ Texte.])
+  assert(calc.abs(algorithme - reference) < 0.1pt, message: repr((algorithme, reference)))
+}
+''', encoding='utf-8')
+    subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                    '--package-path', str(racine / 'packages'), str(source), str(racine / 'marges-algorithmes.pdf')], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, theoremes
 #show: cours-et-presentation.with(titre: "Espacement des cadres")
 #let repere(nom) = [#metadata(nom) <espacement-cadre-test>Texte identique.]
