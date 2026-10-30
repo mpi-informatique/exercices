@@ -280,7 +280,8 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 #grid(
   columns: (1fr, auto, 1fr),
   column-gutter: 0.5em,
-  align: horizon,
+  row-gutter: 0.65em,
+  align: (col, row) => if row == 0 { horizon } else { top },
   dessiner-automate(
     (("p", (0, 0), false, false), ("q", (2.5, 0), false, false), ("r", (5, 0), false, false)),
     (
@@ -295,6 +296,9 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
     (("p", (0, 0), false, false), ("r", (5, 0), false, false)),
     (("p", "r", "h | e f^* g", (:)),),
   ),
+  align(center)[Automate $A$],
+  [],
+  align(center)[Automate $A'$ après élimination de $q$],
 )
 Dans un chemin acceptant de $A$, contracter chaque portion de $p$ à $r$ dont les états intermédiaires sont une ou plusieurs occurrences de $q$.
 Elle lit un mot de $cal(L)(R_(p, q) (R_(q, q))^* R_(q, r))$. Les transitions qui évitent $q$ sont conservées par $R_(p, r)$.
