@@ -243,6 +243,22 @@ La construction de Thompson est une alternative récursive à l'algorithme de Be
 Cet automate reconnaît $cal(L)(a^* (b | ε))$.
 Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$, mais aussi $ε$ en lisant $ε$ sur chacune des deux transitions.
 
+#slide()
+#exercice[Automate généralisé et automate classique][
+  Montrer que tout automate généralisé ayant un nombre fini de transitions est équivalent à un automate fini sans $ε$-transitions.
+]<exo-generalise-classique>
+#solution[
+  Pour chaque transition $p limits(⟶)^e q$, Berry-Sethi fournit un automate fini $B_e$ reconnaissant $cal(L)(e)$.
+  Remplaçons cette transition par une copie de $B_e$, dont les états sont distincts des états d'origine et de ceux des autres copies.
+  Ajoutons des $ε$-transitions de $p$ aux états initiaux de cette copie et de ses états finaux à $q$.
+  Seuls les états initiaux et finaux de l'automate d'origine gardent ces rôles dans l'automate obtenu.
+
+  Traverser la copie de $B_e$ de $p$ à $q$ revient exactement à lire un mot de $cal(L)(e)$.
+  En développant les transitions d'un chemin acceptant, ou en regroupant les traversées des copies, on obtient donc les mêmes mots acceptés dans les deux automates.
+  La construction est finie puisqu'il y a un nombre fini de transitions.
+  Il reste à supprimer les $ε$-transitions.
+]
+
 == Élimination d'un état
 
 #algorithme(coeur: true)[
@@ -373,6 +389,25 @@ Chaque élimination conserve le langage. À la fin, l'étiquette restante décri
   Les langages réguliers sont stables par union finie, concaténation, étoile, intersection finie, complémentaire et différence.
 ]
 Les trois premières stabilités viennent de la définition. Les autres se déduisent du théorème de Kleene et des constructions sur les automates.
+
+== Applications du théorème de Kleene
+#exercice[Substitution régulière][
+  Soient $Σ$ et $Γ$ deux alphabets finis. À chaque lettre $a ∈ Σ$, on associe un langage régulier $K_a ⊂ Γ^*$.
+  On pose $s(ε) = {ε}$ et, pour un mot $m = a_1 … a_n$, $s(m) = K_(a_1) … K_(a_n)$.
+  Pour $L ⊂ Σ^*$, on définit $s(L) = union.big_(m ∈ L) s(m)$.
+
+  Montrer que si $L$ est régulier alors $s(L)$ est régulier.
+]
+#solution[
+  Par Berry-Sethi, $L$ est reconnu par un automate fini $A$.
+  Pour chaque $a ∈ Σ$, choisissons une expression régulière $e_a$ telle que $cal(L)(e_a) = K_a$.
+  Dans $A$, remplaçons chaque étiquette $a$ par $e_a$.
+
+  Un chemin acceptant d'étiquette $a_1 … a_n$ peut alors lire exactement les mots de $K_(a_1) … K_(a_n) = s(a_1 … a_n)$.
+  Le chemin sans transition lit $ε$, conformément à $s(ε) = {ε}$.
+  Le langage reconnu par l'automate généralisé obtenu est donc $s(L)$.
+  D'après @exo-generalise-classique, il est reconnaissable, donc régulier par le théorème de Kleene.
+]
 
 #slides-only[
   #slide()
