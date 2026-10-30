@@ -255,13 +255,16 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 ]
 
 #exercice[Substitution régulière][
-  Soit $L ⊂ Σ^*$ un langage régulier. Pour chaque $a ∈ Σ$, soit $K_a ⊂ Γ^*$ un langage régulier.
-  Montrer que le langage obtenu en remplaçant, dans les mots de $L$, chaque occurrence d'une lettre $a$ par un mot quelconque de $K_a$ est régulier.
+  Soit $L ⊂ Σ^*$ un langage reconnaissable. Pour chaque $a ∈ Σ$, soit $e_a$ une expression régulière sur $Γ$.
+  Pour un mot $m = a_1 … a_n$, on pose
+  $ s(m) = cal(L)(e_(a_1)) … cal(L)(e_(a_n)), quad s(ε) = {ε}. $
+  Montrer que $s(L) = union.big_(m ∈ L) s(m)$ est reconnaissable.
 ]
 #solution[
-  Soit $e$ une expression régulière décrivant $L$. Pour chaque $a ∈ Σ$, choisir une expression $e_a$ décrivant $K_a$.
-  Remplacer chaque lettre $a$ de $e$ par $e_a$.
-  Une induction sur $e$ montre que l'expression obtenue décrit le langage cherché, qui est donc régulier.
+  Prendre un automate $A$ reconnaissant $L$ et remplacer chaque étiquette $a$ par $e_a$.
+  Dans l'automate généralisé $B$ obtenu, un chemin d'étiquette $m$ de $A$ peut lire exactement les mots de $s(m)$.
+  Ainsi $cal(L)(B) = s(L)$.
+  D'après le résultat précédent, $B$ est équivalent à un automate fini classique, donc $s(L)$ est reconnaissable.
 ]
 
 == Élimination d'un état
