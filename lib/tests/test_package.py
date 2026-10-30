@@ -267,6 +267,39 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante, '--input', 'corrige=' + corrige,
                         str(source), str(output)], check=True)
         assert output.stat().st_size > 0
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, theoremes
+#show: cours-et-presentation.with(titre: "Espacement des cadres")
+#let repere(nom) = [#metadata(nom) <espacement-cadre-test>Texte identique.]
+#for (nom, cadre) in (("definition", theoremes.definition), ("exercice", theoremes.exercice), ("methode", theoremes.methode)) {
+  for disposition in ("direct", "colonnes", "coeur") {
+    block(breakable: false)[
+      #cadre(repere(nom + "-" + disposition + "-avant"))
+      #if disposition == "colonnes" {
+        colonnes-cours(columns: 1, cadre(repere(nom + "-" + disposition + "-apres")))
+      } else {
+        cadre(coeur: disposition == "coeur", repere(nom + "-" + disposition + "-apres"))
+      }
+    ]
+  }
+}
+#context {
+  let marques = query(<espacement-cadre-test>)
+  let position(nom) = marques.find(it => it.value == nom).location().position()
+  let ecart(nom, disposition) = {
+    let avant = position(nom + "-" + disposition + "-avant")
+    let apres = position(nom + "-" + disposition + "-apres")
+    assert(avant.page == apres.page)
+    apres.y - avant.y
+  }
+  for nom in ("definition", "exercice", "methode") {
+    for disposition in ("colonnes", "coeur") {
+      assert(calc.abs(ecart(nom, disposition) - ecart(nom, "direct")) < 0.1pt, message: nom + " " + disposition + ": espacement différent")
+    }
+  }
+}
+''', encoding='utf-8')
+    subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                    '--package-path', str(racine / 'packages'), str(source), str(racine / 'espacement-cadres.pdf')], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, est-presentation, solution, theoremes
 #let pauses = sys.inputs.at("pauses") == "true"
 #let options = if pauses { (:) } else { (pause: false) }

@@ -83,8 +83,8 @@
   let titre = box(fill: white, inset: frame.title-inset, text(weight: "semibold", full-title))
   let hauteur = measure(titre).height
   let inset = frame.inset
-  // Réserver la place du titre sans cumuler cet espace avec la marge du bloc précédent.
-  if full-title != "" { v(hauteur / 2, weak: true) }
+  // Le titre fait partie de la hauteur du cadre, y compris dans une cellule de grille.
+  if full-title != "" { v(hauteur / 2) }
   fancy-box(..args, full-title: "", {
     if full-title != "" {
       place(top + left, dx: 1em - inset.x, dy: -inset.top - hauteur / 2, titre)
@@ -147,6 +147,7 @@
       }
       block(
         width: 100%,
+        spacing: if palette == none { 0pt } else { auto },
         breakable: palette == none,
         stroke: (left: epaisseur-trait + couleur),
         fill: if palette == none { none } else { couleur.lighten(94%) },
@@ -169,6 +170,7 @@
     } else if palette == none {
       let rendre = if nom in ("exercise", "problem") { rendre-exercice } else { fancy-box }
       rendre(
+        spacing: 0pt,
         get-symbol: loc => none,
         get-border-color: loc => black,
         get-body-color: loc => white,
@@ -219,13 +221,7 @@
       })
     }
     let espacement = espacement-cadres.get()
-    if espacement != none {
-      v(espacement, weak: true)
-    } else if palette == none and marge {
-      // Garder une marge en tête des fragments produits par Touying en mode article.
-      v(0.5em)
-    }
-    if hp and palette == none {
+    let contenu = if hp and palette == none {
       let note = if coeur { [♡ #text(size: 0.7em)[HP]] } else { text(size: 0.7em)[HP] }
       note-en-marge(box(width: measure(note).width, note), cadre, dy: 0.4em, taille: 1em)
     } else if coeur and palette == none {
@@ -233,7 +229,14 @@
     } else {
       cadre
     }
-    if espacement != none { v(espacement, weak: true) }
+    if palette == none or espacement != none {
+      // Une seule marge extérieure : les marges des blocs voisins fusionnent.
+      // Les réserves des titres restent à l'intérieur, même dans les colonnes ou les notes en marge.
+      let espace = if espacement == none { par.spacing } else { espacement }
+      block(width: 100%, above: if marge { espace } else { 0pt }, below: espace, contenu)
+    } else {
+      contenu
+    }
   }
 }
 
@@ -387,7 +390,7 @@
 /// Installe les rendus et les compteurs des cadres dans le document.
 /// À utiliser comme règle `show`.
 ///
-/// - espacement (length, none): Espacement commun ; `none` conserve celui du rendu.
+/// - espacement (length, none): Espacement commun ; `none` utilise `par.spacing` en A4 et conserve celui du rendu coloré.
 /// - palette (dictionary, none): Couleurs par type anglais ; `none` utilise les cadres A4 monochromes.
 /// - body (content): Document contenant les cadres.
 /// -> content
