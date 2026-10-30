@@ -256,8 +256,7 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 
 #exercice[Substitution régulière][
   Soit $L ⊂ Σ^*$ un langage reconnaissable. Pour chaque $a ∈ Σ$, soit $e_a$ une expression régulière sur $Γ$.
-  Pour un mot $m = a_1 … a_n$, on pose
-  $ s(m) = cal(L)(e_(a_1)) … cal(L)(e_(a_n)), quad s(ε) = {ε}. $
+  On note $s: Σ^* → cal(P)(Γ^*)$ le morphisme pour la concaténation défini par $s(a) = cal(L)(e_a)$ et $s(ε) = {ε}$.
   Montrer que $s(L) = union.big_(m ∈ L) s(m)$ est reconnaissable.
 ]
 #solution[
