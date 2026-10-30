@@ -147,7 +147,9 @@
           align: (left, center, right),
           if niveau != none { niveau },
           text(size: 1.2em, weight: "bold")[
-            #titre-lie([#if titre-entete == none { titre } else { titre-entete }#if duree != none [ (#texte-duree(duree))]])
+            #titre-lie([#if titre-entete == none { titre } else { titre-entete }#if (
+                duree != none
+              ) [ (#texte-duree(duree))]])
           ],
           if attribution != none { attribution } else if auteur != none {
             link("https://mpi-informatique.github.io", auteur)

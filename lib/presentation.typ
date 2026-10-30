@@ -169,7 +169,10 @@
   }
   // Résoudre les solutions et animations avant de les enfermer dans la grille ou le cadre.
   // Garder l'interligne normal, sans l'espacement de paragraphe ajouté par défaut avant une grille.
-  let composer-colonnes(self: none, ..cellules) = context encadrer(block(above: par.leading, grid(columns: columns, column-gutter: column-gutter, align: align, ..cellules)))
+  let composer-colonnes(self: none, ..cellules) = context encadrer(block(
+    above: par.leading,
+    grid(columns: columns, column-gutter: column-gutter, align: align, ..cellules),
+  ))
   if not est-presentation() {
     return touying.touying-fn-wrapper-raw(composer-colonnes, ..contenus)
   }

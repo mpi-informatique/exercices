@@ -47,9 +47,7 @@
   - Si $m in Σ^*$, on définit sa _puissance_ par récurrence : $m^0 = ε$ et $m^k = m m^(k - 1)$ pour $k ≥ 1$.
 ]
 
-#underline[Remarques] :
-- $Σ^*$ muni de la concaténation est un _monoïde_ : la concaténation est associative et $ε$ est élément neutre.
-- $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$.
+#underline[Remarque] : $Σ^*$ muni de la concaténation est un _monoïde_ : la concaténation $⋅$ est associative et $ε$ est élément neutre.\ $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$.
 
 #slide()
 
