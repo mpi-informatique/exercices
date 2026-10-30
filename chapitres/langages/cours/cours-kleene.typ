@@ -268,10 +268,13 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 
 == Élimination d'un état
 
-#algorithme(coeur: true)[
-  Pour supprimer un état $q$ distinct de $q_i$, $q_f$, remplacer simultanément, pour tous les états restants $p, r$ :
-  $ R_(p, r) ← R_(p, r) | R_(p, q) (R_(q, q))^* R_(q, r). $
-  Supprimer ensuite $q$ et ses transitions.
+#lemme[
+  Soit $A = (Ereg(Σ), Q, I, F, T)$ un automate généralisé et $q ∈ Q ∖ (I ∪ F)$.
+  Noter $R_(p, r)$ l'union des étiquettes des transitions de $p$ à $r$, avec $R_(p, r) = ∅$ s'il n'y en a pas.
+
+  Construire $A'$ en supprimant $q$ et en mettant, pour chaque $p, r ∈ Q ∖ {q}$, une transition de $p$ à $r$ d'étiquette
+  $ R'_(p, r) = R_(p, r) | R_(p, q) (R_(q, q))^* R_(q, r). $
+  Avec les mêmes états initiaux et finaux, $cal(L)(A') = cal(L)(A)$.
 ]
 #slide()
 #grid(
@@ -293,8 +296,10 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
     (("p", "r", "h | e f^* g", (:)),),
   ),
 )
-Tout passage par $q$ consiste à entrer dans $q$, parcourir sa boucle un nombre quelconque de fois, puis sortir de $q$.
-Les chemins qui évitent $q$ sont conservés par le premier terme de l'union.
+Dans un chemin acceptant de $A$, contracter chaque portion de $p$ à $r$ dont les états intermédiaires sont une ou plusieurs occurrences de $q$.
+Elle lit un mot de $cal(L)(R_(p, q) (R_(q, q))^* R_(q, r))$. Les transitions qui évitent $q$ sont conservées par $R_(p, r)$.
+On obtient donc un chemin acceptant de $A'$ lisant le même mot.
+Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemin de $A$ lisant le même mot. D'où $cal(L)(A') = cal(L)(A)$.
 
 #slide()
 #algorithme[
