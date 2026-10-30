@@ -52,6 +52,7 @@
       Si $i ≠ j$, le suffixe $b^i$ distingue $a^i$ et $a^j$ : $a^i b^i ∈ K$ tandis que $a^j b^i ∉ K$.
       L'ensemble $D$ est distinguant et infini, donc $K$ n'est pas régulier.
     ],
+    label: <distinguants-anbn>,
   ),
   [
     _Distinguer par des préfixes et des contextes._ Dans les deux questions suivantes, $D ⊂ Σ^*$ est infini.
