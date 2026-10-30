@@ -323,7 +323,7 @@ Chaque élimination conserve le langage. À la fin, l'étiquette restante décri
   ("2", "4", "a", (:)),
   ("3", "4", "b", (:)),
   ("4", "1", "b", (:)),
-  ("4", "4", "b", (:)),
+  ("4", "4", "b", (anchor: right)),
 )
 
 #dessiner-automate(elimination-etats, elimination-arcs)
