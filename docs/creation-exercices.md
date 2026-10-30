@@ -4,7 +4,7 @@ Choix pédagogiques et éditoriaux de la banque. Les commandes sont dans le [gui
 
 ## Organisation et réutilisation
 
-- Vérifier qu'un exercice n'existe pas déjà avant de le créer, y compris dans une brance. Choisir le dépôt et la branche selon le [circuit de relecture](#relecture-et-intégration), y compris pour les créations par IA.
+- Vérifier qu'un exercice n'existe pas déjà avant de le créer, notamment dans `exercices-prive/todo`. Choisir son emplacement selon le [circuit de relecture](#relecture-et-intégration), y compris pour les créations par IA.
 - Ranger les contenus par chapitre : exercices dans `chapitres/<chapitre>/exercices/`, cours et TD de langages dans `cours/` et `td/`, TP dans `tp/<identifiant>/`. Les mathématiques conservent leurs sous-dossiers et leurs feuilles à la racine de `chapitres/maths/`.
 - Ranger les écrits dans `devoirs/concours/` par année, les oraux dans `devoirs/concours/oral/<concours>/`. Nommer un oral `<concours>-oral-<filiere>-<theme>.typ` ; la filière MPI peut être omise. Conserver l'année dans les métadonnées.
 - Garder un exercice simple dans un fichier. S'il possède des ressources, les regrouper dans un dossier `<identifiant>/` avec `<identifiant>.typ`, le code et les tests. Partir du modèle adapté.
@@ -13,13 +13,11 @@ Choix pédagogiques et éditoriaux de la banque. Les commandes sont dans le [gui
 
 ## Relecture et intégration
 
-- Créer les exercices destinés au public dans une branche du dépôt public dès lors que leur version provisoire peut être publique. Le dépôt privé ne sert plus de zone d'attente pour leur relecture. Une branche publique et une pull request en brouillon sont publiques.
-- Réserver le dépôt privé aux contenus confidentiels et aux sujets dont la diffusion doit attendre une date ou une validation, même s'ils seront publics ensuite.
-- Partir de `main` à jour et utiliser une branche par unité de travail cohérente : un exercice indépendant avec son corrigé et ses ressources, ou un lot à relire ensemble, par exemple un TD. Nommer la branche `exo/<identifiant>` ou `td/<identifiant>` et poursuivre sur la même branche pendant la relecture.
-- Pour le choix de l'espace de travail, suivre les [consignes de branche et de worktree](../AGENTS.md).
-- Compiler les variantes concernées et tester le code du corrigé, puis committer et pousser la branche sans forcer. Fournir son nom, les PDF utiles et les points à relire ; si une pull request est créée avant validation, la laisser en brouillon.
-- Garder `main` pour les contenus relus et validés. La compilation ne remplace pas la relecture mathématique et pédagogique. Attendre la validation explicite du professeur avant de fusionner dans `main`.
-- Après fusion dans `main`, supprimer le worktree dédié s'il existe, puis la branche locale et distante. Vérifier auparavant que la fusion est effective et qu'aucune modification non sauvegardée ni session active ne dépend encore du worktree ; ne pas forcer sa suppression.
+- Préparer les nouveaux exercices et les autres contenus pédagogiques en attente de relecture dans `exercices-prive/todo/`, directement sur `main` du dépôt privé. Ne pas créer de branche ni de worktree pour leur relecture, sauf demande explicite du professeur.
+- Regrouper chaque exercice ou lot cohérent dans un dossier avec son corrigé, ses ressources et les éventuelles variantes de TD. Charger les contenus déjà publics avec `public(...)` et les brouillons voisins par des imports relatifs.
+- Compiler les variantes concernées, tester le code du corrigé, puis committer sur `main` du dépôt privé en préservant les autres modifications. Fournir les PDF utiles et les points à relire.
+- Après validation explicite du professeur, transférer le dossier utile dans le chapitre ou le TD approprié du dépôt public, adapter les imports, vérifier les deux dépôts et committer sur `main`. La compilation ne remplace pas la relecture mathématique et pédagogique.
+- Conserver dans le dépôt privé les sujets confidentiels, les copies nominatives, les évaluations et les scans. Leur présence dans `todo/` ne vaut pas autorisation de publication.
 
 ## Imports et ressources
 
