@@ -6,6 +6,7 @@
 #import "@preview/cetz:0.4.2" as cetz
 #import "/chapitres/langages/exercices/cloture-miroir-prefixes-suffixes-facteurs.typ": ex as cloture
 #import "/chapitres/langages/exercices/reconnaissable-ou-non.typ": ex as reconnaissable
+#import "/chapitres/langages/exercices/reciproque-lemme-etoile.typ": ex as reciproque-etoile
 #import "/chapitres/langages/exercices/algorithmes-automates.typ": ex as algorithmes
 #import "/chapitres/langages/exercices/longueur-discriminante-automates.typ": ex as taille
 #import "/chapitres/langages/exercices/residuels-minimisation.typ": ex as myhill-nerode, introduction, ensembles-distinguants
@@ -73,6 +74,6 @@
   titre: "TD : Automates",
   niveau: "MPI",
   auteur: "Q. Fortier",
-  exercices: (determinisation, cloture, reconnaissable, algorithmes, taille, distinguant, palindromes),
+  exercices: (determinisation, cloture, reconnaissable, reciproque-etoile, algorithmes, taille, distinguant, palindromes),
   corrige: est-corrige(),
 )
