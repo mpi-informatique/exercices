@@ -5,19 +5,21 @@ Choix pédagogiques et éditoriaux de la banque. Les commandes sont dans le [gui
 ## Organisation et réutilisation
 
 - Vérifier qu'un exercice n'existe pas déjà avant de le créer, notamment dans `exercices-prive/todo`. Choisir son emplacement selon le [circuit de relecture](#relecture-et-intégration), y compris pour les créations par IA.
-- Ranger les contenus par chapitre : exercices dans `chapitres/<chapitre>/exercices/`, cours et TD de langages dans `cours/` et `td/`, TP dans `tp/<identifiant>/`. Les mathématiques conservent leurs sous-dossiers et leurs feuilles à la racine de `chapitres/maths/`.
+- Après validation, ranger les contenus publics par chapitre : exercices dans `chapitres/<chapitre>/exercices/`, cours et TD de langages dans `cours/` et `td/`, TP dans `tp/<identifiant>/`. Les mathématiques conservent leurs sous-dossiers et leurs feuilles à la racine de `chapitres/maths/`.
 - Ranger les écrits dans `devoirs/concours/` par année, les oraux dans `devoirs/concours/oral/<concours>/`. Nommer un oral `<concours>-oral-<filiere>-<theme>.typ` ; la filière MPI peut être omise. Conserver l'année dans les métadonnées.
 - Garder un exercice simple dans un fichier. S'il possède des ressources, les regrouper dans un dossier `<identifiant>/` avec `<identifiant>.typ`, le code et les tests. Partir du modèle adapté.
 - Réutiliser les fichiers par import direct, sans relais ni copie. Exporter une variable pour une partie réutilisable, plutôt que la chercher par numéro. Conserver les introductions dans `contenu` ; reprendre explicitement les rappels de `contexte` dans un extrait autonome.
-- Garder les colles, copies nominatives, évaluations et scans dans le dépôt privé. Les contenus publics s'y chargent avec `public`.
 
 ## Relecture et intégration
 
 - Préparer les nouveaux exercices et les autres contenus pédagogiques en attente de relecture dans `exercices-prive/todo/`, directement sur `main` du dépôt privé. Ne pas créer de branche ni de worktree pour leur relecture, sauf demande explicite du professeur.
-- Regrouper chaque exercice ou lot cohérent dans un dossier avec son corrigé, ses ressources et les éventuelles variantes de TD. Charger les contenus déjà publics avec `public(...)` et les brouillons voisins par des imports relatifs.
-- Compiler les variantes concernées, tester le code du corrigé, puis committer sur `main` du dépôt privé en préservant les autres modifications. Fournir les PDF utiles et les points à relire.
-- Après validation explicite du professeur, transférer le dossier utile dans le chapitre ou le TD approprié du dépôt public, adapter les imports, vérifier les deux dépôts et committer sur `main`. La compilation ne remplace pas la relecture mathématique et pédagogique.
-- Conserver dans le dépôt privé les sujets confidentiels, les copies nominatives, les évaluations et les scans. Leur présence dans `todo/` ne vaut pas autorisation de publication.
+- Garder ensemble les fichiers d'un exercice ou d'un lot à relire, avec les éventuelles variantes de TD. Appliquer les règles d'organisation ci-dessus et les [règles d'import et de transfert](#imports-et-ressources).
+- Appliquer les [consignes communes de vérification et de livraison](../AGENTS.md#vérification-et-livraison) et signaler les points à relire.
+- Après validation explicite du professeur, transférer le contenu dans le chapitre ou le TD approprié du dépôt public. La compilation ne remplace pas la relecture mathématique et pédagogique.
+
+## Confidentialité
+
+Conserver dans le dépôt privé les identités, colles, copies nominatives, évaluations, scans et sujets dont la diffusion n'est pas autorisée. Leur présence dans `todo/` ne vaut pas autorisation de publication.
 
 ## Imports et ressources
 
@@ -31,6 +33,8 @@ Importer l'API commune par `/load.typ` dans les deux dépôts :
 ```
 
 Lire les ressources voisines par chemin relatif. Pour afficher du code testé, utiliser `code-extrait(read("corrige.ml"), "fonction")` ; un tuple de noms extrait plusieurs déclarations. Le C demande `language: "c"`.
+
+Dans le dépôt privé, charger les contenus déjà publics avec `public(...)` et les brouillons voisins par des imports relatifs.
 
 Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le dossier complet, adapter les imports de contenus et compiler les documents concernés dans les deux dépôts. L'import `/load.typ` reste identique.
 
@@ -56,7 +60,7 @@ Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le doss
 ## Code et Typst
 
 - Préserver les retours structurels des paragraphes, listes, formules et du code. Mettre une espace après les séparateurs d'éléments sur une même ligne.
-- Formater le Typst avec Typstyle via Tinymist, sans largeur de ligne imposée. Préférer la syntaxe native pour le contenu fixe et écrire les blocs à leur emplacement d'utilisation, sauf réutilisation.
+- Formater le Typst avec Typstyle via Tinymist en respectant les [consignes communes sur les retours à la ligne](../AGENTS.md). Préférer la syntaxe native pour le contenu fixe et écrire les blocs à leur emplacement d'utilisation, sauf réutilisation.
 - Utiliser `question(...)` pour les questions. Pour un titre déjà numéroté, désactiver sa numérotation automatique. Dans les cours, choisir les cadres numérotés de `theoremes` et marquer les résultats à connaître avec `coeur: true`.
 - Employer des noms courts et commenter les choix ou invariants non évidents. Tester le code du corrigé avec quelques cas ciblés, une dizaine au besoin. Utiliser C, OCaml, Python, SQL ou du pseudocode, dans le périmètre précisé par le programme.
 - En OCaml, indenter de deux espaces ; ouvrir les enregistrements et tableaux sur la ligne de déclaration, puis garder un champ ou élément par ligne s'ils sont multilignes. Garder les types variants et signatures courts sur une ligne ; couper avant `->` si leur structure le justifie.
@@ -69,7 +73,7 @@ Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le doss
 | Mot | « taille », y compris pour les préfixes, suffixes et facteurs. Noter `m` un mot considéré seul ; conserver `u`, `v`, etc. pour plusieurs mots ou facteurs en jeu, et éviter les collisions avec une autre quantité déjà notée `m`. |
 | Langage | `cal(L)(A)` pour l'automate, `cal(L)(e)` pour l'expression ; « régulier », « non-contextuel », union d'expressions par `\|`. |
 | Composition | `∘`, sans juxtaposition. |
-| Formules | Espaces autour des opérateurs et après les virgules, aussi dans les indices et légendes ; préserver exposants et indices. Écrire `RR_n [X]`. |
+| Formules | Espaces autour des opérateurs et après les virgules, aussi dans les indices et légendes ; préserver exposants et indices. Parenthéser les indices et séparer par une espace la parenthèse qui introduit l'argument d'une fonction : `δ_(B) (·, σ)`. Écrire `RR_n [X]`. |
 | Conditions successives | `#sep` après la virgule ; espacement ordinaire dans les arguments, tuples, ensembles et indices. |
 | Flèches | `⟶`, `⟼`, `==>` pour l'implication, `⟺` pour l'équivalence ; préserver la syntaxe des langages de programmation. |
 | Symboles | Unicode (`Σ`, `ε`, `∀`, `∃`…) ; `union.big` et `inter.big` pour les opérations indexées, `∪` et `∩` pour les opérations binaires. |
