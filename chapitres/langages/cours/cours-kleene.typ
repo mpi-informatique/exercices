@@ -243,6 +243,14 @@ La construction de Thompson est une alternative récursive à l'algorithme de Be
 Cet automate reconnaît $cal(L)(a^* (b | ε))$.
 Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$, mais aussi $ε$ en lisant $ε$ sur chacune des deux transitions.
 
+#slide()
+#exercice[Montrer que tout automate généralisé ayant un nombre fini de transitions est équivalent à un automate fini classique.]
+
+#exercice[Substitution régulière][
+  Soit $L ⊂ Σ^*$ un langage régulier. Pour chaque $a ∈ Σ$, soit $K_a ⊂ Γ^*$ un langage régulier.
+  Montrer que le langage obtenu en remplaçant, dans les mots de $L$, chaque occurrence d'une lettre $a$ par un mot quelconque de $K_a$ est régulier.
+]
+
 == Élimination d'un état
 
 #algorithme(coeur: true)[
