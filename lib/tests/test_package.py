@@ -421,4 +421,36 @@ Contenu du document.
         subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                         '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
                         str(source), str(racine / ('notes-' + variante + '.pdf'))], check=True)
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, pause, theoremes
+#show: cours-et-presentation.with(titre: "Cadres hors programme", animations: false)
+#let relever(it) = context {
+  [#metadata((repere: it.text, taille: text.size)) <repere-cadre-hp-test>]
+  it
+}
+#show text.where(text: "HP"): relever
+#show text.where(text: "♡"): relever
+== Théorème
+#theoremes.theoreme(hp: true)[Un résultat hors programme. #pause Une précision.]
+== Définition
+#theoremes.definition-sans-numero(hp: true, coeur: true)[Une notion à connaître.]
+== Méthode
+#theoremes.methode(hp: true)[Une démarche hors programme.]
+#context {
+  let reperes = query(<repere-cadre-hp-test>)
+  let hp = reperes.filter(it => it.value.repere == "HP")
+  let coeurs = reperes.filter(it => it.value.repere == "♡")
+  assert(hp.len() == 3)
+  assert(coeurs.len() == 1)
+  if sys.inputs.at("format") == "cours" {
+    assert(hp.all(it => it.value.taille == 7pt))
+    let position-hp = hp.at(1).location().position()
+    let position-coeur = coeurs.first().location().position()
+    assert(position-hp.x > position-coeur.x)
+  }
+}
+''', encoding='utf-8')
+    for variante in ('cours', 'presentation'):
+        subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                        '--package-path', str(racine / 'packages'), '--input', 'format=' + variante,
+                        str(source), str(racine / ('cadres-hp-' + variante + '.pdf'))], check=True)
 print('Package local : imports, ressources, énoncé, corrigé, cours, présentation et notes en marge vérifiés.')

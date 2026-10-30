@@ -5,8 +5,9 @@
 ///
 /// Chaque famille expose `compteur-<nom>`, `<nom>`, `<nom>-sans-numero` et
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
-/// Les appels acceptent un contenu et les options communes `title`, `coeur` et
+/// Les appels acceptent un contenu et les options communes `title`, `coeur`, `hp` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
+/// `hp: true` signale un contenu hors programme dans la marge A4 ou dans le titre en présentation.
 /// En présentation, une pause suit chaque cadre si du contenu reste sur la diapositive ; `pause: false` la désactive.
 /// Les références `@etiquette` affichent le type et le titre s'il existe, sinon
 /// le numéro, y compris pendant les animations. `reference-cadre` permet de choisir
@@ -21,7 +22,7 @@
   set-quaternary-border-color, set-secondary-body-color, set-secondary-border-color, set-tertiary-body-color,
   set-tertiary-border-color,
 )
-#import "blocs.typ": epaisseur-trait, coeur-en-marge
+#import "blocs.typ": epaisseur-trait, coeur-en-marge, marge as note-en-marge
 #import "options.typ": est-presentation
 
 #let espacement-cadres = state("exercices-espacement-cadres", none)
@@ -103,6 +104,7 @@
 /// - title (content, str): Titre court.
 /// - full-title (content, str, auto): Titre complet ou composition automatique.
 /// - coeur (bool): Signaler un résultat à connaître.
+/// - hp (bool): Signaler un contenu hors programme.
 /// - marge (bool): Ajouter la marge supérieure du cadre A4.
 /// - ..args (arguments): Options transmises à Theorion.
 /// -> content
@@ -114,6 +116,7 @@
   title: "",
   full-title: auto,
   coeur: false,
+  hp: false,
   marge: true,
   ..args,
 ) = {
@@ -135,6 +138,9 @@
   }
   context {
     let palette = style-cadres.get()
+    let titre-annote = if palette == none or full-title == "" { full-title } else {
+      [#full-title#if coeur { h(0.4em); [♡] }#if hp { h(0.4em); text(size: 0.7em)[HP] }]
+    }
     let cadre = if nom == "method" {
       let couleur = if palette == none { black } else {
         palette.at("method", default: palette.at("theorem", default: rgb("#233e6a")))
@@ -154,7 +160,8 @@
           inset: (left: 0.8em, right: 0.5em, y: 0.4em),
           {
             set text(style: "normal", weight: "regular")
-            full-title
+            titre-annote
+            h(0.3em)
             body
           },
         ),
@@ -196,10 +203,7 @@
               size: 1em,
               weight: "bold",
               fill: white,
-              [#full-title#if coeur {
-                  h(0.4em)
-                  [♡]
-                }],
+              titre-annote,
             ),
           )
         }
@@ -221,7 +225,10 @@
       // Garder une marge en tête des fragments produits par Touying en mode article.
       v(0.5em)
     }
-    if coeur and palette == none {
+    if hp and palette == none {
+      let note = if coeur { [♡ #text(size: 0.7em)[HP]] } else { text(size: 0.7em)[HP] }
+      note-en-marge(box(width: measure(note).width, note), cadre, dy: 0.4em, taille: 1em)
+    } else if coeur and palette == none {
       coeur-en-marge(cadre, dy: 0.4em)
     } else {
       cadre
@@ -316,11 +323,12 @@
 ///
 /// - title (content, str): Titre facultatif après « Méthode ».
 /// - coeur (bool): Signaler une méthode à connaître.
+/// - hp (bool): Signaler une méthode hors programme.
 /// - marge (bool): Ajouter la marge supérieure du bloc A4.
 /// - pause (bool): Ajouter une pause après la méthode en présentation.
 /// - body (content): Démarche, éventuellement sous forme d'étapes numérotées.
 /// -> content
-#let methode(title: "", coeur: false, marge: true, pause: true, body) = {
+#let methode(title: "", coeur: false, hp: false, marge: true, pause: true, body) = {
   // Le filtre de Touying ne descend pas dans les arguments des fonctions différées.
   body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
     if (marque.kind == "touying-slides-only") == est-presentation() { marque.body } else { [] }
@@ -330,6 +338,7 @@
     body,
     full-title: [#underline[Méthode] :#if title != "" and title != [] { [ #title] }],
     coeur: coeur,
+    hp: hp,
     marge: marge,
     pause: pause,
   )
