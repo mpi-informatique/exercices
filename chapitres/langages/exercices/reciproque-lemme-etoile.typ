@@ -1,4 +1,4 @@
-#import "/load.typ": automate.Lreg, exercice, question, sep
+#import "/load.typ": automate.Lreg, exercice, lien, question, sep
 
 #let ex = exercice(
   meta: (
@@ -38,6 +38,8 @@
         #context if query(<distinguants-anbn>).len() > 0 {
           [Voir aussi #ref(<distinguants-anbn>, supplement: [la question]) de l'exercice sur les ensembles distinguants.]
         }
+
+        #underline[Remarque] : On peut aussi dire que ${b^n c^n | n ∈ NN} = a^(-1) L_1$ serait régulier si $L_1$ l'était, en utilisant #lien("residuels-minimisation")[l'exercice sur les résiduels].
       ],
     ),
   ),
