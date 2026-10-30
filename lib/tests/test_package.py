@@ -103,6 +103,22 @@ Voir @question-mobile avant son énoncé.
 #theoremes.definition[Une deuxième définition.]
 #theoremes.theoreme[Un deuxième théorème.] <theoreme-suivant>
 Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
+== Renvois
+#theoremes.algorithme(title: [Berry-Sethi])[Un algorithme.] <algorithme-reference>
+#theoremes.lemme-sans-numero(title: [Sans numéro])[Un lemme.] <lemme-reference>
+#[
+  #show text: it => [#metadata(it.text) <texte-reference-test>#it]
+  @algorithme-reference;
+  #theoremes.reference-cadre(<algorithme-reference>, numero: true, titre: false)#text(";")
+  #theoremes.reference-cadre(<algorithme-reference>, numero: true)#text(";")
+  #theoremes.reference-cadre(<algorithme-reference>, supplement: none)#text(";")
+  @lemme-reference;
+  @theoreme-suivant.
+]
+#context {
+  let rendu = query(<texte-reference-test>).map(it => it.value).join("")
+  assert(rendu.replace(regex("\\s+"), "") == "AlgorithmeBerry-Sethi;Algorithme2;Algorithme2(Berry-Sethi);Berry-Sethi;LemmeSansnuméro;Théorème2.", message: rendu)
+}
 #context {
   for cible in (<definition-commune>, <theoreme-commun>, <theoreme-suivant>) {
     assert(query(cible).len() == 1 and query(cible).first().func() == figure)

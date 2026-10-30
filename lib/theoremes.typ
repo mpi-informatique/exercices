@@ -8,8 +8,9 @@
 /// Les appels acceptent un contenu et les options communes `title`, `coeur` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
 /// En présentation, une pause suit chaque cadre si du contenu reste sur la diapositive ; `pause: false` la désactive.
-/// Les références `@etiquette` suivent le type et le numéro, y compris pendant
-/// les animations. Dans `algorithme`, les listes imbriquées décrivent le pseudocode.
+/// Les références `@etiquette` affichent le type et le titre s'il existe, sinon
+/// le numéro, y compris pendant les animations. `reference-cadre` permet de choisir
+/// le numéro et/ou le titre. Dans `algorithme`, les listes imbriquées décrivent le pseudocode.
 
 #import "@preview/lovelace:0.3.1": pseudocode-list
 #import "@preview/theorion:0.6.0" as theorion
@@ -255,6 +256,58 @@
   [#prefix#if avec-titre { [ : #title] }]
 }
 
+/// Rend un renvoi à un cadre en conservant les références natives aux autres éléments.
+/// Les raccourcis Theorion `@etiquette[-]` et `@etiquette[!!]` restent disponibles.
+///
+/// - it (content): Référence native.
+/// - numero (bool, auto): Afficher le numéro ; `auto` l'affiche seulement sans titre.
+/// - titre (bool): Afficher le titre lorsqu'il existe.
+/// -> content
+#let rendre-reference-cadre(it, numero: auto, titre: true) = {
+  let el = it.element
+  let familles = ("theorem", "lemma", "corollary", "axiom", "postulate", "definition", "proposition", "assumption", "property", "conjecture", "remark", "note", "example", "exercise", "problem", "algorithm")
+  if el == none or el.func() != figure or el.kind not in familles or it.supplement in ([-], [!!]) {
+    return it
+  }
+  let titre-court = if el.caption == none { [] } else { el.caption.body }
+  let avec-titre = titre and titre-court not in ("", [], [#""])
+  let avec-numero = el.numbering != none and if numero == auto { not avec-titre } else { numero }
+  let supplement = if it.supplement == auto { el.supplement } else { it.supplement }
+  link(el.location(), {
+    if supplement != none { supplement }
+    if avec-numero {
+      if supplement != none { [ ] }
+      // Le compteur est incrémenté avant la métadonnée interne du cadre.
+      let lieu = query(selector(<theorion-frame-metadata>).after(el.location())).first().location()
+      let valeur = (el.numbering)(get-loc: () => lieu)
+      if type(valeur) == dictionary { valeur.value } else { numbering(valeur) }
+    }
+    if avec-titre {
+      if avec-numero {
+        [ (#titre-court)]
+      } else {
+        if supplement != none { [ ] }
+        titre-court
+      }
+    }
+  })
+}
+
+/// Renvoie à un cadre en choisissant le numéro et/ou le titre.
+/// Par défaut, affiche le type et le titre, ou le numéro si le titre est absent.
+/// Exemples : `reference-cadre(<algo>, numero: true, titre: false)` pour le numéro,
+/// `reference-cadre(<algo>, numero: true)` pour le numéro et le titre.
+///
+/// - cible (label): Étiquette du cadre.
+/// - numero (bool, auto): Afficher le numéro ; `auto` l'affiche seulement sans titre.
+/// - titre (bool): Afficher le titre lorsqu'il existe.
+/// - supplement (content, auto, none): Type du cadre ; `none` le masque.
+/// -> content
+#let reference-cadre(cible, numero: auto, titre: true, supplement: auto) = {
+  show ref: it => rendre-reference-cadre(it, numero: numero, titre: titre)
+  ref(cible, supplement: supplement)
+}
+
 /// Met en valeur une méthode sans numéro, avec une double barre latérale.
 /// Seul « Méthode : » est souligné ; le titre facultatif reste en caractères ordinaires.
 /// Le texte est droit et les listes conservent leur numérotation habituelle.
@@ -362,5 +415,6 @@
   show: afficher-exercice
   show: afficher-probleme
   show: afficher-algorithme
+  show ref: rendre-reference-cadre
   body
 }
