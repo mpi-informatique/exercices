@@ -3,6 +3,7 @@
 Ces consignes s'appliquent à `exercices` et `exercices-prive`. Le `AGENTS.md` du dépôt privé les complète pour la correction des copies. Les liens ci-dessous sont relatifs au dépôt public.
 
 - Pour concevoir ou reformuler un sujet, suivre les [consignes de création](docs/creation-exercices.md). Pour les outils du dépôt public, consulter le [guide utilisateur](docs/utilisation.md).
+- Avant de créer un exercice, consulter les cours existants du thème concerné, par exemple les [cours de langages](chapitres/langages/cours/) pour un exercice sur les langages. S'en inspirer lorsque c'est pertinent pour les notions, les méthodes, les exemples et la progression de l'exercice.
 - Garder les Markdown concis : une information à un seul endroit, avec des liens depuis les autres guides. Documenter les fonctions dans les commentaires `///` de `lib/` plutôt que recopier leur fonctionnement dans les consignes. La référence de l'API publique [docs/api.typ](docs/api.typ) exploite ces commentaires.
 - S'inspirer du style d'écriture du professeur pour rédiger ou reformuler un contenu. Lire des passages comparables dans les cours et corrigés existants, puis en reprendre les formulations, les notations, la concision et le niveau de détail, notamment pour les solutions.
 - Poser les questions nécessaires en cas d'ambiguïté. Expliquer brièvement les choix importants et les changements de contenu ou de présentation.
