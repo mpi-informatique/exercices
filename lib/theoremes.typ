@@ -281,6 +281,7 @@
 }
 
 /// Rend un renvoi à un cadre en conservant les références natives aux autres éléments.
+/// `@etiquette[!]` affiche le type et le numéro, sans le titre.
 /// Les raccourcis Theorion `@etiquette[-]` et `@etiquette[!!]` restent disponibles.
 ///
 /// - it (content): Référence native.
@@ -293,10 +294,11 @@
   if el == none or el.func() != figure or el.kind not in familles or it.supplement in ([-], [!!]) {
     return it
   }
+  let sans-titre = it.supplement == [!]
   let titre-court = if el.caption == none { [] } else { el.caption.body }
-  let avec-titre = titre and titre-court not in ("", [], [#""])
-  let avec-numero = el.numbering != none and if numero == auto { not avec-titre } else { numero }
-  let supplement = if it.supplement == auto { el.supplement } else { it.supplement }
+  let avec-titre = titre and not sans-titre and titre-court not in ("", [], [#""])
+  let avec-numero = el.numbering != none and if sans-titre { true } else if numero == auto { not avec-titre } else { numero }
+  let supplement = if sans-titre or it.supplement == auto { el.supplement } else { it.supplement }
   link(el.location(), {
     if supplement != none { supplement }
     if avec-numero {

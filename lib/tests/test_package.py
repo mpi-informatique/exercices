@@ -106,9 +106,13 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 == Renvois
 #theoremes.algorithme(title: [Berry-Sethi])[Un algorithme.] <algorithme-reference>
 #theoremes.lemme-sans-numero(title: [Sans numéro])[Un lemme.] <lemme-reference>
+#theoremes.probleme[Appartenance à un langage][Un problème.] <probleme-reference>
 #[
   #show text: it => [#metadata(it.text) <texte-reference-test>#it]
   @algorithme-reference;
+  @algorithme-reference[!];
+  @probleme-reference[!];
+  @lemme-reference[!];
   #theoremes.reference-cadre(<algorithme-reference>, numero: true, titre: false)#text(";")
   #theoremes.reference-cadre(<algorithme-reference>, numero: true)#text(";")
   #theoremes.reference-cadre(<algorithme-reference>, supplement: none)#text(";")
@@ -117,7 +121,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 ]
 #context {
   let rendu = query(<texte-reference-test>).map(it => it.value).join("")
-  assert(rendu.replace(regex("\\s+"), "") == "Algorithme:Berry-Sethi;Algorithme2;Algorithme2(Berry-Sethi);Berry-Sethi;Lemme:Sansnuméro;Théorème2.", message: rendu)
+  assert(rendu.replace(regex("\\s+"), "") == "Algorithme:Berry-Sethi;Algorithme2;Problème1;Lemme;Algorithme2;Algorithme2(Berry-Sethi);Berry-Sethi;Lemme:Sansnuméro;Théorème2.", message: rendu)
 }
 #context {
   for cible in (<definition-commune>, <theoreme-commun>, <theoreme-suivant>) {
