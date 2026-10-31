@@ -422,6 +422,21 @@ Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemi
   2. Il y a $O(n)$ éliminations, chacune mettant à jour $O(n^2)$ transitions. Chaque mise à jour prend un temps constant et crée un nombre constant de nœuds.
     Le temps et le nombre total de nœuds créés sont donc $O(n^3)$. La matrice occupe $O(n^2)$ cases, d'où un espace total $O(n^3)$.
   3. Prendre les états $s, t, q_1, …, q_k$, avec $s$ initial et $t$ final, et une transition étiquetée $a$ de chaque état de ${s, q_1, …, q_k}$ vers chaque état de ${q_1, …, q_k, t}$.
+    Pour $k = 2$ :
+    #dessiner-automate(
+      (("s", (0, 0), true, false), ("q_1", (3, 1.5), false, false), ("q_2", (3, -1.5), false, false), ("t", (6, 0), false, true)),
+      (
+        ("s", "q_1", "a", (:)),
+        ("s", "q_2", "a", (:)),
+        ("s", "t", "a", (curve: 4.2)),
+        ("q_1", "q_1", "a", (anchor: top)),
+        ("q_1", "q_2", "a", (curve: 0.4)),
+        ("q_2", "q_1", "a", (curve: 0.4)),
+        ("q_2", "q_2", "a", (anchor: bottom)),
+        ("q_1", "t", "a", (:)),
+        ("q_2", "t", "a", (:)),
+      ),
+    )
     Après $j$ éliminations, les transitions entre états restants, hors celles entrant en $s$ ou sortant de $t$, portent la même expression $E_j$, où
     $ E_0 = a, quad E_(j + 1) = E_j | E_j (E_j)^* E_j. $
     Le nombre d'occurrences de $a$ est multiplié par $4$ à chaque étape. L'expression finale en contient donc $4^k$, pour un automate à $k + 2$ états.
