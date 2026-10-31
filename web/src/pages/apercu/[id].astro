@@ -2,12 +2,14 @@
 import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
 import DocumentPreview, { type PublishedResource } from '../../components/DocumentPreview';
 import resources from '../../generated/catalogue.json';
+import { exerciseUrl } from '../../lib/urls';
+import { resourceDescription } from '../../lib/seo';
 
 export function getStaticPaths() {
   return (resources as PublishedResource[]).filter(resource => Object.keys(resource.pdfs).length > 0).map(resource => ({ params: { id: resource.id }, props: { resource } }));
 }
 const { resource } = Astro.props;
 ---
-<WorkbenchLayout title={`${resource.titre} · Aperçu PDF`}>
+<WorkbenchLayout title={`${resource.titre} · Aperçu PDF`} description={resourceDescription(resource)} canonicalPath={exerciseUrl(resource.id)} noindex>
   <DocumentPreview resource={resource} client:only="react" />
 </WorkbenchLayout>

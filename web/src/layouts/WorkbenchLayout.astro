@@ -1,17 +1,35 @@
 ---
 import '../styles/global.css';
-interface Props { title?: string }
-const { title = 'Banque d’exercices · Exercices MPI' } = Astro.props;
+import { bankTitle, bankDescription } from '../lib/seo';
+interface Props { title?: string; description?: string; canonicalPath?: string; noindex?: boolean; structuredData?: Record<string, unknown> }
+const { title = bankTitle, description = bankDescription, canonicalPath = Astro.url.pathname, noindex = false, structuredData } = Astro.props;
+const canonical = new URL(canonicalPath, Astro.site);
+const image = new URL(`${import.meta.env.BASE_URL}favicon.png`, Astro.site);
+const sitemap = new URL(`${import.meta.env.BASE_URL}sitemap-index.xml`, Astro.site);
 ---
 <!doctype html>
 <html lang="fr" data-theme="exercices">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Rechercher, éditer et compiler les exercices et devoirs Typst de la banque publique MPI : énoncés, corrigés et PDF." />
+    <meta name="description" content={description} />
+    <meta name="author" content="Quentin Fortier" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="canonical" href={canonical.href} />
+    <link rel="sitemap" type="application/xml" href={sitemap.href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Exercices MPI" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={image.href} />
+    <meta property="og:image:alt" content="Exercices MPI" />
+    <meta name="twitter:card" content="summary" />
     <link rel="icon" type="image/png" sizes="1254x1254" href={`${import.meta.env.BASE_URL}favicon.png`} />
     <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}favicon.png`} />
     <title>{title}</title>
+    {structuredData && <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', ...structuredData }).replaceAll('<', '\\u003c')} />}
     <script is:inline>
       try {
         const theme = localStorage.getItem('exercices:theme');

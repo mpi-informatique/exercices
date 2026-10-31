@@ -41,6 +41,12 @@ BASE_PATH=/exercices SITE_URL=https://mpi-informatique.github.io nix develop ..#
 
 Sur un autre hébergement, servir les `index.html` des répertoires et les WASM avec `application/wasm`, en activant la compression HTTP. Conserver le même `BASE_PATH` à la construction et à la prévisualisation.
 
+## Référencement
+
+La construction génère automatiquement `dist/sitemap-index.xml` et `dist/sitemap-0.xml` à partir des routes publiques du catalogue. Le sitemap principal du domaine référence `https://mpi-informatique.github.io/exercices/sitemap-0.xml`. Les aperçus intégrables, la page de contribution et la page 404 sont exclus de l’indexation.
+
+Les pages fournissent leur adresse canonique, une description, des métadonnées de partage et des données structurées. Le catalogue et les fiches des ressources sont présents dans le HTML initial, avec leurs liens vers les sources et les PDF publiés, puis remplacés par l’éditeur interactif après son chargement. Les variantes `?vue=…` partagent l’adresse canonique de la ressource.
+
 ## Lecteur intégrable
 
 `/apercu/<id>/` affiche les PDF publiés sans charger le compilateur ni l'éditeur. Exemple : `https://mpi-informatique.github.io/exercices/apercu/cours-langages/`. La présentation est sélectionnée si disponible ; `vue=enonce`, `vue=corrige` ou `vue=presentation` choisit la variante. `cor=0` masque l'onglet corrigé sans protéger la ressource publique. Une iframe doit autoriser `allow="fullscreen"`.

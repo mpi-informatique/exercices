@@ -1,6 +1,9 @@
 ---
 import WorkbenchLayout from '../layouts/WorkbenchLayout.astro';
 import Workbench from '../components/Workbench';
+import ResourceSummary from '../components/ResourceSummary.astro';
+import { resourceDescription } from '../lib/seo';
+import { exerciseUrl } from '../lib/urls';
 import resources from '../generated/catalogue.json';
 import type { Resource } from '@mpi-informatique/exercices-core';
 
@@ -8,7 +11,20 @@ export function getStaticPaths() {
   return resources.map(resource => ({ params: { id: resource.id }, props: { resource } }));
 }
 const { resource } = Astro.props;
+const description = resourceDescription(resource as Resource);
+const structuredData = {
+  '@type': 'LearningResource',
+  name: resource.titre,
+  description,
+  url: new URL(exerciseUrl(resource.id), Astro.site).href,
+  inLanguage: 'fr',
+  educationalLevel: resource.niveaux,
+  learningResourceType: resource.type,
+  keywords: [...resource.chapitres, ...resource.langages].join(', '),
+};
 ---
-<WorkbenchLayout title={`${resource.titre} · Exercices MPI`}>
-  <Workbench resources={resources as Resource[]} initialId={resource.id} client:only="react" />
+<WorkbenchLayout title={`${resource.titre} · Exercices MPI`} description={description} structuredData={structuredData}>
+  <Workbench resources={resources as Resource[]} initialId={resource.id} client:only="react">
+    <ResourceSummary slot="fallback" resources={resources as Resource[]} resource={resource as Resource} />
+  </Workbench>
 </WorkbenchLayout>

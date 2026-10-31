@@ -1,0 +1,28 @@
+---
+import { type Resource, type Variant, variantLabels } from '@mpi-informatique/exercices-core';
+import { bankTitle, bankDescription, resourceDescription } from '../lib/seo';
+import { exerciseUrl, assetUrl } from '../lib/urls';
+import { githubFileUrl } from '../lib/github';
+
+interface PublishedResource extends Resource { pdfs?: Partial<Record<Variant, string>> }
+interface Props { resources: PublishedResource[]; resource?: PublishedResource }
+const { resources, resource } = Astro.props;
+---
+<main id="main" class="mx-auto max-w-4xl space-y-5 p-8">
+  <h1 class="text-2xl font-semibold">{resource?.titre ?? bankTitle}</h1>
+  <p>{resource ? resourceDescription(resource) : bankDescription}</p>
+  <p>L’éditeur interactif se charge avec JavaScript. Les sources et les PDF publiés restent accessibles ci-dessous.</p>
+  {resource && <>
+    <p><a href={githubFileUrl(resource.fichier)}>Consulter la source Typst sur GitHub</a></p>
+    <ul>
+      {Object.entries(resource.pdfs ?? {}).map(([variant, path]) => <li><a href={assetUrl(path)}>PDF — {variantLabels(resource.type)[variant as Variant]}</a></li>)}
+    </ul>
+    <p><a href={import.meta.env.BASE_URL}>Toute la banque d’exercices</a></p>
+  </>}
+  <nav aria-label="Catalogue des ressources">
+    <h2 class="text-xl font-semibold">Exercices, cours et devoirs</h2>
+    <ul class="list-disc space-y-2 pl-5">
+      {resources.map(item => <li><a href={exerciseUrl(item.id)}>{item.titre}</a>{item.niveaux.length > 0 && ` — ${item.niveaux.join(', ')}`}</li>)}
+    </ul>
+  </nav>
+</main>

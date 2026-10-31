@@ -1,9 +1,25 @@
 ---
 import WorkbenchLayout from '../layouts/WorkbenchLayout.astro';
 import Workbench from '../components/Workbench';
+import ResourceSummary from '../components/ResourceSummary.astro';
+import { bankTitle, bankDescription } from '../lib/seo';
+import { exerciseUrl } from '../lib/urls';
 import resources from '../generated/catalogue.json';
 import type { Resource } from '@mpi-informatique/exercices-core';
+const structuredData = {
+  '@type': 'CollectionPage',
+  name: bankTitle,
+  description: bankDescription,
+  url: new URL(import.meta.env.BASE_URL, Astro.site).href,
+  inLanguage: 'fr',
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: resources.map((resource, index) => ({ '@type': 'ListItem', position: index + 1, name: resource.titre, url: new URL(exerciseUrl(resource.id), Astro.site).href })),
+  },
+};
 ---
-<WorkbenchLayout>
-  <Workbench resources={resources as Resource[]} client:only="react" />
+<WorkbenchLayout structuredData={structuredData}>
+  <Workbench resources={resources as Resource[]} client:only="react">
+    <ResourceSummary slot="fallback" resources={resources as Resource[]} />
+  </Workbench>
 </WorkbenchLayout>
