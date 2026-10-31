@@ -36,7 +36,7 @@
         Supprimer $y$ enlève soit l'unique $a$, soit uniquement des $b$, sans toucher aux $c$. Dans les deux cas, $x z ∉ L_1$, contradiction.
         Ainsi $L$ n'est pas régulier, bien qu'il vérifie la conclusion du lemme de l'étoile.
 
-        #underline[Remarque] : On peut aussi dire que ${b^n c^n | n ∈ NN} = a^(-1) L_1$ serait régulier si $L_1$ l'était, en utilisant #lien("residuels-minimisation")[l'exercice sur les résiduels].
+        #underline[Remarque] : On peut aussi utiliser ${b^n c^n | n ∈ NN} = a^(-1) L_1$.
       ],
     ),
   ),

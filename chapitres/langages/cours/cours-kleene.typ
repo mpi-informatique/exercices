@@ -4,7 +4,7 @@
   theoremes,
 )
 #import theoremes: algorithme, corollaire, definition, exercice, lemme, theoreme
-#import automate: LA, Le, Ereg, Lrec, Lreg, dessiner-automate
+#import automate: Ereg, LA, Le, Lrec, Lreg, dessiner-automate
 
 #show: cours-et-presentation.with(titre: "Théorème de Kleene", niveau: "MPI")
 
@@ -12,13 +12,7 @@
 
 #slide()
 
-#theoreme(
-  coeur: true,
-  marge: false,
-  title: "Théorème de Kleene",
-)[Un langage est régulier si et seulement s'il est reconnaissable par un automate fini : $Lrec(Sigma) = Lreg(Sigma)$.]
-
-= Régulier ⟹ reconnaissable
+= Régulier ⟹ reconnaissable par algorithme
 == Expressions régulières linéaires
 
 #colonnes-cours(
@@ -88,7 +82,7 @@
 ]
 
 #exercice[
-  + La stabilité par union et concaténation reste-t-elle vraie dans le cas général ?
+  + La stabilité par union et concaténation reste-t-elle vraie si $Σ_1 ∩ Σ_2 ≠ ∅$ ?
   + $Lloc(Σ)$ est-il stable par complémentaire ?
 ]
 #slide()
@@ -126,7 +120,7 @@
 ]
 
 == Algorithme de Berry-Sethi
-#algorithme(coeur: true, title: "Algorithme de Berry-Sethi")[
+#algorithme(coeur: true, title: "Berry-Sethi")[
   - #underline[Entrée] : une expression régulière $e$.\
   - #underline[Sortie] : un automate _de Glushkov_ reconnaissant $Le$.
 
@@ -154,8 +148,8 @@
   (
     ("0", (0, 0), true, false),
     ("1", (3, 0), false, false),
-    ("2", (6, 2), false, false),
-    ("3", (6, -2), false, false),
+    ("2", (6, 1.5), false, false),
+    ("3", (6, -1.5), false, false),
     ("4", (9, 0), false, true),
   ),
   (
@@ -171,14 +165,13 @@
 
 #figure(
   epsilon,
-  caption: [Automate à $ε$-transitions reconnaissant ${ε, b, a c, a a, a a b}$.],
+  caption: [Automate à $ε$-transitions reconnaissant ${ε, b, a c, a a, a a b}$.\ $ε(0) = {0, 3, 4}$ et $ε(1) = {1, 2}$],
   numbering: "1",
 )<fig-epsilon>
 
 #definition([$ε$-fermeture])[
   Pour un ensemble d'états $X ⊂ Q$, on note $ε(X)$ l'_$ε$-fermeture_ de $X$, c'est-à-dire l'ensemble des états atteignables depuis $X$ en utilisant uniquement des $ε$-transitions.
 ]
-#underline[Exemple] : Sur @fig-epsilon, $ε(0) = {0, 3, 4}$ et $ε(1) = {1, 2}$.
 
 #exercice[
   Proposer deux algorithmes pour calculer tous les $ε(q)$ pour $q ∈ Q$. Comparer.
@@ -197,54 +190,40 @@
 #slide()
 #exercice[Donner un automate sans $ε$-transition équivalent à @fig-epsilon.]
 #slides-only[#epsilon]
-Pour déterminiser directement, partir de $C(I)$ et prendre la $ε$-fermeture après chaque lecture.
 
 #underline[Remarque] : un automate avec $ε$-transitions n'est pas déterministe, mais il peut être déterminisé en adaptant l'algorithme de déterminisation ou en utilisant préalablement @thm-epsilon.
 
 #hp[== Automate de Thompson]
 
-La construction de Thompson est une alternative récursive à l'algorithme de Berry-Sethi pour obtenir un automate à partir d'une expression régulière.
+La construction de Thompson est une alternative récursive à @algorithme-berry-sethi pour obtenir un automate à partir d'une expression régulière.
 
 #exercice[Algorithme de Thompson][
-  1. Définir récursivement un automate $T(e)$ reconnaissant une expression régulière $e$.
-  2. Dessiner $T(a (a b | b)^*)$.
-  3. Comparer les tailles des automates de Thompson et de Glushkov.
+  + Définir récursivement un automate $T(e)$ reconnaissant une expression régulière $e$.
+  + Dessiner $T(a (a b | b)^*)$.
+  + Comparer les tailles des automates de Thompson et de Glushkov.
 ]
 
 = Reconnaissable ⟹ régulier
 
 #lemme[Normalisation][
-  Tout automate est équivalent à un automate avec $ε$-transitions possédant deux états distincts :
-  - Un unique état initial $q_i$ sans transition entrante.
-  - Un unique état final $q_f$ sans transition sortante.
+  Tout automate est équivalent à un automate avec $ε$-transitions _normalisé_, c'est-à-dire avec :
+  - Un unique état initial sans transition entrante.
+  - Un unique état final sans transition sortante.
 ]
 
 #slide()
 #definition([Automate généralisé])[
-  Un _automate généralisé_ $A = (Ereg(Σ), Q, I, F, δ)$ sur un alphabet $Σ$ permet des transitions étiquetées par des expressions régulières : $δ: Q × Ereg(Σ) → cal(P)(Q)$.\
-  Une transition de $p$ à $q$ étiquetée par $e$ peut être franchie en lisant un mot quelconque de $Le$.
-  On note $R_(p, r)$ l'union des expressions étiquetant les transitions de $p$ à $r$, et $∅$ en l'absence de transition.
-]
-
-#slide()
-#definition([Langage reconnu])[
-  Un mot $m$ est _accepté_ par $A$ s'il existe un _chemin acceptant_ de $I$ à $F$
-  $ q_0 limits(⟶)^(e_1) q_1 limits(⟶)^(e_2) … limits(⟶)^(e_n) q_n $
-  tel que $m ∈ cal(L)(e_1) … cal(L)(e_n)$. Pour un chemin sans transition, ce produit vaut ${ε}$.\
+  Un _automate généralisé_ $A = (Ereg(Σ), Q, I, F, T)$ sur un alphabet $Σ$ permet des transitions étiquetées par des expressions régulières avec $T ⊂ Q × Ereg(Σ) × Q$ fini.\
+  Un mot $m$ est _accepté_ par $A$ s'il existe un _chemin acceptant_ de $I$ à $F$ $q_0 limits(⟶)^(e_1) q_1 limits(⟶)^(e_2) … limits(⟶)^(e_n) q_n$
+  tel que $m ∈ cal(L)(e_1) … cal(L)(e_n)$. \
   Le _langage_ $LA$ _reconnu_ par $A$ est l'ensemble des mots acceptés par $A$.
 ]
+#underline[Remarques] :
+- Un automate avec $ε$-transitions est un cas particulier d'automate généralisé.
+- Une transition de $p limits(⟶)^(e) q$ peut être franchie en lisant un mot quelconque de $Le$.
 
 #slide()
-#underline[Exemple] :
-#dessiner-automate(
-  (("q_0", (0, 0), true, false), ("q_1", (3, 0), false, false), ("q_2", (6, 0), false, true)),
-  (("q_0", "q_1", "a^*", (:)), ("q_1", "q_2", "b | ε", (:))),
-)
-Cet automate reconnaît $cal(L)(a^* (b | ε))$.
-Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$, mais aussi $ε$ en lisant $ε$ sur chacune des deux transitions.
-
-#slide()
-#exercice[Montrer que tout automate généralisé ayant un nombre fini de transitions est équivalent à un automate fini classique.]
+#theoreme(hp: true)[Tout automate généralisé est équivalent à un automate fini classique.]<thm-automate-generalise>
 #solution[
   Pour chaque transition $p limits(⟶)^e q$, construire par Berry-Sethi un automate reconnaissant $Le$, avec des états nouveaux.
   Remplacer la transition par cet automate, relier $p$ à ses états initiaux et ses états finaux à $q$ par des $ε$-transitions.
@@ -255,27 +234,20 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
 ]
 
 #exercice[Substitution régulière][
-  Soit $L ⊂ Σ^*$ un langage reconnaissable. Pour chaque $a ∈ Σ$, soit $e_a$ une expression régulière sur $Γ$.
-  On note $s: Σ^* → cal(P)(Γ^*)$ le morphisme pour la concaténation défini par $s(a) = cal(L)(e_a)$ et $s(ε) = {ε}$.
-  Montrer que $s(L) = union.big_(m ∈ L) s(m)$ est reconnaissable.
+  Soit $L ⊂ Σ^*$ un langage reconnaissable, $Γ$ un alphabet et $s : Σ -> Ereg(Γ)$ qu'on étend à $s: Σ^* → Ereg(Γ)$ par : $ s(m_1 … m_n) = s(m_1) … s(m_n), quad s(ε) = ε $
+  Montrer que $s(L)$ est reconnaissable.
 ]
 #solution[
-  Prendre un automate $A$ reconnaissant $L$ et remplacer chaque étiquette $a$ par $e_a$.
-  Dans l'automate généralisé $B$ obtenu, un chemin d'étiquette $m$ de $A$ peut lire exactement les mots de $s(m)$.
-  Ainsi $cal(L)(B) = s(L)$.
-  D'après le résultat précédent, $B$ est équivalent à un automate fini classique, donc $s(L)$ est reconnaissable.
+  Remplacer chaque transition étiquetée par $a$ dans un automate reconnaissant $s(a)$ puis utiliser @thm-automate-generalise.
 ]
 
-== Élimination d'un état
+#lemme[Élimination d'un état][
+  Soit $A = (Ereg(Σ), Q, I, F, δ)$ un automate généralisé et $q ∈ Q ∖ (I ∪ F)$.\
+  Alors $A$ est équivalent à l'automate $A' = (Ereg(Σ), Q ∖ {q}, I, F, δ')$ où, pour tout $p, r ∈ Q ∖ {q}$ :
+  $ δ'(p, r) = δ(p, r) | δ(p, q) δ(q, q)^* δ(q, r) $
+]<lemme-elimination>
 
-#lemme[
-  Soit $A = (Ereg(Σ), Q, I, F, T)$ un automate généralisé et $q ∈ Q ∖ (I ∪ F)$.
-  Noter $R_(p, r)$ l'union des étiquettes des transitions de $p$ à $r$, avec $R_(p, r) = ∅$ s'il n'y en a pas.
-
-  Construire $A'$ en supprimant $q$ et en mettant, pour chaque $p, r ∈ Q ∖ {q}$, une transition de $p$ à $r$ d'étiquette
-  $ R'_(p, r) = R_(p, r) | R_(p, q) (R_(q, q))^* R_(q, r). $
-  Avec les mêmes états initiaux et finaux, $cal(L)(A') = LA$.
-]
+#underline[Remarque] : $δ(p, q) = ∅$ si $p$ n'a pas de transition vers $q$, et $δ(q, q)^* = ε$ si $q$ n'a pas de boucle.
 #slide()
 #grid(
   columns: (1fr, auto, 1fr),
@@ -288,22 +260,17 @@ Le chemin de $q_0$ à $q_2$ accepte par exemple $a a b$ en lisant $a a$ puis $b$
       ("p", "q", "e", (:)),
       ("q", "q", "f", (curve: 1)),
       ("q", "r", "g", (:)),
-      ("p", "r", "h", (curve: -1.7)),
+      ("p", "r", "h", (curve: -1)),
     ),
   ),
-  $==>$,
+  $-->$,
   dessiner-automate(
     (("p", (0, 0), false, false), ("r", (5, 0), false, false)),
     (("p", "r", "h | e f^* g", (:)),),
   ),
-  align(center)[Automate $A$],
-  [],
-  align(center)[Automate $A'$ après élimination de $q$],
+
+  align(center)[Automate $A$], [], align(center)[Automate $A'$ après élimination de $q$],
 )
-Dans un chemin acceptant de $A$, contracter chaque portion de $p$ à $r$ dont les états intermédiaires sont une ou plusieurs occurrences de $q$.
-Elle lit un mot de $cal(L)(R_(p, q) (R_(q, q))^* R_(q, r))$. Les transitions qui évitent $q$ sont conservées par $R_(p, r)$.
-On obtient donc un chemin acceptant de $A'$ lisant le même mot.
-Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemin de $A$ lisant le même mot. D'où $cal(L)(A') = LA$.
 
 #let elimination-etats = (
   ("1", (0, 1.5), true, false),
@@ -326,16 +293,21 @@ Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemi
   align: left + top,
   saut-slide: true,
   [
-    #algorithme[
-      + Normaliser l'automate.
-      + Tant qu'il reste au moins trois états, éliminer un état différent de $q_i$, $q_f$.
-      + Renvoyer l'étiquette de $q_i$ vers $q_f$, ou $∅$ s'il n'y a pas de transition.
-    ]
-    Chaque élimination conserve le langage. À la fin, l'étiquette restante décrit donc le langage initial.
+    #algorithme[Élimination des états][
+      + #underline[Entrée] : un automate normalisé $A = (Σ, Q, q_i, q_f, δ)$.\
+      + #underline[Sortie] : une expression régulière $e$ telle que $Le = LA$.
+
+      + *Tant que* $|Q| > 2$ :
+        - Choisir un état $q ∈ Q ∖ {q_i, q_f}$.
+        - Éliminer $q$ comme dans @lemme-elimination.
+      + *Renvoyer* l'étiquette de $q_i$ à $q_f$, ou $∅$ si pas de transition.
+    ]<algorithme-elimination>
+    #underline[Variant] : $|Q|$ diminue à chaque itération.\
+    #underline[Invariant] : l'automate reconnaît toujours $LA$.
   ],
   [
     #exercice[
-      Donner une expression régulière pour l'automate suivant par élimination des états.
+      Appliquer l'algorithme d'élimination des états.
       #dessiner-automate(elimination-etats, elimination-arcs)
     ]
   ],
@@ -410,21 +382,24 @@ Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemi
 ]
 
 #slide()
-#exercice[Implémentation de l'élimination des états][
-  Soit $A$ un automate normalisé à $n$ états, dont les étiquettes initiales sont de taille constante.
-  1. Décrire, sans code, une implémentation de l'élimination des états utilisant une matrice de transitions et un type persistant pour les expressions régulières. Justifier les mises à jour en place de la matrice.
-  2. Donner les complexités temporelle et spatiale en tenant compte du partage des sous-expressions.
-  3. Montrer, sur une famille d'automates, que la longueur de l'expression obtenue sans partage ni simplification peut être exponentielle.
+#exercice[Analyse de @algorithme-elimination][
+  1. Quelle structure de données utiliser dans @algorithme-elimination ?
+  2. Donner alors les complexités temporelle et spatiale, en fonction de $n = |Q|$.
+  3. Montrer que l'expression régulière renvoyée peut être de taille exponentielle en $n$. Est-ce en contradiction avec la question précédente ?
 ]
 #solution[
-  1. La matrice $R$ contient l'expression de chaque transition, ou $∅$ en son absence. Une union, une concaténation ou une étoile crée un nœud référençant ses opérandes, sans les recopier.
-    Pour éliminer $q$, calculer $(R_(q, q))^*$ puis mettre à jour $R_(p, r)$ pour les états restants $p, r ≠ q$. La ligne et la colonne de $q$ ne sont pas modifiées pendant cette étape, ce qui justifie les mises à jour en place. Marquer ensuite $q$ comme supprimé.
+  1. Utiliser une matrice $M$ de taille $n × n$ avec $M[i, j] = δ(q_i, q_j)$ pour les états numérotés $q_1, …, q_n$.
   2. Il y a $O(n)$ éliminations, chacune mettant à jour $O(n^2)$ transitions. Chaque mise à jour prend un temps constant et crée un nombre constant de nœuds.
     Le temps et le nombre total de nœuds créés sont donc $O(n^3)$. La matrice occupe $O(n^2)$ cases, d'où un espace total $O(n^3)$.
   3. Prendre les états $s, t, q_1, …, q_k$, avec $s$ initial et $t$ final, et une transition étiquetée $a$ de chaque état de ${s, q_1, …, q_k}$ vers chaque état de ${q_1, …, q_k, t}$.
     Pour $k = 2$ :
     #dessiner-automate(
-      (("s", (0, 0), true, false), ("q_1", (3, 1.5), false, false), ("q_2", (3, -1.5), false, false), ("t", (6, 0), false, true)),
+      (
+        ("s", (0, 0), true, false),
+        ("q_1", (3, 1.5), false, false),
+        ("q_2", (3, -1.5), false, false),
+        ("t", (6, 0), false, true),
+      ),
       (
         ("s", "q_1", "a", (:)),
         ("s", "q_2", "a", (:)),
@@ -442,16 +417,17 @@ Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemi
     Le nombre d'occurrences de $a$ est multiplié par $4$ à chaque étape. L'expression finale en contient donc $4^k$, pour un automate à $k + 2$ états.
     Cette borne concerne l'expression produite sans simplification. Le langage reconnu est simplement $a a^*$.
 ]
-#slide()
-#underline[Remarque] : l'intérêt du _type persistant_ est de conserver et partager les anciennes sous-expressions sans les recopier. La matrice est mutable, mais les expressions sont immuables et leur représentation partagée forme un graphe acyclique. Développer ce graphe en une expression écrite sans partage peut demander un temps et un espace exponentiels.
+
+= Théorème de Kleene
+
+#theoreme(
+  coeur: true,
+  marge: false,
+  title: "Théorème de Kleene",
+)[Un langage est régulier si et seulement s'il est reconnaissable par un automate fini : $Lrec(Sigma) = Lreg(Sigma)$.]
 
 #slide()
-#corollaire[
+#corollaire[Stabilités de $Lrec$][
   Les langages réguliers sont stables par union finie, concaténation, étoile, intersection finie, complémentaire et différence.
 ]
-Les trois premières stabilités viennent de la définition. Les autres se déduisent du théorème de Kleene et des constructions sur les automates.
-
-#slides-only[
-  #slide()
-  #exercice[Montrer que les mots sur $Σ = {a, b}$ ne contenant pas le facteur $a b a b b$ forment un langage régulier.]
-]
+#underline[Attention] : $Lrec$ n'est pas stable par inclusion, ni union ou intersection infinie.

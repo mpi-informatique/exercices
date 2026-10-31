@@ -1,13 +1,13 @@
 #import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
-  article-only, cours-et-presentation, item-by-item, liste-cours, only, pause, slides-only, solution,
+  article-only, cours-et-presentation, hp, item-by-item, liste-cours, only, pause, slides-only, solution,
   taille-presentation,
 )
 #import "/load.typ": automate, completer, theoremes
 #import theoremes: corollaire, definition, exercice, lemme, probleme, propriete, theoreme
 #import "/load.typ": colonnes-cours, equation-slide, liste-a-completer, sep, widetilde
-#import automate: LL, Lreg
+#import automate: Ereg, LL, Lreg
 #import "/load.typ": code
 #import code: code-extrait
 
@@ -47,7 +47,7 @@
   - Si $m in Σ^*$, on définit sa _puissance_ par récurrence : $m^0 = ε$ et $m^k = m m^(k - 1)$ pour $k ≥ 1$.
 ]
 
-#underline[Remarque] : $Σ^*$ muni de la concaténation est un _monoïde_ : la concaténation $⋅$ est associative et $ε$ est élément neutre.\ $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$.
+#underline[Remarque] : $Σ^*$ muni de la concaténation est un _monoïde_ : la concaténation $⋅$ est associative, d'élément neutre $ε$.\ $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$.
 
 #slide()
 
@@ -66,9 +66,8 @@
 #slide()
 #exercice[Lemme de Lévy][
   Soient $u, v, x, y ∈ Σ^*$ tels que $u v = x y$.
-  Montrer qu'il existe un unique $m ∈ Σ^*$ vérifiant l'une des conditions suivantes :
-  - $u = x m$ et $y = m v$
-  - $x = u m$ et $v = m y$
+  Montrer qu'il existe un unique $m ∈ Σ^*$ vérifiant :
+  $ (u = x m "et" y = m v) "ou" (x = u m "et" v = m y) $
 ]
 #if est-presentation() and est-corrige() { slide() }
 #solution[
@@ -136,9 +135,8 @@
 
 #slide()
 #exercice[
-  Soit $m$ un mot de taille $n$ dont toutes les lettres sont différentes.
-  + Quel est son nombre de préfixes, de suffixes, de facteurs et de sous-mots distincts, mot vide compris ?
-  + Et si des lettres peuvent être répétées ?
+  Soit $m$ un mot de taille $n$ dont toutes les lettres sont différentes.\
+  Quel est son nombre de préfixes, de suffixes, de facteurs et de sous-mots distincts ?
 ]
 #solution[
   #slides-only[== Compter les mots extraits]
@@ -290,11 +288,17 @@ Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1
 == Étoile de Kleene
 
 
-#definition(title: [Étoile de Kleene])[
-  L'_étoile de Kleene_ d'un langage $L$ est $L^* = display(union.big_(k ∈ ℕ)) L^k$.
-]
-$L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelconque de mots de $L$. \
-#underline[Remarque] : $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
+#colonnes-cours(
+  [
+    #definition(title: [Étoile de Kleene])[
+      L'_étoile de Kleene_ d'un langage $L$ est $L^* = display(union.big_(k ∈ ℕ)) L^k$.
+    ]
+  ],
+  [
+    $L^*$ est donc l'ensemble des mots obtenus par concaténation d'un nombre quelconque de mots de $L$. \
+    #underline[Remarque] : $L^*$ contient toujours $ε$, car $L^0 = {ε}$.
+  ],
+)
 
 #pause
 #exercice[
@@ -351,7 +355,7 @@ En particulier :
 #slide()
 
 #underline[Exemples] :
-+ Soit $m$ un mot. Alors ${m}$ est fini, donc régulier. On le note aussi $m$ par abus de notation.
++ Soit $m$ un mot. Alors ${m}$ est un langage fini donc régulier. On le note aussi $m$ par abus de notation.
 #pause
 + $Σ$ est fini donc régulier. Donc $Σ^*$ est régulier.
 #pause
@@ -392,9 +396,9 @@ En particulier :
 
 Une expression régulière est une notation concise pour décrire un langage régulier, utilisée dans les éditeurs de texte.
 #colonnes-cours(
-  columns: (1fr, 2fr),
+  columns: (1fr, 1fr),
   encadrer: regles => definition[
-    L'ensemble $cal(R)(Σ)$ des _expressions régulières_ sur $Σ$ est le plus petit ensemble vérifiant :
+    L'ensemble $Ereg(Σ)$ des _expressions régulières_ sur $Σ$ est le plus petit ensemble vérifiant :
     #regles
   ],
   [
@@ -402,8 +406,8 @@ Une expression régulière est une notation concise pour décrire un langage ré
     - $∅ ∈ cal(R)(Σ)$ et $ε ∈ cal(R)(Σ)$
   ],
   [
-    - Si $e_1, e_2 ∈ cal(R)(Σ)$, alors $(e_1 | e_2) ∈ cal(R)(Σ)$ et $(e_1 e_2) ∈ cal(R)(Σ)$.
-    - Si $e ∈ cal(R)(Σ)$, alors $e^* ∈ cal(R)(Σ)$.
+    - Si $e_1, e_2 ∈ cal(R)(Σ)$ alors $(e_1|e_2) ∈ cal(R)(Σ)$ et $(e_1 e_2) ∈ cal(R)(Σ)$.
+    - Si $e ∈ cal(R)(Σ)$ alors $e^* ∈ cal(R)(Σ)$.
   ],
 )
 
@@ -411,9 +415,7 @@ Une expression régulière est une notation concise pour décrire un langage ré
 
 #underline[Exemples] : $a^*$, $(a | a b a)^*$ et $a (a | b)^* b$ sont des expressions régulières.
 
-#underline[Remarques] :
-- On utilise seulement les parenthèses nécessaires : $(((a b) c) | d)$ sera noté $a b c | d$.
-- On utilise parfois $+$ à la place de $|$.
+- On utilise seulement les parenthèses nécessaires : $(((a b) c) | d)$ sera noté $a b c | d$. De plus, on note parfois $+$ à la place de $|$.
 
 #slide()
 
@@ -435,8 +437,8 @@ Une expression régulière est une notation concise pour décrire un langage ré
 
 #slide()
 
-Par abus de langage, on confond $e$ et $LL(e)$.
-Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ ou un langage singleton.\
+On confond parfois $e$ et $LL(e)$.
+Suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ ou un langage singleton.
 
 #pause
 #theoreme[
@@ -499,24 +501,8 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
   ],
   code-extrait(corrige-ocaml, "regexp"),
 )
-#solution[
-  #slides-only[== Test du mot vide : corrigé]
-  #code-extrait(corrige-ocaml, "vide")
-  #pause
-  Le mot vide appartient à une union si et seulement s'il appartient à l'un des deux langages.
-  Il appartient à une concaténation si et seulement s'il appartient aux deux langages, car $u v = ε$ impose $u = v = ε$.
-]
-#solution[
-  #slides-only[== Test du langage vide : corrigé]
-  #code-extrait(corrige-ocaml, "epsilon")
-  #pause
-  Une concaténation est vide si et seulement si l'un des facteurs l'est.
-  Une étoile contient toujours $ε$.
-  Ces règles prouvent les deux fonctions par induction structurelle.
-  Pour un arbre de taille $n$, leur coût est $O(n)$, car chaque nœud est visité au plus une fois.
-]
 
-== Résumé des définitions
+#slide()
 
 #{
   let lignes = (
@@ -627,99 +613,78 @@ Ainsi, suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ 
   + Soit $L$ un langage régulier. Montrer que $widetilde(L)$ est régulier.
   + Écrire une fonction OCaml ```ocaml miroir : 'a regexp -> 'a regexp``` renvoyant le miroir d'une expression régulière.
 ]
+
+#hp[= Complément : dénombrabilité et langages non réguliers]
+
+Soit $Σ$ un alphabet non vide.
+
+#colonnes-cours(
+  columns: (1fr, 1fr),
+  [
+    #theoreme[
+      $Σ^*$ est infini dénombrable.
+    ]
+  ],
+  [
+    #corollaire[
+      Un langage $L ⊂ Σ^*$ est au plus dénombrable.
+    ]
+  ],
+)
 #solution[
-  #slides-only[== Miroir : corrigé]
-  + $b (a | b)^* a$
-  #pause
-  + Le miroir conserve l'union, renverse l'ordre de la concaténation et commute avec l'étoile :
-    $widetilde(L_1 ∪ L_2) = widetilde(L_1) ∪ widetilde(L_2)$,
-    $widetilde(L_1 L_2) = widetilde(L_2) widetilde(L_1)$ et
-    $widetilde(L^*) = widetilde(L)^*$.
-    Le miroir d'un langage fini étant fini, une induction structurelle sur les langages donne la régularité du miroir.
-]
-#solution[
-  #slides-only[== Miroir d'une expression : corrigé]
-  #code-extrait(corrige-ocaml, "miroir")
-  #pause
-  Les identités précédentes prouvent par induction structurelle que
-  $LL("miroir"(e)) = widetilde(LL(e))$.
-  Le coût est linéaire en la taille de l'arbre de l'expression.
-]
-
-#slides-only[
-  = Complément : Expressions régulières en pratique
-
-  ```sh grep -E``` est une commande qui permet de chercher des motifs dans un texte en utilisant des expressions régulières étendues :
-
-  #table(
-    columns: (auto, 1fr),
-    inset: 0.5em,
-    table.header([*Expression*], [*Signification*]),
-    [`.`], [N'importe quel caractère.],
-    [`[aei]`], [Un caractère parmi `a`, `e`, `i`.],
-    [`[a-z]`], [Un caractère entre `a` et `z`.],
-    [`[^aei]`], [Un caractère différent de `a`, `e`, `i`.],
-  )
-
-  = Complément : dénombrabilité et langages non réguliers
-
-  Soit $Σ$ un alphabet non vide.
-
-  #theoreme[
-    $Σ^+$, et donc aussi $Σ^*$, est infini dénombrable.
-  ]
-  #pause
-  #underline[Preuve] : identifier les $p$ lettres de $Σ$ avec les entiers de $1$ à $p$.
+  Identifier les $p$ lettres de $Σ$ avec les entiers de $1$ à $p$.
   L'écriture en base $p + 1$ donne une injection de $Σ^+$ vers $ℕ$.
   L'ensemble est infini puisqu'il contient les mots $a^n$ pour $n ≥ 1$, avec $a ∈ Σ$.
+]
 
-  #pause
-  #corollaire[
-    Un langage $L ⊂ Σ^*$ est au plus dénombrable.
-  ]
-  Par exemple, le langage des programmes OCaml est dénombrable.
+#slides-only[#underline[Exemple] : il y a un nombre dénombrable de programmes OCaml.]
 
-  #slide()
+#slide()
 
-  #theoreme[
-    Un ensemble $E$ ne peut pas être en bijection avec $cal(P)(E)$.
-  ]
-  #pause
+#colonnes-cours(
+  columns: (1fr, 1fr),
+  [
+    #theoreme[Cantor][
+      Un ensemble $E$ ne peut pas être en bijection avec $cal(P)(E)$.
+    ]
+  ],
+  [
+    #corollaire[
+      L'ensemble $cal(P)(Σ^*)$ des langages sur $Σ$ est indénombrable.
+    ]
+  ],
+)
+#solution[
   #underline[Preuve] : si $f : E --> cal(P)(E)$, alors $Y = {x ∈ E ∣ x ∉ f(x)}$ n'a pas d'antécédent par $f$.
+]
 
-  #pause
-  #corollaire[
-    Pour $Σ$ non vide, l'ensemble $cal(P)(Σ^*)$ des langages sur $Σ$ n'est pas dénombrable.
-  ]
+#slide()
 
-  #slide()
+$cal(P)(Σ^*)$ est indénombrable alors que l'ensemble des programmes OCaml est dénombrable.\
+Donc il existe des langages $L$ pour lesquels @probleme-appartenance[!] est indécidable (aucun programme OCaml ne le résout) :
 
-  L'ensemble des langages est indénombrable alors que l'ensemble des programmes OCaml est dénombrable.
-  Il existe donc des langages $L$ pour lesquels aucun algorithme ne résout le problème suivant :
+#probleme[Appartenance à un langage][
+  Étant donné un mot $m$, est-ce que $m ∈ L$ ?
+]<probleme-appartenance>
 
-  #probleme[
-    Étant donné un mot $m$, est-ce que $m ∈ L$ ?
-  ]
-  On se restreint donc à un ensemble plus simple de langages.
+#slide()
 
-  #slide()
+#colonnes-cours(
+  columns: (1fr, 1fr),
+  [
+    #theoreme[
+      $Lreg(Σ)$ est infini dénombrable.
+    ]
+  ],
+  [
+    #corollaire[
+      Il existe des langages non réguliers sur $Σ$.
+    ]
+  ],
+)
 
-  Soit $Σ$ un alphabet non vide.
-
-  #theoreme[
-    L'ensemble des langages réguliers sur $Σ$ est infini dénombrable.
-  ]
-  #pause
-  #underline[Preuve] : l'ensemble des expressions régulières sur $Σ$ est dénombrable, car c'est un langage sur un alphabet fini.
+#solution[
+  L'ensemble des expressions régulières sur $Σ$ est dénombrable, car c'est un langage sur un alphabet fini.
   L'ensemble des langages réguliers est donc au plus dénombrable.
   Si $a ∈ Σ$, les langages ${a^n}$, pour $n ∈ ℕ$, sont réguliers et deux à deux distincts.
-
-  #slide()
-
-  Comme l'ensemble des langages sur $Σ$ est indénombrable :
-
-  #corollaire[
-    Il existe des langages non réguliers sur $Σ$.
-  ]
-  On verra plus tard comment montrer qu'un langage n'est pas régulier.
 ]
