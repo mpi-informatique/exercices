@@ -117,7 +117,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 ]
 #context {
   let rendu = query(<texte-reference-test>).map(it => it.value).join("")
-  assert(rendu.replace(regex("\\s+"), "") == "AlgorithmeBerry-Sethi;Algorithme2;Algorithme2(Berry-Sethi);Berry-Sethi;LemmeSansnuméro;Théorème2.", message: rendu)
+  assert(rendu.replace(regex("\\s+"), "") == "Algorithme:Berry-Sethi;Algorithme2;Algorithme2(Berry-Sethi);Berry-Sethi;Lemme:Sansnuméro;Théorème2.", message: rendu)
 }
 #context {
   for cible in (<definition-commune>, <theoreme-commun>, <theoreme-suivant>) {

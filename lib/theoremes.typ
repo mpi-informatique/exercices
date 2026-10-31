@@ -310,7 +310,7 @@
       if avec-numero {
         [ (#titre-court)]
       } else {
-        if supplement != none { [ ] }
+        if supplement != none { [ : ] }
         titre-court
       }
     }
@@ -318,7 +318,7 @@
 }
 
 /// Renvoie à un cadre en choisissant le numéro et/ou le titre.
-/// Par défaut, affiche le type et le titre, ou le numéro si le titre est absent.
+/// Par défaut, affiche « Type : titre », ou le type et le numéro si le titre est absent.
 /// Exemples : `reference-cadre(<algo>, numero: true, titre: false)` pour le numéro,
 /// `reference-cadre(<algo>, numero: true)` pour le numéro et le titre.
 ///
