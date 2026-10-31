@@ -57,6 +57,11 @@ Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le doss
 - Corriger les erreurs importantes. Justifier les complexités sauf évidence, séparer les implications et poser les récurrences utiles. Pour déterminiser, dessiner l'automate plutôt que donner seulement une table.
 - Utiliser des étiquettes stables pour les [renvois](utilisation.md#renvois-aux-blocs-et-aux-questions). Chercher un nombre pair de pages seulement sans altérer le contenu.
 
+## Conversion de cours
+
+- Dans toutes les conversions de cours, placer les démonstrations et les corrigés dans `#solution[...]`, sans ajouter de titre « Preuve ».
+- Ne pas réserver plusieurs lignes à compléter. Utiliser `#completer()` uniquement si la réponse tient sur une seule ligne dans le document rendu. Pour une réponse plus longue, utiliser `#solution[...]`, sans espace de réponse multiligne.
+
 ## Code et Typst
 
 - Préserver les retours structurels des paragraphes, listes, formules et du code. Mettre une espace après les séparateurs d'éléments sur une même ligne.
