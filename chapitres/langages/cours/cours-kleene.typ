@@ -3,7 +3,7 @@
   article-only, automate, colonnes-cours, cours-et-presentation, hp, liste-cours, pause, sep, slides-only, solution,
   theoremes,
 )
-#import theoremes: algorithme, definition, exercice, lemme, theoreme
+#import theoremes: algorithme, corollaire, definition, exercice, lemme, theoreme
 #import automate: LA, Le, Ereg, Lrec, Lreg, dessiner-automate
 
 #show: cours-et-presentation.with(titre: "Théorème de Kleene", niveau: "MPI")
@@ -446,7 +446,7 @@ Réciproquement, chaque transition d'un chemin de $A'$ se développe en un chemi
 #underline[Remarque] : l'intérêt du _type persistant_ est de conserver et partager les anciennes sous-expressions sans les recopier. La matrice est mutable, mais les expressions sont immuables et leur représentation partagée forme un graphe acyclique. Développer ce graphe en une expression écrite sans partage peut demander un temps et un espace exponentiels.
 
 #slide()
-#theoreme[
+#corollaire[
   Les langages réguliers sont stables par union finie, concaténation, étoile, intersection finie, complémentaire et différence.
 ]
 Les trois premières stabilités viennent de la définition. Les autres se déduisent du théorème de Kleene et des constructions sur les automates.
