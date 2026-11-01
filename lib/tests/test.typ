@@ -99,7 +99,7 @@
   assert(query(<solution-test>).map(it => it.value) == (0, 1, 2, 3, 4, 5))
 }
 
-// Les centres restent aux fractions annoncées, même pour des contenus de largeurs différentes.
+// Les espaces entre les contenus et aux extrémités sont égaux, même avec des largeurs différentes.
 #import "/load.typ": formules-reparties
 #assert(formules-reparties() == [])
 #for nombre in range(1, 4) {
@@ -114,13 +114,19 @@
   ]
 }
 #context {
-  for formule in query(<repartition-formule>) {
-    let donnees = formule.value
-    let origine = query(<repartition-origine>).find(it => it.value == donnees.nombre).location().position()
-    let position = formule.location().position()
-    let centre = position.x + donnees.largeur / 2
-    let attendu = origine.x + 300pt * (donnees.indice + 1) / (donnees.nombre + 1)
-    assert(calc.abs(centre - attendu) < 0.01pt, message: "Le centre de la formule doit être à i / (n + 1) de la largeur disponible.")
+  for origine in query(<repartition-origine>) {
+    let position-origine = origine.location().position()
+    let formules = query(<repartition-formule>).filter(it => it.value.nombre == origine.value)
+    let bord = position-origine.x
+    let ecarts = ()
+    for formule in formules {
+      let position = formule.location().position()
+      assert(position.page == position-origine.page)
+      ecarts.push(position.x - bord)
+      bord = position.x + formule.value.largeur
+    }
+    ecarts.push(position-origine.x + 300pt - bord)
+    assert(ecarts.all(ecart => ecart >= 0pt and calc.abs(ecart - ecarts.first()) < 0.01pt), message: "Les espaces entre les formules et aux extrémités doivent être égaux.")
   }
 }
 

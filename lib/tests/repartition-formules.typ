@@ -18,7 +18,9 @@
   for (i, formule) in formules.enumerate() {
     let position = formule.location().position()
     let centre = position.x + formule.value / 2
-    let attendu = origine.x + if est-presentation() { 150pt } else { 100pt * (i + 1) }
+    let attendu = origine.x + if est-presentation() { 150pt } else {
+      (300pt - 10pt - 40pt) / 3 * (i + 1) + if i == 0 { 5pt } else { 10pt + 20pt }
+    }
     assert(calc.abs(centre - attendu) < 0.01pt)
   }
   let premier = formules.first().location().position()

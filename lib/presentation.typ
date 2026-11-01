@@ -37,10 +37,10 @@
 /// -> content
 #let equation-slide(body) = math.equation(block: est-presentation(), body)
 
-/// Centre horizontalement n formules aux positions i / (n + 1), pour i de 1 à n.
+/// Répartit horizontalement les formules avec des espaces égaux entre elles et aux deux extrémités.
 /// La disposition reste horizontale par défaut, avec un empilement facultatif en présentation.
-/// Exemple : `#formules-reparties($p → q$, $p ↔ q$)` place les centres à 1/3 et 2/3.
-/// Les formules doivent être assez courtes pour tenir dans leurs colonnes.
+/// Exemple : `#formules-reparties($p → q$, $p ↔ q$)` laisse trois espaces de même largeur.
+/// La largeur totale des formules doit tenir dans l'espace disponible.
 ///
 /// - empiler-presentation (bool): Centrer les formules les unes sous les autres en présentation uniquement.
 /// - ..formules (arguments): Formules ou contenus à répartir.
@@ -51,11 +51,16 @@
   if est-presentation() and empiler-presentation {
     return grid(columns: (1fr,), row-gutter: 0.5em, align: center, ..formules)
   }
+  let cellules = ([],)
+  for formule in formules {
+    cellules.push(formule)
+    cellules.push([])
+  }
   grid(
-    columns: (1fr,) + (2fr,) * formules.len() + (1fr,),
+    columns: (1fr,) + (auto, 1fr) * formules.len(),
     gutter: 0pt,
     align: center + horizon,
-    [], ..formules, [],
+    ..cellules,
   )
 }
 
