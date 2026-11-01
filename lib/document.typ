@@ -146,6 +146,7 @@
   show: configurer-formules
   set heading(numbering: "I.1.1 –")
   show heading: set block(below: 0.8em)
+  show heading.where(level: 2): set block(above: 0.8em)
   show heading.where(level: 1): set text(size: 1.1 * taille)
   show heading.where(level: 2): set text(size: 1.05 * taille)
   show heading.where(level: 3): set text(size: taille)
