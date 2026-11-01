@@ -96,6 +96,7 @@ Dans les devoirs et concours, ordonner les champs : énoncé, `jury`, `solution`
 
 - Dessiner en Typst avec CeTZ, finite ou un package adapté, dans le fichier du sujet.
 - Pour les arbres, utiliser [tdtr](https://typst.app/universe/package/tdtr/) avec une version fixée. Décrire la structure par une liste à puces imbriquée et les étiquettes d'arêtes par des éléments de liste numérotée avant les fils concernés, plutôt que placer manuellement les nœuds et les arêtes. Régler `text-size: 1em` pour suivre la taille du texte du cours ou de la présentation.
+- Pour les preuves de déduction naturelle, utiliser [curryst](https://typst.app/universe/package/curryst/) avec une version fixée (`@preview/curryst:0.6.0`). Construire les arbres avec des appels imbriqués à `rule`, les prémisses avant la conclusion et le nom de règle dans `name`, puis les afficher avec `prooftree`.
 - Pour les automates, employer le style de [lib/automate.typ](../lib/automate.typ), placer boucles et étiquettes vers l'extérieur et éviter les croisements. Préserver toutes les informations et fixer les versions des packages.
 - Conserver le code OCaml et ses tests dans `corrige.ml`, les tests Python dans `test.py`, à côté du sujet. Les tests d'outillage restent dans `lib/tests/` ; ne pas ajouter de `test.typ` aux sujets de concours.
 - Regrouper les vérifications OCaml dans `Tests`, avec les appels du corrigé hors de ce module.

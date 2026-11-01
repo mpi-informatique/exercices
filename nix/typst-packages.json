@@ -5,6 +5,11 @@
     "hash": "sha256-fbYS5HNKNKF7JYAdG0xFMLryFoLAv4Kd3kV3rqiKWVo="
   },
   {
+    "name": "curryst",
+    "version": "0.6.0",
+    "hash": "sha256-GrUcjWnjNiMW9mPH+T0CbDYwwk353u87DTszznItDY8="
+  },
+  {
     "name": "diagraph-layout",
     "version": "0.0.1",
     "hash": "sha256-AnBILoe4D9xCfFFJZ2+Hf3XIDnHYZH7OK4WAzAfme+I="
