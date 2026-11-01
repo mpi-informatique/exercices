@@ -49,6 +49,14 @@
   body
 }
 
+/// Force un saut de page uniquement dans le cours non corrigé.
+/// Sans effet dans le corrigé et dans la présentation.
+///
+/// -> content, none
+#let saut-page-cours() = {
+  if not est-presentation() and not est-corrige() { pagebreak() }
+}
+
 /// Trace des lignes de réponse. Dans une source commune, entourer l'appel de `article-only[...]`.
 ///
 /// - lignes (int): Nombre de lignes, positif ou nul.

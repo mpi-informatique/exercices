@@ -6,7 +6,7 @@
 #import "lib/automate.typ" as automate
 #import "lib/code.typ" as code
 #import "lib/theoremes.typ" as theoremes
-#import "lib/cours.typ": cours, espace-reponse, solution
+#import "lib/cours.typ": cours, espace-reponse, saut-page-cours, solution
 #import "lib/presentation.typ": (
   article-only, colonnes-cours, cours-et-presentation, equation-slide, formules-reparties, item-by-item, liste-cours, only, pause, presentation, slide,
   slides-only, taille-presentation, uncover,
