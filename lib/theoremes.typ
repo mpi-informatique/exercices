@@ -25,6 +25,14 @@
 #import "blocs.typ": epaisseur-trait, coeur-en-marge, marge as note-en-marge
 #import "options.typ": est-presentation
 
+/// Affiche un commentaire précédé de « // » en gris dans un algorithme.
+/// S'utilise après une instruction ou sur une ligne de liste indépendante.
+/// Exemple : `#commentaire[Évaluation paresseuse]`.
+///
+/// - body (content): Texte du commentaire.
+/// -> content
+#let commentaire(body) = text(fill: gray)[`//` #body]
+
 #let espacement-cadres = state("exercices-espacement-cadres", none)
 #let style-cadres = state("exercices-style-cadres", none)
 
