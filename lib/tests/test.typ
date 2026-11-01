@@ -99,6 +99,31 @@
   assert(query(<solution-test>).map(it => it.value) == (0, 1, 2, 3, 4, 5))
 }
 
+// Les centres restent aux fractions annoncées, même pour des contenus de largeurs différentes.
+#import "/load.typ": formules-reparties
+#assert(formules-reparties() == [])
+#for nombre in range(1, 4) {
+  block(width: 300pt)[
+    #metadata(nombre) <repartition-origine>
+    #formules-reparties(..range(nombre).map(indice => {
+      let largeur = (indice + 1) * 12pt
+      box(width: largeur, height: 10pt)[
+        #metadata((nombre: nombre, indice: indice, largeur: largeur)) <repartition-formule>
+      ]
+    }))
+  ]
+}
+#context {
+  for formule in query(<repartition-formule>) {
+    let donnees = formule.value
+    let origine = query(<repartition-origine>).find(it => it.value == donnees.nombre).location().position()
+    let position = formule.location().position()
+    let centre = position.x + donnees.largeur / 2
+    let attendu = origine.x + 300pt * (donnees.indice + 1) / (donnees.nombre + 1)
+    assert(calc.abs(centre - attendu) < 0.01pt, message: "Le centre de la formule doit être à i / (n + 1) de la largeur disponible.")
+  }
+}
+
 // Les observations du jury restent distinctes de l'énoncé et des consignes de notation.
 #let sujet-jury = exercice(meta: meta, jury: [#metadata("sujet") <jury-test> Observation générale.], contenu: (
   partie("I", "Partie avec jury", jury: [#metadata("partie") <jury-test> Observation de partie.], contenu: (

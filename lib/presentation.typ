@@ -37,6 +37,24 @@
 /// -> content
 #let equation-slide(body) = math.equation(block: est-presentation(), body)
 
+/// Centre horizontalement n formules aux positions i / (n + 1), pour i de 1 à n.
+/// La disposition reste horizontale dans le cours et dans la présentation.
+/// Exemple : `#formules-reparties($p → q$, $p ↔ q$)` place les centres à 1/3 et 2/3.
+/// Les formules doivent être assez courtes pour tenir dans leurs colonnes.
+///
+/// - ..formules (arguments): Formules ou contenus à répartir.
+/// -> content
+#let formules-reparties(..formules) = {
+  let formules = formules.pos()
+  if formules.len() == 0 { return [] }
+  grid(
+    columns: (1fr,) + (2fr,) * formules.len() + (1fr,),
+    gutter: 0pt,
+    align: center + horizon,
+    [], ..formules, [],
+  )
+}
+
 #let couleurs-blocs = (
   theorem: rgb("#233e6a"),
   lemma: rgb("#233e6a"),
