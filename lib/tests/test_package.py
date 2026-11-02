@@ -315,7 +315,7 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 ''', encoding='utf-8')
     subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                     '--package-path', str(racine / 'packages'), str(source), str(racine / 'espacement-cadres.pdf')], check=True)
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, theoremes
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, solution, theoremes
 #show: cours.with(titre: "Marge avant les exercices")
 #set par(spacing: 12pt)
 #for (nom, cadre) in (("exercice", theoremes.exercice), ("theoreme", theoremes.theoreme)) {
@@ -326,6 +326,10 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
     ]
   }
 }
+#theoremes.theoreme[#metadata("bloc-avant") <marge-avant-test>Texte.]
+#theoremes.exercice(title: [#metadata("titre-exercice") <marge-avant-test>Titre])[Texte.]
+#solution(cours: true)[#metadata("solution-avant") <marge-avant-test>Texte.]
+#theoremes.exercice(title: [#metadata("titre-apres-solution") <marge-avant-test>Titre])[Texte.]
 #context {
   let marques = query(<marge-avant-test>)
   let position(nom) = marques.find(it => it.value == nom).location().position()
@@ -337,6 +341,14 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
   }
   assert(calc.abs(ecart("exercice", "explicite") - ecart("exercice", "defaut") - 6pt) < 0.1pt)
   assert(calc.abs(ecart("theoreme", "explicite") - ecart("theoreme", "defaut")) < 0.1pt)
+  let avant = position("bloc-avant")
+  let titre = position("titre-exercice")
+  assert(avant.page == titre.page)
+  assert(titre.y - avant.y > 36pt and titre.y - avant.y < 38pt)
+  let solution = position("solution-avant")
+  let titre-suite = position("titre-apres-solution")
+  assert(solution.page == titre-suite.page)
+  assert(titre-suite.y - solution.y > 29pt and titre-suite.y - solution.y < 31pt)
 }
 ''', encoding='utf-8')
     for corrige in ('false', 'true'):

@@ -206,7 +206,7 @@
           border-color: black,
           title-color: white,
           body-color: white,
-          title-inset: (x: 1em, y: .5em),
+          title-inset: (x: 1em, y: if nom == "exercise" { 0.1em } else { 0.5em }),
         ),
         title-style: (boxed-style: (anchor: (x: start, y: horizon), radius: 0em), color: black, weight: "semibold"),
         ..args,
