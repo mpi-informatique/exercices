@@ -118,7 +118,7 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
   ],
   [
     #exercice[
-      Soit $φ ∈ cal(F)(V)$ avec $b$ connecteurs binaires et $n$ négations. Déterminer $abs(φ)$.
+      Exprimer $abs(φ)$ en fonction du nombre $b(φ)$ de connecteurs binaires et $n(φ)$ de négations.
     ]
   ],
 )
@@ -187,10 +187,10 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
 #slides-only[== Satisfiabilité]
 
 #definition[Satisfiabilité][
-  Une formule $φ$ est _satisfiable_ si $cal(M)(φ) ≠ ∅$, _insatisfiable_ si $cal(M)(φ) = ∅$, et une _tautologie_ si $cal(M)(φ) = {0, 1}^V$.
+  Une formule $φ$ est _satisfiable_ si $cal(M)(φ) ≠ ∅$, _antilogie_ si $cal(M)(φ) = ∅$, et une _tautologie_ si $cal(M)(φ) = {0, 1}^V$.
 ]
-#underline[Exemples] : $x ∧ y$ est satisfiable, $x ∨ ¬ x$ est une tautologie et $x ∧ ¬ x$ est insatisfiable.\
-#underline[Remarque] : $φ$ est une tautologie $<==>$ $⊧ φ$ $<==>$  $¬ φ$ est insatisfiable.
+#underline[Exemples] : $x ∧ y$ est satisfiable, $x ∨ ¬ x$ est une tautologie et $x ∧ ¬ x$ est une antilogie.\
+#underline[Remarque] : $φ$ est une tautologie $<==>$ $⊧ φ$ $<==>$  $¬ φ$ est une antilogie.
 
 == Équivalence et conséquence logique
 
@@ -274,7 +274,7 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
         [1], [0], [0], [1],
         [1], [1], [1], [1],
       )),
-      caption: [Table de vérité de $φ = (x → y) → x$],
+      caption: [Table de vérité de $(x → y) → x$],
     )
   ],
 )
@@ -288,7 +288,7 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
     ]
   ],
   [
-    #pad(top: 1em)[#underline[Exemple] : $(x → y) → x ≡ x$.]
+    #align(center, pad(top: 1em)[#underline[Exemple] : $(x → y) → x ≡ x$.])
   ],
 )
 
@@ -332,14 +332,16 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
   ],
 )
 
-== Algèbre de Bool
+== Algèbre de Boole
 
-En algèbre de Bool, on note $overline(a)$ pour $¬ a$, $a + b$ pour $a ∨ b$ et $a b$ pour $a ∧ b$. \
+En algèbre de Boole, on note $overline(a)$ pour $¬ a$, $a + b$ pour $a ∨ b$ et $a b$ pour $a ∧ b$. \
 On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$ se traduit en $φ ∧ (ψ ∨ χ) ≡ (φ ∧ ψ) ∨ (φ ∧ χ)$.
 
-#exercice[
-  Soient $I$ et $J$ deux ensembles finis non vides. Développer les formules suivantes :
-  #formules-reparties($(or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j)$, $(and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j)$)
+#theoreme[
+  #formules-reparties(
+    $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) = and.big_((i, j) ∈ I × J) (φ_i ∧ ψ_j) $,
+    $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) = or.big_((i, j) ∈ I × J) (φ_i ∨ ψ_j) $,
+  )
 ]
 #solution[
   En appliquant successivement les distributivités :
@@ -374,7 +376,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 == FND et FNC
 
 #definition[Formes normales][
-  - Un _littéral_ est une variable ou sa négation.
+  - Un _littéral_ est une variable ou sa négation : $x$ ou $¬ x$.
   - Une _clause_ est une disjonction $∨$ de littéraux, un _terme_ est une conjonction $∧$ de littéraux.
   - Une _forme normale conjonctive_ (FNC) est une conjonction de clauses : #box[$(x ∨ z) ∧ (¬ y ∨ z)$].
   - Une _forme normale disjonctive_ (FND) est une disjonction de termes : #box[$(x ∧ ¬ y) ∨ z$].
@@ -420,17 +422,17 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   [
     #probleme(pb("SAT"))[
       - #underline[Entrée] : une formule propositionnelle $φ$.
-      - #underline[Sortie] : vrai si $φ$ est satisfiable, faux sinon.
+      - #underline[Question] : $φ$ est-elle satisfiable ?
     ]
   ],
   [
     #probleme([$k$-#pb("SAT") ($k$ fixé)])[
       - #underline[Entrée] : $φ$ FNC avec au plus $k$ littéraux par clause.
-      - #underline[Sortie] : vrai si $φ$ est satisfiable, faux sinon.
+      - #underline[Question] : $φ$ est-elle satisfiable ?
     ]
   ],
 )
-
+#v(-0.4em)
 #slides-only[== SAT sur les FND et taille d'une conversion]
 #exercice[
   On note $pb("P")$ l'ensemble des problèmes de décision qu'on peut résoudre en temps polynomial.
@@ -464,7 +466,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
     $∀ p thin φ := substituer(φ, p, ⊥) ∧ substituer(φ, p, ⊤)$,
   )
 ]
-
+#v(-0.4em)
 #exercice[
   Simplifier $∀ p thin ∃ q thin (p ↔ q)$ et $∃ q thin ∀ p thin (p ↔ q)$. Expliquer pourquoi l'ordre des quantificateurs compte.
 ]
@@ -484,11 +486,11 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   - chaque nœud interne est étiqueté par une variable et possède deux fils, reliés par des arêtes étiquetées $0$ et $1$.
   - chaque feuille est étiquetée par $0$ ou $1$.
   - une variable est testée au plus une fois sur un chemin de la racine à une feuille.
-
   On note $T(v)$ la feuille obtenue en suivant les arêtes étiquetées par $v(x)$ pour chaque nœud interne $x$ rencontré.\
   $T$ _représente_ une formule $φ$ s'il renvoie $v(φ)$ pour toute valuation $v$.
 ]
-#underline[Attention] : Ne pas confondre avec l'arbre de dérivation (syntaxique) et arbre de décision (sémantique).
+#v(-0.4em)
+#underline[Attention] : Ne pas confondre arbre de dérivation (syntaxique) et arbre de décision (sémantique).
 
 #slide()
 #theoreme[
@@ -559,7 +561,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 ]
 
 #slides-only[== Complexité de Quine]
-#underline[Complexité] : #completer()
+#underline[Complexité] : #completer()\ #completer()
 #solution[
   l'arbre a une hauteur au plus $n$ et au plus $2^(n + 1) - 1$ nœuds. Avec une simplification, une substitution et un choix de variable en $O(|φ|)$ par nœud, le coût est $O(2^n |φ|)$. Les simplifications peuvent arrêter l'exploration bien plus tôt.
 ]
