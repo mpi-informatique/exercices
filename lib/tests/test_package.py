@@ -315,6 +315,34 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 ''', encoding='utf-8')
     subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                     '--package-path', str(racine / 'packages'), str(source), str(racine / 'espacement-cadres.pdf')], check=True)
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, theoremes
+#show: cours.with(titre: "Marge avant les exercices")
+#set par(spacing: 12pt)
+#for (nom, cadre) in (("exercice", theoremes.exercice), ("theoreme", theoremes.theoreme)) {
+  for (mode, espacement) in (("defaut", none), ("explicite", 12pt)) {
+    theoremes.configurer-theoremes(espacement: espacement)[
+      #metadata(nom + "-" + mode + "-avant") <marge-avant-test>Texte.
+      #cadre[#metadata(nom + "-" + mode + "-cadre") <marge-avant-test>Texte.]
+    ]
+  }
+}
+#context {
+  let marques = query(<marge-avant-test>)
+  let position(nom) = marques.find(it => it.value == nom).location().position()
+  let ecart(nom, mode) = {
+    let avant = position(nom + "-" + mode + "-avant")
+    let cadre = position(nom + "-" + mode + "-cadre")
+    assert(avant.page == cadre.page)
+    cadre.y - avant.y
+  }
+  assert(calc.abs(ecart("exercice", "explicite") - ecart("exercice", "defaut") - 6pt) < 0.1pt)
+  assert(calc.abs(ecart("theoreme", "explicite") - ecart("theoreme", "defaut")) < 0.1pt)
+}
+''', encoding='utf-8')
+    for corrige in ('false', 'true'):
+        subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                        '--package-path', str(racine / 'packages'), '--input', 'corrige=' + corrige,
+                        str(source), str(racine / ('marge-avant-' + corrige + '.pdf'))], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, est-presentation, solution, theoremes
 #let pauses = sys.inputs.at("pauses") == "true"
 #let options = if pauses { (:) } else { (pause: false) }

@@ -255,7 +255,8 @@
       // Une seule marge extérieure : les marges des blocs voisins fusionnent.
       // Les réserves des titres restent à l'intérieur, même dans les colonnes ou les notes en marge.
       let espace = if espacement == none { par.spacing } else { espacement }
-      block(width: 100%, above: if marge { espace } else { 0pt }, below: espace, contenu)
+      let espace-avant = if palette == none and espacement == none and nom == "exercise" { espace / 2 } else { espace }
+      block(width: 100%, above: if marge { espace-avant } else { 0pt }, below: espace, contenu)
     } else {
       contenu
     }
@@ -414,7 +415,7 @@
 /// Installe les rendus et les compteurs des cadres dans le document.
 /// À utiliser comme règle `show`.
 ///
-/// - espacement (length, none): Espacement commun ; `none` utilise `par.spacing` en A4 et conserve celui du rendu coloré.
+/// - espacement (length, none): Espacement commun ; `none` utilise `par.spacing` en A4 (sa moitié au-dessus des exercices) et conserve celui du rendu coloré.
 /// - palette (dictionary, none): Couleurs par type anglais ; `none` utilise les cadres A4 monochromes.
 /// - body (content): Document contenant les cadres.
 /// -> content
