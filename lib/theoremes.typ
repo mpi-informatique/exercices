@@ -261,10 +261,7 @@
       // Une seule marge extérieure : les marges des blocs voisins fusionnent.
       // Les réserves des titres restent à l'intérieur, même dans les colonnes ou les notes en marge.
       let espace = if espacement == none { par.spacing } else { espacement }
-      let espace-avant = if palette == none and espacement == none and nom == "exercise" { espace / 2 } else {
-        espace
-      }
-      block(width: 100%, above: if marge { espace-avant } else { 0pt }, below: espace, contenu)
+      block(width: 100%, above: if marge { espace } else { 0pt }, below: espace, contenu)
     } else {
       contenu
     }
