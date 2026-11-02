@@ -391,6 +391,20 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   On peut aussi déduire l'existence d'une FNC de celle d'une FND : écrire $¬ φ ≡ T_1 ∨ … ∨ T_k$, où chaque $T_i$ est une conjonction de littéraux. Alors $φ ≡ ¬ T_1 ∧ … ∧ ¬ T_k$. Par De Morgan, chaque $¬ T_i$ est équivalente à une clause.
 ]
 
+#slides-only[== Conversion en FNC]
+#exercice[
+  Transformer les formules suivantes en FNC en utilisant l'involutivité de la négation, l'associativité et la distributivité de $∧$ et $∨$, ainsi que les lois de De Morgan. Seul le résultat est demandé.
+  + $(x_1 ∨ ¬ x_0) ∧ ¬ (x_4 ∧ ¬ (x_3 ∧ x_2))$
+  + $(x_0 ∧ x_1) ∨ (x_2 ∧ x_3) ∨ (x_4 ∧ x_5)$
+]
+#solution[
+  + $(x_1 ∨ ¬ x_0) ∧ (¬ x_4 ∨ x_3) ∧ (¬ x_4 ∨ x_2)$.
+  + $
+      & (x_0 ∨ x_2 ∨ x_4) ∧ (x_0 ∨ x_2 ∨ x_5) ∧ (x_0 ∨ x_3 ∨ x_4) ∧ (x_0 ∨ x_3 ∨ x_5) \
+      ∧ & (x_1 ∨ x_2 ∨ x_4) ∧ (x_1 ∨ x_2 ∨ x_5) ∧ (x_1 ∨ x_3 ∨ x_4) ∧ (x_1 ∨ x_3 ∨ x_5).
+    $
+]
+
 == Problème #pb("SAT")
 #colonnes-cours(
   columns: (1fr, 1.3fr),
