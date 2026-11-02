@@ -1,6 +1,6 @@
 #import "lib/options.typ": est-corrige, est-presentation
 #import "lib/exercice.typ": *
-#import "lib/document.typ": PP, completer, hp, lien, liste-a-completer, sep, substituer, tp, widetilde
+#import "lib/document.typ": PP, completer, hp, lien, liste-a-completer, pb, sep, substituer, tp, widetilde
 #import "lib/blocs.typ": coeur-en-marge, epaisseur-trait, marge
 #import "lib/meta.typ" as meta
 #import "lib/automate.typ" as automate
@@ -8,8 +8,8 @@
 #import "lib/theoremes.typ" as theoremes
 #import "lib/cours.typ": cours, espace-reponse, saut-page-cours, solution
 #import "lib/presentation.typ": (
-  article-only, colonnes-cours, cours-et-presentation, equation-slide, formules-reparties, item-by-item, liste-cours, only, pause, presentation, slide,
-  slides-only, taille-presentation, uncover,
+  article-only, colonnes-cours, cours-et-presentation, equation-slide, formules-reparties, item-by-item, liste-cours,
+  only, pause, presentation, slide, slides-only, taille-presentation, uncover,
 )
 
 /// Charge un contenu de la banque et renvoie son module, notamment ses exports `ex` ou `sujet`.

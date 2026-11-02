@@ -22,7 +22,7 @@
   set-quaternary-border-color, set-secondary-body-color, set-secondary-border-color, set-tertiary-body-color,
   set-tertiary-border-color,
 )
-#import "blocs.typ": epaisseur-trait, coeur-en-marge, marge as note-en-marge
+#import "blocs.typ": coeur-en-marge, epaisseur-trait, marge as note-en-marge
 #import "options.typ": est-presentation
 
 /// Affiche un commentaire précédé de « // » en gris dans un algorithme.
@@ -161,7 +161,13 @@
   context {
     let palette = style-cadres.get()
     let titre-annote = if palette == none or full-title == "" { full-title } else {
-      [#full-title#if coeur { h(0.4em); [♡] }#if hp { h(0.4em); text(size: 0.7em)[HP] }]
+      [#full-title#if coeur {
+          h(0.4em)
+          [♡]
+        }#if hp {
+          h(0.4em)
+          text(size: 0.7em)[HP]
+        }]
     }
     let cadre = if nom == "method" {
       let couleur = if palette == none { black } else {
@@ -255,7 +261,9 @@
       // Une seule marge extérieure : les marges des blocs voisins fusionnent.
       // Les réserves des titres restent à l'intérieur, même dans les colonnes ou les notes en marge.
       let espace = if espacement == none { par.spacing } else { espacement }
-      let espace-avant = if palette == none and espacement == none and nom == "exercise" { espace / 2 } else { espace }
+      let espace-avant = if palette == none and espacement == none and nom == "exercise" { espace / 2 } else {
+        espace
+      }
       block(width: 100%, above: if marge { espace-avant } else { 0pt }, below: espace, contenu)
     } else {
       contenu
@@ -299,14 +307,33 @@
 /// -> content
 #let rendre-reference-cadre(it, numero: auto, titre: true) = {
   let el = it.element
-  let familles = ("theorem", "lemma", "corollary", "axiom", "postulate", "definition", "proposition", "assumption", "property", "conjecture", "remark", "note", "example", "exercise", "problem", "algorithm")
+  let familles = (
+    "theorem",
+    "lemma",
+    "corollary",
+    "axiom",
+    "postulate",
+    "definition",
+    "proposition",
+    "assumption",
+    "property",
+    "conjecture",
+    "remark",
+    "note",
+    "example",
+    "exercise",
+    "problem",
+    "algorithm",
+  )
   if el == none or el.func() != figure or el.kind not in familles or it.supplement in ([-], [!!]) {
     return it
   }
   let sans-titre = it.supplement == [!]
   let titre-court = if el.caption == none { [] } else { el.caption.body }
   let avec-titre = titre and not sans-titre and titre-court not in ("", [], [#""])
-  let avec-numero = el.numbering != none and if sans-titre { true } else if numero == auto { not avec-titre } else { numero }
+  let avec-numero = (
+    el.numbering != none and if sans-titre { true } else if numero == auto { not avec-titre } else { numero }
+  )
   let supplement = if sans-titre or it.supplement == auto { el.supplement } else { it.supplement }
   link(el.location(), {
     if supplement != none { supplement }

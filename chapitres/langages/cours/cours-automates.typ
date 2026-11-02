@@ -353,7 +353,7 @@ Si $A$ est un ADC et $m$ un mot, on peut tester $m ∈ LA$ en O($abs(m)$) en tem
   coeur: true,
 )[Soit $A = (Σ, Q, I, F, δ)$ un automate. Alors $A$ est équivalent à un ADC.]
 #solution(cours: true, coeur: true)[
-  Soit $PP(A) = (Σ, PP(Q), {I}, F', δ)$ l'_automate des parties_, où chaque état est un ensemble d'états de $A$,\ $F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}$ et $δ : PP(Q) timess Σ → PP(Q)$ est définie comme dans @def-delta-ens. \
+  Soit $PP(A) = (Σ, PP(Q), {I}, F', δ)$ l'_automate des parties_, où chaque état est un ensemble d'états de $A$,\ $F' = {X ⊂ Q ∣ X ∩ F ≠ ∅}$ et $δ : PP(Q) timess Σ → PP(Q)$ est définie comme dans @def-delta-ens[!]. \
   $PP(A)$ a un seul état initial $I$ et chaque $δ(X, a)$ est un unique ensemble d'états donc $A'$ est un ADC. \
   $PP(A)$ est équivalent à $A$ car :
   $ m ∈ cal(L)(PP(A)) <==> δ^*(I, m) ∈ F' <==> δ^*(I, m) ∩ F ≠ ∅ <==> m ∈ LA $
@@ -378,7 +378,7 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 )
 
 #colonnes-cours(
-  columns: (1fr, 1fr),
+  columns: (1.15fr, 1fr),
   exercice(coeur: true)[Déterminiser l'automate ci-contre.],
   facteur,
 )
@@ -441,18 +441,23 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 = Accessibilité et émondage
 
 #colonnes-cours(
-  columns: colonnes-definition,
+  columns: (1.15fr, 1fr),
   definition[Accessibilité][
     Soit $A = (Σ, Q, I, F, δ)$ un automate et $q ∈ Q$.
     - $q$ est _accessible_ s'il existe un chemin de $I$ à $q$ dans $A$.
     - $q$ est _co-accessible_ s'il existe un chemin de $q$ à $F$ dans $A$.
-    - $A$ est _émondé_ si tous ses états sont accessibles et co-accessibles.
+    - $q$ est _utile_ s'il est accessible et co-accessible.
+    - $A$ est _émondé_ si tous ses états sont utiles.
   ],
-  exercice[Décrire un algorithme déterminant les états accessibles et co-accessibles.],
+  exercice[Décrire des algorithmes pour déterminer :
+    + Les états accessibles.
+    + Les états co-accessibles.
+    + Les états utiles.
+  ],
 )
 #slide()
 #colonnes-cours(
-  columns: colonnes-definition,
+  columns: (1.15fr, 1fr),
   theoreme[Tout automate est équivalent à un automate émondé.],
   exercice[Tout automate est-il équivalent à un ADC émondé ?],
 )

@@ -5,6 +5,7 @@
 
 #let sep = h(0.5em)
 #let PP = $cal(P)$
+#let pb(titre) = $sans(titre)$
 
 #let couleur-liens = rgb("#233e6a")
 

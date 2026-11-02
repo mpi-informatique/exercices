@@ -1,6 +1,6 @@
 #import "/load.typ": (
   code, colonnes-cours, completer, cours-et-presentation, equation-slide, est-corrige, est-presentation,
-  formules-reparties, item-by-item, liste-cours, saut-page-cours, sep, slide, slides-only, solution, substituer,
+  formules-reparties, item-by-item, liste-cours, pb, saut-page-cours, sep, slide, slides-only, solution, substituer,
   taille-presentation, theoremes,
 )
 #import theoremes: algorithme, commentaire, corollaire, definition, exercice, probleme, propriete, theoreme
@@ -16,7 +16,6 @@
 )
 
 #let ocaml = read("corrige.ml")
-#let pb(titre) = $sans(titre)$
 
 #show: cours-et-presentation.with(titre: "Logique propositionnelle (MP2I)", niveau: "MPI")
 #set text(size: 10.5pt) if not est-presentation()
@@ -208,7 +207,6 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
 #solution[
   Si $φ$, $ψ$ et $χ$ sont fausses, $(φ → ψ) → χ$ est fausse, mais $φ → (ψ → χ)$ est vraie.
 ]
-#underline[Remarque] : $≡$ est une relation d'équivalence sur $cal(F)(V)$.
 
 #slides-only[== Compatibilité de l'équivalence]
 #theoreme[Compatibilité de l'équivalence avec les connecteurs][
@@ -303,12 +301,11 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
   encadrer: propriete.with(coeur: true),
   [
     $
-        ¬ ¬ φ & ≡ φ \
-        φ ∧ ⊤ & ≡ φ         &   φ ∨ ⊥ & ≡ φ \
-        φ ∧ ⊥ & ≡ ⊥         &   φ ∨ ⊤ & ≡ ⊤ \
-        φ ∧ φ & ≡ φ         &   φ ∨ φ & ≡ φ \
-      φ ∧ ¬ φ & ≡ ⊥         & φ ∨ ¬ φ & ≡ ⊤ \
-        φ → ψ & ≡ ¬ ψ → ¬ φ
+        φ ∧ ⊤ & ≡ φ &      φ ∨ ⊥ & ≡ φ \
+        φ ∧ ⊥ & ≡ ⊥ &      φ ∨ ⊤ & ≡ ⊤ \
+        φ ∧ φ & ≡ φ &      φ ∨ φ & ≡ φ \
+      φ ∧ ¬ φ & ≡ ⊥ &    φ ∨ ¬ φ & ≡ ⊤ \
+        ¬ ¬ φ & ≡ φ & wide φ → ψ & ≡ ¬ ψ → ¬ φ
     $
   ],
   [
@@ -393,15 +390,23 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 ]
 
 #slides-only[== Conversion en FNC]
-#exercice[
-  Transformer les formules suivantes en FNC en utilisant l'involutivité de la négation, l'associativité et la distributivité de $∧$ et $∨$, ainsi que les lois de De Morgan. Seul le résultat est demandé.
-  + $(x_1 ∨ ¬ x_0) ∧ ¬ (x_4 ∧ ¬ (x_3 ∧ x_2))$
-  + $(x_0 ∧ x_1) ∨ (x_2 ∧ x_3) ∨ (x_4 ∧ x_5)$
+#exercice[X-ENS 2016 MP][
+  Donner des formules équivalentes en FNC :
+  #liste-cours(
+    columns: 2,
+    [
+      $(x_1 ∨ ¬ x_0) ∧ ¬ (x_4 ∧ ¬ (x_3 ∧ x_2))$
+    ],
+    [
+      $(x_0 ∧ x_1) ∨ (x_2 ∧ x_3) ∨ (x_4 ∧ x_5)$
+    ],
+  )
+
 ]
 #solution[
   + $(x_1 ∨ ¬ x_0) ∧ (¬ x_4 ∨ x_3) ∧ (¬ x_4 ∨ x_2)$.
   + $
-      & (x_0 ∨ x_2 ∨ x_4) ∧ (x_0 ∨ x_2 ∨ x_5) ∧ (x_0 ∨ x_3 ∨ x_4) ∧ (x_0 ∨ x_3 ∨ x_5) \
+        & (x_0 ∨ x_2 ∨ x_4) ∧ (x_0 ∨ x_2 ∨ x_5) ∧ (x_0 ∨ x_3 ∨ x_4) ∧ (x_0 ∨ x_3 ∨ x_5) \
       ∧ & (x_1 ∨ x_2 ∨ x_4) ∧ (x_1 ∨ x_2 ∨ x_5) ∧ (x_1 ∨ x_3 ∨ x_4) ∧ (x_1 ∨ x_3 ∨ x_5).
     $
 ]
@@ -425,7 +430,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 
 #slides-only[== SAT sur les FND et taille d'une conversion]
 #exercice[
-  On note $pb(P)$ l'ensemble des problèmes de décision qu'on peut résoudre en temps polynomial.
+  On note $pb("P")$ l'ensemble des problèmes de décision qu'on peut résoudre en temps polynomial.
   + Décrire un algorithme polynomial pour décider si une FND est satisfiable.
   + Décrire un algorithme polynomial pour décider si une FNC est une tautologie.
   + On suppose $pb("SAT") ∉ pb("P")$. Peut-on transformer toute formule en une FND équivalente en temps polynomial ? FNC ?
@@ -472,7 +477,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 == Arbre de décision
 
 #definition[Arbre de décision][
-  Un _arbre de décision_ sur $V$ est un arbre binaire fini $T$ tel que :
+  Un _arbre de décision_ sur $V$ est un arbre binaire $T$ tel que :
   - chaque nœud interne est étiqueté par une variable et possède deux fils, reliés par des arêtes étiquetées $0$ et $1$.
   - chaque feuille est étiquetée par $0$ ou $1$.
   - une variable est testée au plus une fois sur un chemin de la racine à une feuille.
@@ -489,9 +494,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   - $φ$ est une tautologie si et seulement si #completer()
 ]
 
-== Algorithme de Quine
-
-L'algorithme de Quine parcourt un arbre de décision de $φ$ par backtracking, en simplifiant à chaque étape.
+== Algorithme de Quine par backtracking
 
 #theoreme[Simplification][
   Tout formule $φ$ est équivalente à une formule $ψ$ telle que $ψ ∈ {top, bot}$ ou $ψ$ ne contient ni $⊤$, ni $⊥$.
@@ -508,8 +511,8 @@ L'algorithme de Quine parcourt un arbre de décision de $φ$ par backtracking, e
 ]
 
 #theoreme[Décomposition de Shannon][
+  Une formule $φ$ est satisfiable si et seulement si l'une des deux formules $substituer(φ, x, ⊥)$, $substituer(φ, x, ⊤)$ est satisfiable :
   $ φ ≡ (¬ x ∧ substituer(φ, x, ⊥)) ∨ (x ∧ substituer(φ, x, ⊤)). $
-  Ainsi, $φ$ est satisfiable si et seulement si l'une des deux formules $substituer(φ, x, ⊥)$, $substituer(φ, x, ⊤)$ est satisfiable.
 ]
 
 #slide()
