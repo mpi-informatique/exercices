@@ -378,6 +378,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   - Une _clause_ est une disjonction $∨$ de littéraux, un _terme_ est une conjonction $∧$ de littéraux.
   - Une _forme normale conjonctive_ (FNC) est une conjonction de clauses : #box[$(x ∨ z) ∧ (¬ y ∨ z)$].
   - Une _forme normale disjonctive_ (FND) est une disjonction de termes : #box[$(x ∧ ¬ y) ∨ z$].
+  #v(-0.4em)
   Une conjonction vide vaut $⊤$, une disjonction vide vaut $⊥$.
 ]
 
