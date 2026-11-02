@@ -20,6 +20,8 @@
 #show: cours-et-presentation.with(titre: "Logique propositionnelle (MP2I)", niveau: "MPI")
 #set text(size: 10.5pt) if not est-presentation()
 #show <syntaxe>: set block(above: 0pt) if not est-presentation()
+#show <formes-normales>: set block(below: 0.4em) if not est-presentation()
+#show <forme-normale-negative>: set block(above: 0.4em) if not est-presentation()
 
 = Syntaxe <syntaxe>
 
@@ -345,9 +347,9 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) (φ_i ∨ ψ_j). $
 ]
 
-= Formes normales
+= Formes normales <formes-normales>
 
-== Forme normale négative
+== Forme normale négative <forme-normale-negative>
 
 #definition[Forme normale négative][
   Une formule logique est en _forme normale négative_ (FNN) si ses négations ne porte que sur des variables.
