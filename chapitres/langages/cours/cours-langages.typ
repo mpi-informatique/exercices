@@ -1,7 +1,7 @@
 #import "/load.typ": est-corrige, est-presentation
 #import "/load.typ": slide
 #import "/load.typ": (
-  article-only, cours-et-presentation, hp, item-by-item, liste-cours, only, pause, slides-only, solution,
+  article-only, cours-et-presentation, hp, item-by-item, liste-cours, marge, only, pause, slides-only, solution,
   taille-presentation,
 )
 #import "/load.typ": automate, completer, theoremes
@@ -615,6 +615,10 @@ Suivant le contexte, $a$ peut désigner une lettre, un mot de taille $1$ ou un l
 ]
 
 #hp[= Complément : dénombrabilité et langages non réguliers]
+
+#marge[math][#definition[Infini dénombrable][
+  Un ensemble est _infini dénombrable_ s'il est en bijection avec $ℕ$.
+]]
 
 Soit $Σ$ un alphabet non vide.
 
