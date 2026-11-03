@@ -4,6 +4,7 @@
 
 /// Place une note dans la marge gauche, centrée à côté du contenu, sans réduire sa largeur.
 /// Dans la présentation, renvoie directement le contenu, notamment les titres ouvrant une diapositive.
+/// Pour un titre, annote son rendu afin de préserver ses marges et son attachement au texte suivant.
 /// Le texte utilise par défaut 70 % du corps courant ; passer `taille: 1em` pour un symbole.
 /// Le décalage tient compte de la largeur du repère.
 /// Exemple : `#marge([TP])[Travail pratique à réaliser.]`.
@@ -15,7 +16,7 @@
 /// -> content
 #let marge(note, body, dy: 0pt, taille: 0.7em) = {
   if est-presentation() { return body }
-  context {
+  let composer(body) = context {
     let repere = text(size: taille, weight: "regular", top-edge: "bounds", bottom-edge: "bounds", note)
     grid(
       columns: (0pt, 1fr),
@@ -23,6 +24,12 @@
       align: (left + horizon, left + top),
       box(width: 0pt, move(dx: -measure(repere).width - 0.5em, dy: dy, repere)), body,
     )
+  }
+  if body.func() == heading {
+    show heading: composer
+    body
+  } else {
+    composer(body)
   }
 }
 

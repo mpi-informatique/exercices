@@ -282,6 +282,41 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
 ''', encoding='utf-8')
     subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
                     '--package-path', str(racine / 'packages'), str(source), str(racine / 'marges-algorithmes.pdf')], check=True)
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours, hp, marge
+#show: cours.with(titre: "Marges des titres annotés")
+#let repere(nom) = [#metadata(nom) <marge-titre-test>Texte.]
+#for niveau in (1, 2) {
+  for (nom, annoter) in (("normal", body => body), ("hp", hp), ("marge", body => marge([Math], body))) {
+    let id = str(niveau) + "-" + nom
+    block(breakable: false)[
+      #repere(id + "-avant")
+      #annoter(heading(level: niveau, repere(id + "-titre")))
+      #repere(id + "-apres")
+    ]
+  }
+}
+#context {
+  let marques = query(<marge-titre-test>)
+  let position(nom) = marques.find(it => it.value == nom).location().position()
+  let ecart(id, debut, fin) = {
+    let a = position(id + "-" + debut)
+    let b = position(id + "-" + fin)
+    assert(a.page == b.page)
+    b.y - a.y
+  }
+  for niveau in (1, 2) {
+    for nom in ("hp", "marge") {
+      for (debut, fin) in (("avant", "titre"), ("titre", "apres")) {
+        let normal = ecart(str(niveau) + "-normal", debut, fin)
+        let annote = ecart(str(niveau) + "-" + nom, debut, fin)
+        assert(calc.abs(normal - annote) < 0.1pt, message: nom + ": marge du titre modifiée")
+      }
+    }
+  }
+}
+''', encoding='utf-8')
+    subprocess.run(['typst', 'compile', '--root', str(racine), '--ignore-system-fonts',
+                    '--package-path', str(racine / 'packages'), str(source), str(racine / 'marges-titres.pdf')], check=True)
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, colonnes-cours, theoremes
 #show: cours-et-presentation.with(titre: "Espacement des cadres")
 #let repere(nom) = [#metadata(nom) <espacement-cadre-test>Texte identique.]
