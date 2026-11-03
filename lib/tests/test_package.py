@@ -307,9 +307,10 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
     apres.y - avant.y
   }
   for nom in ("definition", "exercice", "methode") {
-    for disposition in ("colonnes", "coeur") {
-      assert(calc.abs(ecart(nom, disposition) - ecart(nom, "direct")) < 0.1pt, message: nom + " " + disposition + ": espacement différent")
-    }
+    assert(calc.abs(ecart(nom, "coeur") - ecart(nom, "direct")) < 0.1pt, message: nom + ": espacement avec cœur différent")
+    // La grille porte sa propre marge supérieure ; la marge après le premier cadre reste réduite.
+    let reduction = par.spacing.to-absolute() - calc.max(0.5em.to-absolute(), par.leading.to-absolute())
+    assert(calc.abs(ecart(nom, "direct") - ecart(nom, "colonnes") - reduction) < 0.1pt, message: nom + ": espacement en colonnes incorrect")
   }
 }
 ''', encoding='utf-8')
@@ -339,8 +340,8 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
     assert(avant.page == cadre.page)
     cadre.y - avant.y
   }
-  assert(calc.abs(ecart("exercice", "explicite") - ecart("exercice", "defaut") - 0.5em.to-absolute()) < 0.1pt)
-  assert(calc.abs(ecart("theoreme", "explicite") - ecart("theoreme", "defaut") - 0.5em.to-absolute()) < 0.1pt)
+  assert(calc.abs(ecart("exercice", "explicite") - ecart("exercice", "defaut")) < 0.1pt)
+  assert(calc.abs(ecart("theoreme", "explicite") - ecart("theoreme", "defaut")) < 0.1pt)
   let avant = position("bloc-avant")
   let titre = position("titre-exercice")
   assert(avant.page == titre.page)
