@@ -87,24 +87,5 @@
         Le mot vide est rejeté immédiatement dans ce cas.
       ],
     ),
-    question(
-      [
-        Prolongement : montrer que l'intersection d'un langage non-contextuel avec un langage régulier
-        est non-contextuel. Utiliser un automate déterministe et une grammaire en forme normale de Chomsky pour les mots non vides. Une variable $(p,X,q)$ devra engendrer les mots produits par $X$ qui mènent l'automate de $p$ à $q$.
-      ],
-      solution: [
-        Soit l'automate d'états $Q$, d'état initial $q_0$, d'états finaux $F$ et de transition $δ$.
-        Pour chaque règle $X → Y Z$ et tous $p,r,q ∈ Q$, ajouter
-        $ (p,X,q) → (p,Y,r) (r,Z,q) $
-        Pour chaque règle $X → a$ et chaque transition $δ(p,a)=q$, ajouter $(p,X,q) → a$.
-        Une induction sur les arbres prouve que $(p,X,q)$ engendre exactement les mots engendrés par $X$ qui conduisent de $p$ à $q$.
-        En effet, une concaténation passe par un état intermédiaire $r$, et une lettre correspond à une transition de l'automate.
-
-        Prendre un nouvel axiome $A$ et les règles $A → (q_0,S,f)$ pour $f ∈ F$.
-        Elles engendrent exactement les mots non vides de l'intersection.
-        Si le mot vide appartient aux deux langages, ajouter $A → ε$.
-        La grammaire obtenue est non-contextuelle, même si ses règles d'axiome ne sont pas en forme normale.
-      ],
-    ),
   ),
 )
