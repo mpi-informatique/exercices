@@ -160,6 +160,8 @@
   }
   context {
     let palette = style-cadres.get()
+    let espacement = espacement-cadres.get()
+    let espace = if espacement == none { calc.max(0pt, (par.spacing - 0.5em).to-absolute()) } else { espacement }
     let titre-annote = if palette == none or full-title == "" { full-title } else {
       [#full-title#if coeur {
           h(0.4em)
@@ -175,7 +177,7 @@
       }
       block(
         width: 100%,
-        spacing: if palette == none { 0pt } else { auto },
+        spacing: if palette == none { 0pt } else { espace },
         breakable: palette == none,
         stroke: (left: epaisseur-trait + couleur),
         fill: if palette == none { none } else { couleur.lighten(94%) },
@@ -220,7 +222,7 @@
       )
     } else {
       let couleur = palette.at(nom, default: palette.at("theorem", default: rgb("#233e6a")))
-      block(width: 100%, breakable: false, {
+      block(width: 100%, spacing: espace, breakable: false, {
         if full-title != "" {
           block(
             width: 100%,
@@ -248,7 +250,6 @@
         )
       })
     }
-    let espacement = espacement-cadres.get()
     let contenu = if hp and palette == none {
       let note = if coeur { [♡ #text(size: 0.7em)[HP]] } else { text(size: 0.7em)[HP] }
       note-en-marge(box(width: measure(note).width, note), cadre, dy: 0.4em, taille: 1em)
@@ -260,7 +261,6 @@
     if palette == none or espacement != none {
       // Une seule marge extérieure : les marges des blocs voisins fusionnent.
       // Les réserves des titres restent à l'intérieur, même dans les colonnes ou les notes en marge.
-      let espace = if espacement == none { par.spacing } else { espacement }
       block(width: 100%, above: if marge { espace } else { 0pt }, below: espace, contenu)
     } else {
       contenu
@@ -439,7 +439,7 @@
 /// Installe les rendus et les compteurs des cadres dans le document.
 /// À utiliser comme règle `show`.
 ///
-/// - espacement (length, none): Espacement commun ; `none` utilise `par.spacing` en A4 (sa moitié au-dessus des exercices) et conserve celui du rendu coloré.
+/// - espacement (length, none): Marge commune avant et après les cadres ; `none` utilise `par.spacing` réduit de `0.5em`, sans devenir négatif.
 /// - palette (dictionary, none): Couleurs par type anglais ; `none` utilise les cadres A4 monochromes.
 /// - body (content): Document contenant les cadres.
 /// -> content

@@ -339,8 +339,8 @@ Voir @definition-commune, @theoreme-commun et @theoreme-suivant.
     assert(avant.page == cadre.page)
     cadre.y - avant.y
   }
-  assert(calc.abs(ecart("exercice", "explicite") - ecart("exercice", "defaut")) < 0.1pt)
-  assert(calc.abs(ecart("theoreme", "explicite") - ecart("theoreme", "defaut")) < 0.1pt)
+  assert(calc.abs(ecart("exercice", "explicite") - ecart("exercice", "defaut") - 0.5em.to-absolute()) < 0.1pt)
+  assert(calc.abs(ecart("theoreme", "explicite") - ecart("theoreme", "defaut") - 0.5em.to-absolute()) < 0.1pt)
   let avant = position("bloc-avant")
   let titre = position("titre-exercice")
   assert(avant.page == titre.page)
