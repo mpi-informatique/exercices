@@ -37,7 +37,6 @@
   - Des mots $u = u_1 … u_n$ et $v = v_1 … v_p$ de $Σ$ sont _égaux_ si $n = p$ et : $forall i ∈ [|1, n|]$, $u_i = v_i$.
   - On note $Σ^*$ l'ensemble des mots sur $Σ$ et $Σ^+ = Σ^* ∖ {ε}$.
 ])
-
 #underline[Attention] : $ε$ est un mot, pas une lettre.
 
 #slide()
@@ -47,7 +46,7 @@
   - Si $m in Σ^*$, on définit sa _puissance_ par récurrence : $m^0 = ε$ et $m^k = m m^(k - 1)$ pour $k ≥ 1$.
 ]
 
-#underline[Remarque] : $Σ^*$ muni de la concaténation est un _monoïde_ : la concaténation $⋅$ est associative, d'élément neutre $ε$.\ $u ⟼ abs(u)$ est un morphisme de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$ et $|ε| = 0$.
+#underline[Remarque] : $Σ^*$ muni de la concaténation est un _monoïde_ : la concaténation $⋅$ est associative, d'élément neutre $ε$.\ $u ⟼ abs(u)$ est un morphisme de monoides de $(Σ^*, ⋅)$ vers $(ℕ, +)$ : $|u v| = |u| + |v|$ et $|ε| = 0$.
 
 #slide()
 
@@ -225,6 +224,7 @@
 #definition(title: [Concaténation])[
   La _concaténation_ de deux langages $L_1$ et $L_2$ est $L_1 L_2 = {m_1 m_2 ∣ m_1 ∈ L_1, #sep m_2 ∈ L_2}$.
 ]
+
 #underline[Remarque] : La concaténation de langages est associative, d'élément neutre ${ε}$ et d'élément absorbant $∅$.
 
 #slide()
@@ -322,7 +322,7 @@ Autrement dit : $L^n = underbrace(L … L, n " facteurs") = {m_1 … m_n ∣ m_1
   L'ensemble $Lreg$ des _langages réguliers_ sur $Σ$ est le plus petit ensemble de langages, pour l'inclusion, contenant les langages finis sur $Σ$ et stable par union, concaténation et étoile de Kleene.
 ]
 
-#underline[Remarque] : Cette définition est similaire à celle de tribu borélienne en maths (plus petite tribu contenant tous les ouverts).
+#marge[math][#underline[Remarque] : Cette définition est similaire à celle de tribu borélienne en maths (plus petite tribu contenant tous les ouverts).]
 
 #slide()
 
@@ -350,7 +350,7 @@ En particulier :
 
 #underline[Attention] :
 - Une union infinie de langages réguliers n'est pas forcément régulière.
-- Un langage particulier n'est pas forcément stable par concaténation.
+- Un langage régulier n'est pas forcément stable par concaténation (exemple ?).
 
 #slide()
 
@@ -414,8 +414,8 @@ Une expression régulière est une notation concise pour décrire un langage ré
 #slide()
 
 #underline[Exemples] : $a^*$, $(a | a b a)^*$ et $a (a | b)^* b$ sont des expressions régulières.
-
-- On utilise seulement les parenthèses nécessaires : $(((a b) c) | d)$ sera noté $a b c | d$. De plus, on note parfois $+$ à la place de $|$.
+#v(-.5em)
+On utilise seulement les parenthèses nécessaires : $(((a b) c) | d)$ sera noté $a b c | d$. De plus, on note parfois $+$ à la place de $|$.
 
 #slide()
 
