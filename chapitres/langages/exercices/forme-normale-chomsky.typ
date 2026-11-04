@@ -33,19 +33,21 @@
         - Suppression des règles unitaires $X → Y$ :
           Construire le graphe de sommets $V$, avec un arc $X → Y$ pour chaque règle unitaire.
           Pour chaque $X$, un parcours donne l'ensemble $U(X)$ des variables accessibles, y compris $X$.
-          Remplacer les règles de la grammaire par les règles $X → α$ telles que $Y → α$ est non unitaire et $Y ∈ U(X)$.
-          Chaque nouvelle règle remplace une chaîne de règles unitaires suivie d'une règle non unitaire, ce qui préserve le langage.
+          - Pour chaque $X$ et chaque $Y ∈ U(X)$, ajouter les règles $X → α$ pour toutes les règles non unitaires $Y → α$.
+            Supprimer ensuite toutes les règles unitaires.
+        - Isolement des terminaux :
+          Dans les membres droits de taille au moins $2$, remplacer chaque terminal $a$ par une variable nouvelle $T_a$, avec la règle $T_a → a$.
+          Conserver les règles de la forme $X → a$.
+        - Réduction aux règles binaires :
+          Remplacer chaque règle $X → X_1 … X_k$, avec $k > 2$, par la chaîne
+          $
+            X → X_1 Y_1, #sep Y_1 → X_2 Y_2, #sep …, #sep
+            Y_(k-2) → X_(k-1) X_k,
+          $
+          où les $Y_i$ sont des variables nouvelles propres à cette règle.
+          Cette chaîne produit exactement $X_1 … X_k$.
 
-        Dans les membres droits de taille au moins $2$, remplacer chaque terminal $a$ par une variable nouvelle $T_a$ et ajouter $T_a → a$.
-        Conserver les règles déjà de la forme $X → a$.
-        Enfin, remplacer chaque règle $X → X_1 … X_k$, pour $k > 2$, par
-        $
-          X → X_1 Y_1, #sep Y_1 → X_2 Y_2, #sep …, #sep
-          Y_(k-2) → X_(k-1) X_k,
-        $
-        avec des variables nouvelles propres à cette règle.
-        Ces chaînes simulent exactement les règles remplacées.
-        Il ne reste que les deux formes requises.
+        On obtient les formes requises.
       ],
     ),
     question(
