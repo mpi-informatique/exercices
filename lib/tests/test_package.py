@@ -35,7 +35,7 @@ with TemporaryDirectory() as dossier:
 #let sujet = public("devoirs/concours/19/mines-ponts-2019-mp-informatique/mines-ponts-2019-mp-informatique.typ").sujet
 #let td = public("chapitres/langages/td/td-grammaire.typ")
 #assert(td.sujet.exercices.len() > 0)
-#assert(public("chapitres/langages/exercices/grammaires-lineaires/grammaires-lineaires.typ").ex.meta.titre != "")
+#assert(public("chapitres/langages/exercices/mcnaughton-yamada/mcnaughton-yamada.typ").ex.meta.titre != "")
 #assert(public("chapitres/maths/determinants/binomiaux.typ").ex.meta.matiere == "mathématiques")
 #show: feuille.with(titre: sujet.titre, exercices: sujet.exercices,
   corrige: sys.inputs.at("corrige", default: "false") == "true")
