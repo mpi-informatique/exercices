@@ -1,8 +1,7 @@
 #import "/load.typ": exercice, question
 #import "/load.typ": sep
 
-// Activer ces trois questions avec --input complements-dyck=true.
-#let complements = sys.inputs.at("complements-dyck", default: "false") == "true"
+#let complements = false
 
 #let ex = exercice(
   meta: (
