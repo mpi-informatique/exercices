@@ -71,7 +71,7 @@
 
       Soient $G = (Σ, V, R, S)$ une telle grammaire et $A = (Σ, Q, q_0, F, δ)$ un ADC sur $Σ$.
       On note $δ^*(p, m)$ l'état atteint depuis $p$ après lecture du mot $m$.
-      On veut construire une grammaire $H$ possédant des variables nouvelles $[p, X, q]$, pour $p, q ∈ Q$ et $X ∈ V$, qui engendrent les mots engendrés par $X$ et conduisant $A$ de $p$ à $q$.
+      On veut construire une grammaire $H$ possédant des variables nouvelles $X_(p, q)$, pour $p, q ∈ Q$ et $X ∈ V$, qui engendrent les mots engendrés par $X$ et conduisant $A$ de $p$ à $q$.
     ],
     question(
       [
@@ -83,11 +83,11 @@
       solution: [
         On ajoute les règles suivantes :
         - pour chaque règle $X → Y Z$ et tous $p, r, q ∈ Q$,
-          $ [p, X, q] → [p, Y, r] [r, Z, q] $
+          $ X_(p, q) → Y_(p, r) Z_(r, q) $
         - pour chaque règle $X → a$ et tout $p ∈ Q$,
-          $ [p, X, δ(p, a)] → a $
+          $ X_(p, δ(p, a)) → a $
         - pour chaque règle $X → ε$ et tout $p ∈ Q$,
-          $ [p, X, p] → ε $
+          $ X_(p, p) → ε $
 
         Le mot produit par $Y$ conduit de $p$ à $r$, puis celui produit par $Z$ conduit de $r$ à $q$.
         Une lettre suit une transition de $A$, tandis que le mot vide laisse l'état inchangé.
@@ -97,12 +97,12 @@
     question(
       [
         Justifier par induction sur les arbres de dérivation que les règles de la @q-intersection-regles donnent, pour tout $m ∈ Σ^*$,
-        $ [p, X, q] ⇒_H^* m quad ⟺ quad X ⇒_G^* m " et " δ^*(p, m) = q. $
+        $ X_(p, q) ⇒_H^* m quad ⟺ quad X ⇒_G^* m " et " δ^*(p, m) = q. $
         Ajouter un nouvel axiome et ses règles pour que $H$ engendre $cal(L)(G) ∩ cal(L)(A)$.
         Vérifier le cas du mot vide.
       ],
       solution: [
-        Dans le sens direct, on raisonne par induction sur la hauteur d'un arbre de $H$ enraciné en $[p, X, q]$.
+        Dans le sens direct, on raisonne par induction sur la hauteur d'un arbre de $H$ enraciné en $X_(p, q)$.
         Une règle terminale ou vide fournit immédiatement la propriété.
         Pour une règle binaire, les deux sous-arbres produisent des mots $u$ et $v$ tels que
         $ Y ⇒_G^* u, #sep Z ⇒_G^* v, #sep δ^*(p, u) = r, #sep δ^*(r, v) = q. $
@@ -112,10 +112,10 @@
         Si sa première règle est $X → a$ ou $X → ε$, la règle correspondante de $H$ convient.
         Sinon, elle est de la forme $X → Y Z$ et les deux sous-arbres produisent $u$ et $v$, avec $m = u v$.
         Posons $r = δ^*(p, u)$.
-        Les hypothèses d'induction donnent les dérivations depuis $[p, Y, r]$ et $[r, Z, q]$.
-        La règle binaire de $H$ permet donc d'engendrer $m$ depuis $[p, X, q]$.
+        Les hypothèses d'induction donnent les dérivations depuis $Y_(p, r)$ et $Z_(r, q)$.
+        La règle binaire de $H$ permet donc d'engendrer $m$ depuis $X_(p, q)$.
 
-        On choisit un nouvel axiome $S'$ et on ajoute $S' → [q_0, S, f]$ pour tout $f ∈ F$.
+        On choisit un nouvel axiome $S'$ et on ajoute $S' → S_(q_0, f)$ pour tout $f ∈ F$.
         Il engendre exactement les mots de $cal(L)(G)$ conduisant de $q_0$ à un état final, soit $cal(L)(G) ∩ cal(L)(A)$.
         En particulier, $ε$ est engendré si et seulement si $S ⇒_G^* ε$ et $q_0 ∈ F$.
         La construction traite donc aussi le mot vide, sans ajout de règle particulière à l'axiome.
