@@ -69,24 +69,9 @@ def documents(selection, signature, categorie=None):
                      signature, *inputs, exercice=kind == 'exercice')
 
 
-def tests(signature):
+def tests():
     for script in ('test_package.py', 'test_sources.py', 'test_ci.py'):
         run([sys.executable, ROOT / 'lib/tests' / script])
-    for mode in ('feuille', 'sujet'):
-        for corrige in (False, True):
-            variante = 'corrige' if corrige else 'enonce'
-            source = 'lib/tests/pagination-colle.typ'
-            compiler(source, Path('build/lib/tests/pagination-colle') / mode / pdf_filename(source, variante), signature,
-                     'mode=' + mode, 'corrige=' + str(corrige).lower())
-    for source, inputs in (
-        ('points', ()), ('points', ('corrige=true',)), ('test', ()),
-        ('bareme', ()), ('bareme', ('corrige=true',)),
-    ):
-        suffixe = '-cor' if inputs else ''
-        compiler(f'lib/tests/{source}.typ', f'build/lib/tests/{source}{suffixe}.pdf', signature, *inputs)
-    for mode in ('cours', 'presentation'):
-        compiler('lib/tests/repartition-formules.typ', f'build/lib/tests/repartition-formules-{mode}.pdf', signature,
-                 'format=' + mode)
     # Les tests restent à côté du code publié, sans liste de chemins à maintenir.
     for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('corrige.ml')):
         run([OCAML, '-I', test.parent, test])
@@ -150,7 +135,7 @@ def main():
     if args.action in ('docs', 'check'):
         compiler('docs/api.typ', 'build/docs/api.pdf', signature)
     if args.action in ('test', 'check'):
-        tests(signature)
+        tests()
     if args.action == 'check':
         modeles(signature)
 

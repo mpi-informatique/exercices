@@ -15,7 +15,7 @@ nix develop .
 | `just install` | Installer le package pour Tinymist et les outils hors de Nix. |
 | `just c chemin.typ` | Compiler les variantes d'une ressource. |
 | `just w chemin.typ corrige` | Surveiller une variante : `enonce`, `corrige`, `cours` ou `presentation`. |
-| `just test` / `just check` | Tester le code et l'API / tout compiler et vérifier. |
+| `just test` / `just check` | Tester les fonctions essentielles / tout compiler et vérifier. |
 | `just docs` | Générer la référence de l'API dans `build/docs/api.pdf`. |
 | `just web-install` | Installer ou actualiser les dépendances du site. |
 | `just web --open` / `just web-stop` | Lancer / arrêter le site local. |

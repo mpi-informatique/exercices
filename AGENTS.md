@@ -18,7 +18,8 @@ Ces consignes s'appliquent à `exercices` et `exercices-prive`. Le `AGENTS.md` d
 
 ## Vérification et livraison
 
-- Pour les changements de contenu pédagogique, compiler uniquement les fichiers et variantes concernés et tester le code modifié. Pour la documentation et les consignes seules, contrôler le diff et les liens modifiés. Réserver `just check` aux changements de bibliothèque ou d'outillage. Annoncer les vérifications effectuées ; inspecter les PDF seulement si utile.
+- Pour les changements de contenu pédagogique, compiler uniquement les fichiers et variantes concernés et tester le code modifié. Pour la documentation et les consignes seules, contrôler le diff et les liens modifiés. Choisir les vérifications selon le comportement modifié, y compris pour la bibliothèque et l’outillage. Un réglage visuel ponctuel nécessite seulement une compilation représentative. Réserver `just check` aux changements transversaux ou à une demande explicite de vérification complète. Annoncer les vérifications effectuées ; inspecter les PDF seulement si utile.
+- Garder les tests au strict minimum : couvrir les comportements essentiels, sans doublonner les compilations ni dépendre d’un exercice particulier de la banque. Ne pas ajouter de tests de détails visuels pour une simple modification de présentation.
 - Site, export ou compilation dans le navigateur : arrêter puis relancer le serveur avec `just web-stop` et `just web`, puis vérifier le comportement dans le navigateur intégré de Codex, en conservant si possible la ressource et la variante affichées.
 - Fournir les liens vers les PDF générés utiles à la demande.
 - Dans la réponse de livraison, résumer les modifications effectuées, indiquer explicitement s'il reste du code maladroit (« clunky »), fragile ou inutilement complexe, et fournir des liens cliquables vers les lignes de code importantes lorsqu'il y en a.
