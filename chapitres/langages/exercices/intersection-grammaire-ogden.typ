@@ -33,7 +33,8 @@
       On considère $L_1 = {a^n b^n c^k | n, k ∈ ℕ}$ et $L_2 = {a^n b^n c^n | n ∈ ℕ}$.
     ],
     question([Montrer que $L_1$ est non-contextuel.], solution: [
-      Prendre $S → A C$, $A → a A b ∣ ε$ et $C → c C ∣ ε$.
+      Soit $G$ la grammaire d'axiome $S$ :
+      $ S → A C, #sep A → a A b ∣ ε, #sep C → c C ∣ ε. $
       $A$ engendre exactement les $a^n b^n$ et $C$ les $c^k$ : leur concaténation est $L_1$.
     ]),
     question([Montrer que $L_2$ n'est pas non-contextuel.], solution: [
@@ -55,8 +56,9 @@
         Pour l'union, renommer les variables de deux grammaires afin qu'elles soient disjointes, puis ajouter un nouvel axiome $S$ et les règles $S → S_1 ∣ S_2$.
         Les dérivations choisissent l'une des deux grammaires, d'où exactement l'union.
 
-        Le langage $K = {a^k b^n c^n | k,n ∈ ℕ}$ est non-contextuel :
-        prendre $S → A B$, $A → a A ∣ ε$, $B → b B c ∣ ε$.
+        Soit $G$ la grammaire d'axiome $S$ :
+        $ S → A B, #sep A → a A ∣ ε, #sep B → b B c ∣ ε. $
+        Elle engendre le langage $K = {a^k b^n c^n | k,n ∈ ℕ}$, qui est donc non-contextuel.
         Or $L_1 ∩ K = L_2$, qui n'est pas non-contextuel.
 
         Si le passage au complémentaire préservait les langages non-contextuels, la stabilité par union et l'identité de De Morgan

@@ -52,7 +52,8 @@
         Combien d'applications de règles comporte une dérivation terminale d'un mot de taille $n ≥ 1$ dans une grammaire en forme normale de Chomsky sans règle d'effacement ?
       ],
       solution: [
-        Prendre $S → A B ∣ A C$, $C → S B$, $A → a$ et $B → b$.
+        Soit $G$ la grammaire d'axiome $S$ :
+        $ S → A B ∣ A C, #sep C → S B, #sep A → a, #sep B → b. $
         Le choix $S → A B$ termine par $a b$ ; le choix $S → A C$ simule $S → a S b$.
         Cela engendre exactement le langage demandé.
 

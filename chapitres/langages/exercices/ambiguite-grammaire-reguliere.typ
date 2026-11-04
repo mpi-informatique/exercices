@@ -92,7 +92,8 @@
       Ainsi $L(G) ⊂ L$.
     ]),
     question([Donner une grammaire non ambiguë engendrant $L$ et justifier sa non-ambiguïté.], solution: [
-      Prendre $S → b a S ∣ b$.
+      Soit $G'$ la grammaire d'axiome $S$ :
+      $ S → b a S ∣ b. $
       Pour produire $(b a)^n b$, il faut appliquer $n$ fois la première règle, puis la seconde. Aucun autre choix ne peut produire ce mot : il a un unique arbre d'analyse.
       Cette justification utilise le caractère forcé des choix :
       contenir au plus une variable dans chaque forme ne suffit pas en général à exclure l'ambiguïté.
@@ -103,7 +104,9 @@
       ],
       solution: [
         Soit un automate fini déterministe reconnaissant le langage, d'état initial $q_0$, d'ensemble d'états $Q$, d'états finaux $F$ et de transition $δ$.
-        Introduire une variable $V_q$ pour chaque $q ∈ Q$, prendre $V_(q_0)$ pour axiome, ajouter $V_q → a V_(δ(q,a))$ pour chaque transition définie, et $V_f → ε$ pour chaque $f ∈ F$.
+        Soit $G$ la grammaire de variables $V_q$, pour $q ∈ Q$, d'axiome $V_(q_0)$ et de règles :
+        - $V_q → a V_(δ(q,a))$ pour chaque transition définie
+        - $V_f → ε$ pour chaque $f ∈ F$
 
         Une dérivation terminale correspond exactement à un chemin acceptant dans l'automate, donc la grammaire engendre le langage voulu.
         Pour un mot fixé, le déterminisme impose chaque transition et donc chaque règle qui émet une lettre.
