@@ -69,9 +69,9 @@
       $ X → Y Z, #sep X → a, #sep X → ε, $
       avec $X, Y, Z ∈ V$ et $a ∈ Σ$.
 
-      Soient $G = (Σ, V, R, S)$ une telle grammaire et $B$ un ADC sur $Σ$, d'ensemble d'états $Q$, d'état initial $q_0$, d'états finaux $F$ et de fonction de transition $δ$.
+      Soient $G = (Σ, V, R, S)$ une telle grammaire et $A = (Σ, Q, q_0, F, δ)$ un ADC sur $Σ$.
       On note $δ^*(p, m)$ l'état atteint depuis $p$ après lecture du mot $m$.
-      On veut construire une grammaire $H$ possédant des variables nouvelles $[p, X, q]$, pour $p, q ∈ Q$ et $X ∈ V$, qui engendrent les mots engendrés par $X$ et conduisant $B$ de $p$ à $q$.
+      On veut construire une grammaire $H$ possédant des variables nouvelles $[p, X, q]$, pour $p, q ∈ Q$ et $X ∈ V$, qui engendrent les mots engendrés par $X$ et conduisant $A$ de $p$ à $q$.
     ],
     question(
       [
@@ -90,7 +90,7 @@
           $ [p, X, p] → ε $
 
         Le mot produit par $Y$ conduit de $p$ à $r$, puis celui produit par $Z$ conduit de $r$ à $q$.
-        Une lettre suit une transition de $B$, tandis que le mot vide laisse l'état inchangé.
+        Une lettre suit une transition de $A$, tandis que le mot vide laisse l'état inchangé.
         Il n'y a qu'un nombre fini de règles, car $Q$ et $R$ sont finis.
       ],
     ),
@@ -98,7 +98,7 @@
       [
         Justifier par induction sur les arbres de dérivation que les règles de la @q-intersection-regles donnent, pour tout $m ∈ Σ^*$,
         $ [p, X, q] ⇒_H^* m quad ⟺ quad X ⇒_G^* m " et " δ^*(p, m) = q. $
-        Ajouter un nouvel axiome et ses règles pour que $H$ engendre $cal(L)(G) ∩ cal(L)(B)$.
+        Ajouter un nouvel axiome et ses règles pour que $H$ engendre $cal(L)(G) ∩ cal(L)(A)$.
         Vérifier le cas du mot vide.
       ],
       solution: [
@@ -116,7 +116,7 @@
         La règle binaire de $H$ permet donc d'engendrer $m$ depuis $[p, X, q]$.
 
         On choisit un nouvel axiome $S'$ et on ajoute $S' → [q_0, S, f]$ pour tout $f ∈ F$.
-        Il engendre exactement les mots de $cal(L)(G)$ conduisant de $q_0$ à un état final, soit $cal(L)(G) ∩ cal(L)(B)$.
+        Il engendre exactement les mots de $cal(L)(G)$ conduisant de $q_0$ à un état final, soit $cal(L)(G) ∩ cal(L)(A)$.
         En particulier, $ε$ est engendré si et seulement si $S ⇒_G^* ε$ et $q_0 ∈ F$.
         La construction traite donc aussi le mot vide, sans ajout de règle particulière à l'axiome.
       ],
