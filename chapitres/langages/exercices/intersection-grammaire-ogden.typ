@@ -1,4 +1,4 @@
-#import "/load.typ": exercice, lien, question, sep, theoremes
+#import "/load.typ": exercice, formules-reparties, lien, question, sep, theoremes
 #import theoremes: lemme-sans-numero
 
 // Sources locales : rc/langages/lfcc.pdf, Olivier Carton, § 2.3.2–2.3.3 et 2.4.3.
@@ -6,8 +6,8 @@
 // Référence complémentaire : https://arxiv.org/abs/2209.06809v2.
 
 #let lemme-etoile = lemme-sans-numero(outlined: false, full-title: [Lemme de l'étoile pour les langages non-contextuels (admis)])[
-  Si $L$ est non-contextuel, il existe $N ≥ 1$ tel que tout mot $z ∈ L$ de taille au moins $N$ se décompose en $z = u v w x y$, avec
-  $ abs(v w x) ≤ N, #sep v x ≠ ε, #sep ∀k ∈ NN, #sep u v^k w x^k y ∈ L. $
+  Si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de taille au moins $p$ s'écrit $t = u v w x y$, avec :
+  #formules-reparties($abs(v w x) ≤ p$, $v x ≠ ε$, $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$)
 ]
 
 #let ex = exercice(
