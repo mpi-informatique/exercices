@@ -15,21 +15,20 @@
   ),
   corrections: [
     Corriger l'import du cadre de théorème et utiliser l'API courante de theoremes.
-    L'énoncé initial était le lemme de pompage ordinaire. Énoncer le lemme d'Ogden avec positions marquées et expliciter sa spécialisation utilisée pour les trois premières questions.
+    Conserver la formulation du lemme admis choisie par le professeur, sans introduire les positions marquées.
     Déplacer le prolongement sur l'intersection depuis l'exercice sur la forme normale de Chomsky et le découper en deux questions guidées, suivies d'une application.
     Traiter les productions vides dans la grammaire produit : elles ne relient que deux états identiques.
     Difficulté et durée estimées : 3 sur 5 et 55 minutes.
   ],
   contenu: (
     lemme(title: [d'Ogden (admis)])[
-      Si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que, pour tout mot $t ∈ L$ et tout choix d'au moins $p$ positions marquées dans $t$, on peut écrire $t = u v w x y$, avec :
-      - $v x$ contient au moins une position marquée
-      - $v w x$ contient au plus $p$ positions marquées
+      On admet le lemme de pompage suivant pour les langages non-contextuels :
+      si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de taille au moins $p$ s'écrit $t = u v w x y$, avec :
+      - $abs(v w x) ≤ p$
+      - $v x ≠ ε$
       - $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$
     ],
     [
-      En marquant toutes les positions, on obtient le #emph[lemme de pompage] : tout mot $t ∈ L$ de taille au moins $p$ admet une telle décomposition avec $abs(v w x) ≤ p$ et $v x ≠ ε$.
-
       On considère $L_1 = {a^n b^n c^k | n, k ∈ ℕ}$ et $L_2 = {a^n b^n c^n | n ∈ ℕ}$.
     ],
     question([Montrer que $L_1$ est non-contextuel.], solution: [
