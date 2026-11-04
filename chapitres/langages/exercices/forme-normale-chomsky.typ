@@ -1,9 +1,10 @@
-#import "/load.typ": exercice, question
+#import "/load.typ": exercice, question, theoremes, tp
 #import "/load.typ": sep
+#import theoremes: algorithme, commentaire
 
 #let ex = exercice(
   meta: (
-    titre: "Forme normale de Chomsky et reconnaissance",
+    titre: "Forme normale de Chomsky",
     chapitres: ("grammaires-non-contextuelles", "automates-finis", "algorithmique"),
     algorithmes: ("programmation-dynamique",),
     structures: ("tableau",),
@@ -11,91 +12,59 @@
     niveaux: ("MPI",),
   ),
   contenu: (
-    [Cet exercice introduit un prolongement du cours.
-      Une grammaire $G = (Σ,V,R,S)$ est en forme normale de Chomsky si ses règles sont $X → Y Z$, avec $Y,Z ∈ V$, ou $X → a$, avec $a ∈ Σ$.
+    [Une grammaire $G = (Σ,V,R,S)$ est en forme normale de Chomsky si ses règles sont $X → Y Z$, avec $Y,Z ∈ V$, ou $X → a$, avec $a ∈ Σ$.
       On autorise aussi $S → ε$, à condition que $S$ n'apparaisse dans aucun membre droit.],
     question(
       [
-        Soit $G$ une grammaire non-contextuelle telle que $ε ∉ L(G)$.
-        Montrer qu'il existe une grammaire en forme normale de Chomsky engendrant $L(G)$.
-        Commencer par supprimer les règles d'effacement $X → ε$, puis les règles unitaires $X → Y$.
+        Soit $G$ une grammaire non-contextuelle.
+        Décrire un algorithme pour construire une grammaire en forme normale de Chomsky équivalente à $G$.
       ],
       solution: [
-        Calculer l'ensemble des variables annulables : partir des $X$ tels que $X → ε$, puis ajouter une variable dès qu'une de ses règles ne contient que des variables déjà annulables.
-        Cette procédure termine, car l'ensemble croît dans l'ensemble fini $V$.
-        Par induction sur les arbres d'analyse, elle donne exactement les $X$ tels que $X ⇒^* ε$.
-
-        Pour chaque règle, ajouter tous les membres droits non vides obtenus en supprimant un choix quelconque d'occurrences de variables annulables, puis supprimer les règles d'effacement.
-        Tout arbre produisant un mot non vide se transforme en supprimant ses sous-arbres de rendement vide.
-        Réciproquement, chaque suppression peut être remplacée par une dérivation de $ε$.
-        Le langage de l'axiome est donc préservé, puisque $ε ∉ L(G)$.
-
+        - Suppression des $X → ε$ pour $X ≠ S$ :
+          - Calculer l'ensemble $E = {X ∈ V | X ⇒^* ε}$ des variables engendrant $ε$ :#v(-0.5em)
+            #algorithme[
+              - $E$ ← ∅ #commentaire[Invariant : $E ⊆ {X ∈ V | X ⇒^* ε}$]
+              - *Tant que* $E$ croît : #commentaire[$|E|$ est un variant strictement croissant, majoré par $|V|$]
+                - Pour chaque règle $X → α$ :
+                  - *Si* $α ∈ E^*$ : ajouter $X$ à $E$.
+            ]
+          - Pour chaque règle $X → α$, ajouter toutes les règles possibles de la forme $X → β$ où $β$ est obtenu à partir de $α$ en supprimant un nombre quelconque de variables de $E$.
+          - Supprimer toutes les règles $X → ε$ sauf éventuellement $S → ε$.
         - Suppression des règles unitaires $X → Y$ :
-          Construire le graphe de sommets $V$, avec un arc $X → Y$ pour chaque règle unitaire.
-          Pour chaque $X$, un parcours donne l'ensemble $U(X)$ des variables accessibles, y compris $X$.
-          - Pour chaque $X$ et chaque $Y ∈ U(X)$, ajouter les règles $X → α$ pour toutes les règles non unitaires $Y → α$.
-            Supprimer ensuite toutes les règles unitaires.
+          - Pour chaque $X ∈ V$, un parcours donne l'ensemble $U(X)$ des variables accessibles par des règles unitaires.
+          - Remplacer les règles unitaires par les règles $X → α$ telles que $Y → α$ est non unitaire et $Y ∈ U(X)$.
+
         - Isolement des terminaux :
           Dans les membres droits de taille au moins $2$, remplacer chaque terminal $a$ par une variable nouvelle $T_a$, avec la règle $T_a → a$.
           Conserver les règles de la forme $X → a$.
         - Réduction aux règles binaires :
-          Remplacer chaque règle $X → X_1 … X_k$, avec $k > 2$, par la chaîne
+          Remplacer chaque règle $X → X_1 … X_k$, avec $k > 2$, par :
           $
             X → X_1 Y_1, #sep Y_1 → X_2 Y_2, #sep …, #sep
             Y_(k-2) → X_(k-1) X_k,
           $
-          où les $Y_i$ sont des variables nouvelles propres à cette règle.
-          Cette chaîne produit exactement $X_1 … X_k$.
-
-        On obtient les formes requises.
+          où les $Y_i$ sont des nouvelles variables.
       ],
     ),
     question(
       [
-        Donner une grammaire en forme normale de Chomsky pour ${a^n b^n | n ≥ 1}$.
+        Donner une grammaire en forme normale de Chomsky pour $L = {a^n b^n | n ≥ 1}$.
       ],
       solution: [
-        Soit $G$ la grammaire : $S → A B ∣ A C, #sep C → S B, #sep A → a, #sep B → b$.
-        Le choix $S → A B$ termine par $a b$ ; le choix $S → A C$ simule $S → a S b$.
-        Cela engendre exactement le langage demandé.
+        $L$ est engendré par : $S → A B ∣ A C, #sep C → S B, #sep A → a, #sep B → b$.
       ],
     ),
     question(
       [
-        Soit $G$ une grammaire en forme normale de Chomsky sans règle d'effacement.
-        Déterminer, en fonction de $n$, le nombre d'applications de règles dans une dérivation d'un mot de taille $n ≥ 1$.
+        Soit $G$ une grammaire en forme normale de Chomsky dérivant $S ⇒^p m$.
+        Exprimer $p$ en fonction de $n = abs(m)$.
       ],
       solution: [
         Pour un mot de taille $n$, il y a $n$ règles terminales.
         Partant d'une variable, chaque règle binaire augmente de $1$ le nombre de variables, et chaque règle terminale le diminue de $1$.
-        Il y a donc $n-1$ règles binaires et $2n-1$ applications au total.
+        Il y a donc $n-1$ règles binaires et $p = 2n-1$.
       ],
     ),
-    question(
-      [
-        On fixe une grammaire en forme normale de Chomsky sans règle d'effacement, et un mot $w=w_0 … w_(n-1)$, avec $n ≥ 1$.
-        Pour $0 ≤ i < j ≤ n$, noter $T(i,j)$ l'ensemble des variables engendrant le facteur $w[i:j]$.
-        Donner une récurrence permettant de calculer ces ensembles par tailles croissantes.
-        En déduire un algorithme de reconnaissance et justifier ses complexités pour une grammaire fixée.
-      ],
-      solution: [
-        Pour les facteurs d'une lettre,
-        $ T(i,i+1) = {X ∈ V | X → w_i ∈ R}. $
-        Pour $j-i ≥ 2$,
-        $
-          T(i,j) = ⋃_(i<k<j)
-          {X ∈ V | ∃(X → Y Z) ∈ R, Y ∈ T(i,k), Z ∈ T(k,j)}.
-        $
-        La première règle d'un arbre produisant un facteur de taille au moins $2$ est binaire.
-        Ses deux sous-arbres produisent des facteurs non vides séparés par un indice $k$.
-        Réciproquement, toute telle règle et deux dérivations des facteurs donnent une dérivation du facteur entier.
-        Une récurrence sur la taille prouve donc la formule.
-
-        Remplir la table par tailles croissantes et tester $S ∈ T(0,n)$.
-        Il y a $O(n^2)$ intervalles, $O(n)$ coupures par intervalle, et un nombre constant de règles pour une grammaire fixée.
-        Avec des ensembles représentés par des tableaux booléens indexés par les variables, le temps est $O(n^3)$ et l'espace $O(n^2)$.
-        Le mot vide est rejeté immédiatement dans ce cas.
-      ],
-    ),
+    tp[#underline[Remarque] : L'algorithme CYK permet de tester par programmation dynamique si un mot $m$ est engendré par une grammaire en forme normale de Chomsky en temps $O(|m|^3)$.],
   ),
 )

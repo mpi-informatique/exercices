@@ -1,4 +1,4 @@
-#import "/load.typ": exercice, lien, question, sep, theoremes
+#import "/load.typ": exercice, formules-reparties, lien, question, sep, theoremes
 #import theoremes: lemme
 
 // Sources locales : rc/langages/lfcc.pdf, Olivier Carton, § 2.3.2–2.3.3 et 2.4.3.
@@ -7,7 +7,7 @@
 
 #let ex = exercice(
   meta: (
-    titre: "Intersections et lemme d'Ogden",
+    titre: "Intersection et lemme d'Ogden",
     chapitres: ("grammaires-non-contextuelles", "automates-finis"),
     difficulte: 3,
     niveaux: ("MPI",),
@@ -21,37 +21,32 @@
     Difficulté et durée estimées : 3 sur 5 et 55 minutes.
   ],
   contenu: (
-    lemme(title: [d'Ogden (admis)])[
-      On admet le lemme de pompage suivant pour les langages non-contextuels :
-      si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de taille au moins $p$ s'écrit $t = u v w x y$, avec :
-      - $abs(v w x) ≤ p$
-      - $v x ≠ ε$
-      - $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$
+    lemme(title: [Lemme de l’étoile pour les langages non-contextuels (admis)])[
+      Si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de taille au moins $p$ s'écrit $t = u v w x y$, avec :
+      #formules-reparties($abs(v w x) ≤ p$, $v x ≠ ε$, $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$)
     ],
     [
       On considère $L_1 = {a^n b^n c^k | n, k ∈ ℕ}$ et $L_2 = {a^n b^n c^n | n ∈ ℕ}$.
     ],
     question([Montrer que $L_1$ est non-contextuel.], solution: [
       Soit $G$ la grammaire : $S → A C, #sep A → a A b ∣ ε, #sep C → c C ∣ ε$.
-      $A$ engendre exactement les $a^n b^n$ et $C$ les $c^k$ : leur concaténation est $L_1$.
+      $A$ engendre exactement les $a^n b^n$ et $C$ les $c^k$.
     ]),
     question([Montrer que $L_2$ n'est pas non-contextuel.], solution: [
-      Supposons $L_2$ non-contextuel et prenons $p$ fourni par le lemme de pompage.
+      Supposons $L_2$ non-contextuel et prenons $p$ fourni par le lemme de l'étoile.
       Le mot $a^p b^p c^p$ possède alors une décomposition satisfaisant ses conditions.
-      Puisque $abs(v w x) ≤ p$, ce facteur ne peut contenir à la fois un $a$ et un $c$ :
-      un tel facteur aurait pour taille au moins $p+2$.
+      Puisque $abs(v w x) ≤ p$, ce facteur ne peut contenir à la fois un $a$ et un $c$.
       Une des trois lettres est donc absente de $v x$.
       Pour $i=0$, on retire au moins une lettre puisque $v x ≠ ε$, tandis que le nombre d'occurrences de la lettre absente reste $p$.
       Les trois nombres ne sont plus égaux, donc $u w y ∉ L_2$ : contradiction.
     ]),
     question(
       [
-        Montrer que les langages non-contextuels sont stables par union.
-        En déduire qu'ils ne sont stables ni par intersection ni par passage au complémentaire.
-        Les complémentaires sont pris dans ${a,b,c}^*$.
+        Montrer que l'ensemble des langages non-contextuels est pas stable par union mais pas par intersection ni passage au complémentaire.
       ],
       solution: [
-        Pour l'union, renommer les variables de deux grammaires afin qu'elles soient disjointes, puis ajouter un nouvel axiome $S$ et les règles $S → S_1 ∣ S_2$.
+
+        Pour l'union, renommer les variables de deux grammaires afin qu'elles soient disjointes, puis ajouter une nouvelle variable $S$ avec $S → S_1 ∣ S_2$.
         Les dérivations choisissent l'une des deux grammaires, d'où exactement l'union.
 
         Soit $G$ la grammaire : $S → A B, #sep A → a A ∣ ε, #sep B → b B c ∣ ε$.
@@ -64,61 +59,40 @@
       ],
     ),
     [
-      On cherche maintenant à montrer que l'intersection d'un langage non-contextuel et d'un langage régulier est toujours non-contextuelle.
-      Comme dans l'exercice « #lien("forme-normale-chomsky")[Forme normale de Chomsky] », on se ramène à une grammaire dont les règles ont les formes
-      $ X → Y Z, #sep X → a, #sep X → ε, $
-      avec $X, Y, Z ∈ V$ et $a ∈ Σ$.
+      On veut montrer que l'intersection d'un langage non-contextuel et d'un langage régulier est toujours non-contextuelle.
 
-      Soient $G = (Σ, V, R, S)$ une telle grammaire et $A = (Σ, Q, q_0, F, δ)$ un ADC sur $Σ$.
-      On note $δ^*(p, m)$ l'état atteint depuis $p$ après lecture du mot $m$.
-      On veut construire une grammaire $H$ possédant des variables nouvelles $X_(p, q)$, pour $p, q ∈ Q$ et $X ∈ V$, qui engendrent les mots engendrés par $X$ et conduisant $A$ de $p$ à $q$.
+      Soit $G = (Σ, V, R, S)$ une grammaire sous #lien("forme-normale-chomsky")[Forme normale de Chomsky] et $A = (Σ, Q, q_0, F, δ)$ un ADC sur $Σ$.
+    ],
+    question(
+      [Construire un automate $A_(p, q)$ reconnaissant les étiquettes des chemins de $p ∈ Q$ à $q ∈ Q$ dans $A$.],
+      solution: [$A_(p, q) = (Σ, Q, p, {q}, δ)$.],
+    ),
+    [
+      Soit $H = (Σ, V', R', S')$ une grammaire avec $V' = {X_(p, q) | X ∈ V$ et $p, q ∈ Q}$.
     ],
     question(
       [
-        Donner les règles à ajouter à $H$ pour chaque règle $X → Y Z$, $X → a$ et $X → ε$ de $G$.
-        Pour la première forme, introduire l'état intermédiaire atteint après lecture du mot engendré par $Y$.
-        Pour la dernière, rappeler l'effet de la lecture du mot vide sur l'état de l'automate.
+        Construire $R'$ pour que :
+        $ cal(L)_H (X_(p, q)) = cal(L)_G (X) ∩ cal(L)(A_(p, q)) $
       ],
       label: <q-intersection-regles>,
       solution: [
-        On ajoute les règles suivantes :
-        - pour chaque règle $X → Y Z$ et tous $p, r, q ∈ Q$,
-          $ X_(p, q) → Y_(p, r) Z_(r, q) $
-        - pour chaque règle $X → a$ et tout $p ∈ Q$,
-          $ X_(p, δ(p, a)) → a $
-        - pour chaque règle $X → ε$ et tout $p ∈ Q$,
-          $ X_(p, p) → ε $
-
-        Le mot produit par $Y$ conduit de $p$ à $r$, puis celui produit par $Z$ conduit de $r$ à $q$.
-        Une lettre suit une transition de $A$, tandis que le mot vide laisse l'état inchangé.
-        Il n'y a qu'un nombre fini de règles, car $Q$ et $R$ sont finis.
+        - pour $X → Y Z ∈ R$ et $p, r, q ∈ Q$ : $X_(p, q) → Y_(p, r) Z_(r, q)$
+        - pour $X → a ∈ R$ et $p ∈ Q$ : $X_(p, δ(p, a)) → a$
+        - si $S → ε$ et pour $p ∈ Q$ : $S_(p, p) → ε$
       ],
     ),
     question(
       [
-        Justifier par induction sur les arbres de dérivation que les règles de la @q-intersection-regles donnent, pour tout $m ∈ Σ^*$,
+        Montrer qu'on a alors :
         $ X_(p, q) ⇒_H^* m quad ⟺ quad X ⇒_G^* m " et " δ^*(p, m) = q. $
-        Ajouter un nouvel axiome et ses règles pour que $H$ engendre $cal(L)(G) ∩ cal(L)(A)$.
-        Vérifier le cas du mot vide.
+        Finir la construction de $H$ pour avoir $cal(L)(H) = cal(L)(G) ∩ cal(L)(A)$.
       ],
       solution: [
-        Dans le sens direct, on raisonne par induction sur la hauteur d'un arbre de $H$ enraciné en $X_(p, q)$.
-        Une règle terminale ou vide fournit immédiatement la propriété.
-        Pour une règle binaire, les deux sous-arbres produisent des mots $u$ et $v$ tels que
-        $ Y ⇒_G^* u, #sep Z ⇒_G^* v, #sep δ^*(p, u) = r, #sep δ^*(r, v) = q. $
-        Alors $X ⇒_G^* u v$ et $δ^*(p, u v) = q$.
-
-        Réciproquement, on raisonne par induction sur la hauteur d'un arbre de $G$ enraciné en $X$ et produisant $m$.
-        Si sa première règle est $X → a$ ou $X → ε$, la règle correspondante de $H$ convient.
-        Sinon, elle est de la forme $X → Y Z$ et les deux sous-arbres produisent $u$ et $v$, avec $m = u v$.
-        Posons $r = δ^*(p, u)$.
-        Les hypothèses d'induction donnent les dérivations depuis $Y_(p, r)$ et $Z_(r, q)$.
-        La règle binaire de $H$ permet donc d'engendrer $m$ depuis $X_(p, q)$.
-
-        On choisit un nouvel axiome $S'$ et on ajoute $S' → S_(q_0, f)$ pour tout $f ∈ F$.
+        On montre l'équivalence par induction.\
+        On choisit ensuite une nouvelle variable $S'$ et on ajoute $S' → S_(q_0, f)$ pour tout $f ∈ F$.
         Il engendre exactement les mots de $cal(L)(G)$ conduisant de $q_0$ à un état final, soit $cal(L)(G) ∩ cal(L)(A)$.
         En particulier, $ε$ est engendré si et seulement si $S ⇒_G^* ε$ et $q_0 ∈ F$.
-        La construction traite donc aussi le mot vide, sans ajout de règle particulière à l'axiome.
       ],
     ),
     question(

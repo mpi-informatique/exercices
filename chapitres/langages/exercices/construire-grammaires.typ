@@ -10,8 +10,7 @@
     niveaux: ("MPI",),
   ),
   contenu: (
-    [Montrer que chacun des langages suivants est non-contextuel en donnant une grammaire et en justifiant que son langage est exactement celui demandé.
-      Tous les exposants sont des entiers naturels.],
+    [Montrer que chacun des langages suivants est non-contextuel en donnant une grammaire et en justifiant que son langage est exactement celui demandé.],
     question([$L_1 = (a b)^*$.], solution: [
       Soit $G$ la grammaire : $S → a b S ∣ ε$.
       Toute dérivation terminale applique $k$ fois la première règle, puis la seconde, et produit $(a b)^k$. Réciproquement, tout $k ∈ ℕ$ est possible.
