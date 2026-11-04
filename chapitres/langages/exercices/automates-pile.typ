@@ -28,12 +28,12 @@
   ),
   corrections: [
     Création à partir de l'exercice automate_pile de la banque LaTeX et du DM associé.
-    La définition utilise le quadruplet $(Q, q_0, γ_0, δ)$, avec acceptation par pile vide.
+    La définition commence par le quadruplet $(Q, q_0, γ_0, δ)$, avec acceptation par pile vide, puis introduit l'acceptation par état final.
     Un automate fourni permet de commencer par des calculs concrets.
     Les symboles auxiliaires de pile sont notés en lettres grecques minuscules.
-    Une question introduit le déterminisme par la propriété des préfixes pour l'acceptation par pile vide. La suivante fait construire un automate pour les mots bien parenthésés à deux types de parenthèses.
+    Après la construction d'un automate pour les mots bien parenthésés à deux types de parenthèses, une question établit l'équivalence des deux modes d'acceptation. Le déterminisme n'est pas abordé.
     Seul le sens grammaire vers automate est démontré, sans hypothèse de forme normale de Chomsky. La réciproque est admise.
-    L'équivalence est appliquée à la stabilité par intersection avec un langage régulier.
+    L'équivalence avec les grammaires est appliquée à la stabilité par intersection avec un langage régulier, en utilisant l'acceptation par état final.
     Difficulté et durée estimées : 3 sur 5 et une heure.
   ],
   contenu: (
@@ -52,7 +52,7 @@
       Elle lit $a$ et remplace le sommet $γ$ par le mot $β$ : elle fait passer de $(p, γ z)$ à $(q, β z)$.
       Aucune transition n'est possible si la pile est vide.
 
-      Un mot est #emph[accepté] s'il existe un chemin qui lit toutes ses lettres dans l'ordre et termine avec une pile vide. Il n'y a donc pas d'état final : l'acceptation se fait par pile vide.
+      Un mot est #emph[accepté par pile vide] s'il existe un chemin qui lit toutes ses lettres dans l'ordre et termine avec une pile vide. C'est le mode d'acceptation utilisé dans les trois premières questions.
 
       On considère l'automate $A_1$ suivant sur $Σ = {a, b}$, avec $Γ = {γ_0, α}$.
       #exemple()
@@ -91,30 +91,6 @@
         $S → a S b ∣ ε$.
       ],
     ),
-    [
-      Un automate à pile est #emph[déterministe] si :
-      - pour tous $q ∈ Q$, $γ ∈ Γ$ et $a ∈ Σ ∪ {ε}$, l'ensemble $δ(q, a, γ)$ contient au plus un couple.
-      - si $δ(q, ε, γ) ≠ ∅$ alors $δ(q, a, γ) = ∅$ pour toute lettre $a ∈ Σ$.
-
-      La seconde condition interdit de choisir entre une transition qui lit une lettre et une transition qui ne lit rien.
-    ],
-    question(
-      [
-        $A_1$ est-il déterministe ?
-        Montrer que le langage d'un automate à pile déterministe ne peut pas contenir à la fois $u$ et $u v$, avec $v ≠ ε$ et en déduire que $L(A_1)$ ne peut pas être reconnu par un automate à pile déterministe.
-      ],
-      solution: [
-        L'automate n'est pas déterministe : en $(q_0, γ_0)$, on peut lire $a$ ou suivre une transition étiquetée $ε$.
-
-        Supposons que $u$ soit accepté par un automate déterministe.
-        Sur l'entrée $u v$, les transitions sont imposées et reproduisent celles du calcul acceptant de $u$ jusqu'à la lecture complète de $u$.
-        Les éventuelles transitions étiquetées $ε$ qui suivent sont aussi imposées : lorsqu'une telle transition est possible, aucune lettre ne peut être lue.
-        La pile devient donc vide alors que $v$ reste à lire.
-        Aucune transition n'est alors possible, donc $u v$ n'est pas accepté si $v ≠ ε$.
-
-        Comme $ε$ et $a b$ appartiennent tous deux à ${a^n b^n | n ∈ ℕ}$, ce langage ne peut pas être reconnu par un automate déterministe avec acceptation par pile vide.
-      ],
-    ),
     question(
       [
         On note $D$ le langage des mots bien parenthésés avec deux types de parenthèses : `(`, `)` et `[`, `]`.
@@ -147,10 +123,32 @@
         Une grammaire qui engendre $D$ est $S → "(" S ")" S ∣ "[" S "]" S ∣ ε$.
       ],
     ),
+    [
+      On peut aussi munir un automate à pile d'un ensemble d'états finaux $F ⊆ Q$ : il est alors décrit par $(Q, q_0, γ_0, δ, F)$.
+      Un mot est #emph[accepté par état final] s'il existe un chemin qui lit toutes ses lettres et termine dans un état de $F$, quel que soit le contenu de la pile.
+    ],
+    question(
+      [
+        Montrer que tout langage reconnu par pile vide peut être reconnu par état final, et réciproquement.
+        Indication : ajouter un symbole de fond de pile.
+      ],
+      solution: [
+        Dans les deux sens, on ajoute un symbole de pile $ζ ∉ Γ$ et un nouvel état initial $i$.
+        La pile initiale contient $ζ$, et la transition $i limits(⟶)^(ε, ζ, γ_0 ζ) q_0$ initialise la simulation de l'automate donné.
+        On conserve ses transitions : le symbole $ζ$ reste sous la pile simulée.
+
+        - _De la pile vide vers un état final._ On ajoute un unique état final $f$, sans transition sortante, et, depuis tout état $q$ de l'automate donné, la transition $q limits(⟶)^(ε, ζ, ζ) f$.
+          On peut ainsi atteindre $f$ exactement lorsque la pile simulée est vide. Le langage reconnu est donc inchangé.
+        - _D'un état final vers la pile vide._ On ajoute un état $v$.
+          Depuis chaque ancien état final et pour tout $γ ∈ Γ ∪ {ζ}$, on ajoute une transition étiquetée $ε, γ, γ$ vers $v$.
+          En $v$, les seules transitions sont les boucles étiquetées $ε, γ, ε$, qui vident la pile sans lire de lettre.
+          Un calcul acceptant doit donc avoir lu tout le mot avant d'entrer en $v$, depuis un ancien état final. Réciproquement, tout calcul acceptant de l'ancien automate peut être prolongé par ce vidage.
+      ],
+    ),
     question(
       [
         Soit $G = (Σ, V, R, S)$ une grammaire non-contextuelle.
-        Construire un automate à pile à un seul état qui reconnaît $cal(L)(G)$.
+        Construire un automate à pile à un seul état qui reconnaît $cal(L)(G)$ par pile vide.
       ],
       solution: [
         On prend un seul état $q$, l'alphabet de pile $Γ = Σ ∪ V$, le symbole de pile initial $S$ et les boucles suivantes :
@@ -172,7 +170,7 @@
     ),
     [
       On admet réciproquement que tout langage reconnu par un automate à pile est non-contextuel.
-      Les automates à pile et les grammaires non-contextuelles définissent donc la même classe de langages.
+      Les automates à pile, avec acceptation par pile vide ou par état final, et les grammaires non-contextuelles définissent donc la même classe de langages.
     ],
     question(
       [
@@ -180,13 +178,12 @@
         En utilisant l'équivalence précédente, montrer que $L ∩ R$ est non-contextuel.
       ],
       solution: [
-        Soient $A$ un automate à pile reconnaissant $L$ et $B$ un automate fini déterministe reconnaissant $R$.
+        Soient $A$ un automate à pile reconnaissant $L$ par état final et $B$ un automate fini reconnaissant $R$.
         On construit un automate à pile dont les états sont des couples $(q, p)$ d'états de $A$ et de $B$.
+        Son état initial est le couple des états initiaux, et sa pile initiale est celle de $A$.
         Chaque transition simule une transition de $A$ et fait avancer $B$ sur la même lettre. Si $A$ ne lit aucune lettre, l'état de $B$ reste inchangé.
 
-        Un état initial auxiliaire place d'abord le symbole initial de $A$ au-dessus d'un nouveau symbole de fond $ζ$, puis passe au couple des états initiaux de $A$ et de $B$.
-        Lorsque la pile simulée de $A$ est vide, il ne reste que $ζ$ : on autorise son dépilage sans lire de lettre seulement si l'état de $B$ est final.
-
+        Les états finaux sont les couples dont les deux composantes sont finales.
         Un mot est ainsi accepté exactement lorsqu'il est accepté par $A$ et par $B$.
         Cet automate reconnaît donc $L ∩ R$, qui est non-contextuel par l'équivalence précédente.
       ],
