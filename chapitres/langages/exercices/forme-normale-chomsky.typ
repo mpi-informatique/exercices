@@ -53,13 +53,19 @@
     question(
       [
         Donner une grammaire en forme normale de Chomsky pour ${a^n b^n | n ≥ 1}$.
-        Combien d'applications de règles comporte une dérivation terminale d'un mot de taille $n ≥ 1$ dans une grammaire en forme normale de Chomsky sans règle d'effacement ?
       ],
       solution: [
         Soit $G$ la grammaire : $S → A B ∣ A C, #sep C → S B, #sep A → a, #sep B → b$.
         Le choix $S → A B$ termine par $a b$ ; le choix $S → A C$ simule $S → a S b$.
         Cela engendre exactement le langage demandé.
-
+      ],
+    ),
+    question(
+      [
+        Soit $G$ une grammaire en forme normale de Chomsky sans règle d'effacement.
+        Déterminer, en fonction de $n$, le nombre d'applications de règles dans une dérivation d'un mot de taille $n ≥ 1$.
+      ],
+      solution: [
         Pour un mot de taille $n$, il y a $n$ règles terminales.
         Partant d'une variable, chaque règle binaire augmente de $1$ le nombre de variables, et chaque règle terminale le diminue de $1$.
         Il y a donc $n-1$ règles binaires et $2n-1$ applications au total.
