@@ -65,7 +65,7 @@
     ),
     [
       On cherche maintenant à montrer que l'intersection d'un langage non-contextuel et d'un langage régulier est toujours non-contextuelle.
-      On admet que toute grammaire peut être transformée, à langage inchangé, en une grammaire dont les règles ont les formes
+      Comme dans l'exercice « Forme normale de Chomsky », on se ramène à une grammaire dont les règles ont les formes
       $ X → Y Z, #sep X → a, #sep X → ε, $
       avec $X, Y, Z ∈ V$ et $a ∈ Σ$.
 
