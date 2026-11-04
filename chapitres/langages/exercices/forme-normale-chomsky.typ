@@ -30,9 +30,11 @@
         Réciproquement, chaque suppression peut être remplacée par une dérivation de $ε$.
         Le langage de l'axiome est donc préservé, puisque $ε ∉ L(G)$.
 
-        Pour chaque $X$, calculer les variables $Y$ accessibles par zéro ou plusieurs règles unitaires.
-        Pour chacune, reporter sur $X$ toutes les règles non unitaires de $Y$, puis supprimer les règles unitaires. Un parcours avec marquage traite aussi les cycles.
-        Contracter ou développer les chaînes unitaires prouve l'égalité des langages.
+        - Suppression des règles unitaires $X → Y$ :
+          Construire le graphe de sommets $V$, avec un arc $X → Y$ pour chaque règle unitaire.
+          Pour chaque $X$, un parcours donne l'ensemble $U(X)$ des variables accessibles, y compris $X$.
+          Remplacer les règles de la grammaire par les règles $X → α$ telles que $Y → α$ est non unitaire et $Y ∈ U(X)$.
+          Chaque nouvelle règle remplace une chaîne de règles unitaires suivie d'une règle non unitaire, ce qui préserve le langage.
 
         Dans les membres droits de taille au moins $2$, remplacer chaque terminal $a$ par une variable nouvelle $T_a$ et ajouter $T_a → a$.
         Conserver les règles déjà de la forme $X → a$.
