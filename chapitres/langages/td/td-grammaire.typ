@@ -5,12 +5,13 @@
 #import "/chapitres/langages/exercices/langages-engendres-grammaires.typ": ex as langages
 #import "/chapitres/langages/exercices/forme-normale-chomsky.typ": ex as chomsky
 #import "/chapitres/langages/exercices/intersection-grammaire-ogden.typ": ex as intersections
+#import "/chapitres/langages/exercices/automates-pile.typ": ex as pile
 #import "/chapitres/langages/exercices/ambiguite-grammaire-reguliere.typ": ex as ambiguite
 #import "/chapitres/langages/exercices/dyck-grammaires-denombrement.typ": ex as dyck
 
 #let sujet = (
   titre: "TD : Grammaires",
-  exercices: (miroir, construire, langages, chomsky, intersections, ambiguite, dyck),
+  exercices: (miroir, construire, langages, chomsky, intersections, pile, ambiguite, dyck),
   bareme: none,
 )
 
