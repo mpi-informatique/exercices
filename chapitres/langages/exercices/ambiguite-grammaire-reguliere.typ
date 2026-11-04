@@ -92,8 +92,7 @@
       Ainsi $L(G) ⊂ L$.
     ]),
     question([Donner une grammaire non ambiguë engendrant $L$ et justifier sa non-ambiguïté.], solution: [
-      Soit $G'$ la grammaire d'axiome $S$ :
-      $ S → b a S ∣ b. $
+      Soit $G'$ la grammaire d'axiome $S$ : $S → b a S ∣ b$.
       Pour produire $(b a)^n b$, il faut appliquer $n$ fois la première règle, puis la seconde. Aucun autre choix ne peut produire ce mot : il a un unique arbre d'analyse.
       Cette justification utilise le caractère forcé des choix :
       contenir au plus une variable dans chaque forme ne suffit pas en général à exclure l'ambiguïté.
