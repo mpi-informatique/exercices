@@ -1,9 +1,14 @@
-#import "/load.typ": exercice, formules-reparties, lien, question, sep, theoremes
-#import theoremes: lemme
+#import "/load.typ": exercice, lien, question, sep, theoremes
+#import theoremes: lemme-sans-numero
 
 // Sources locales : rc/langages/lfcc.pdf, Olivier Carton, § 2.3.2–2.3.3 et 2.4.3.
 // Voir aussi ups-mpi/mpi_gluher/Exercices/Lemme_Ogden.tex et son corrigé.
 // Référence complémentaire : https://arxiv.org/abs/2209.06809v2.
+
+#let lemme-etoile = lemme-sans-numero(outlined: false, full-title: [Lemme de l'étoile pour les langages non-contextuels (admis)])[
+  Si $L$ est non-contextuel, il existe $N ≥ 1$ tel que tout mot $z ∈ L$ de taille au moins $N$ se décompose en $z = u v w x y$, avec
+  $ abs(v w x) ≤ N, #sep v x ≠ ε, #sep ∀k ∈ NN, #sep u v^k w x^k y ∈ L. $
+]
 
 #let ex = exercice(
   meta: (
@@ -21,10 +26,7 @@
     Difficulté et durée estimées : 3 sur 5 et 55 minutes.
   ],
   contenu: (
-    lemme(title: [Lemme de l’étoile pour les langages non-contextuels (admis)])[
-      Si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de taille au moins $p$ s'écrit $t = u v w x y$, avec :
-      #formules-reparties($abs(v w x) ≤ p$, $v x ≠ ε$, $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$)
-    ],
+    lemme-etoile,
     [
       On considère $L_1 = {a^n b^n c^k | n, k ∈ ℕ}$ et $L_2 = {a^n b^n c^n | n ∈ ℕ}$.
     ],
