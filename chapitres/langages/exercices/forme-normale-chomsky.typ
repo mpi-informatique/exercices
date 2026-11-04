@@ -65,6 +65,6 @@
         Il y a donc $n-1$ règles binaires et $p = 2n-1$.
       ],
     ),
-    tp[#underline[Remarque] : L'algorithme CYK permet de tester par programmation dynamique si un mot $m$ est engendré par une grammaire en forme normale de Chomsky en temps $O(|m|^3)$.],
+    tp[#underline[Remarque] : L'algorithme CYK permet de tester par programmation dynamique si un mot $m$ est engendré par une grammaire en forme normale de Chomsky, en temps $O(|m|^3)$.],
   ),
 )

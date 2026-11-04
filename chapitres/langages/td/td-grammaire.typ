@@ -10,7 +10,7 @@
 
 #let sujet = (
   titre: "TD : Grammaires",
-  exercices: (construire, langages, chomsky, intersections, pile, ambiguite, dyck),
+  exercices: (construire, langages, chomsky, intersections, pile, dyck),
   bareme: none,
 )
 

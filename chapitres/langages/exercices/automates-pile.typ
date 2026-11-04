@@ -124,22 +124,21 @@
       ],
     ),
     [
-      On peut aussi munir un automate à pile d'un ensemble d'états finaux $F ⊆ Q$ : il est alors décrit par $(Q, q_0, γ_0, δ, F)$.
+      On peut aussi munir un automate à pile d'un ensemble d'états finaux $F ⊂ Q$ : il est alors décrit par $(Q, q_0, γ_0, δ, F)$.
       Un mot est #emph[accepté par état final] s'il existe un chemin qui lit toutes ses lettres et termine dans un état de $F$, quel que soit le contenu de la pile.
     ],
     question(
       [
         Montrer que tout langage reconnu par pile vide peut être reconnu par état final, et réciproquement.
-        Indication : ajouter un symbole de fond de pile.
       ],
       solution: [
         Dans les deux sens, on ajoute un symbole de pile $ζ ∉ Γ$ et un nouvel état initial $i$.
         La pile initiale contient $ζ$, et la transition $i limits(⟶)^(ε, ζ, γ_0 ζ) q_0$ initialise la simulation de l'automate donné.
         On conserve ses transitions : le symbole $ζ$ reste sous la pile simulée.
 
-        - _De la pile vide vers un état final._ On ajoute un unique état final $f$, sans transition sortante, et, depuis tout état $q$ de l'automate donné, la transition $q limits(⟶)^(ε, ζ, ζ) f$.
+        - _De pile vide vers état final._ On ajoute un unique état final $f$, sans transition sortante, et, depuis tout état $q$ de l'automate donné, la transition $q limits(⟶)^(ε, ζ, ζ) f$.
           On peut ainsi atteindre $f$ exactement lorsque la pile simulée est vide. Le langage reconnu est donc inchangé.
-        - _D'un état final vers la pile vide._ On ajoute un état $v$.
+        - _D'état final vers pile vide._ On ajoute un état $v$.
           Depuis chaque ancien état final et pour tout $γ ∈ Γ ∪ {ζ}$, on ajoute une transition étiquetée $ε, γ, γ$ vers $v$.
           En $v$, les seules transitions sont les boucles étiquetées $ε, γ, ε$, qui vident la pile sans lire de lettre.
           Un calcul acceptant doit donc avoir lu tout le mot avant d'entrer en $v$, depuis un ancien état final. Réciproquement, tout calcul acceptant de l'ancien automate peut être prolongé par ce vidage.

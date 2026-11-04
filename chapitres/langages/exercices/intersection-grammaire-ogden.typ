@@ -97,10 +97,9 @@
     ),
     question(
       [
-        En déduire que le langage
+        En déduire que le langage suivant n'est pas non-contextuel :
         $ E = {m ∈ {a, b, c}^* | abs(m)_a = abs(m)_b = abs(m)_c} $
-        n'est pas non-contextuel.
-        Indication : imposer un ordre aux lettres en intersectant avec un langage régulier.
+
       ],
       solution: [
         Le langage $K = a^* b^* c^*$ est régulier et $E ∩ K = L_2$.
