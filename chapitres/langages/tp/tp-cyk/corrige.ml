@@ -17,7 +17,8 @@ let init g u =
   let k = g.n_variables in
   let t = Array.make (n + 1) [||] in
   for i = 0 to n do
-    t.(i) <- Array.make_matrix n k false
+    (* Garder une colonne pour t.(0).(0).(0) lorsque le mot est vide. *)
+    t.(i) <- Array.make_matrix (max 1 n) k false
   done;
   if g.epsilon then t.(0).(0).(0) <- true;
 
@@ -59,7 +60,8 @@ let arbre_derivation g u : arbre option =
   let k = g.n_variables in
   let t = Array.make (n + 1) [||] in
   for i = 0 to n do
-    t.(i) <- Array.make_matrix n k None
+    (* Garder une colonne pour la dérivation du mot vide. *)
+    t.(i) <- Array.make_matrix (max 1 n) k None
   done;
   if g.epsilon then t.(0).(0).(0) <- Some Vide;
   let rec aux = function
@@ -98,6 +100,16 @@ let exemples = [
 ]
 
 module Tests = struct
+  let () =
+    List.iter (fun epsilon ->
+      let g = { g0 with epsilon } in
+      assert ((init g "").(0).(0).(0) = epsilon);
+      assert (cyk g "" = epsilon);
+      assert (arbre_derivation g "" = (if epsilon then Some Vide else None));
+      assert (cyk g "b");
+      assert (not (cyk g "aaa"))
+    ) [false; true]
+
   let () =
     assert (exemples = [true; false; true; false]);
     assert (cyk g0 "b");
