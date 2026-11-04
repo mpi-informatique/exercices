@@ -31,7 +31,7 @@
 ///
 /// - body (content): Texte du commentaire.
 /// -> content
-#let commentaire(body) = text(fill: gray)[`//` #body]
+#let commentaire(body) = text(fill: luma(40%))[`//` #body]
 
 #let espacement-cadres = state("exercices-espacement-cadres", none)
 #let style-cadres = state("exercices-style-cadres", none)
