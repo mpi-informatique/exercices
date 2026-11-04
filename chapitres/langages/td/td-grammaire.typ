@@ -1,6 +1,5 @@
 #import "/load.typ": est-corrige
 #import "/load.typ": feuille
-#import "/chapitres/langages/exercices/miroir-langage-non-contextuel.typ": ex as miroir
 #import "/chapitres/langages/exercices/construire-grammaires.typ": ex as construire
 #import "/chapitres/langages/exercices/langages-engendres-grammaires.typ": ex as langages
 #import "/chapitres/langages/exercices/forme-normale-chomsky.typ": ex as chomsky
@@ -11,7 +10,7 @@
 
 #let sujet = (
   titre: "TD : Grammaires",
-  exercices: (miroir, construire, langages, chomsky, intersections, pile, ambiguite, dyck),
+  exercices: (construire, langages, chomsky, intersections, pile, ambiguite, dyck),
   bareme: none,
 )
 
