@@ -63,7 +63,7 @@
       Leurs arbres sont différents : la racine a respectivement une règle d'effacement et une règle de concaténation. Cela suffit à établir l'ambiguïté.
     ]),
     question([Donner une grammaire non ambiguë engendrant $D$.], solution: [
-      Soit $G'$ la grammaire d'axiome $S$ : $S → a S b S ∣ ε$.
+      Soit $G'$ la grammaire : $S → a S b S ∣ ε$.
       La décomposition unique établie précédemment montre par récurrence sur la taille que chaque mot non vide possède un unique arbre, dont les deux sous-arbres engendrent $u$ et $v$. Le mot vide utilise nécessairement $S → ε$.
       La même décomposition montre que tous les mots de Dyck sont engendrés, et l'induction sur les arbres prouve l'inclusion réciproque.
     ]),

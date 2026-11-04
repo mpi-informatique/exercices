@@ -10,7 +10,7 @@
     niveaux: ("MPI",),
   ),
   contenu: (
-    [Déterminer les langages engendrés par les grammaires suivantes, d'axiome $S$, en prouvant les deux inclusions. On note $abs(w)_a$ le nombre d'occurrences de $a$ dans $w$.],
+    [Déterminer les langages engendrés par les grammaires suivantes, en prouvant les deux inclusions. On note $abs(w)_a$ le nombre d'occurrences de $a$ dans $w$.],
     question(
       [
         $
