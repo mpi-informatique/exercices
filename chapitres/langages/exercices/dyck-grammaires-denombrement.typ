@@ -1,6 +1,9 @@
 #import "/load.typ": exercice, question
 #import "/load.typ": sep
 
+// Activer ces trois questions avec --input complements-dyck=true.
+#let complements = sys.inputs.at("complements-dyck", default: "false") == "true"
+
 #let ex = exercice(
   meta: (
     titre: "Mots de Dyck : grammaires et dénombrement",
@@ -120,65 +123,69 @@
         $ C_n=(2n)!/(n!(n+1)!)=1/(n+1) binom(2n, n). $
       ],
     ),
-    question(
-      [
-        Variante sans séries entières : parmi les mots contenant $n$ lettres $a$ et $n$ lettres $b$, transformer ceux qui ne sont pas de Dyck en échangeant $a$ et $b$ dans leur premier préfixe de hauteur $-1$.
-        Montrer que cette transformation est une bijection avec les mots contenant $n+1$ lettres $a$ et $n-1$ lettres $b$, puis retrouver la formule de $C_n$.
-      ],
-      solution: [
-        Pour $n ≥ 1$, tout mot équilibré qui n'est pas de Dyck atteint la hauteur $-1$.
-        Son premier préfixe de hauteur $-1$ contient un $b$ de plus que de $a$.
-        L'échange ajoute donc un $a$ et retire un $b$ dans le mot entier.
-        Les hauteurs des préfixes stricts de la partie échangée étaient non négatives :
-        après échange, elles sont non positives, et la fin de cette partie est le premier passage à $1$.
+    ..if complements {
+      (
+        question(
+          [
+            Variante sans séries entières : parmi les mots contenant $n$ lettres $a$ et $n$ lettres $b$, transformer ceux qui ne sont pas de Dyck en échangeant $a$ et $b$ dans leur premier préfixe de hauteur $-1$.
+            Montrer que cette transformation est une bijection avec les mots contenant $n+1$ lettres $a$ et $n-1$ lettres $b$, puis retrouver la formule de $C_n$.
+          ],
+          solution: [
+            Pour $n ≥ 1$, tout mot équilibré qui n'est pas de Dyck atteint la hauteur $-1$.
+            Son premier préfixe de hauteur $-1$ contient un $b$ de plus que de $a$.
+            L'échange ajoute donc un $a$ et retire un $b$ dans le mot entier.
+            Les hauteurs des préfixes stricts de la partie échangée étaient non négatives :
+            après échange, elles sont non positives, et la fin de cette partie est le premier passage à $1$.
 
-        Réciproquement, un mot avec $n+1$ lettres $a$ et $n-1$ lettres $b$ finit à hauteur $2$
-        et possède donc un premier préfixe de hauteur $1$.
-        Échanger les lettres dans ce préfixe redonne un mot équilibré dont le premier passage à $-1$ termine ce préfixe. Les deux opérations sont inverses.
-        Il y a donc $binom(2n, n-1)$ mots équilibrés non Dyck, d'où
-        $ C_n=binom(2n, n)-binom(2n, n-1)=1/(n+1) binom(2n, n). $
-        Pour $n=0$, la formule donne également $C_0=1$.
-      ],
-    ),
-    question(
-      [
-        On autorise plusieurs sortes de parenthèses, par exemple `()`, `[]` et `{}`.
-        Décrire un algorithme en temps linéaire pour reconnaître les mots bien parenthésés.
-        Pourquoi un simple compteur ne suffit-il plus ?
-      ],
-      solution: [
-        Parcourir le mot en maintenant une pile des parenthèses ouvrantes non encore refermées.
-        Empiler chaque ouvrante. Pour une fermante, rejeter si la pile est vide ou si son sommet est d'un autre type, sinon dépiler.
-        Accepter à la fin exactement si la pile est vide.
-        La pile mémorise dans leur ordre d'imbrication les ouvertures en attente :
-        chaque fermante doit correspondre à la dernière ouverture.
-        Cet invariant prouve la correction.
+            Réciproquement, un mot avec $n+1$ lettres $a$ et $n-1$ lettres $b$ finit à hauteur $2$
+            et possède donc un premier préfixe de hauteur $1$.
+            Échanger les lettres dans ce préfixe redonne un mot équilibré dont le premier passage à $-1$ termine ce préfixe. Les deux opérations sont inverses.
+            Il y a donc $binom(2n, n-1)$ mots équilibrés non Dyck, d'où
+            $ C_n=binom(2n, n)-binom(2n, n-1)=1/(n+1) binom(2n, n). $
+            Pour $n=0$, la formule donne également $C_0=1$.
+          ],
+        ),
+        question(
+          [
+            On autorise plusieurs sortes de parenthèses, par exemple `()`, `[]` et `{}`.
+            Décrire un algorithme en temps linéaire pour reconnaître les mots bien parenthésés.
+            Pourquoi un simple compteur ne suffit-il plus ?
+          ],
+          solution: [
+            Parcourir le mot en maintenant une pile des parenthèses ouvrantes non encore refermées.
+            Empiler chaque ouvrante. Pour une fermante, rejeter si la pile est vide ou si son sommet est d'un autre type, sinon dépiler.
+            Accepter à la fin exactement si la pile est vide.
+            La pile mémorise dans leur ordre d'imbrication les ouvertures en attente :
+            chaque fermante doit correspondre à la dernière ouverture.
+            Cet invariant prouve la correction.
 
-        Chaque lettre effectue un nombre constant d'opérations de pile, donc le temps est $O(n)$ et l'espace auxiliaire $O(n)$ dans le pire cas.
-        Un compteur perd les types : `([)]` ne devient jamais négatif et finit à zéro, mais n'est pas bien parenthésé.
-      ],
-    ),
-    question(
-      [
-        Décrire un algorithme en temps linéaire pour trouver la taille du plus long facteur bien parenthésé d'un mot sur ${a,b}$. La réponse vaut zéro si aucun facteur non vide ne convient.
-      ],
-      solution: [
-        Numéroter les lettres de $0$ à $n-1$.
-        Maintenir une pile d'indices, initialement réduite à $[-1]$, et un maximum initialement nul.
-        Sa base est l'indice de la dernière fermante impossible à apparier, ou $-1$ au départ.
-        Au-dessus figurent les indices des ouvrantes encore en attente.
+            Chaque lettre effectue un nombre constant d'opérations de pile, donc le temps est $O(n)$ et l'espace auxiliaire $O(n)$ dans le pire cas.
+            Un compteur perd les types : `([)]` ne devient jamais négatif et finit à zéro, mais n'est pas bien parenthésé.
+          ],
+        ),
+        question(
+          [
+            Décrire un algorithme en temps linéaire pour trouver la taille du plus long facteur bien parenthésé d'un mot sur ${a,b}$. La réponse vaut zéro si aucun facteur non vide ne convient.
+          ],
+          solution: [
+            Numéroter les lettres de $0$ à $n-1$.
+            Maintenir une pile d'indices, initialement réduite à $[-1]$, et un maximum initialement nul.
+            Sa base est l'indice de la dernière fermante impossible à apparier, ou $-1$ au départ.
+            Au-dessus figurent les indices des ouvrantes encore en attente.
 
-        À l'indice $i$, si la lettre est $a$, empiler $i$.
-        Si c'est $b$, dépiler une fois.
-        Si la pile devient vide, remettre $i$ comme nouvelle base : cette fermante ne peut être appariée.
-        Sinon, noter $j$ le sommet et actualiser le maximum avec $i-j$.
+            À l'indice $i$, si la lettre est $a$, empiler $i$.
+            Si c'est $b$, dépiler une fois.
+            Si la pile devient vide, remettre $i$ comme nouvelle base : cette fermante ne peut être appariée.
+            Sinon, noter $j$ le sommet et actualiser le maximum avec $i-j$.
 
-        Dans le dernier cas, l'ouverture appariée vient d'être retirée et le facteur entre $j+1$ et $i$ est bien parenthésé.
-        Il est le plus long facteur bien parenthésé finissant à $i$ : le prolonger vers la gauche ferait franchir soit une fermante non appariée, soit une ouvrante encore non refermée.
-        Tout facteur non vide de Dyck finit par $b$ : le maximum calculé est donc celui demandé.
-        Chaque indice est empilé et dépilé au plus une fois, d'où un temps $O(n)$ et un espace $O(n)$.
-        Pour le mot vide, le parcours n'effectue rien et renvoie zéro.
-      ],
-    ),
+            Dans le dernier cas, l'ouverture appariée vient d'être retirée et le facteur entre $j+1$ et $i$ est bien parenthésé.
+            Il est le plus long facteur bien parenthésé finissant à $i$ : le prolonger vers la gauche ferait franchir soit une fermante non appariée, soit une ouvrante encore non refermée.
+            Tout facteur non vide de Dyck finit par $b$ : le maximum calculé est donc celui demandé.
+            Chaque indice est empilé et dépilé au plus une fois, d'où un temps $O(n)$ et un espace $O(n)$.
+            Pour le mot vide, le parcours n'effectue rien et renvoie zéro.
+          ],
+        ),
+      )
+    } else { () },
   ),
 )
