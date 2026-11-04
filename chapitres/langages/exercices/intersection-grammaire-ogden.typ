@@ -1,4 +1,4 @@
-#import "/load.typ": exercice, question, sep, theoremes
+#import "/load.typ": exercice, lien, question, sep, theoremes
 #import theoremes: lemme
 
 // Sources locales : rc/langages/lfcc.pdf, Olivier Carton, § 2.3.2–2.3.3 et 2.4.3.
@@ -65,7 +65,7 @@
     ),
     [
       On cherche maintenant à montrer que l'intersection d'un langage non-contextuel et d'un langage régulier est toujours non-contextuelle.
-      Comme dans l'exercice « Forme normale de Chomsky », on se ramène à une grammaire dont les règles ont les formes
+      Comme dans l'exercice « #lien("forme-normale-chomsky")[Forme normale de Chomsky] », on se ramène à une grammaire dont les règles ont les formes
       $ X → Y Z, #sep X → a, #sep X → ε, $
       avec $X, Y, Z ∈ V$ et $a ∈ Σ$.
 
