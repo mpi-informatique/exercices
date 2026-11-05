@@ -49,6 +49,7 @@ Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le doss
 
 - Lors de la création d'un document pédagogique, réinvestir si possible des notions et méthodes du programme de MP2I–MPI, y compris les acquis de première année, lorsque cela sert la progression. Chercher des liens entre chapitres sans imposer de rapprochement artificiel ; consulter le [programme](programme.md) et introduire les outils non exigibles.
 - Reprendre les notations et termes des cours correspondants. Introduire les notions nouvelles et les résultats admis ; préciser dès l'introduction les hypothèses communes et la portée des généralisations.
+- Nommer explicitement les objets et leurs composantes lorsqu'on les utilise dans une construction ou une preuve, par exemple $A = (Σ, Q, q_0, F, δ)$ pour un automate ou $G = (Σ, V, R, S)$ pour une grammaire. Définir de même l'objet construit et ses composantes.
 - Construire une progression : exemples, résultats intermédiaires, caractérisation, applications. Demander de trouver puis de justifier les méthodes et relations, sans donner systématiquement le résultat attendu.
 - Rédiger le corrigé avec l'énoncé. Vérifier hypothèses, cas limites, réciproques et dépendances entre questions ; distinguer les sens d'une équivalence et les étapes d'un algorithme.
 - Après déplacement ou ajout, vérifier tous les renvois, adapter le barème et la durée. Lors d'une relecture, proposer les questions supplémentaires avant de les intégrer.
