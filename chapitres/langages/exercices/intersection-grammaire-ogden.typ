@@ -5,7 +5,10 @@
 // Voir aussi ups-mpi/mpi_gluher/Exercices/Lemme_Ogden.tex et son corrigé.
 // Référence complémentaire : https://arxiv.org/abs/2209.06809v2.
 
-#let lemme-etoile = lemme-sans-numero(outlined: false, full-title: [Lemme de l'étoile pour les langages non-contextuels])[
+#let lemme-etoile = lemme-sans-numero(
+  outlined: false,
+  full-title: [Lemme de l'étoile pour les langages non-contextuels],
+)[
   Si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de taille au moins $p$ s'écrit $t = u v w x y$, avec :
   #formules-reparties($abs(v w x) ≤ p$, $v x ≠ ε$, $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$)
 ]
@@ -18,21 +21,12 @@
     niveaux: ("MPI",),
     duree: (1, 15),
   ),
-  corrections: [
-    Corriger l'import du cadre de théorème et utiliser l'API courante de theoremes.
-    Conserver la formulation du lemme choisie par le professeur, sans introduire les positions marquées.
-    Déplacer le prolongement sur l'intersection depuis l'exercice sur la forme normale de Chomsky et le découper en deux questions guidées, suivies d'une application.
-    Traiter les productions vides dans la grammaire produit : elles ne relient que deux états identiques.
-    Démontrer le lemme de l'étoile à partir d'une grammaire en forme normale de Chomsky.
-    Difficulté et durée estimées : 3 sur 5 et 1 h 15.
-  ],
   contenu: (
     [#lemme-etoile <lem-etoile>],
     question(
       [
-        Soit un arbre de dérivation d'un mot non vide dans une grammaire en #lien("forme-normale-chomsky")[forme normale de Chomsky].
-        On note $h$ sa hauteur, c'est-à-dire le nombre maximal d'arêtes entre sa racine et une feuille.
-        Majorer son nombre de feuilles en fonction de $h$.
+        Soit $a$ un arbre de dérivation d'un mot non vide dans une grammaire en #lien("forme-normale-chomsky")[forme normale de Chomsky].
+        Majorer son nombre de feuilles $f(a)$ en fonction de sa hauteur $h(a)$.
       ],
       solution: [
         L'arbre a au plus $2^(h-1)$ feuilles.
@@ -45,7 +39,6 @@
     question(
       [
         Démontrer #link(<lem-etoile>)[le lemme de l'étoile].
-        On pourra utiliser une grammaire en forme normale de Chomsky.
       ],
       solution: [
         Soit $G$ une grammaire en forme normale de Chomsky engendrant $L$, avec $n$ variables.
