@@ -30,17 +30,32 @@
     lemme-etoile,
     question(
       [
+        Soit un arbre de dérivation d'un mot non vide dans une grammaire en #lien("forme-normale-chomsky")[forme normale de Chomsky].
+        On note $h$ sa hauteur, c'est-à-dire le nombre maximal d'arêtes entre sa racine et une feuille.
+        Majorer son nombre de feuilles en fonction de $h$.
+      ],
+      solution: [
+        L'arbre a au plus $2^(h-1)$ feuilles.
+        On le montre par récurrence sur $h ≥ 1$.
+        Si $h = 1$, la racine produit une unique feuille terminale.
+        Sinon, la racine possède deux fils et chacun des deux sous-arbres est de hauteur au plus $h - 1$.
+        Par hypothèse de récurrence, chacun a au plus $2^(h-2)$ feuilles, d'où le résultat.
+      ],
+    ),
+    question(
+      [
         Démontrer le lemme de l'étoile.
-        On pourra utiliser une grammaire en #lien("forme-normale-chomsky")[forme normale de Chomsky] et considérer une branche de longueur maximale d'un arbre de dérivation.
+        On pourra utiliser une grammaire en forme normale de Chomsky.
       ],
       solution: [
         Soit $G$ une grammaire en forme normale de Chomsky engendrant $L$, avec $n$ variables.
         Posons $p = 2^n$ et considérons un arbre de dérivation d'un mot $t ∈ L$ de taille au moins $p$.
         Comme $t ≠ ε$, les règles utilisées sont binaires ou terminales.
-        Une branche de longueur maximale contient au moins $n + 1$ variables : sinon l'arbre aurait au plus $2^(n-1)$ feuilles terminales.
+        D'après la question précédente, une branche de longueur maximale contient au moins $n + 1$ variables : sinon l'arbre aurait au plus $2^(n-1)$ feuilles terminales.
 
         Parmi les $n + 1$ dernières variables de cette branche, deux sont égales à une même variable $X$.
-        Le sous-arbre issu de la première occurrence de $X$ a au plus $2^n$ feuilles, car aucune branche de l'arbre initial n'est plus longue que la branche choisie.
+        Le sous-arbre issu de la première occurrence de $X$ a une hauteur au plus $n + 1$, car aucune branche de l'arbre initial n'est plus longue que la branche choisie.
+        D'après la question précédente, il a donc au plus $2^n$ feuilles.
         En distinguant les parties situées avant, entre et après ces deux occurrences, on obtient :
         $ S ⇒^* u X y ⇒^* u v X x y ⇒^* u v w x y = t. $
         Le sous-arbre de la première occurrence de $X$ engendre $v w x$, donc $abs(v w x) ≤ p$.
