@@ -38,7 +38,7 @@
     ),
     question(
       [
-        Démontrer #link(<lem-etoile>)[le lemme de l'étoile].
+        Démontrer #lien(<lem-etoile>)[le lemme de l'étoile].
       ],
       solution: [
         Soit $G$ une grammaire en forme normale de Chomsky engendrant $L$, avec $n$ variables.

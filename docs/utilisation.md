@@ -73,7 +73,7 @@ Utiliser des étiquettes stables et les références natives :
 D'après le @thm-concatenation…
 ```
 
-Pour une question, passer `label: <q-algorithme>` à `question(...)`, puis écrire `@q-algorithme`. L'étiquette doit être unique et sa cible présente dans la variante compilée. `link(<q-algorithme>)[cet algorithme]` personnalise le texte du lien.
+Pour une question, passer `label: <q-algorithme>` à `question(...)`, puis écrire `@q-algorithme`. L'étiquette doit être unique et sa cible présente dans la variante compilée. `lien(<q-algorithme>)[cet algorithme]` ou la fonction native `link` personnalise le texte du lien.
 
 ## Références
 

@@ -28,13 +28,16 @@
 /// -> content
 #let hp(body) = marge([HP], body)
 
-/// Crée un lien bleu vers une ressource du site Exercices MPI.
-/// Exemple : `#lien("tp-automates")[TP sur les automates]`.
+/// Crée un lien bleu vers une ressource du site Exercices MPI ou une étiquette du document.
+/// Exemples : `#lien("tp-automates")[TP sur les automates]`, `#lien(<resultat>)[ce résultat]`.
 ///
-/// - id (str): Identifiant de la ressource dans l'URL du site, sans barres obliques.
+/// - id (str, label): Identifiant de la ressource dans l'URL du site, sans barres obliques, ou étiquette interne.
 /// - body (content): Texte cliquable.
 /// -> content
-#let lien(id, body) = link("https://mpi-informatique.github.io/exercices/" + id + "/", text(fill: couleur-liens, body))
+#let lien(id, body) = link(
+  if type(id) == label { id } else { "https://mpi-informatique.github.io/exercices/" + id + "/" },
+  text(fill: couleur-liens, body),
+)
 
 /// Signale un travail pratique par « TP » dans la marge, au même corps que « HP ».
 /// Avec `id`, le repère devient un lien bleu vers la ressource correspondante.

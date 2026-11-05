@@ -33,13 +33,15 @@ with TemporaryDirectory() as dossier:
                         *[argument for valeur in inputs for argument in ('--input', valeur)],
                         str(source), str(racine / (nom + '.pdf'))], check=True)
 
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, exercice, question, est-corrige
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, exercice, question, est-corrige, lien
 #assert(public("templates/test-package.typ").extrait == "let reponse = 42")
+#assert(lien("test")[Site].dest == "https://mpi-informatique.github.io/exercices/test/")
+#assert(lien(<premiere>)[Question].dest == <premiere>)
 #let ex = exercice(
   meta: (titre: "Exercice de test", chapitres: (), difficulte: 1),
   contenu: (
     question([Première question.], label: <premiere>, solution: [#metadata(none) <solution-test> Réponse.], bareme: 2),
-    question([Voir @premiere.]),
+    question([Voir @premiere et #lien(<premiere>)[la première question].]),
   ),
 )
 #show: feuille.with(exercices: (ex,), corrige: est-corrige())
