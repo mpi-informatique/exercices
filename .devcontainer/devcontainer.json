@@ -11,6 +11,15 @@
   },
   "postCreateCommand": "nix develop . -c true",
   "customizations": {
+    "codespaces": {
+      "repositories": {
+        "mpi-informatique/exercices-prive": {
+          "permissions": {
+            "contents": "read"
+          }
+        }
+      }
+    },
     "vscode": {
       "extensions": [
         "myriad-dreamin.tinymist",
