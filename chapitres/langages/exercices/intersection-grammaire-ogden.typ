@@ -9,8 +9,8 @@
   outlined: false,
   full-title: [Lemme de l'étoile pour les langages non-contextuels],
 )[
-  Si $L$ est non-contextuel, il existe un entier $n ≥ 1$ tel que tout mot $m ∈ L$ de taille au moins $n$ s'écrit $m = u v w x y$, avec :
-  #formules-reparties($abs(v w x) ≤ n$, $v x ≠ ε$, $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$)
+  Si $L$ est non-contextuel, il existe un entier $n ≥ 1$ tel que tout mot $m ∈ L$ de taille au moins $n$ s'écrit $m = x u y v z$, avec :
+  #formules-reparties($abs(u y v) ≤ n$, $u v ≠ ε$, $∀i ∈ ℕ, #sep x u^i y v^i z ∈ L$)
 ]
 
 #let ex = exercice(
@@ -50,11 +50,11 @@
         Le sous-arbre issu de la première occurrence de $X$ a une hauteur au plus $k + 1$, car aucune branche de l'arbre initial n'est plus longue que la branche choisie.
         D'après la question précédente, il a donc au plus $2^k$ feuilles.
         En distinguant les parties situées avant, entre et après ces deux occurrences, on obtient :
-        $ S ⇒^* u X y ⇒^* u v X x y ⇒^* u v w x y = m. $
-        Le sous-arbre de la première occurrence de $X$ engendre $v w x$, donc $abs(v w x) ≤ n$.
-        Entre les deux occurrences de $X$, au moins une règle binaire est utilisée et chaque branche latérale engendre un mot non vide : $v x ≠ ε$.
-        Enfin, on peut répéter ou supprimer la dérivation $X ⇒^* v X x$, puis utiliser $X ⇒^* w$.
-        Pour tout $i ∈ ℕ$, on obtient ainsi $u v^i w x^i y ∈ L$.
+        $ S ⇒^* x X z ⇒^* x u X v z ⇒^* x u y v z = m. $
+        Le sous-arbre de la première occurrence de $X$ engendre $u y v$, donc $abs(u y v) ≤ n$.
+        Entre les deux occurrences de $X$, au moins une règle binaire est utilisée et chaque branche latérale engendre un mot non vide : $u v ≠ ε$.
+        Enfin, on peut répéter ou supprimer la dérivation $X ⇒^* u X v$, puis utiliser $X ⇒^* y$.
+        Pour tout $i ∈ ℕ$, on obtient ainsi $x u^i y v^i z ∈ L$.
       ],
     ),
     [
@@ -67,10 +67,10 @@
     question([Montrer que $L_2$ n'est pas non-contextuel.], solution: [
       Supposons $L_2$ non-contextuel et prenons $n$ fourni par le lemme de l'étoile.
       Le mot $a^n b^n c^n$ possède alors une décomposition satisfaisant ses conditions.
-      Puisque $abs(v w x) ≤ n$, ce facteur ne peut contenir à la fois un $a$ et un $c$.
-      Une des trois lettres est donc absente de $v x$.
-      Pour $i=0$, on retire au moins une lettre puisque $v x ≠ ε$, tandis que le nombre d'occurrences de la lettre absente reste $n$.
-      Les trois nombres ne sont plus égaux, donc $u w y ∉ L_2$ : contradiction.
+      Puisque $abs(u y v) ≤ n$, ce facteur ne peut contenir à la fois un $a$ et un $c$.
+      Une des trois lettres est donc absente de $u v$.
+      Pour $i=0$, on retire au moins une lettre puisque $u v ≠ ε$, tandis que le nombre d'occurrences de la lettre absente reste $n$.
+      Les trois nombres ne sont plus égaux, donc $x y z ∉ L_2$ : contradiction.
     ]),
     question(
       [
