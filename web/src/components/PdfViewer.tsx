@@ -60,14 +60,13 @@ function PdfPage({ document, number, width, dark }: { document: PDFDocumentProxy
 interface Props {
   pdf?: Uint8Array<ArrayBuffer>;
   pending: boolean;
-  pendingLabel?: string;
   dark: boolean;
   toolbar: ReactNode;
   actions: ReactNode;
   onReady: () => void;
 }
 
-export default function PdfViewer({ pdf, pending, pendingLabel = 'Compilation…', dark, toolbar, actions, onReady }: Props) {
+export default function PdfViewer({ pdf, pending, dark, toolbar, actions, onReady }: Props) {
   const [loaded, setLoaded] = useState<{ pdf: Uint8Array<ArrayBuffer>; document: PDFDocumentProxy }>();
   // Retirer les pages précédentes dès que les données changent, avant de détruire leur transport PDF.js.
   const document = loaded?.pdf === pdf ? loaded?.document : undefined;
@@ -189,7 +188,7 @@ export default function PdfViewer({ pdf, pending, pendingLabel = 'Compilation…
       }
     }}>
       {document && pages.map(number => <PdfPage key={`${document.loadingTask.docId}-${number}`} document={document} dark={dark} number={number} width={pageWidth} />)}
-      {!document && !error && <div className="preview-placeholder">{(pending || pdf) && <span className="loading loading-spinner loading-sm" />}<span>{pending ? pendingLabel : pdf ? 'Chargement…' : 'Aucun aperçu'}</span></div>}
+      {!document && !error && <div className="preview-placeholder" aria-busy={pending || !!pdf}>{(pending || pdf) ? <span className="loading loading-spinner loading-sm" aria-label="Chargement" /> : <span>Aucun aperçu</span>}</div>}
       {error && <p className="viewer-error" role="alert">Impossible d’afficher le PDF : {error}</p>}
     </div>
   </div>;

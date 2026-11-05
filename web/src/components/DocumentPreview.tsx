@@ -82,7 +82,7 @@ export default function DocumentPreview({ resource }: { resource: PublishedResou
 
   return <main id="main" className="document-preview" aria-label={resource.titre}>
     {loadError && <div className="document-preview-error" role="alert"><p>{loadError}</p><button className="btn btn-sm" onClick={() => setRetry(value => value + 1)}>Réessayer</button></div>}
-    <Suspense fallback={<div className="preview-placeholder">Chargement du lecteur…</div>}><PdfViewer pdf={pdf} pending={!loadError && !pdf} pendingLabel="Chargement du PDF…" dark={dark} onReady={() => {}}
+    <Suspense fallback={<div className="preview-placeholder" aria-busy="true" />}><PdfViewer pdf={pdf} pending={!loadError && !pdf} dark={dark} onReady={() => {}}
       toolbar={<VariantTabs variant={variant} documentType={resource.type} variants={variants} onChange={changeVariant} />}
       actions={<div>
         <TpCodespaceButton resource={resource} />

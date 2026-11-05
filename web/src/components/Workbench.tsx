@@ -67,6 +67,7 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
   const codePath = openedCode && openedCode.id === resource?.id ? openedCode.path : undefined;
   const codeFiles = useCodeFiles(resource?.fichier, code?.source, codePath, privateResource ? library.bank : undefined);
   const editorPath = codePath ?? resource?.fichier;
+  const editorError = codePath ? codeFiles.file?.error : loadError;
   const editorSource = codePath ? codeFiles.file?.source : code?.source;
   const editorRepository = privateResource ? `https://github.com/${library.bank!.repository}` : repositoryUrl;
   const editorBranch = privateResource ? library.bank!.branch : 'main';
@@ -257,11 +258,11 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
             </div>
             {contributionNotice && <div className="draft-notice" role="status"><span>{contributionNotice}</span><button className="btn btn-ghost btn-xs btn-square" aria-label="Fermer le message GitHub" title="Fermer" onClick={() => setContributionNotice('')}><X size={13} /></button></div>}
             {codePath && <div className="code-readonly">Lecture seule</div>}
-            {editorSource !== undefined && editorPath ? <Suspense fallback={<div className="pane-loading">Chargement de l’éditeur…</div>}><TypstEditor key={`${selected}:${editorPath}`} source={editorSource} sourcePath={editorPath} resources={privateResource ? library.bank!.resources : publicResources} availableFiles={codeFiles.available} privateResource={privateResource} onNavigate={navigate} onOpenCode={openCode} readOnly={!!codePath} dark={dark} onChange={codePath ? () => {} : changeSource} onReady={focusPending} /></Suspense> : <div className="pane-loading" role={codeFiles.file?.error ? 'alert' : undefined}>{codePath ? codeFiles.file?.error || 'Chargement du code…' : loadError || 'Chargement de la source…'}{codePath && codeFiles.file?.error && <button className="btn btn-sm" onClick={codeFiles.reload}>Réessayer</button>}</div>}
+            {editorSource !== undefined && editorPath ? <Suspense fallback={<div className="pane-loading" aria-busy="true" />}><TypstEditor key={`${selected}:${editorPath}`} source={editorSource} sourcePath={editorPath} resources={privateResource ? library.bank!.resources : publicResources} availableFiles={codeFiles.available} privateResource={privateResource} onNavigate={navigate} onOpenCode={openCode} readOnly={!!codePath} dark={dark} onChange={codePath ? () => {} : changeSource} onReady={focusPending} /></Suspense> : editorError ? <div className="pane-loading" role="alert">{editorError}{codePath && <button className="btn btn-sm" onClick={codeFiles.reload}>Réessayer</button>}</div> : <div className="pane-loading" aria-busy="true" />}
           </section>}
           {editorOpen && <ResizeHandle label="Largeur de l’éditeur" value={editorWidth} min={280} max={900} onChange={value => { setEditorWidth(value); store('editor-width', String(value)); }} />}
           <section className="preview-panel" aria-label="Document PDF">
-            <Suspense fallback={<div className="pane-loading">Chargement de l’aperçu…</div>}><PdfViewer dark={dark} pdf={compilation.pdf} pending={compilation.pending} onReady={focusPending} toolbar={<>
+            <Suspense fallback={<div className="pane-loading" aria-busy="true" />}><PdfViewer dark={dark} pdf={compilation.pdf} pending={compilation.pending} onReady={focusPending} toolbar={<>
               <VariantTabs documentType={resource?.type} variant={variant} onChange={value => resource && navigate(resource, value)} />
               <span className={`compilation-status ${compilation.error || loadError ? 'has-error' : ''}`} title={status} role="status">{compilation.pending ? <span className="loading loading-spinner loading-xs" /> : compilation.error || loadError ? <CircleAlert size={13} /> : <span className="status-dot" />}<span className="sr-only">{status}</span></span>
             </>} actions={<>
