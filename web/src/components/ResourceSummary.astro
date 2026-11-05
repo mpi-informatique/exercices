@@ -11,7 +11,6 @@ const { resources, resource } = Astro.props;
 <main id="main" class="mx-auto max-w-4xl space-y-5 p-8">
   <h1 class="text-2xl font-semibold">{resource?.titre ?? bankTitle}</h1>
   <p>{resource ? resourceDescription(resource) : bankDescription}</p>
-  <p>L’éditeur interactif se charge avec JavaScript. Les sources et les PDF publiés restent accessibles ci-dessous.</p>
   {resource && <>
     <p><a href={githubFileUrl(resource.fichier)}>Consulter la source Typst sur GitHub</a></p>
     <ul>

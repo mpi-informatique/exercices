@@ -20,6 +20,6 @@ const structuredData = {
 ---
 <WorkbenchLayout structuredData={structuredData}>
   <Workbench resources={resources as Resource[]} client:only="react">
-    <ResourceSummary slot="fallback" resources={resources as Resource[]} />
+    <noscript slot="fallback"><ResourceSummary resources={resources as Resource[]} /></noscript>
   </Workbench>
 </WorkbenchLayout>

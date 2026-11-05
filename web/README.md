@@ -45,7 +45,7 @@ Sur un autre hébergement, servir les `index.html` des répertoires et les WASM 
 
 La construction génère automatiquement `dist/sitemap-index.xml` et `dist/sitemap-0.xml` à partir des routes publiques du catalogue. Le sitemap principal du domaine référence `https://mpi-informatique.github.io/exercices/sitemap-0.xml`. Les aperçus intégrables, la page de contribution et la page 404 sont exclus de l’indexation.
 
-Les pages fournissent leur adresse canonique, une description, des métadonnées de partage et des données structurées. Le catalogue et les fiches des ressources sont présents dans le HTML initial, avec leurs liens vers les sources et les PDF publiés, puis remplacés par l’éditeur interactif après son chargement. Les variantes `?vue=…` partagent l’adresse canonique de la ressource.
+Les pages fournissent leur adresse canonique, une description, des métadonnées de partage et des données structurées. Le catalogue et les fiches des ressources sont présents dans le HTML initial dans un bloc `noscript`, avec leurs liens vers les sources et les PDF publiés : ils restent accessibles sans JavaScript et ne s’affichent pas pendant le chargement de l’éditeur interactif. Les variantes `?vue=…` partagent l’adresse canonique de la ressource.
 
 ## Lecteur intégrable
 

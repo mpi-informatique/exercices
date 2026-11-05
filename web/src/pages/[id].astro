@@ -25,6 +25,6 @@ const structuredData = {
 ---
 <WorkbenchLayout title={`${resource.titre} · Exercices MPI`} description={description} structuredData={structuredData}>
   <Workbench resources={resources as Resource[]} initialId={resource.id} client:only="react">
-    <ResourceSummary slot="fallback" resources={resources as Resource[]} resource={resource as Resource} />
+    <noscript slot="fallback"><ResourceSummary resources={resources as Resource[]} resource={resource as Resource} /></noscript>
   </Workbench>
 </WorkbenchLayout>

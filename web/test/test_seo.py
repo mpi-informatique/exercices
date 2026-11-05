@@ -15,6 +15,8 @@ class Page(HTMLParser):
     def __init__(self, path):
         super().__init__()
         self.links = []
+        self.noscript_links = []
+        self.noscript = False
         self.meta = {}
         self.text = []
         self.schemas = []
@@ -23,14 +25,20 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if tag == 'noscript':
+            self.noscript = True
         if tag in ('link', 'a'):
             self.links.append(attrs)
+            if self.noscript:
+                self.noscript_links.append(attrs)
         if tag == 'meta':
             self.meta[attrs.get('name', attrs.get('property'))] = attrs.get('content')
         if tag == 'script' and attrs.get('type') == 'application/ld+json':
             self.structured = True
 
     def handle_endtag(self, tag):
+        if tag == 'noscript':
+            self.noscript = False
         if tag == 'script':
             self.structured = False
 
@@ -62,7 +70,7 @@ class SeoTests(unittest.TestCase):
         self.assertEqual(index_urls, [urljoin(self.base, 'sitemap-0.xml')])
 
     def test_catalogue_is_available_without_javascript(self):
-        links = {urljoin(self.base, link.get('href', '')) for link in self.home.links}
+        links = {urljoin(self.base, link.get('href', '')) for link in self.home.noscript_links}
         self.assertTrue(self.urls - {self.base} <= links)
         items = self.home.schemas[0]['mainEntity']['itemListElement']
         self.assertEqual({item['url'] for item in items}, self.urls - {self.base})
@@ -79,7 +87,7 @@ class SeoTests(unittest.TestCase):
                 self.assertNotIn('noindex', page.meta.get('robots', ''))
                 self.assertEqual(page.schemas[0]['@type'], 'LearningResource')
                 self.assertEqual(page.schemas[0]['url'], page.canonical)
-                self.assertTrue(any('/blob/main/' in link.get('href', '') for link in page.links))
+                self.assertTrue(any('/blob/main/' in link.get('href', '') for link in page.noscript_links))
 
     def test_technical_and_embedded_pages_are_not_indexable(self):
         pages = [DIST / 'contribution/index.html', DIST / '404.html', *DIST.glob('apercu/*/index.html')]
