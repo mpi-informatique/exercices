@@ -89,6 +89,5 @@ export default function DocumentPreview({ resource }: { resource: PublishedResou
         <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" onClick={download} disabled={!pdf || !!loadError}><Download size={17} /></button>
         <a className="btn btn-ghost btn-sm btn-square" href={exerciseUrl(resource.id, variant)} target="_blank" rel="noopener noreferrer" aria-label="Ouvrir dans la banque d’exercices" title="Ouvrir dans la banque d’exercices"><ExternalLink size={17} /></a>
       </div>} /></Suspense>
-    <div className="sr-only" role="status">{loadError ? 'Chargement impossible' : pdf ? 'PDF prêt' : 'Chargement du PDF…'}</div>
   </main>;
 }
