@@ -27,7 +27,7 @@
     Difficulté et durée estimées : 3 sur 5 et 1 h 15.
   ],
   contenu: (
-    lemme-etoile,
+    [#lemme-etoile <lem-etoile>],
     question(
       [
         Soit un arbre de dérivation d'un mot non vide dans une grammaire en #lien("forme-normale-chomsky")[forme normale de Chomsky].
@@ -44,7 +44,7 @@
     ),
     question(
       [
-        Démontrer le lemme de l'étoile.
+        Démontrer #link(<lem-etoile>)[le lemme de l'étoile].
         On pourra utiliser une grammaire en forme normale de Chomsky.
       ],
       solution: [
