@@ -5,7 +5,7 @@
 // Voir aussi ups-mpi/mpi_gluher/Exercices/Lemme_Ogden.tex et son corrigé.
 // Référence complémentaire : https://arxiv.org/abs/2209.06809v2.
 
-#let lemme-etoile = lemme-sans-numero(outlined: false, full-title: [Lemme de l'étoile pour les langages non-contextuels (admis)])[
+#let lemme-etoile = lemme-sans-numero(outlined: false, full-title: [Lemme de l'étoile pour les langages non-contextuels])[
   Si $L$ est non-contextuel, il existe un entier $p ≥ 1$ tel que tout mot $t ∈ L$ de taille au moins $p$ s'écrit $t = u v w x y$, avec :
   #formules-reparties($abs(v w x) ≤ p$, $v x ≠ ε$, $∀i ∈ ℕ, #sep u v^i w x^i y ∈ L$)
 ]
@@ -16,17 +16,39 @@
     chapitres: ("grammaires-non-contextuelles", "automates-finis"),
     difficulte: 3,
     niveaux: ("MPI",),
-    duree: (0, 55),
+    duree: (1, 15),
   ),
   corrections: [
     Corriger l'import du cadre de théorème et utiliser l'API courante de theoremes.
-    Conserver la formulation du lemme admis choisie par le professeur, sans introduire les positions marquées.
+    Conserver la formulation du lemme choisie par le professeur, sans introduire les positions marquées.
     Déplacer le prolongement sur l'intersection depuis l'exercice sur la forme normale de Chomsky et le découper en deux questions guidées, suivies d'une application.
     Traiter les productions vides dans la grammaire produit : elles ne relient que deux états identiques.
-    Difficulté et durée estimées : 3 sur 5 et 55 minutes.
+    Démontrer le lemme de l'étoile à partir d'une grammaire en forme normale de Chomsky.
+    Difficulté et durée estimées : 3 sur 5 et 1 h 15.
   ],
   contenu: (
     lemme-etoile,
+    question(
+      [
+        Démontrer le lemme de l'étoile.
+        On pourra utiliser une grammaire en #lien("forme-normale-chomsky")[forme normale de Chomsky] et considérer une branche de longueur maximale d'un arbre de dérivation.
+      ],
+      solution: [
+        Soit $G$ une grammaire en forme normale de Chomsky engendrant $L$, avec $n$ variables.
+        Posons $p = 2^n$ et considérons un arbre de dérivation d'un mot $t ∈ L$ de taille au moins $p$.
+        Comme $t ≠ ε$, les règles utilisées sont binaires ou terminales.
+        Une branche de longueur maximale contient au moins $n + 1$ variables : sinon l'arbre aurait au plus $2^(n-1)$ feuilles terminales.
+
+        Parmi les $n + 1$ dernières variables de cette branche, deux sont égales à une même variable $X$.
+        Le sous-arbre issu de la première occurrence de $X$ a au plus $2^n$ feuilles, car aucune branche de l'arbre initial n'est plus longue que la branche choisie.
+        En distinguant les parties situées avant, entre et après ces deux occurrences, on obtient :
+        $ S ⇒^* u X y ⇒^* u v X x y ⇒^* u v w x y = t. $
+        Le sous-arbre de la première occurrence de $X$ engendre $v w x$, donc $abs(v w x) ≤ p$.
+        Entre les deux occurrences de $X$, au moins une règle binaire est utilisée et chaque branche latérale engendre un mot non vide : $v x ≠ ε$.
+        Enfin, on peut répéter ou supprimer la dérivation $X ⇒^* v X x$, puis utiliser $X ⇒^* w$.
+        Pour tout $i ∈ ℕ$, on obtient ainsi $u v^i w x^i y ∈ L$.
+      ],
+    ),
     [
       On considère $L_1 = {a^n b^n c^k | n, k ∈ ℕ}$ et $L_2 = {a^n b^n c^n | n ∈ ℕ}$.
     ],
@@ -106,7 +128,7 @@
       solution: [
         Le langage $K = a^* b^* c^*$ est régulier et $E ∩ K = L_2$.
         En effet, un mot de $K$ ayant autant de $a$, de $b$ et de $c$ s'écrit exactement $a^n b^n c^n$ pour un $n ∈ ℕ$.
-        Si $E$ était non-contextuel, le résultat précédent montrerait que $L_2$ l'est aussi, contrairement à la deuxième question.
+        Si $E$ était non-contextuel, le résultat précédent montrerait que $L_2$ l'est aussi, contrairement au résultat sur $L_2$.
       ],
     ),
   ),
