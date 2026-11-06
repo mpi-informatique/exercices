@@ -173,7 +173,7 @@ for (const id of [...variants, 'save', 'code', 'jumps', 'theme', 'fullscreen', '
 }
 window.addEventListener('message', ({ data }) => {
   if (data?.channel !== document.body.dataset.channel) return;
-  if (data.type === 'reset') { ++epoch; rendered = undefined; pdfPages = 0; requestedPdfPage = undefined; pagination.clear(); showProgress(); for (const frame of frames.values()) frame.remove(); frames.clear(); }
+  if (data.type === 'reset') { ++epoch; rendered = undefined; pdfPages = 0; requestedPdfPage = undefined; pagination.clear(); showProgress(); for (const frame of frames.values()) { if (frame.src.startsWith('blob:')) URL.revokeObjectURL(frame.src); frame.remove(); } frames.clear(); }
   if (data.type === 'status') { status.textContent = data.message; status.hidden = false; }
   if (data.type === 'compileError') { compileError.textContent = data.message; compileError.hidden = !data.message; }
   if (data.type !== 'show') return;
@@ -186,11 +186,11 @@ window.addEventListener('message', ({ data }) => {
   document.body.classList.toggle('vscode-theme', data.theme === 'vscode');
   document.getElementById('jumps').disabled = !data.native;
   if (data.pdf) { status.hidden = true; void pdf(data.pdf).catch(reportPdfError); }
-  for (const [variant, url] of Object.entries(data.sessions)) {
+  for (const [variant, source] of Object.entries(data.sessions)) {
     if (!frames.has(variant)) {
       const frame = document.createElement('iframe');
       frame.title = `${data.labels[variant]} — Tinymist`;
-      frame.src = url;
+      frame.src = typeof source === 'string' ? source : URL.createObjectURL(new Blob([source.html], { type: 'text/html' }));
       frame.dataset.variant = variant;
       frame.addEventListener('load', () => { controls(frame); vscode.postMessage({ type: 'frameReady', variant }); });
       frames.set(variant, frame);

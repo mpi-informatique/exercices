@@ -1,3 +1,7 @@
 {
-  "recommendations": ["myriad-dreamin.tinymist", "qfortier.vscode-mpi-exercices"]
+  "recommendations": [
+    "qfortier.vscode-mpi-exercices",
+    "mgt19937.typst-preview",
+    "nvarenkamp.typst"
+  ]
 }

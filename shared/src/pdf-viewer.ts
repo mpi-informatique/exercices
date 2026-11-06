@@ -5,13 +5,13 @@ export const escapeHtml = (text: string) => text.replace(/[&<>"']/g, c => ({ '&'
 export function pdfViewerHtml(options: {
   nonce: string; channel: string; cspSource: string; pdfjs: string;
   uri: (file: string) => string; variants: Variant[]; labels: Record<Variant, string>;
-  variant: Variant; scrollbarStyle?: string; hiddenVariants?: Variant[];
+  variant: Variant; scrollbarStyle?: string; hiddenVariants?: Variant[]; webPreview?: boolean;
 }): string {
-  const { nonce, channel, pdfjs, uri, variants, labels, variant, scrollbarStyle = '', hiddenVariants = [] } = options;
+  const { nonce, channel, pdfjs, uri, variants, labels, variant, scrollbarStyle = '', hiddenVariants = [], webPreview = false } = options;
   const webview = { cspSource: options.cspSource };
   const escape = escapeHtml;
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}' ${webview.cspSource} 'wasm-unsafe-eval'; style-src ${webview.cspSource} 'unsafe-inline'; font-src ${webview.cspSource} data: blob:; worker-src ${webview.cspSource} blob:; connect-src ${webview.cspSource}; img-src data: blob: ${webview.cspSource}; frame-src http://127.0.0.1:* https:;">
+      <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-${nonce}' ${webview.cspSource} 'wasm-unsafe-eval'; style-src ${webview.cspSource} 'unsafe-inline'; font-src ${webview.cspSource} data: blob:; worker-src ${webview.cspSource} blob:; connect-src ${webview.cspSource}${webPreview ? ' wss: ws://127.0.0.1:* ws://localhost:*' : ''}; img-src data: blob: ${webview.cspSource}; frame-src ${webPreview ? 'blob: ' : ''}http://127.0.0.1:* https:;">
       <link rel="stylesheet" href="${uri('viewer.css')}"><style>${scrollbarStyle}</style></head><body data-channel="${channel}" data-pdfjs="${escape(pdfjs)}/">
       <nav aria-label="Outils de l'aperçu">${variants.map(value => `<button id="${value}" data-variant${hiddenVariants.includes(value) ? ' hidden' : ''} aria-pressed="${value === variant}">${escape(labels[value])}</button>`).join('')}
       <span class="spacer" aria-hidden="true"></span>
