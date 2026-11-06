@@ -118,7 +118,7 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
   ],
   [
     #exercice[
-      Exprimer $abs(φ)$ en fonction du nombre $b(φ)$ de connecteurs binaires et $n(φ)$ de négations.
+      On note $abs(φ)$ la longueur du mot $φ$, parenthèses comprises. Exprimer $abs(φ)$ en fonction du nombre $b(φ)$ de connecteurs binaires et $n(φ)$ de négations.
     ]
   ],
 )
@@ -153,15 +153,22 @@ Une valuation peut aussi être vue comme un ensemble (des variables évaluées �
 
 #slides-only[== Modèles]
 #definition(title: [Modèle], item-by-item[
-  Soient $v ∈ {0, 1}^V$ une valuation, $φ ∈ cal(F)(V)$ une formule et $Γ ⊆ cal(F)(V)$ un ensemble de formules.
+  Soit $v$ une valuation et $φ$ une formule.
   - $v$ est un _modèle_ de $φ$, noté $v ⊨ φ$, si $v$ satisfait $φ$, c'est-à-dire $v(φ) = 1$.
-  - $cal(M)(φ)$ est l'_ensemble des modèles_ de $φ$.
-  - $cal(M)(Γ) = ⋂_(φ ∈ Γ) cal(M)(φ)$ est l'ensemble des valuations satisfaisant toutes les formules de $Γ$.\
-  - $Γ$ est un _modèle_ de $φ$ (ou : $φ$ est une _conséquence_ de $Γ$), noté $Γ ⊨ φ$, si $cal(M)(Γ) ⊂ cal(M)(φ)$.\
-    On note simplement $ψ ⊨ φ$ si $Γ = {ψ}$ et $⊨ φ$ si $Γ = ∅$.
+  - On note $cal(M)(φ)$ l'_ensemble des modèles_ de $φ$.
 ])
 
+#slides-only[== Conséquence logique]
+#definition[Conséquence logique][
+  Soit $Γ ⊆ cal(F)(V)$ un ensemble de formules.
+  - On note $cal(M)(Γ) = ⋂_(φ ∈ Γ) cal(M)(φ)$ l'ensemble des valuations satisfaisant toutes les formules de $Γ$.
+  - On dit qu'une formule $φ$ est une _conséquence logique_ de $Γ$, noté $Γ ⊨ φ$, si $cal(M)(Γ) ⊂ cal(M)(φ)$.
+
+  On note simplement $ψ ⊨ φ$ si $Γ = {ψ}$ et $⊨ φ$ si $Γ = ∅$.
+]
+
 Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
+Par exemple, ${x, ¬ x} ⊨ y$ : aucune valuation ne satisfait les deux hypothèses.
 
 #slide()
 #exercice[
@@ -227,6 +234,7 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
 
 #slide()
 #theoreme[
+  Soit $Γ = {φ_1, …, φ_k}$ un ensemble fini de formules.
   #formules-reparties(
     empiler-presentation: false,
     $φ ⊨ ψ quad & ⟺ quad ⊨ φ → ψ$,
@@ -293,7 +301,11 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
 )
 
 #exercice[
-  Soit $V$ un ensemble de $n$ variables. Combien existe t-il de formules sur $V$, à équivalence près ?
+  Soit $V$ un ensemble de $n$ variables. Combien existe-t-il de formules sur $V$, à équivalence près ?
+]
+
+#solution[
+  Une table de vérité comporte $2^n$ lignes, chacune portant une valeur dans ${0, 1}$ : il existe donc $2^(2^n)$ tables possibles. Toute table est réalisable par une formule, comme le montrera la construction d'une FND au @thm-fnd-fnc. Il existe donc exactement $2^(2^n)$ classes d'équivalence.
 ]
 
 == Équivalences usuelles
@@ -338,9 +350,10 @@ En algèbre de Boole, on note $overline(a)$ pour $¬ a$, $a + b$ pour $a ∨ b$ 
 On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$ se traduit en $φ ∧ (ψ ∨ χ) ≡ (φ ∧ ψ) ∨ (φ ∧ χ)$.
 
 #theoreme[
+  Soient $I$ et $J$ deux ensembles finis.
   #formules-reparties(
-    $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) = and.big_((i, j) ∈ I × J) (φ_i ∧ ψ_j) $,
-    $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) = or.big_((i, j) ∈ I × J) (φ_i ∨ ψ_j) $,
+    $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) (φ_i ∧ ψ_j) $,
+    $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) (φ_i ∨ ψ_j) $,
   )
 ]
 #solution[
@@ -354,7 +367,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 == Forme normale négative <forme-normale-negative>
 
 #definition[Forme normale négative][
-  Une formule logique est en _forme normale négative_ (FNN) si ses négations ne porte que sur des variables.
+  Une formule logique est en _forme normale négative_ (FNN) si elle n'utilise que les connecteurs $∧$, $∨$, $¬$ et les constantes $⊤$, $⊥$, et si ses négations ne portent que sur des variables.
 ]
 #colonnes-cours(
   columns: (1fr, 1fr),
@@ -384,7 +397,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   Une conjonction vide vaut $⊤$, une disjonction vide vaut $⊥$.
 ]
 
-#theoreme(coeur: true)[Toute formule est équivalente à une FND et à une FNC.]
+#theoreme(coeur: true)[Toute formule est équivalente à une FND et à une FNC.]<thm-fnd-fnc>
 
 #solution[
   Soit $V = {x_1, …, x_n}$. Pour chaque valuation $v$, posons :
@@ -486,7 +499,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   - chaque nœud interne est étiqueté par une variable et possède deux fils, reliés par des arêtes étiquetées $0$ et $1$.
   - chaque feuille est étiquetée par $0$ ou $1$.
   - une variable est testée au plus une fois sur un chemin de la racine à une feuille.
-  On note $T(v)$ la feuille obtenue en suivant les arêtes étiquetées par $v(x)$ pour chaque nœud interne $x$ rencontré.\
+  On note $T(v)$ l'étiquette de la feuille atteinte en suivant les arêtes étiquetées par $v(x)$ pour chaque nœud interne $x$ rencontré.\
   $T$ _représente_ une formule $φ$ s'il renvoie $v(φ)$ pour toute valuation $v$.
 ]
 #v(-0.4em)
@@ -502,7 +515,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 == Algorithme de Quine par backtracking
 
 #theoreme[Simplification][
-  Tout formule $φ$ est équivalente à une formule $ψ$ telle que $ψ ∈ {top, bot}$ ou $ψ$ ne contient ni $⊤$, ni $⊥$.
+  Toute formule $φ$ est équivalente à une formule $ψ$ telle que $ψ ∈ {top, bot}$ ou $ψ$ ne contient ni $⊤$, ni $⊥$.
 ]<thm-simplification>
 
 #solution[
