@@ -351,14 +351,14 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 #theoreme[
   Soient $I$ et $J$ deux ensembles finis.
   #formules-reparties(
-    $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) (φ_i ∧ ψ_j) $,
-    $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) (φ_i ∨ ψ_j) $,
+    $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j $,
+    $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j $,
   )
 ]
 #solution[
   En appliquant successivement les distributivités :
-  $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) (φ_i ∧ ψ_j), $
-  $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) (φ_i ∨ ψ_j). $
+  $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j, $
+  $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j. $
 ]
 
 = Formes normales <formes-normales>
