@@ -5,8 +5,7 @@ type formule =
   | Ou of formule * formule
 
 let rec eval v = function
-  | Top -> true
-  | Bot -> false
+  | Top -> true | Bot -> false
   | Var x -> v x
   | Non p -> not (eval v p)
   | Et (p, q) -> eval v p && eval v q

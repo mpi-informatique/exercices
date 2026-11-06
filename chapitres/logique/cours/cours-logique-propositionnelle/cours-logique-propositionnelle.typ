@@ -51,7 +51,7 @@
     - Si $φ$ commence par une parenthèse, son connecteur principal est le seul connecteur binaire à profondeur de parenthésage $1$ : ceux des deux sous-formules sont entourés de parenthèses supplémentaires. Il détermine donc la production utilisée et la découpe en deux sous-formules. Leurs longueurs sont strictement inférieures à $n$, donc leurs arbres sont uniques par hypothèse de récurrence.
     Dans les deux cas, l'arbre de dérivation de $φ$ est unique, donc $H(n)$ est vraie.
 ]
-
+#v(-0.5em)
 #slides-only[== Régularité du langage des formules]
 #exercice[
   Le langage $cal(F)(V)$ est-il régulier ?
@@ -93,9 +93,9 @@
   Dessiner l'arbre de dérivation du mot $φ_1 ∈ cal(F)(V)$ et comparer à @arbre-formule.
 ]
 
-
 #slides-only[== Priorités et abréviations]
 Pour alléger les écritures, $¬$ est prioritaire sur $∧$, lui-même prioritaire sur $∨$. On ajoute les abréviations :
+#v(-0.5em)
 #formules-reparties(
   empiler-presentation: true,
   $φ → ψ := ¬ φ ∨ ψ$,
@@ -112,7 +112,7 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
       - $P(⊤)$, $P(⊥)$ et $P(x)$ pour $x ∈ V$
       - Si $P(φ)$ alors $P(¬ φ)$
       - Si $P(φ)$ et $P(ψ)$ alors $P(φ ∧ ψ)$ et $P(φ ∨ ψ)$
-
+      #v(-0.5em)
       Alors $P(φ)$ est vraie pour toute formule $φ ∈ cal(F)(V)$.
     ]
   ],
@@ -124,7 +124,7 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
 )
 
 = Sémantique
-
+#v(-0.5em)
 == Valuations et modèles
 
 #definition[Valuation, évaluation][
@@ -168,7 +168,6 @@ Une valuation peut aussi être vue comme un ensemble (des variables évaluées �
 ]
 
 Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
-Par exemple, ${x, ¬ x} ⊨ y$ : aucune valuation ne satisfait les deux hypothèses.
 
 #slide()
 #exercice[
@@ -574,7 +573,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 ]
 
 #slides-only[== Complexité de Quine]
-#underline[Complexité] : #completer()\ #completer()
+#underline[Complexité] : #completer()
 #solution[
   l'arbre a une hauteur au plus $n$ et au plus $2^(n + 1) - 1$ nœuds. Avec une simplification, une substitution et un choix de variable en $O(|φ|)$ par nœud, le coût est $O(2^n |φ|)$. Les simplifications peuvent arrêter l'exploration bien plus tôt.
 ]
