@@ -41,6 +41,7 @@
 /// La disposition reste horizontale par défaut, avec un empilement facultatif en présentation.
 /// Exemple : `#formules-reparties($p → q$, $p ↔ q$)` laisse trois espaces de même largeur.
 /// La largeur totale des formules doit tenir dans l'espace disponible.
+/// La marge supérieure est réduite à `0.3em` pour rapprocher les formules du texte qui les introduit.
 ///
 /// - empiler-presentation (bool): Centrer les formules les unes sous les autres en présentation uniquement.
 /// - ..formules (arguments): Formules ou contenus à répartir.
@@ -48,6 +49,7 @@
 #let formules-reparties(empiler-presentation: false, ..formules) = {
   let formules = formules.pos()
   if formules.len() == 0 { return [] }
+  set block(above: 0.3em)
   if est-presentation() and empiler-presentation {
     return grid(columns: (1fr,), row-gutter: 0.5em, align: center, ..formules)
   }
