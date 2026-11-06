@@ -49,7 +49,6 @@
 #let formules-reparties(empiler-presentation: false, ..formules) = {
   let formules = formules.pos()
   if formules.len() == 0 { return [] }
-  set block(above: 0.3em)
   if est-presentation() and empiler-presentation {
     return grid(columns: (1fr,), row-gutter: 0.5em, align: center, ..formules)
   }

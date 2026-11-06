@@ -128,13 +128,13 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
 == Valuations et modèles
 
 #definition[Valuation, évaluation][
-  Une _valuation_ est une fonction $v : V ⟶ {0, 1}$, qu'on prolonge sur les formules $φ ∈ cal(F)(V)$ par :
+  Une _valuation_ est une fonction $v : V ⟶ {0, 1}$, qu'on prolonge sur les formules $φ ∈ cal(F)(V)$ par :#v(-0.5em)
   #formules-reparties(
     empiler-presentation: true,
     $v(⊤) = 1$,
     $v(⊥) = 0$,
     $v(¬ φ) = 1 - v(φ)$,
-  )
+  )#v(-0.5em)
   #formules-reparties(
     empiler-presentation: true,
     $v(φ ∧ ψ) = min(v(φ), v(ψ))$,
