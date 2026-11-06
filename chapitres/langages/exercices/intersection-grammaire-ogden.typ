@@ -1,10 +1,6 @@
 #import "/load.typ": exercice, formules-reparties, lien, question, sep, theoremes
 #import theoremes: lemme-sans-numero
 
-// Sources locales : rc/langages/lfcc.pdf, Olivier Carton, § 2.3.2–2.3.3 et 2.4.3.
-// Voir aussi ups-mpi/mpi_gluher/Exercices/Lemme_Ogden.tex et son corrigé.
-// Référence complémentaire : https://arxiv.org/abs/2209.06809v2.
-
 #let lemme-etoile = lemme-sans-numero(
   outlined: false,
   full-title: [Lemme de l'étoile pour les langages non-contextuels],
