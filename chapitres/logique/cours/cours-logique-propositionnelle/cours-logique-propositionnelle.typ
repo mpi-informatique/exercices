@@ -548,7 +548,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   ],
   [
     #figure(
-      align(center, arbre(spacing: (2.4em, 2.4em), draw-node: (stroke: 0.5pt + black, fill: white))[
+      align(center, arbre(spacing: (2.4em, 2.4em), node-inset: 0.4em, draw-node: (stroke: 0.5pt + black, fill: white))[
         - $(x ∨ y) ∧ (¬ x ∨ z)$
           + $x = 0$
           - $y$
