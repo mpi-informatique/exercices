@@ -2,6 +2,8 @@
 #import "/load.typ": sep
 #import theoremes: algorithme, commentaire
 
+#let definition = [Une grammaire $G = (Σ, V, R, S)$ est en forme normale de Chomsky si toutes ses règles sont de la forme $X ⟶ Y Z$, $X ⟶ a$ ou $S ⟶ ε$, où $X, Y, Z ∈ V$, $Y ≠ S$, $Z ≠ S$ et $a ∈ Σ$.]
+
 #let ex = exercice(
   meta: (
     titre: "Forme normale de Chomsky",
@@ -12,8 +14,7 @@
     niveaux: ("MPI",),
   ),
   contenu: (
-    [Une grammaire $G = (Σ,V,R,S)$ est en forme normale de Chomsky si ses règles sont $X → Y Z$, avec $Y,Z ∈ V$, ou $X → a$, avec $a ∈ Σ$.
-      On autorise aussi $S → ε$, à condition que $S$ n'apparaisse dans aucun membre droit.],
+    definition,
     question(
       [
         Soit $G$ une grammaire non-contextuelle.

@@ -1,6 +1,7 @@
 #import "/load.typ": code, est-corrige, exercice, feuille, question, theoremes
 #import code: code-extrait
 #import theoremes: algorithme
+#import "../../exercices/forme-normale-chomsky.typ": definition
 #let corrige = read("corrige.ml")
 #let squelette = read("tp4.ml")
 
@@ -18,7 +19,9 @@
     [L'algorithme CYK permet de déterminer, par programmation dynamique, si un mot est généré par une grammaire non-contextuelle.
       Il permet aussi de trouver un arbre de dérivation pour ce mot, par analyse syntaxique ascendante (_bottom-up_ : des feuilles à la racine).
 
-      L'algorithme prend en entrée une grammaire $G = (Σ, V, R, S)$ en forme normale de Chomsky, c'est-à-dire que toutes les règles sont de la forme $X ⟶ Y Z$, $X ⟶ a$ ou $S ⟶ ε$, où $X, Y, Z ∈ V$, $Y ≠ S$, $Z ≠ S$ et $a ∈ Σ$.
+      #definition
+
+      L'algorithme prend en entrée une grammaire $G = (Σ, V, R, S)$ en forme normale de Chomsky.
       On note $V = {X_0, X_1, …, X_(k - 1)}$ les variables, où $S = X_0$.
     ],
     [= Équation de récurrence
