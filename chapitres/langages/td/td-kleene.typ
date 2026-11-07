@@ -6,10 +6,11 @@
 #import "/chapitres/langages/exercices/mcnaughton-yamada/mcnaughton-yamada.typ": ex as dynamique
 #import "/chapitres/langages/exercices/residuels-minimisation.typ": ex as myhill-nerode, introduction, residuels
 
-#let ex-residuels = exercice(
-  meta: (..myhill-nerode.meta, titre: "Résiduels et théorème de Myhill-Nerode"),
-  contenu: (introduction, residuels),
-)
+#let ex-residuels = exercice(meta: (..myhill-nerode.meta, titre: "Résiduels et théorème de Myhill-Nerode"))[
+  #introduction
+
+  #residuels
+]
 
 #show: feuille.with(
   titre: "TD : Théorème de Kleene",

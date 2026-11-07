@@ -24,7 +24,7 @@ test('les dépôts privés sont paginés et aucune autorisation ne part vers une
 });
 
 test('le chargement lit uniquement le dépôt choisi, fige un commit et conserve Unicode et fichiers binaires en mémoire', async () => {
-  const source = '#let ex = exercice(contenu: ([Énoncé Σ],))\n';
+  const source = '#let ex = exercice(meta: (titre: "Exemple", chapitres: (), difficulte: 1))[Énoncé Σ]\n';
   const calls: string[] = [];
   const request: typeof fetch = async (url, init) => {
     const path = new URL(String(url)).pathname;

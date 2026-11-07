@@ -5,17 +5,66 @@
 )
 #import "document.typ": auteur-par-defaut, document-pedagogique, texte-duree
 
-/// Construit les données d'une question, sans les afficher.
+// Les blocs de rédaction sont convertis en données avant la mise en page.
+#let marquer-bloc(bloc) = metadata((exercices-bloc: true, bloc: bloc))
+#let est-bloc(it) = type(it) == content and it.func() == metadata and type(it.value) == dictionary and it.value.at("exercices-bloc", default: false)
+#let contient-bloc(it) = {
+  if type(it) == content {
+    if est-bloc(it) { return true }
+    return contient-bloc(it.fields())
+  }
+  if type(it) == dictionary { return it.values().any(contient-bloc) }
+  if type(it) == array { return it.any(contient-bloc) }
+  false
+}
+#let texte-bloc(enfants) = {
+  let blancs = ([], [ ], parbreak())
+  while enfants.len() > 0 and enfants.first() in blancs { let _ = enfants.remove(0) }
+  while enfants.len() > 0 and enfants.last() in blancs { let _ = enfants.pop() }
+  if enfants.len() == 0 { [] } else { enfants.join([]) }
+}
+#let lire-blocs(body) = {
+  assert(type(body) in (content, array), message: "Le corps doit être un bloc Typst ou un tableau de données")
+  let sequence = [a#metadata(none)].func()
+  let enfants = if type(body) == array { body } else if body.func() == sequence { body.children } else { (body,) }
+  let resultat = ()
+  let texte = ()
+  for enfant in enfants {
+    assert(type(enfant) in (content, dictionary), message: "Un corps contient des textes, questions et parties")
+    if type(enfant) == content and not est-bloc(enfant) {
+      assert(not contient-bloc(enfant), message: "Placer question et partie directement dans le corps ; appliquer les styles locaux dans l'énoncé ou la solution, et le style général dans le modèle.")
+    }
+    if est-bloc(enfant) or type(enfant) == dictionary or type(body) == array {
+      let avant = texte-bloc(texte)
+      if avant != [] { resultat.push(avant) }
+      texte = ()
+      resultat.push(if est-bloc(enfant) { enfant.value.bloc } else { enfant })
+    } else {
+      texte.push(enfant)
+    }
+  }
+  let apres = texte-bloc(texte)
+  if apres != [] { resultat.push(apres) }
+  resultat
+}
+
+/// Construit une question dans le corps d'un exercice ou d'une partie.
 /// `label` permet les renvois `@etiquette` ; `notation` est réservée au correcteur.
+/// Écrire `#question(bareme: 1)[Énoncé.][Solution.]` ; le second bloc est facultatif.
 ///
 /// - enonce (content): Question posée.
 /// - jury (content, none): Observation affichée dans le corrigé.
-/// - solution (content, none): Réponse du corrigé ; `none` ne produit aucun bloc.
+/// - ..suite (arguments): Second bloc facultatif contenant la solution ; son absence ne produit aucun bloc de corrigé.
 /// - bareme (float, int, none): Points attribués, parmi les valeurs validées par l'API.
 /// - notation (content, none): Critères de correction conservés sans affichage.
 /// - label (label, none): Étiquette unique dans le document.
-/// -> dictionary
-#let question(enonce, jury: none, solution: none, bareme: none, notation: none, label: none) = {
+/// -> content
+#let question(enonce, jury: none, bareme: none, notation: none, label: none, ..suite) = {
+  assert(suite.named().len() == 0, message: "La solution s'écrit dans le second bloc : question[Énoncé][Solution]")
+  assert(suite.pos().len() <= 1, message: "Une question reçoit un énoncé et une solution facultative")
+  let solution = suite.pos().at(0, default: none)
+  assert(type(enonce) == content and (solution == none or type(solution) == content))
+  assert(not contient-bloc(enonce) and not contient-bloc(solution), message: "Une question ne contient pas d'autre question ni de partie")
   assert(label == none or type(label) == std.label, message: "label doit être une étiquette Typst ou none")
   assert(jury == none or type(jury) == content, message: "jury doit être un contenu Typst ou none")
   assert(notation == none or type(notation) == content, message: "notation doit être un contenu Typst ou none")
@@ -23,7 +72,7 @@
     bareme == none or bareme in (0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4),
     message: "Points autorisés : 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ou none",
   )
-  (type: "question", enonce: enonce, jury: jury, solution: solution, bareme: bareme, notation: notation, label: label)
+  marquer-bloc((type: "question", enonce: enonce, jury: jury, solution: solution, bareme: bareme, notation: notation, label: label))
 }
 
 /// Associe une étiquette à l'énoncé en préservant son alignement et son numéro.
@@ -97,20 +146,46 @@
 /// Regroupe des textes, questions et sous-parties sans les afficher.
 /// `contexte` conserve les rappels à reprendre explicitement dans un extrait autonome.
 ///
-/// - numero (str): Numéro explicite de la partie.
 /// - titre (str): Titre non vide.
-/// - contenu (array): Textes Typst, questions et sous-parties.
+/// - numero (str, auto): Numéro imposé ; sinon I, I.A, I.A.1 selon la hiérarchie.
+/// - body (content, array): Textes Typst, questions et sous-parties.
 /// - contexte (array): Rappels sous forme de contenus Typst.
 /// - meta (dictionary): Métadonnées propres à la partie.
 /// - jury (content, none): Observation générale du jury.
-/// -> dictionary
-#let partie(numero, titre, contenu: (), contexte: (), meta: (:), jury: none) = {
-  assert(type(numero) == str and numero != "", message: "Numéro de partie vide")
+/// -> content
+#let partie(titre, numero: auto, contexte: (), meta: (:), jury: none, body) = {
+  assert(numero == auto or (type(numero) == str and numero != ""), message: "Numéro de partie vide")
   assert(type(titre) == str and titre != "", message: "Titre de partie vide")
-  assert(type(contenu) == array and type(contexte) == array)
+  assert(type(contexte) == array)
   assert(contexte.all(bloc => type(bloc) == content), message: "Le contexte contient uniquement du texte Typst")
   assert(jury == none or type(jury) == content)
-  (jury: jury, type: "partie", numero: numero, titre: titre, contenu: contenu, contexte: contexte, meta: meta)
+  marquer-bloc((jury: jury, type: "partie", numero: numero, titre: titre, contenu: lire-blocs(body), contexte: contexte, meta: meta))
+}
+
+// Les numéros sont fixés avant le filtrage des corrections de copies.
+#let numeroter-parties(blocs, prefixe: none, niveau: 1) = {
+  let resultat = ()
+  let indice = 0
+  for bloc in blocs {
+    if type(bloc) == dictionary and bloc.at("type", default: none) == "partie" {
+      indice += 1
+      let numero = if bloc.numero != auto { bloc.numero } else if prefixe == none { numbering("I", indice) } else {
+        prefixe + "." + numbering(if niveau == 2 { "A" } else { "1" }, indice)
+      }
+      resultat.push((..bloc, numero: numero, contenu: numeroter-parties(bloc.contenu, prefixe: numero, niveau: niveau + 1)))
+    } else { resultat.push(bloc) }
+  }
+  resultat
+}
+
+/// Extrait les données d'une question ou d'une partie pour une réutilisation explicite.
+///
+/// - body (content): Un unique bloc produit par `question` ou `partie`.
+/// -> dictionary
+#let donnees(body) = {
+  let blocs = numeroter-parties(lire-blocs(body))
+  assert(blocs.len() == 1 and type(blocs.first()) == dictionary, message: "donnees attend une question ou une partie unique")
+  blocs.first()
 }
 
 /// Indique si le bloc est une partie construite par `partie`.
@@ -170,14 +245,15 @@
 /// Les vocabulaires des métadonnées sont définis dans `meta.typ`.
 ///
 /// - meta (dictionary): `titre`, `chapitres` et `difficulte` requis ; niveaux, outils, durée et concours facultatifs.
-/// - contenu (array): Textes Typst, questions et parties ; au moins une question.
+/// - body (content, array): Textes Typst, questions et parties ; au moins une question. Un tableau permet les compositions calculées.
 /// - colonnes (int): Colonnes de l'énoncé ; le corrigé utilise une seule colonne.
 /// - jury (content, none): Observation générale affichée dans le corrigé.
 /// - corrections (content, none): Erreurs corrigées du sujet, conservées sans affichage.
 /// - notation (content, none): Consignes générales de correction, conservées sans affichage.
 /// - bareme (array, none): Barème global de compatibilité ; préférer celui des questions.
 /// -> dictionary
-#let exercice(meta: (:), contenu: (), colonnes: 1, jury: none, corrections: none, notation: none, bareme: none) = {
+#let exercice(meta: (:), colonnes: 1, jury: none, corrections: none, notation: none, bareme: none, body) = {
+  let contenu = numeroter-parties(lire-blocs(body))
   assert(type(colonnes) == int and colonnes > 0, message: "colonnes doit être un entier strictement positif")
   let champs = ("titre", "chapitres", "difficulte")
   for champ in champs {

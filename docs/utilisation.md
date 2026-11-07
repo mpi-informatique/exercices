@@ -24,6 +24,28 @@ Dans un autre dépôt, verrouiller cette banque comme entrée Nix et utiliser sa
 
 Pour ajouter un package Typst, fixer sa version dans l'import et enregistrer son archive, son empreinte et ses dépendances dans [nix/typst-packages.json](../nix/typst-packages.json), puis vérifier avec `nix flake check path:.`.
 
+## Exercices et parties
+
+```typst
+#import "/load.typ": exercice, partie, question
+
+#let ex = exercice(meta: (titre: "Exemple", chapitres: ("automates-finis",), difficulte: 2))[
+  Une introduction.
+
+  #partie("Premiers exemples")[
+    #question(bareme: 1, label: <q-exemple>)[
+      Déterminer le langage reconnu.
+    ][
+      Une solution.
+    ]
+  ]
+]
+```
+
+Le second bloc de `question` est facultatif. Les parties suivent la hiérarchie `I`, `I.A`, `I.A.1` ; `numero: "III.B"` permet de conserver un repère. Les numéros sont fixés à la construction, avant le filtrage des corrections. Les données de l'exercice restent disponibles dans `ex.contenu` pour les outils.
+
+Pour un extrait partagé, `donnees(partie-exportee)` récupère explicitement le dictionnaire de la partie. Un corps calculé peut être fourni comme argument positionnel sous forme de tableau, par exemple `exercice(meta: ..., rappels + partie.contenu)`. La mise en forme générale appartient au modèle du document ; les styles locaux se placent dans le texte de l'énoncé ou de la solution.
+
 ## Cours et présentations
 
 Partir des modèles [cours A4](../templates/cours.typ), [présentation](../templates/presentation.typ) ou [source commune](../templates/cours-presentation.typ). Nommer les sources `cours-<nom>.typ` : elles produisent le cours, son corrigé et, si disponible, `presentation-<nom>.pdf`.

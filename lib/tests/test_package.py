@@ -33,24 +33,43 @@ with TemporaryDirectory() as dossier:
                         *[argument for valeur in inputs for argument in ('--input', valeur)],
                         str(source), str(racine / (nom + '.pdf'))], check=True)
 
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, exercice, partie, question, est-corrige, lien
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, exercice, partie, question, donnees, nombre-questions, est-corrige, lien
 #assert(public("templates/test-package.typ").extrait == "let reponse = 42")
 #assert(lien("test")[Site].dest == "https://mpi-informatique.github.io/exercices/test/")
 #assert(lien(<premiere>)[Question].dest == <premiere>)
-#let ex = exercice(
-  meta: (titre: "Exercice de test", chapitres: (), difficulte: 1),
-  contenu: (
-    [= Section automatique <section-test>
-      == Sous-section automatique <sous-section-test>],
-    partie("II.B", "Partie explicite"),
-    [#heading(numbering: none)[Introduction sans numéro] <titre-libre-test>],
-    question([Première question.], label: <premiere>, solution: [#metadata(none) <solution-test> Réponse.], bareme: 2),
-    question([Voir @premiere et #lien(<premiere>)[la première question].]),
-    [#set heading(numbering: "A.1")
-      = Section personnalisée <titre-personnalise-test>],
-  ),
-)
+#let ex = exercice(meta: (titre: "Exercice de test", chapitres: (), difficulte: 1))[
+  = Section automatique <section-test>
+  == Sous-section automatique <sous-section-test>
+
+  #partie("Partie explicite", numero: "II.B")[
+
+  ]
+
+  #heading(numbering: none)[Introduction sans numéro] <titre-libre-test>
+
+  #question(label: <premiere>, bareme: 2)[Première question.][#metadata(none) <solution-test> Réponse.]
+
+  #question[Voir @premiere et #lien(<premiere>)[la première question].]
+
+  #[
+    #set heading(numbering: "A.1")
+    = Section personnalisée <titre-personnalise-test>
+  ]
+]
 #show: feuille.with(exercices: (ex,), corrige: est-corrige())
+#let automatique = exercice(meta: ex.meta)[
+  #partie("Première partie")[
+    #partie("Sous-partie")[#question[X][Y]]
+  ]
+]
+#assert(automatique.contenu.first().numero == "I")
+#assert(automatique.contenu.first().contenu.first().numero == "I.A")
+#let partage = partie("Partie reprise", numero: "III.B", contexte: ([Rappel.],))[#question[A][B]]
+#let extrait = donnees(partage)
+#assert(extrait.numero == "III.B" and extrait.contexte == ([Rappel.],))
+#assert(nombre-questions(exercice(meta: ex.meta, extrait.contexte + extrait.contenu).contenu) == 1)
+#let compose = exercice(meta: ex.meta, ([Premier paragraphe.], [Second paragraphe.], question[X]))
+#assert(compose.contenu.at(0) == [Premier paragraphe.] and compose.contenu.at(1) == [Second paragraphe.])
 #context {
   assert(query(<premiere>).len() == 1)
   assert(query(<solution-test>).len() == if est-corrige() { 1 } else { 0 })
