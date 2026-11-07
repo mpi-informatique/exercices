@@ -7,7 +7,7 @@
 
 #let sujet = exercice(
   meta: (
-    titre: "TP 4 : Algorithme CYK (Cocke-Younger-Kasami)",
+    titre: "TP 4 : Algorithme CYK",
     chapitres: ("grammaires-non-contextuelles",),
     algorithmes: ("programmation-dynamique",),
     structures: ("tableau", "arbre-binaire"),
@@ -16,7 +16,7 @@
     difficulte: 2,
   ),
   contenu: (
-    [L'algorithme CYK permet de déterminer, par programmation dynamique, si un mot est généré par une grammaire non-contextuelle.
+    [L'algorithme CYK (Cocke-Younger-Kasami) permet de déterminer, par programmation dynamique, si un mot est généré par une grammaire non-contextuelle.
       Il permet aussi de trouver un arbre de dérivation pour ce mot, par analyse syntaxique ascendante (_bottom-up_ : des feuilles à la racine).
 
       #chomsky
