@@ -181,6 +181,7 @@
   ],
   contenu: (
     [
+      #set heading(numbering: none)
       == Définition mathématique d'un automate
       Dans tout le sujet, le terme _automate_ désigne un ADC sur ${a,b}$, c'est-à-dire un quadruplet $cal(A)=⟨ Q,i,δ,F ⟩$ avec $i ∈ Q$, $δ: Q × {a,b} → Q$ et $F ⊂ Q$.\
       On note $cal(L)(cal(A))$ le langage reconnu par $cal(A)$ et $δ^*: Q × {a,b}^* → Q$ l'extension de $δ$ définie par

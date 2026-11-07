@@ -306,6 +306,8 @@
 
 /// Affiche un exercice et publie ses métadonnées sous `<exercice-meta>`.
 /// Le corrigé ajoute solutions, observations du jury et points dans la marge.
+/// Les titres ordinaires héritent de la numérotation du document ; les titres
+/// d'exercice et de `partie` portent leur propre numéro explicite.
 ///
 /// - ex (dictionary): Données produites par `exercice`.
 /// - numero (int, none): Numéro d'exercice ; `none` utilise le préfixe I.
@@ -327,8 +329,6 @@
   let bareme = if bareme == none { ex.bareme } else { bareme }
   let nombre = nombre-questions(ex.contenu)
   verifier-bareme(bareme, nombre)
-  // Conserver les titres et numéros explicites du contenu des exercices.
-  set heading(numbering: none)
   show strong: it => it.body
   show heading: set text(weight: "bold")
   [#metadata(ex.meta) <exercice-meta>]

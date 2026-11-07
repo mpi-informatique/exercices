@@ -132,7 +132,8 @@
   //   - Partie IV : préciser les deux arguments de $widetilde(δ)(E,x)$.
   // ],
   contenu: (
-    [== Notations
+    [#set heading(numbering: none)
+      == Notations
       - On appelle *machine* tout triplet $(Q,Σ,δ)$ où $Q$ est un ensemble fini non vide dont les éléments sont appelés *états*, $Σ$ un ensemble fini non vide appelé *alphabet* dont les éléments sont appelés *lettres*, et $δ$ une application de $Q × Σ$ dans $Q$ appelée *fonction de transition*. Une machine correspond donc à un ADC sans notion d'état initial ou d'états finaux.
       - Pour un état $q$ et une lettre $x$, on note $q.x=δ(q,x)$.
       - L'ensemble des mots (c'est-à-dire des concaténations de lettres) sur l'alphabet $Σ$ est noté $Σ^*$.

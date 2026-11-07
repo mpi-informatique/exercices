@@ -33,15 +33,21 @@ with TemporaryDirectory() as dossier:
                         *[argument for valeur in inputs for argument in ('--input', valeur)],
                         str(source), str(racine / (nom + '.pdf'))], check=True)
 
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, exercice, question, est-corrige, lien
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, exercice, partie, question, est-corrige, lien
 #assert(public("templates/test-package.typ").extrait == "let reponse = 42")
 #assert(lien("test")[Site].dest == "https://mpi-informatique.github.io/exercices/test/")
 #assert(lien(<premiere>)[Question].dest == <premiere>)
 #let ex = exercice(
   meta: (titre: "Exercice de test", chapitres: (), difficulte: 1),
   contenu: (
+    [= Section automatique <section-test>
+      == Sous-section automatique <sous-section-test>],
+    partie("II.B", "Partie explicite"),
+    [#heading(numbering: none)[Introduction sans numéro] <titre-libre-test>],
     question([Première question.], label: <premiere>, solution: [#metadata(none) <solution-test> Réponse.], bareme: 2),
     question([Voir @premiere et #lien(<premiere>)[la première question].]),
+    [#set heading(numbering: "A.1")
+      = Section personnalisée <titre-personnalise-test>],
   ),
 )
 #show: feuille.with(exercices: (ex,), corrige: est-corrige())
@@ -49,6 +55,14 @@ with TemporaryDirectory() as dossier:
   assert(query(<premiere>).len() == 1)
   assert(query(<solution-test>).len() == if est-corrige() { 1 } else { 0 })
   assert(query(<bareme-question>).map(it => it.value.points) == if est-corrige() { (2,) } else { () })
+  let section = query(<section-test>).first()
+  let sous-section = query(<sous-section-test>).first()
+  assert(section.numbering == "I.1.1 –")
+  assert(counter(heading).at(section.location()) == (1,))
+  assert(counter(heading).at(sous-section.location()) == (1, 1))
+  assert(query(<titre-libre-test>).first().numbering == none)
+  assert(query(<titre-personnalise-test>).first().numbering == "A.1")
+  assert(query(heading).filter(it => it.numbering == none).len() == 3)
 }
 ''', encoding='utf-8')
     for corrige in ('false', 'true'):

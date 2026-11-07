@@ -242,6 +242,7 @@
   ],
   contenu: (
     [
+      #set heading(numbering: none)
       Ce sujet aborde différents problèmes autour des automates et des expressions régulières.
       On explore dans une première partie des propriétés sur le miroir d'un langage, sur les palindromes et sur les automates correspondants.
       On implémente ensuite l'algorithme de déterminisation d'un automate, afin de construire de manière effective l'automate de Brzozowski qui a la propriété d'être minimal.
