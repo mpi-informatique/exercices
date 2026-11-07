@@ -220,7 +220,7 @@
 
 #let ex = exercice(
   meta: (
-    titre: "Option informatique",
+    titre: "Automate de Brzozowski et dérivées d'Antimirov",
     chapitres: ("langages-reguliers", "automates-finis", "recursivite-et-induction", "algorithmique"),
     algorithmes: ("determinisation", "diviser-pour-regner"),
     structures: ("liste", "tableau", "arbre"),
