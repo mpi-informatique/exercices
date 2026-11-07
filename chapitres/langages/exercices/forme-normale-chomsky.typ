@@ -2,7 +2,7 @@
 #import "/load.typ": sep
 #import theoremes: algorithme, commentaire, definition
 
-#let chomsky = definition[Une grammaire $G = (Σ, V, R, S)$ est en forme normale de Chomsky si toutes ses règles sont de la forme $X ⟶ Y Z$, $X ⟶ a$ ou $S ⟶ ε$, où $X, Y, Z ∈ V$, $Y ≠ S$, $Z ≠ S$ et $a ∈ Σ$.]
+#let chomsky = definition[Forme normale de Chomsky][Une grammaire $G = (Σ, V, R, S)$ est en _forme normale de Chomsky_ si toutes ses règles sont de la forme $X ⟶ Y Z$, $X ⟶ a$ ou $S ⟶ ε$, où $X, Y, Z ∈ V$, $Y ≠ S$, $Z ≠ S$ et $a ∈ Σ$.]
 
 #let ex = exercice(
   meta: (
