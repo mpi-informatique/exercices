@@ -1,8 +1,8 @@
 #import "/load.typ": exercice, question, theoremes, tp
 #import "/load.typ": sep
-#import theoremes: algorithme, commentaire
+#import theoremes: algorithme, commentaire, definition
 
-#let definition = [Une grammaire $G = (Σ, V, R, S)$ est en forme normale de Chomsky si toutes ses règles sont de la forme $X ⟶ Y Z$, $X ⟶ a$ ou $S ⟶ ε$, où $X, Y, Z ∈ V$, $Y ≠ S$, $Z ≠ S$ et $a ∈ Σ$.]
+#let chomsky = definition[Une grammaire $G = (Σ, V, R, S)$ est en forme normale de Chomsky si toutes ses règles sont de la forme $X ⟶ Y Z$, $X ⟶ a$ ou $S ⟶ ε$, où $X, Y, Z ∈ V$, $Y ≠ S$, $Z ≠ S$ et $a ∈ Σ$.]
 
 #let ex = exercice(
   meta: (
@@ -14,13 +14,15 @@
     niveaux: ("MPI",),
   ),
   contenu: (
-    definition,
+    chomsky,
     question(
       [
         Soit $G$ une grammaire non-contextuelle.
         Décrire un algorithme pour construire une grammaire en forme normale de Chomsky équivalente à $G$.
       ],
       solution: [
+        - Isolement de l'axiome :
+          Renommer l'axiome initial en une variable nouvelle $T$ dans toutes les règles, puis prendre $S$ comme nouvel axiome avec la règle $S ⟶ T$.
         - Suppression des $X → ε$ pour $X ≠ S$ :
           - Calculer l'ensemble $E = {X ∈ V | X ⇒^* ε}$ des variables engendrant $ε$ :#v(-0.5em)
             #algorithme[
@@ -52,7 +54,7 @@
         Donner une grammaire en forme normale de Chomsky pour $L = {a^n b^n | n ≥ 1}$.
       ],
       solution: [
-        $L$ est engendré par : $S → A B ∣ A C, #sep C → S B, #sep A → a, #sep B → b$.
+        $L$ est engendré par : $S ⟶ A B ∣ A C, #sep T ⟶ A B ∣ A C, #sep C ⟶ T B, #sep A ⟶ a, #sep B ⟶ b$.
       ],
     ),
     question(
