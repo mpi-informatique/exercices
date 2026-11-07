@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { Download, ExternalLink } from 'lucide-react';
 import { availableVariants, pdfFilename, type Resource, type Variant } from '@mpi-informatique/exercices-core';
 import { assetUrl, exerciseUrl, routeVariant } from '../lib/urls';
+import { loadPublishedPdf } from '../lib/published-pdf';
 import { VariantTabs } from './VariantTabs';
 import { TpCodespaceButton } from './TpCodespaceButton';
 
@@ -42,11 +43,7 @@ export default function DocumentPreview({ resource }: { resource: PublishedResou
   useEffect(() => {
     const controller = new AbortController();
     setLoadError('');
-    const path = resource.pdfs[variant];
-    if (!path) { setLoadError('Cette version du PDF n’est pas disponible.'); return; }
-    fetch(assetUrl(path), { signal: controller.signal }).then(async response => {
-      if (!response.ok) throw new Error(`Chargement impossible (${response.status}).`);
-      const pdf = new Uint8Array(await response.arrayBuffer());
+    loadPublishedPdf(resource, variant, new URL(assetUrl(''), location.href), controller.signal).then(pdf => {
       if (!controller.signal.aborted) setLoaded({ variant, pdf });
     }).catch(error => { if (!controller.signal.aborted) setLoadError(String(error.message)); });
     return () => controller.abort();
