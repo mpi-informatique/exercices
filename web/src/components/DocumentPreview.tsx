@@ -83,9 +83,11 @@ export default function DocumentPreview({ resource }: { resource: PublishedResou
   return <main id="main" className="document-preview" aria-label={resource.titre}>
     {loadError && <div className="document-preview-error" role="alert"><p>{loadError}</p><button className="btn btn-sm" onClick={() => setRetry(value => value + 1)}>Réessayer</button></div>}
     <Suspense fallback={<div className="preview-placeholder" aria-busy="true" />}><PdfViewer pdf={pdf} pending={!loadError && !pdf} dark={dark} onReady={() => {}}
-      toolbar={<VariantTabs variant={variant} documentType={resource.type} variants={variants} onChange={changeVariant} />}
-      actions={<div>
+      toolbar={<>
+        <VariantTabs variant={variant} documentType={resource.type} variants={variants} onChange={changeVariant} />
         <TpCodespaceButton resource={resource} />
+      </>}
+      actions={<div>
         <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" onClick={download} disabled={!pdf || !!loadError}><Download size={17} /></button>
         <a className="btn btn-ghost btn-sm btn-square" href={exerciseUrl(resource.id, variant)} target="_blank" rel="noopener noreferrer" aria-label="Ouvrir dans la banque d’exercices" title="Ouvrir dans la banque d’exercices"><ExternalLink size={17} /></a>
       </div>} /></Suspense>

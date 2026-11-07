@@ -264,9 +264,9 @@ export default function Workbench({ resources: publicResources, initialId }: Pro
           <section className="preview-panel" aria-label="Document PDF">
             <Suspense fallback={<div className="pane-loading" aria-busy="true" />}><PdfViewer dark={dark} pdf={compilation.pdf} pending={compilation.pending} onReady={focusPending} toolbar={<>
               <VariantTabs documentType={resource?.type} variant={variant} onChange={value => resource && navigate(resource, value)} />
+              <TpCodespaceButton resource={resource} />
               <span className={`compilation-status ${compilation.error || loadError ? 'has-error' : ''}`} title={status} role="status">{compilation.pending ? <span className="loading loading-spinner loading-xs" /> : compilation.error || loadError ? <CircleAlert size={13} /> : <span className="status-dot" />}<span className="sr-only">{status}</span></span>
             </>} actions={<>
-              <TpCodespaceButton resource={resource} />
               <button className="btn btn-ghost btn-sm btn-square" aria-label="Télécharger le PDF" title="Télécharger le PDF" disabled={!canDownloadPdf} onClick={downloadPdf}><Download size={17} /></button>
             </>} /></Suspense>
           </section>

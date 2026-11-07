@@ -67,7 +67,7 @@ La connexion et les scopes sont décrits dans le [guide du Worker OAuth](../work
 
 ## TP et Codespaces
 
-Le bouton **TP** ouvre ou reprend le Codespace `mpi-informatique/tp-environnement` ; sélectionner ensuite le document dans **TP MPI**. Pour publier un TP, partir de [templates/tp.typ](../templates/tp.typ) et déclarer ses ressources dans `feuille.with(type: "tp", tp: ...)`. Le contrat de `tp` est documenté dans [lib/exercice.typ](../lib/exercice.typ).
+Le bouton **CodeSpace**, à côté des variantes du document, ouvre ou reprend le Codespace `mpi-informatique/tp-environnement` ; sélectionner ensuite le document dans **TP MPI**. Pour publier un TP, partir de [templates/tp.typ](../templates/tp.typ) et déclarer ses ressources dans `feuille.with(type: "tp", tp: ...)`. Le contrat de `tp` est documenté dans [lib/exercice.typ](../lib/exercice.typ).
 
 Le catalogue exporte `tp.ouvrir`, `tp.fichiers` et `tp.corrige`. L'extension suit le marqueur `: cor` du menu pour afficher les corrigés dans le cours, sans reconstruire la banque. Les fichiers publics restent accessibles sur GitHub.
 
