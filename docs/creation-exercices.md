@@ -17,6 +17,13 @@ Choix pédagogiques et éditoriaux de la banque. Les commandes sont dans le [gui
 - Appliquer les [consignes communes de vérification et de livraison](../AGENTS.md#vérification-et-livraison) et signaler les points à relire.
 - Après validation explicite du professeur, transférer le contenu dans le chapitre ou le TD approprié du dépôt public. La compilation ne remplace pas la relecture mathématique et pédagogique.
 
+## Colles MP
+
+- Pour chaque préparation de colle MP, ajouter systématiquement les exercices réutilisables et leurs solutions dans le dépôt public `exercices`, sous `chapitres/maths/<theme>/`, un exercice par fichier exportant `ex`. Vérifier les doublons et réutiliser les exercices déjà présents.
+- Conserver la feuille de colle dans `exercices-prive/chapitres/maths/colles/<annee>/`. Elle compose les sujets en chargeant les exercices publics avec `public("chapitres/maths/<theme>/<exercice>.typ").ex` : ne pas recopier les énoncés ni les solutions dans la feuille.
+- Cette organisation, demandée par le professeur, s'applique dès la préparation des colles MP et constitue une exception à leur classement initial dans `todo/`. Les questions de cours propres à la colle, le programme reçu, l'identité du mail et le suivi restent privés. Respecter la confidentialité des contenus dont la diffusion n'est pas autorisée.
+- Avant de déclarer la préparation réussie, vérifier les exercices dans le dépôt public et les imports de la feuille privée, compiler les deux variantes des fichiers concernés et consigner les chemins, révisions et vérifications dans le suivi privé. Pousser d'abord les exercices publics, actualiser la dépendance verrouillée du privé, puis pousser la feuille et son suivi.
+
 ## Confidentialité
 
 Conserver dans le dépôt privé les identités, colles, copies nominatives, évaluations, scans et sujets dont la diffusion n'est pas autorisée. Leur présence dans `todo/` ne vaut pas autorisation de publication.
