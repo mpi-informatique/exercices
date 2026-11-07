@@ -87,7 +87,7 @@ with TemporaryDirectory() as dossier:
     for corrige in ('false', 'true'):
         compiler('exercice-' + corrige, 'corrige=' + corrige)
 
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": cours-et-presentation, est-corrige, est-presentation, solution, theoremes
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": colonnes-cours, cours-et-presentation, est-corrige, est-presentation, solution, theoremes
 #show: cours-et-presentation.with(titre: "Cours de test")
 == Résultat
 #theoremes.theoreme[Un résultat. #metadata(none) <resultat-test>]
@@ -97,6 +97,30 @@ with TemporaryDirectory() as dossier:
   assert(query(<resultat-test>).len() > 0)
   assert(query(<solution-test>).len() == if est-corrige() { 1 } else { 0 })
   assert((query(<projection-test>).len() > 0) == est-presentation())
+}
+== Colonnes
+#colonnes-cours(
+  [#metadata(none) <colonne-defaut-gauche> Gauche.],
+  [#metadata(none) <colonne-defaut-droite> Droite.],
+)
+#colonnes-cours(
+  columns: 3,
+  separation: true,
+  empiler-presentation: false,
+  [#metadata(none) <colonne-gauche> Gauche.],
+  [Centre.],
+  [#metadata(none) <colonne-droite> Droite.],
+)
+#context {
+  let position(label) = query(label).first().location().position()
+  let gauche = position(<colonne-defaut-gauche>)
+  let droite = position(<colonne-defaut-droite>)
+  if est-presentation() {
+    assert(gauche.x == droite.x and gauche.y < droite.y)
+  } else {
+    assert(gauche.x < droite.x)
+  }
+  assert(position(<colonne-gauche>).x < position(<colonne-droite>).x)
 }
 ''', encoding='utf-8')
     for format, corrige in (('cours', 'false'), ('cours', 'true'), ('presentation', 'false')):

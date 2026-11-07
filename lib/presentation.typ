@@ -172,13 +172,15 @@
   presentation(..args, article: format == "cours", body)
 }
 
-/// Dispose les contenus en colonnes dans le cours et à la suite dans la présentation.
+/// Dispose les contenus en colonnes dans le cours et, par défaut, à la suite dans la présentation.
 /// Le contenu commence à la ligne, sans marge supérieure supplémentaire.
 /// Passer le cadre via `encadrer`, plutôt qu'entourer l'appel, pour que Touying résolve les variantes.
 ///
 /// - columns (array, int): Nombre de colonnes de même largeur, ou tableau de largeurs explicites comme pour `grid`.
 /// - column-gutter (length): Espacement entre colonnes.
 /// - align (alignment): Alignement dans la grille.
+/// - separation (bool): Tracer une ligne verticale entre les colonnes.
+/// - empiler-presentation (bool): Mettre les contenus à la suite en présentation plutôt qu'en colonnes.
 /// - saut-slide (bool): Séparer les contenus par des diapositives.
 /// - encadrer (function): Cadre commun, ou un cadre par contenu avec `saut-slide`.
 /// - ..contenus (arguments): Contenus à disposer.
@@ -187,6 +189,8 @@
   columns: (1fr, 1fr),
   column-gutter: 1.5em,
   align: left + horizon,
+  separation: false,
+  empiler-presentation: true,
   saut-slide: false,
   encadrer: body => body,
   ..contenus,
@@ -199,9 +203,15 @@
   // Garder l'interligne normal, sans l'espacement de paragraphe ajouté par défaut avant une grille.
   let composer-colonnes(self: none, ..cellules) = context encadrer(block(
     above: par.leading,
-    grid(columns: columns, column-gutter: column-gutter, align: align, ..cellules),
+    grid(
+      columns: columns,
+      align: align,
+      ..if separation { (column-gutter: 0pt, inset: (x: column-gutter / 2)) } else { (column-gutter: column-gutter) },
+      ..if separation { range(1, columns.len()).map(x => grid.vline(x: x, stroke: 0.5pt + gray)) } else { () },
+      ..cellules,
+    ),
   ))
-  if not est-presentation() {
+  if not est-presentation() or (not empiler-presentation and not saut-slide) {
     return touying.touying-fn-wrapper-raw(composer-colonnes, ..contenus)
   }
   slides-only(if saut-slide {
