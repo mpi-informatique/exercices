@@ -9,11 +9,11 @@ type grammaire = {
 (* 6. Représenter la grammaire de l'énoncé. *)
 let g0 : grammaire = failwith "À compléter : g0"
 
-(* 7. Initialiser les cas de base du tableau. *)
+(* 7. Initialiser le tableau pour les facteurs de taille 1 d'un mot non vide. *)
 let init (g : grammaire) (u : string) : bool array array array =
   failwith "À compléter : init"
 
-(* 8. Tester l'appartenance au langage de la grammaire. *)
+(* 8. Tester l'appartenance au langage de la grammaire, mot vide compris. *)
 let cyk (g : grammaire) (u : string) : bool =
   failwith "À compléter : cyk"
 

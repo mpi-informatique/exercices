@@ -15,82 +15,58 @@ let g0 = {
 let init g u =
   let n = String.length u in
   let k = g.n_variables in
-  let t = Array.make (n + 1) [||] in
-  for i = 0 to n do
-    (* Garder une colonne pour t.(0).(0).(0) lorsque le mot est vide. *)
-    t.(i) <- Array.make_matrix (max 1 n) k false
-  done;
-  if g.epsilon then t.(0).(0).(0) <- true;
-
-  let rec aux = function
-    | [] -> ()
-    | (i, a) :: q ->
-      for d = 0 to n - 1 do
-        if u.[d] = a then t.(1).(d).(i) <- true
-      done;
-      aux q
-  in
-  aux g.regles1;
+  let t = Array.init (n + 1) (fun _ -> Array.make_matrix n k false) in
+  List.iter (fun (i, a) ->
+    for d = 0 to n - 1 do
+      if u.[d] = a then t.(1).(d).(i) <- true
+    done
+  ) g.regles1;
   t
 
 let cyk g u =
-  let t = init g u in
   let n = String.length u in
-
-  for l = 2 to n do
-    for d = 0 to n - l do
-      let rec aux = function
-        | [] -> ()
-        | (i, j, k) :: q ->
+  if n = 0 then g.epsilon
+  else begin
+    let t = init g u in
+    for l = 2 to n do
+      for d = 0 to n - l do
+        List.iter (fun (i, j, k) ->
           for p = 1 to l - 1 do
-            if d + p < n && t.(p).(d).(j) && t.(l - p).(d + p).(k)
+            if t.(p).(d).(j) && t.(l - p).(d + p).(k)
             then t.(l).(d).(i) <- true
-          done;
-          aux q
-      in
-      aux g.regles2
-    done
-  done;
-  t.(n).(0).(0)
+          done
+        ) g.regles2
+      done
+    done;
+    t.(n).(0).(0)
+  end
 
 type arbre = Vide | Un of int * char | Deux of int * arbre * arbre
 
 let arbre_derivation g u : arbre option =
   let n = String.length u in
-  let k = g.n_variables in
-  let t = Array.make (n + 1) [||] in
-  for i = 0 to n do
-    (* Garder une colonne pour la dérivation du mot vide. *)
-    t.(i) <- Array.make_matrix (max 1 n) k None
-  done;
-  if g.epsilon then t.(0).(0).(0) <- Some Vide;
-  let rec aux = function
-    | [] -> ()
-    | (i, a) :: q ->
+  if n = 0 then (if g.epsilon then Some Vide else None)
+  else begin
+    let k = g.n_variables in
+    let t = Array.init (n + 1) (fun _ -> Array.make_matrix n k None) in
+    List.iter (fun (i, a) ->
       for d = 0 to n - 1 do
         if u.[d] = a then t.(1).(d).(i) <- Some (Un (i, a))
-      done;
-      aux q
-  in
-  aux g.regles1;
-
-  for l = 2 to n do
-    for d = 0 to n - l do
-      let rec aux = function
-        | [] -> ()
-        | (i, j, k) :: q ->
+      done
+    ) g.regles1;
+    for l = 2 to n do
+      for d = 0 to n - l do
+        List.iter (fun (i, j, k) ->
           for p = 1 to l - 1 do
-            if d + p < n
-            then match t.(p).(d).(j), t.(l - p).(d + p).(k) with
+            match t.(p).(d).(j), t.(l - p).(d + p).(k) with
             | Some a1, Some a2 -> t.(l).(d).(i) <- Some (Deux (i, a1, a2))
             | _ -> ()
-          done;
-          aux q
-      in
-      aux g.regles2
-    done
-  done;
-  t.(n).(0).(0)
+          done
+        ) g.regles2
+      done
+    done;
+    t.(n).(0).(0)
+  end
 
 let exemples = [
   cyk g0 "aab";
@@ -103,7 +79,6 @@ module Tests = struct
   let () =
     List.iter (fun epsilon ->
       let g = { g0 with epsilon } in
-      assert ((init g "").(0).(0).(0) = epsilon);
       assert (cyk g "" = epsilon);
       assert (arbre_derivation g "" = (if epsilon then Some Vide else None));
       assert (cyk g "b");
@@ -118,6 +93,9 @@ module Tests = struct
     assert (t.(1).(0) = [|false; true; false; false; true|]);
     assert (t.(1).(1) = [|true; false; true; false; false|]);
     assert (t.(1).(2) = t.(1).(0));
+    t.(2).(0).(0) <- true;
+    assert (not t.(1).(0).(0));
+    assert (not t.(2).(1).(0));
     assert (arbre_derivation g0 "aabb" = None)
 
   let racine = function

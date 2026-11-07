@@ -27,20 +27,19 @@
     [= Équation de récurrence
       Cette partie est à faire sur papier.
 
-      Soit $u = u_0 … u_(n - 1) ∈ Σ^*$. On veut savoir si $u ∈ cal(L)(G)$.
-      Pour cela, on va calculer, pour $l ∈ {0, …, n}$, $d ∈ {0, …, n - 1}$ et $i ∈ {0, …, k - 1}$ :
+      Soit $u = u_0 … u_(n - 1) ∈ Σ^+$. On veut savoir si $u ∈ cal(L)(G)$.
+      Pour cela, on va calculer, pour $1 ≤ l ≤ n$, $0 ≤ d ≤ n - l$ et $0 ≤ i < k$ :
       $ t[l][d][i] = cases("vrai" & "si" X_i ⟹^* u_d … u_(d + l - 1), "faux" & "sinon".) $],
-    question([À quelle condition a-t-on $u ∈ cal(L)(G)$ ?], solution: [Pour $n > 0$, on a $u ∈ cal(L)(G) ⟺ t[n][0][0]$.
-      Pour le mot vide, on teste si la règle $S ⟶ ε$ appartient à $R$.]),
+    question([À quelle condition a-t-on $u ∈ cal(L)(G)$ ?], solution: [On a $u ∈ cal(L)(G) ⟺ t[n][0][0]$.]),
     question(
-      [Que vaut $t[0][d][i]$ ?],
-      solution: [La valeur est vraie si et seulement si $i = 0$ et $S ⟶ ε$ appartient à $R$, car aucune autre variable ne peut engendrer le mot vide.],
+      [Comment traiter séparément le cas du mot vide ?],
+      solution: [On a $ε ∈ cal(L)(G)$ si et seulement si $S ⟶ ε$ appartient à $R$. Ce cas ne nécessite pas de tableau.],
     ),
     question(
       [Que vaut $t[1][d][i]$ ?],
       solution: [La valeur est vraie si et seulement si $X_i ⟶ u_d$ appartient à $R$.],
     ),
-    [Pour avoir $X_i ⟹^* u_d … u_(d + l - 1)$, il faut que $X_i ⟶ X_j X_k$ avec $X_j ⟹^* u_d … u_(d + p - 1)$ et $X_k ⟹^* u_(d + p) … u_(d + l - 1)$.],
+    [Pour $l ≥ 2$, avoir $X_i ⟹^* u_d … u_(d + l - 1)$ équivaut à l'existence d'une règle $X_i ⟶ X_j X_k$ et d'un entier $1 ≤ p < l$ tels que $X_j ⟹^* u_d … u_(d + p - 1)$ et $X_k ⟹^* u_(d + p) … u_(d + l - 1)$.],
     question([En déduire une équation de récurrence pour $t[l][d][i]$.], solution: [Pour $l ≥ 2$ et $0 ≤ d ≤ n - l$ :
       $ t[l][d][i] = or.big_(X_i ⟶ X_j X_k ∈ R) or.big_(p = 1)^(l - 1) (t[p][d][j] ∧ t[l - p][d + p][k]). $
       Les bornes assurent $d + p < n$.]),
@@ -48,13 +47,14 @@
       [En déduire un algorithme en pseudo-code pour remplir le tableau $t$. Quelle est sa complexité ?],
       solution: [
         #algorithme[
-          + Initialiser le tableau à faux, puis remplir les cas $l = 0$ et $l = 1$.
+          + *Si* $n = 0$, renvoyer vrai si $S ⟶ ε ∈ R$, et faux sinon.
+          + Initialiser le tableau à faux, puis remplir le cas $l = 1$.
           + *Pour* $l$ de $2$ à $n$ :
             + *Pour* $d$ de $0$ à $n - l$ :
               + *Pour chaque* règle $X_i ⟶ X_j X_k$ :
                 + *Pour* $p$ de $1$ à $l - 1$ :
                   + *Si* $t[p][d][j] ∧ t[l - p][d + p][k]$ alors $t[l][d][i] ← "vrai"$.
-          + *Renvoyer* $t[n][0][0]$ pour $n > 0$, et tester $S ⟶ ε ∈ R$ pour $n = 0$.
+          + *Renvoyer* $t[n][0][0]$.
         ]
         Notons $r_1$ et $r_2$ les nombres de règles terminales et binaires.
         L'initialisation coûte $O(n^2 k + n r_1)$ pour $n ≥ 1$.
@@ -81,30 +81,23 @@
       solution: [#code-extrait(corrige, "g0")],
     ),
     question(
-      [Écrire une fonction `init : grammaire -> string -> bool array array array` qui prend en argument une grammaire et un mot et renvoie un tableau `t` initialisé pour les cas de base $l = 0$ et $l = 1$.
+      [Écrire une fonction `init : grammaire -> string -> bool array array array` qui prend en argument une grammaire et un mot non vide de taille $n$ et renvoie un tableau `t` de dimensions $(n + 1) × n × k$, initialisé pour le cas de base $l = 1$, les autres cases étant à faux.
+        Les cases d'indice $l = 0$ ou telles que $d + l > n$ ne sont pas utilisées.
+        Veiller à créer des sous-tableaux indépendants : `Array.make` ne copie pas le tableau fourni comme valeur initiale.
         #block(breakable: false)[
           ```ocaml
-          init g0 "aba";;
-          - : bool array array array =
-          [|[|[|false; false; false; false; false|];
-              [|false; false; false; false; false|];
-              [|false; false; false; false; false|]|];
-            [|[|false; true; false; false; true|];
-              [|true; false; true; false; false|];
-              [|false; true; false; false; true|]|];
-            [|[|false; false; false; false; false|];
-              [|false; false; false; false; false|];
-              [|false; false; false; false; false|]|];
-            [|[|false; false; false; false; false|];
-              [|false; false; false; false; false|];
-              [|false; false; false; false; false|]|]|]
+          (init g0 "aba").(1);;
+          - : bool array array =
+          [|[|false; true; false; false; true|];
+            [|true; false; true; false; false|];
+            [|false; true; false; false; true|]|]
           ```
         ]
       ],
       solution: [#code-extrait(corrige, "init")],
     ),
     question(
-      [Écrire une fonction `cyk : grammaire -> string -> bool` qui prend en argument une grammaire et un mot et renvoie vrai si le mot est dans le langage de la grammaire, en utilisant l'algorithme CYK décrit en première partie.
+      [Écrire une fonction `cyk : grammaire -> string -> bool` qui prend en argument une grammaire et un mot et renvoie vrai si le mot est dans le langage de la grammaire, en utilisant l'algorithme CYK décrit en première partie. Traiter le mot vide avant de construire le tableau.
       ],
       solution: [#code-extrait(corrige, "cyk")],
     ),
@@ -120,6 +113,7 @@
         cyk g0 "aababa";;
         - : bool = false
         ```
+        Tester aussi les mots `""`, `"a"` et `"b"`, puis le mot vide avec `{ g0 with epsilon = true }`.
       ],
       solution: [Les variables $X_1$, $X_2$, $X_3$ et $X_4$ engendrent respectivement $a^+$, ${b}$, $a^+ b$ et ${a}$.
         Les quatre règles de $S$ engendrent respectivement ${b}$, $a^+ b$, $b a^+$ et $a^+ b a^+$.
@@ -133,7 +127,7 @@
       où :
       - `Vide` correspond à une dérivation $S ⟶ ε$
       - `Un (i, a)` correspond à une dérivation $X_i ⟶ a$
-      - `Deux (i, j, k)` correspond à une dérivation $X_i ⟶ X_j X_k$
+      - `Deux (i, gauche, droite)` correspond à une règle $X_i ⟶ X_j X_k$, où `gauche` et `droite` sont des arbres de dérivation de racines respectives $X_j$ et $X_k$
 
       On rappelle que le type `option` est défini nativement en OCaml par :
       ```ocaml
@@ -141,7 +135,7 @@
       ```
       On adapte alors l'algorithme CYK avec `t : arbre option array array array` où `t[l][d][i]` contient un arbre de dérivation pour $X_i ⟹^* u_d … u_(d + l - 1)$ s'il en existe un, `None` sinon.],
     question(
-      [Écrire une fonction `arbre_derivation : grammaire -> string -> arbre option` qui prend en argument une grammaire et un mot et renvoie un arbre de dérivation pour ce mot si celui-ci est dans le langage de la grammaire ou `None` sinon.
+      [Écrire une fonction `arbre_derivation : grammaire -> string -> arbre option` qui prend en argument une grammaire et un mot et renvoie `Some a`, où `a` est un arbre de dérivation de ce mot, ou `None` si le mot n'est pas engendré. Un seul arbre quelconque suffit. Traiter le mot vide séparément.
       ],
       solution: [#code-extrait(corrige, "arbre_derivation")],
     ),
