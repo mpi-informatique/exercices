@@ -428,6 +428,27 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
     $
 ]
 
+#slides-only[== Calcul d'une FND en OCaml]
+#exercice[Programmation][
+  Reprendre le type `formule` défini plus haut. On veut calculer une FND équivalente à une formule donnée, sans construire sa table de vérité.
+  + Écrire `fnn : bool -> formule -> formule` telle que `fnn false p` soit une FNN équivalente à `p` et `fnn true p` une FNN équivalente à `Non p`.
+  + Écrire `distribuer : formule -> formule -> formule` qui, étant données deux FND `p` et `q`, calcule une FND équivalente à `Et (p, q)`.
+  + En déduire `fnd : formule -> formule`. Justifier sa correction.
+  On représentera $⊤$ et $⊥$ par `Top` et `Bot`, et on simplifiera les constantes lors des distributions. Il n'est pas demandé de minimiser la FND obtenue.
+]
+#solution[
+  Le booléen indique si l'on cherche une FNN de la formule ou de sa négation. Les lois de De Morgan donnent :
+  #code-extrait(ocaml, "fnn")
+]
+#solution[
+  On distribue récursivement dès qu'un argument est une disjonction. Sinon, après traitement des constantes, les deux arguments sont des termes.
+  #code-extrait(ocaml, "distribuer")
+]
+#solution[
+  Après passage en FNN, on procède par induction sur la formule : les littéraux et constantes conviennent déjà, une disjonction réunit deux FND, et `distribuer` traite une conjonction en préservant l'équivalence.
+  #code-extrait(ocaml, "fnd")
+]
+
 == Problème #pb("SAT")
 #colonnes-cours(
   columns: (1fr, 1.3fr),
