@@ -11,36 +11,51 @@ let rec eval v = function
   | Et (p, q) -> eval v p && eval v q
   | Ou (p, q) -> eval v p || eval v q
 
-let rec fnn negatif = function
-  | Top -> if negatif then Bot else Top
-  | Bot -> if negatif then Top else Bot
-  | Var x -> if negatif then Non (Var x) else Var x
-  | Non p -> fnn (not negatif) p
-  | Et (p, q) ->
-    if negatif then Ou (fnn true p, fnn true q)
-    else Et (fnn false p, fnn false q)
-  | Ou (p, q) ->
-    if negatif then Et (fnn true p, fnn true q)
-    else Ou (fnn false p, fnn false q)
+let rec fnn = function
+  | Non Top -> Bot
+  | Non Bot -> Top
+  | Non (Non p) -> fnn p
+  | Non (Et (p, q)) -> Ou (fnn (Non p), fnn (Non q))
+  | Non (Ou (p, q)) -> Et (fnn (Non p), fnn (Non q))
+  | Et (p, q) -> Et (fnn p, fnn q)
+  | Ou (p, q) -> Ou (fnn p, fnn q)
+  | p -> p
 
 let rec distribuer p q =
   match p, q with
-  | Bot, _ | _, Bot -> Bot
-  | Top, q -> q
-  | p, Top -> p
-  | Ou (a, b), q -> Ou (distribuer a q, distribuer b q)
-  | p, Ou (a, b) -> Ou (distribuer p a, distribuer p b)
-  | p, q -> Et (p, q)
+  | Top, _ | _, Top -> Top
+  | Bot, q -> q
+  | p, Bot -> p
+  | Et (a, b), q -> Et (distribuer a q, distribuer b q)
+  | p, Et (a, b) -> Et (distribuer p a, distribuer p b)
+  | p, q -> Ou (p, q)
 
-let fnd p =
+let fnc p =
   let rec convertir = function
-    | Ou (p, q) -> Ou (convertir p, convertir q)
-    | Et (p, q) -> distribuer (convertir p) (convertir q)
+    | Et (p, q) -> Et (convertir p, convertir q)
+    | Ou (p, q) -> distribuer (convertir p) (convertir q)
     | p -> p
   in
-  convertir (fnn false p)
+  convertir (fnn p)
+
+let fnd p = fnn (Non (fnc (Non p)))
 
 module Tests = struct
+  let rec est_fnn = function
+    | Top | Bot | Var _ | Non (Var _) -> true
+    | Et (p, q) | Ou (p, q) -> est_fnn p && est_fnn q
+    | _ -> false
+
+  let rec clause = function
+    | Bot | Var _ | Non (Var _) -> true
+    | Ou (p, q) -> clause p && clause q
+    | _ -> false
+
+  let rec est_fnc = function
+    | Top -> true
+    | Et (p, q) -> est_fnc p && est_fnc q
+    | p -> clause p
+
   let rec terme = function
     | Top | Var _ | Non (Var _) -> true
     | Et (p, q) -> terme p && terme q
@@ -55,15 +70,18 @@ module Tests = struct
     let x = Var 0 and y = Var 1 in
     let formules = [Top; Bot; x; Non Top; Non Bot; Non (Non x);
       Non (Ou (x, Non y)); Non (Et (x, y));
-      Et (Ou (x, y), Ou (Non x, Non y)); Et (Bot, x);
-      Et (Top, x); Et (x, Top); Et (x, Bot)] in
+      Et (Ou (x, y), Ou (Non x, Non y));
+      Ou (Et (x, y), Et (Non x, Non y));
+      Ou (Top, x); Ou (x, Top); Ou (Bot, x); Ou (x, Bot);
+      Non (Ou (Et (x, Top), Et (y, Bot)))] in
     List.iter (fun p ->
-      let q = fnd p in
-      assert (est_fnd q);
+      let n = fnn p and c = fnc p and d = fnd p in
+      assert (est_fnn n && est_fnc c && est_fnd d);
       for masque = 0 to 3 do
         let v i = masque land (1 lsl i) <> 0 in
-        assert (eval v p = eval v q);
-        assert (eval v (fnn true p) = not (eval v p))
+        assert (eval v p = eval v n);
+        assert (eval v p = eval v c);
+        assert (eval v p = eval v d)
       done
     ) formules
 end

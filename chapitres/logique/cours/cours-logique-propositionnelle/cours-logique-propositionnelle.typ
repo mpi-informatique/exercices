@@ -428,24 +428,29 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
     $
 ]
 
-#slides-only[== Calcul d'une FND en OCaml]
+#slides-only[== Calcul d'une FNC en OCaml]
 #exercice[Programmation][
-  Reprendre le type `formule` défini plus haut. On veut calculer une FND équivalente à une formule donnée, sans construire sa table de vérité.
-  + Écrire `fnn : bool -> formule -> formule` telle que `fnn false p` soit une FNN équivalente à `p` et `fnn true p` une FNN équivalente à `Non p`.
-  + Écrire `distribuer : formule -> formule -> formule` qui, étant données deux FND `p` et `q`, calcule une FND équivalente à `Et (p, q)`.
-  + En déduire `fnd : formule -> formule`. Justifier sa correction.
-  On représentera $⊤$ et $⊥$ par `Top` et `Bot`, et on simplifiera les constantes lors des distributions. Il n'est pas demandé de minimiser la FND obtenue.
+  Reprendre le type `formule` défini plus haut. On veut calculer une FNC équivalente à une formule donnée, sans construire sa table de vérité.
+  + Écrire `fnn : formule -> formule` qui calcule une FNN équivalente à son argument.
+  + Écrire `distribuer : formule -> formule -> formule` qui, étant données deux FNC `p` et `q`, calcule une FNC équivalente à `Ou (p, q)`.
+  + En déduire `fnc : formule -> formule`. Justifier sa correction.
+  + En utilisant `fnc` et les lois de De Morgan, écrire `fnd : formule -> formule` qui calcule une FND équivalente à son argument.
+  On représentera $⊤$ et $⊥$ par `Top` et `Bot`, et on simplifiera les constantes lors des distributions. Il n'est pas demandé de minimiser les formes normales obtenues.
 ]
 #solution[
-  Le booléen indique si l'on cherche une FNN de la formule ou de sa négation. Les lois de De Morgan donnent :
+  On supprime les doubles négations et on applique les lois de De Morgan pour pousser les négations jusqu'aux variables :
   #code-extrait(ocaml, "fnn")
 ]
 #solution[
-  On distribue récursivement dès qu'un argument est une disjonction. Sinon, après traitement des constantes, les deux arguments sont des termes.
+  On distribue récursivement dès qu'un argument est une conjonction. Sinon, après traitement des constantes, les deux arguments sont des clauses.
   #code-extrait(ocaml, "distribuer")
 ]
 #solution[
-  Après passage en FNN, on procède par induction sur la formule : les littéraux et constantes conviennent déjà, une disjonction réunit deux FND, et `distribuer` traite une conjonction en préservant l'équivalence.
+  Après passage en FNN, on procède par induction sur la formule : les littéraux et constantes conviennent déjà, une conjonction réunit deux FNC, et `distribuer` traite une disjonction en préservant l'équivalence.
+  #code-extrait(ocaml, "fnc")
+]
+#solution[
+  Si $¬ φ ≡ C_1 ∧ … ∧ C_k$ est en FNC alors $φ ≡ ¬ C_1 ∨ … ∨ ¬ C_k$. Le passage en FNN transforme chaque négation de clause en un terme.
   #code-extrait(ocaml, "fnd")
 ]
 
