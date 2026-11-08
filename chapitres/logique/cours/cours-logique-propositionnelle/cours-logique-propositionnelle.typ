@@ -76,7 +76,7 @@
   ],
   [
     #align(center, figure(
-      arbre[
+      arbre(node-inset: 0.4em, draw-node: (stroke: 0.5pt + black, fill: white))[
         - $∨$
           - $∧$
             - $x$
@@ -550,17 +550,17 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
     #figure(
       align(center, arbre(spacing: (2.4em, 2.4em), node-inset: 0.4em, draw-node: (stroke: 0.5pt + black, fill: white))[
         - $(x ∨ y) ∧ (¬ x ∨ z)$
-          + $x ← 0$
+          + $x := 0$
           - $y$
-            + $y ← 0$
+            + $y := 0$
             - $⊥$
-            + $y ← 1$
+            + $y := 1$
             - $⊤$
-          + $x ← 1$
+          + $x := 1$
           - $z$
-            + $z ← 0$
+            + $z := 0$
             - $⊥$
-            + $z ← 1$
+            + $z := 1$
             - $⊤$
       ]),
       caption: [Exemple avec $φ = (x ∨ y) ∧ (¬ x ∨ z)$],

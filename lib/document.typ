@@ -70,13 +70,13 @@
 #let widetilde(body) = math.accent(body, sym.tilde, size: 150%)
 
 /// Note la substitution de toutes les occurrences d'une variable dans une formule.
-/// Exemple en mode mathématique : `substituer(φ, x, ψ)` affiche φ[x ← ψ].
+/// Exemple en mode mathématique : `substituer(φ, x, ψ)` affiche φ[x := ψ].
 ///
 /// - formule (content): Formule dans laquelle effectuer la substitution.
 /// - variable (content): Variable à remplacer.
 /// - valeur (content): Formule substituée à la variable.
 /// -> content
-#let substituer(formule, variable, valeur) = $formule[variable <- valeur]$
+#let substituer(formule, variable, valeur) = $formule[variable := valeur]$
 
 /// Désactive par défaut la numérotation des figures dans les documents et les présentations.
 /// Un argument `numbering` explicite reste prioritaire.
