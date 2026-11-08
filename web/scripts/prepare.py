@@ -52,7 +52,7 @@ def parse_published_pages(markdown):
 
 
 def export_pdfs(entries, bank, signature, pages):
-    """Compiler uniquement les versions utilisées par le menu du cours."""
+    """Compiler les variantes des documents sélectionnés par le menu du cours."""
     missing = pages.keys() - {entry['id'] for entry in entries}
     if missing:
         raise ValueError(f"Documents du cours absents de la banque : {', '.join(sorted(missing))}")
@@ -64,8 +64,8 @@ def export_pdfs(entries, bank, signature, pages):
         source = entry['fichier']
         kind = kinds[source]
         for variant, inputs in variants(kind).items():
-            if variant == 'corrige' and entry.get('type') != 'tp' and not pages.get(entry['id'], True):
-                continue
+            # « cor » règle le lecteur du cours. Préparer aussi les corrigés
+            # masqués permet de les activer sans republier la banque.
             filename = pdf_filename(source, variant, kind)
             output = Path('build') / Path(source).with_suffix('') / filename
             compiler(source, output, signature, *inputs, exercice=kind == 'exercice')

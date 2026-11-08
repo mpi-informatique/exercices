@@ -48,7 +48,7 @@ class ExportPdfTests(unittest.TestCase):
         menu = "- Langages\n  - Rubrique\n    - cours-exemple\n    - [TD](td-exemple): cor\n    - [QCM](doc:langages/qcm)\n    - [Lien](https://example.org)\n"
         self.assertEqual(parse_published_pages(menu), {"cours-exemple": False, "td-exemple": True})
 
-    def test_only_selected_resources_and_corrections_are_compiled(self):
+    def test_selected_resources_include_corrections_hidden_by_course(self):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
             entries = [{'id': name, 'fichier': f'{name}.typ'} for name in ('cours', 'td', 'autre')]
@@ -59,9 +59,9 @@ class ExportPdfTests(unittest.TestCase):
                 target.write_bytes(b'%PDF-test')
 
             with patch('prepare.ROOT', root), patch('prepare.WEB', root / 'web'), patch('prepare.sources', return_value=[('cours.typ', 'cours-presentation'), ('td.typ', 'document'), ('autre.typ', 'exercice')]), patch('prepare.compiler', side_effect=compile_pdf) as compile_mock:
-                export_pdfs(entries, root / 'web/public/banque', 'signature', {'cours': False, 'td': True})
-            self.assertEqual(compile_mock.call_count, 4)
-            self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'presentation'})
+                export_pdfs(entries, root / 'web/public/banque', 'signature', {'cours': False, 'td': False})
+            self.assertEqual(compile_mock.call_count, 5)
+            self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige', 'presentation'})
             self.assertEqual(set(entries[1]['pdfs']), {'enonce', 'corrige'})
             self.assertEqual(entries[2]['pdfs'], {})
 
