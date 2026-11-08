@@ -438,20 +438,14 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   On représentera $⊤$ et $⊥$ par `Top` et `Bot`, et on simplifiera les constantes lors des distributions. Il n'est pas demandé de minimiser les formes normales obtenues.
 ]
 #solution[
-  On supprime les doubles négations et on applique les lois de De Morgan pour pousser les négations jusqu'aux variables :
-  #code-extrait(ocaml, "fnn")
-]
-#solution[
-  On distribue récursivement dès qu'un argument est une conjonction. Sinon, après traitement des constantes, les deux arguments sont des clauses.
-  #code-extrait(ocaml, "distribuer")
-]
-#solution[
-  Après passage en FNN, on procède par induction sur la formule : les littéraux et constantes conviennent déjà, une conjonction réunit deux FNC, et `distribuer` traite une disjonction en préservant l'équivalence.
-  #code-extrait(ocaml, "fnc")
-]
-#solution[
-  Si $¬ φ ≡ C_1 ∧ … ∧ C_k$ est en FNC alors $φ ≡ ¬ C_1 ∨ … ∨ ¬ C_k$. Le passage en FNN transforme chaque négation de clause en un terme.
-  #code-extrait(ocaml, "fnd")
+  + On supprime les doubles négations et on applique les lois de De Morgan pour pousser les négations jusqu'aux variables :
+    #code-extrait(ocaml, "fnn")
+  + On distribue récursivement dès qu'un argument est une conjonction. Sinon, après traitement des constantes, les deux arguments sont des clauses.
+    #code-extrait(ocaml, "distribuer")
+  + Après passage en FNN, on procède par induction sur la formule : les littéraux et constantes conviennent déjà, une conjonction réunit deux FNC, et `distribuer` traite une disjonction en préservant l'équivalence.
+    #code-extrait(ocaml, "fnc")
+  + Si $¬ φ ≡ C_1 ∧ … ∧ C_k$ est en FNC alors $φ ≡ ¬ C_1 ∨ … ∨ ¬ C_k$. Le passage en FNN transforme chaque négation de clause en un terme.
+    #code-extrait(ocaml, "fnd")
 ]
 
 == Problème #pb("SAT")
