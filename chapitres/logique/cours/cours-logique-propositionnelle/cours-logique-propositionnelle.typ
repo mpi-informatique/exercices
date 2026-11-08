@@ -31,7 +31,7 @@
     #definition[Formule propositionnelle][
       Soit $V$ un ensemble fini de _variables propositionnelles_.
       L'ensemble $cal(F)(V)$ des _formules logiques_ est le langage engendré par la grammaire $G$ :
-      $ S ⟶ ⊤ ∣ ⊥ ∣ x ∣ ¬ S ∣ (S ∧ S) ∣ (S ∨ S) quad (x ∈ V) $
+      $ S ⟶ ⊤ ∣ ⊥ ∣ x ∣ ¬ S ∣ (S ∧ S) ∣ (S ∨ S) ∣ (S → S) ∣ (S ↔ S) quad (x ∈ V) $
     ]
   ],
   [
@@ -93,14 +93,8 @@
   Dessiner l'arbre de dérivation du mot $φ_1 ∈ cal(F)(V)$ et comparer à @arbre-formule.
 ]
 
-#slides-only[== Priorités et abréviations]
-Pour alléger les écritures, $¬$ est prioritaire sur $∧$, lui-même prioritaire sur $∨$. On ajoute les abréviations :
-#v(-0.5em)
-#formules-reparties(
-  empiler-presentation: true,
-  $φ → ψ := ¬ φ ∨ ψ$,
-  $φ ↔ ψ := (φ → ψ) ∧ (ψ → φ)$,
-)
+#slides-only[== Priorités et parenthèses]
+Pour alléger les écritures, on omet certaines parenthèses : $¬$ est prioritaire sur $∧$, puis viennent $∨$, $→$ et $↔$, dans cet ordre.
 Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
 
 #slides-only[== Induction sur les formules]
@@ -111,7 +105,7 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
       Soit $P(φ)$ une propriété sur les formules $φ ∈ cal(F)(V)$ telle que :
       - $P(⊤)$, $P(⊥)$ et $P(x)$ pour $x ∈ V$
       - Si $P(φ)$ alors $P(¬ φ)$
-      - Si $P(φ)$ et $P(ψ)$ alors $P(φ ∧ ψ)$ et $P(φ ∨ ψ)$
+      - Si $P(φ)$ et $P(ψ)$ alors $P(φ ⋆ ψ)$ pour tout #box[$⋆ ∈ {∧, ∨, →, ↔}$]
       #v(-0.5em)
       Alors $P(φ)$ est vraie pour toute formule $φ ∈ cal(F)(V)$.
     ]
@@ -130,21 +124,27 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
 #definition[Valuation, évaluation][
   Une _valuation_ est une fonction $v : V ⟶ {0, 1}$, qu'on prolonge sur les formules $φ ∈ cal(F)(V)$ par :#v(-0.5em)
   #formules-reparties(
-    empiler-presentation: true,
+    empiler-presentation: false,
     $v(⊤) = 1$,
     $v(⊥) = 0$,
     $v(¬ φ) = 1 - v(φ)$,
   )#v(-0.5em)
   #formules-reparties(
-    empiler-presentation: true,
+    empiler-presentation: false,
     $v(φ ∧ ψ) = min(v(φ), v(ψ))$,
     $v(φ ∨ ψ) = max(v(φ), v(ψ))$,
+  )
+  #formules-reparties(
+    empiler-presentation: true,
+    $v(φ → ψ) = max(1 - v(φ), v(ψ))$,
+    $ v(φ ↔ ψ) = cases(1 & "si " v(φ) = v(ψ), 0 & "sinon") $,
   )
   On note ${0, 1}^V$ l'ensemble des valuations sur $V$.
 ]
 Une valuation peut aussi être vue comme un ensemble (des variables évaluées à $1$) ou un mot de ${0, 1}^(|V|)$.
 
 #slides-only[== Évaluation en OCaml]
+Pour les exemples OCaml, on se limite aux connecteurs $¬$, $∧$ et $∨$.
 #colonnes-cours(
   columns: (1fr, 1fr),
   code-extrait(ocaml, "formule"),
@@ -218,6 +218,15 @@ Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
 #solution[
   Si $φ$, $ψ$ et $χ$ sont fausses, $(φ → ψ) → χ$ est fausse, mais $φ → (ψ → χ)$ est vraie.
 ]
+
+#propriete[
+  #formules-reparties(
+    empiler-presentation: true,
+    $φ → ψ ≡ ¬ φ ∨ ψ$,
+    $φ ↔ ψ ≡ (φ → ψ) ∧ (ψ → φ)$,
+  )
+]
+Ces équivalences permettent d'éliminer $→$ et $↔$ pour obtenir une formule équivalente utilisant seulement $¬$, $∧$ et $∨$.
 
 #slides-only[== Compatibilité de l'équivalence]
 #theoreme[Compatibilité de l'équivalence avec les connecteurs][
@@ -381,7 +390,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 )
 
 #solution[
-  Après élimination des abréviations $→$ et $↔$, on montre simultanément, par induction sur $φ$, que $φ$ et $¬ φ$ sont équivalentes à des FNN.
+  Après élimination des connecteurs $→$ et $↔$ à l'aide des équivalences précédentes, on montre simultanément, par induction sur la formule obtenue, que celle-ci et sa négation sont équivalentes à des FNN.
 
   Pour une variable ou une constante, le résultat est immédiat, avec $¬ ⊤ ≡ ⊥$ et $¬ ⊥ ≡ ⊤$. Le cas $¬ ψ$ échange les deux formes obtenues pour $ψ$, en utilisant $¬ ¬ ψ ≡ ψ$. Pour $ψ ∧ χ$ et $ψ ∨ χ$, on combine les formes obtenues pour les sous-formules, en appliquant les lois de De Morgan pour la négation.
 ]
@@ -530,6 +539,11 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   $ ⊤ ∧ ψ ≡ ψ, quad ⊥ ∧ ψ ≡ ⊥, $
   $ ⊤ ∨ ψ ≡ ⊤, quad ⊥ ∨ ψ ≡ ψ, $
   ainsi que les identités symétriques pour $∧$ et $∨$. Si aucune sous-formule n'est une constante, on conserve le connecteur. Dans tous les cas, la formule obtenue est équivalente à $φ$, sa taille n'augmente pas et elle vérifie la propriété annoncée.
+
+  Pour $→$ et $↔$, on simplifie de même les sous-formules, puis on utilise :
+  $ ⊤ → ψ ≡ ψ, quad ⊥ → ψ ≡ ⊤, quad ψ → ⊤ ≡ ⊤, quad ψ → ⊥ ≡ ¬ ψ, $
+  $ ⊤ ↔ ψ ≡ ψ, quad ⊥ ↔ ψ ≡ ¬ ψ, $
+  ainsi que les identités symétriques pour $↔$.
 
   Un parcours postfixe de l'arbre traite chaque nœud une seule fois, en temps constant par nœud, en réutilisant les sous-arbres conservés. Le coût total est donc $O(|φ|)$.
 ]
