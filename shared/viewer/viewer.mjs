@@ -5,6 +5,7 @@ const status = document.getElementById('status');
 const compileError = document.getElementById('compile-error');
 const frames = new Map();
 const pagination = new Map();
+const pageRequests = new Map();
 const pageProgress = document.getElementById('page-progress');
 const pageNumber = document.getElementById('page-number');
 const pageTotal = document.getElementById('page-total');
@@ -15,6 +16,7 @@ let pdfPages = 0;
 let progressFrame;
 let currentProgress = { current: 0, total: 0 };
 let requestedPdfPage;
+let pdfNavigation;
 function showProgress(progress) {
   const { current = 0, total = 0 } = progress ?? {};
   const changed = current !== currentProgress.current || total !== currentProgress.total;
@@ -33,12 +35,19 @@ function goToPage(value) {
   const page = Math.max(1, Math.min(value, currentProgress.total));
   if (state?.native) {
     const frame = frames.get(state.variant);
-    frame?.contentWindow?.postMessage({ token: state.tokens?.[state.variant], type: 'goToPage', page }, new URL(frame.src).origin);
+    if (!frame) return;
+    const navigation = (pageRequests.get(state.variant) ?? 0) + 1;
+    pageRequests.set(state.variant, navigation);
+    pagination.set(state.variant, { current: page, total: currentProgress.total });
+    showProgress({ current: page, total: currentProgress.total });
+    frame.contentWindow?.postMessage({ token: state.tokens?.[state.variant], type: 'goToPage', page, navigation }, new URL(frame.src).origin);
   } else {
     requestedPdfPage = page;
+    showProgress({ current: page, total: currentProgress.total });
     const target = host.querySelector(`.page[data-page="${page}"]`);
     if (target) {
-      host.scrollTo({ top: host.scrollTop + target.getBoundingClientRect().top - host.getBoundingClientRect().top });
+      host.scrollTo({ top: host.scrollTop + target.getBoundingClientRect().top - host.getBoundingClientRect().top, behavior: 'instant' });
+      pdfNavigation = { page, top: host.scrollTop };
       requestedPdfPage = undefined;
       schedulePdfProgress();
     }
@@ -62,12 +71,15 @@ nextPage.onclick = () => goToPage(currentProgress.current + 1);
 function updatePdfProgress() {
   if (state?.native) return;
   const bounds = host.getBoundingClientRect();
-  let current = 1, visible = -1;
+  let current = 1, visible = -1, selectedVisible = false;
   for (const page of host.querySelectorAll('.page')) {
     const rect = page.getBoundingClientRect();
     const height = Math.max(0, Math.min(rect.bottom, bounds.bottom) - Math.max(rect.top, bounds.top));
+    if (Number(page.dataset.page) === pdfNavigation?.page && height > 0) selectedVisible = true;
     if (height > visible) { visible = height; current = Number(page.dataset.page); }
   }
+  if (pdfNavigation && Math.abs(host.scrollTop - pdfNavigation.top) < 1 && selectedVisible) current = pdfNavigation.page;
+  else pdfNavigation = undefined;
   showProgress({ current, total: pdfPages });
 }
 function schedulePdfProgress() {
@@ -117,6 +129,7 @@ async function pdf(data) {
   const revision = ++epoch;
   pdfPages = 0;
   requestedPdfPage = undefined;
+  pdfNavigation = undefined;
   showProgress();
   host.replaceChildren();
   host.scrollTop = 0;
@@ -155,7 +168,7 @@ async function pdf(data) {
       ]);
     }
     if (revision === epoch) {
-      host.scrollTop = scrollTop;
+      if (!pdfNavigation) host.scrollTop = scrollTop;
       schedulePdfProgress();
       const canvas = host.querySelector('canvas');
       vscode.postMessage({ type: 'pdfReady', pages: doc.numPages, pixelRatio, width: canvas.width, displayWidth: canvas.getBoundingClientRect().width, pageColors, background: Array.from(canvas.getContext('2d').getImageData(0, 0, 1, 1).data) });
@@ -173,7 +186,7 @@ for (const id of [...variants, 'save', 'code', 'jumps', 'theme', 'fullscreen', '
 }
 window.addEventListener('message', ({ data }) => {
   if (data?.channel !== document.body.dataset.channel) return;
-  if (data.type === 'reset') { ++epoch; rendered = undefined; pdfPages = 0; requestedPdfPage = undefined; pagination.clear(); showProgress(); for (const frame of frames.values()) { if (frame.src.startsWith('blob:')) URL.revokeObjectURL(frame.src); frame.remove(); } frames.clear(); }
+  if (data.type === 'reset') { ++epoch; rendered = undefined; pdfPages = 0; requestedPdfPage = undefined; pdfNavigation = undefined; pagination.clear(); pageRequests.clear(); showProgress(); for (const frame of frames.values()) { if (frame.src.startsWith('blob:')) URL.revokeObjectURL(frame.src); frame.remove(); } frames.clear(); }
   if (data.type === 'status') { status.textContent = data.message; status.hidden = false; }
   if (data.type === 'compileError') { compileError.textContent = data.message; compileError.hidden = !data.message; }
   if (data.type !== 'show') return;
@@ -221,6 +234,8 @@ window.addEventListener('message', event => {
       return;
     }
     if (!Number.isInteger(data.current) || !Number.isInteger(data.total) || data.total < 1 || data.current < 1 || data.current > data.total) return;
+    const navigation = data.navigation ?? 0;
+    if (!Number.isInteger(navigation) || navigation < (pageRequests.get(variant) ?? 0)) return;
     pagination.set(variant, { current: data.current, total: data.total });
     if (state.variant === variant) showProgress(data);
   }
