@@ -7,13 +7,13 @@
 #import code: code-extrait
 #import "@preview/tdtr:0.6.1": tidy-tree-graph
 
-#let arbre = tidy-tree-graph.with(
+#let arbre(encadrer: false, ..args) = tidy-tree-graph.with(
   text-size: 1em,
   spacing: (1.5em, 1.2em),
-  node-inset: 0.15em,
-  draw-node: (stroke: none),
+  node-inset: if encadrer { 0.4em } else { 0.15em },
+  draw-node: if encadrer { (stroke: 0.5pt + black, fill: white) } else { (stroke: none) },
   draw-edge: (marks: "-", stroke: 0.05em),
-)
+)(..args)
 
 #let ocaml = read("corrige.ml")
 
@@ -76,7 +76,7 @@
   ],
   [
     #align(center, figure(
-      arbre(node-inset: 0.4em, draw-node: (stroke: 0.5pt + black, fill: white))[
+      arbre(encadrer: true)[
         - $∨$
           - $∧$
             - $x$
@@ -548,7 +548,7 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   ],
   [
     #figure(
-      align(center, arbre(spacing: (2.4em, 2.4em), node-inset: 0.4em, draw-node: (stroke: 0.5pt + black, fill: white))[
+      align(center, arbre(spacing: (2.4em, 2.4em), encadrer: true)[
         - $(x ∨ y) ∧ (¬ x ∨ z)$
           + $x := 0$
           - $y$
