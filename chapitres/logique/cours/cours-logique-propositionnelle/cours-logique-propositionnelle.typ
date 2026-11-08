@@ -152,9 +152,10 @@ Une valuation peut aussi être vue comme un ensemble (des variables évaluées �
 )
 
 #slides-only[== Modèles]
-#definition(title: [Modèle], item-by-item[
+#definition(title: [Modèle et contre-modèle], item-by-item[
   Soit $v$ une valuation et $φ$ une formule.
   - $v$ est un _modèle_ de $φ$, noté $v ⊨ φ$, si $v$ satisfait $φ$, c'est-à-dire $v(φ) = 1$.
+  - $v$ est un _contre-modèle_ de $φ$, noté $v ⊭ φ$, si $v(φ) = 0$.
   - On note $cal(M)(φ)$ l'_ensemble des modèles_ de $φ$.
 ])
 
@@ -163,6 +164,7 @@ Une valuation peut aussi être vue comme un ensemble (des variables évaluées �
   Soit $Γ ⊆ cal(F)(V)$ un ensemble de formules.
   - On note $cal(M)(Γ) = ⋂_(φ ∈ Γ) cal(M)(φ)$ l'ensemble des valuations satisfaisant toutes les formules de $Γ$.
   - On dit qu'une formule $φ$ est une _conséquence logique_ de $Γ$, noté $Γ ⊨ φ$, si $cal(M)(Γ) ⊂ cal(M)(φ)$.
+  - On note $Γ ⊭ φ$ lorsqu'il existe un modèle de $Γ$ qui est un contre-modèle de $φ$.
 
   On note simplement $ψ ⊨ φ$ si $Γ = {ψ}$ et $⊨ φ$ si $Γ = ∅$.
 ]
@@ -464,21 +466,6 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
     ]
   ],
 )
-#v(-0.4em)
-#slides-only[== SAT sur les FND et taille d'une conversion]
-#exercice[
-  On note $pb("P")$ l'ensemble des problèmes de décision qu'on peut résoudre en temps polynomial.
-  + Décrire un algorithme polynomial pour décider si une FND est satisfiable.
-  + Décrire un algorithme polynomial pour décider si une FNC est une tautologie.
-  + On suppose $pb("SAT") ∉ pb("P")$. Peut-on transformer toute formule en une FND équivalente en temps polynomial ? FNC ?
-]
-#solution[
-  + Une FND est satisfiable si et seulement si au moins un terme ne contient pas de littéraux opposés. Les comparaisons deux à deux dans chaque terme donnent un algorithme en $O(N^2)$ pour une formule de taille $N$.
-  + Une FNC est une tautologie si et seulement si chaque clause contient une variable et sa négation. Les comparaisons deux à deux dans chaque clause donnent aussi un algorithme en $O(N^2)$.
-  + Une conversion polynomiale produirait une formule de taille polynomiale. La conversion en FND, suivie de l'algorithme de la première question, déciderait SAT en temps polynomial.
-
-    Pour la FNC, convertir $¬ φ$ et appliquer l'algorithme de la deuxième question permettrait de décider si $¬ φ$ est une tautologie, donc si $φ$ est insatisfiable. En inversant la réponse, on déciderait encore SAT en temps polynomial. Les deux conversions sont donc impossibles sous l'hypothèse $"SAT" ∉ sans(P)$.
-]
 
 = Substitution, quantificateurs et algorithme de Quine
 
