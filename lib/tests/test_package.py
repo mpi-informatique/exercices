@@ -95,7 +95,7 @@ with TemporaryDirectory() as dossier:
 #solution(presentation: true)[#metadata(none) <projection-test> Une solution projetée.]
 #context {
   assert(query(<resultat-test>).len() > 0)
-  assert(query(<solution-test>).len() == if est-corrige() { 1 } else { 0 })
+  assert(query(<solution-test>).len() == if est-corrige() and not est-presentation() { 1 } else { 0 })
   assert((query(<projection-test>).len() > 0) == est-presentation())
 }
 == Colonnes
@@ -123,6 +123,6 @@ with TemporaryDirectory() as dossier:
   assert(position(<colonne-gauche>).x < position(<colonne-droite>).x)
 }
 ''', encoding='utf-8')
-    for format, corrige in (('cours', 'false'), ('cours', 'true'), ('presentation', 'false')):
+    for format, corrige in (('cours', 'false'), ('cours', 'true'), ('presentation', 'false'), ('presentation', 'true')):
         compiler(format + '-' + corrige, 'format=' + format, 'corrige=' + corrige)
 print('Package : installation, ressources, énoncé, corrigé, cours et présentation vérifiés.')

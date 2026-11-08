@@ -68,7 +68,8 @@
   }
 }
 
-/// Affiche la solution dans le corrigé ou, avec `presentation: true`, dans les diapositives.
+/// Affiche par défaut la solution uniquement dans le cours corrigé, jamais dans les diapositives.
+/// `presentation: true` permet une projection explicitement demandée.
 /// Les marques `article-only` et `slides-only` restent utilisables dans son contenu.
 ///
 /// - cours (bool): Afficher dans les deux versions imprimées, même avec `presentation: true`.
@@ -79,7 +80,7 @@
 /// -> content, none
 #let solution(cours: false, presentation: false, coeur: false, pause: true, body) = {
   if est-presentation() and pause { body += pause-automatique }
-  if (est-corrige() and not presentation) or (cours and not est-presentation()) {
+  if not est-presentation() and ((est-corrige() and not presentation) or cours) {
     // Le filtre article de Touying ne descend pas dans les arguments des fonctions différées.
     body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
       if marque.kind == "touying-slides-only" { [] } else { marque.body }
