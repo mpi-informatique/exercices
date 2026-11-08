@@ -26,7 +26,7 @@
 = Syntaxe <syntaxe>
 
 #colonnes-cours(
-  columns: (2fr, 1fr),
+  columns: (1.89fr, 1fr),
   [
     #definition[Formule propositionnelle][
       Soit $V$ un ensemble fini de _variables propositionnelles_.
@@ -36,7 +36,8 @@
   ],
   [
     #exercice[
-      Montrer que $G$ est non ambiguë.
+      1. Montrer que $G$ est non ambiguë.
+      2. Le langage $cal(F)(V)$ est-il régulier ?
     ]
   ],
 )
@@ -50,11 +51,6 @@
     - Si $φ$ commence par $¬$, seule la production $S ⟶ ¬ S$ est possible à la racine. La sous-formule qui suit $¬$ est déterminée, de longueur $n - 1$. Son arbre est unique d'après $H(n - 1)$.
     - Si $φ$ commence par une parenthèse, son connecteur principal est le seul connecteur binaire à profondeur de parenthésage $1$ : ceux des deux sous-formules sont entourés de parenthèses supplémentaires. Il détermine donc la production utilisée et la découpe en deux sous-formules. Leurs longueurs sont strictement inférieures à $n$, donc leurs arbres sont uniques par hypothèse de récurrence.
     Dans les deux cas, l'arbre de dérivation de $φ$ est unique, donc $H(n)$ est vraie.
-]
-#v(-0.5em)
-#slides-only[== Régularité du langage des formules]
-#exercice[
-  Le langage $cal(F)(V)$ est-il régulier ?
 ]
 #solution[
   Lemme de l'étoile avec $u = (...(⊤ ∧ ⊤) ... ⊤) ∧ ⊤)$.
@@ -88,7 +84,7 @@
     ))
   ],
 )
-
+#v(-0.5em)
 #exercice[
   Dessiner l'arbre de dérivation du mot $φ_1 ∈ cal(F)(V)$ et comparer à @arbre-formule.
 ]
@@ -105,14 +101,14 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
       Soit $P(φ)$ une propriété sur les formules $φ ∈ cal(F)(V)$ telle que :
       - $P(⊤)$, $P(⊥)$ et $P(x)$ pour $x ∈ V$
       - Si $P(φ)$ alors $P(¬ φ)$
-      - Si $P(φ)$ et $P(ψ)$ alors $P(φ ⋆ ψ)$ pour tout #box[$⋆ ∈ {∧, ∨, →, ↔}$]
+      - Si $P(φ)$ et $P(ψ)$ alors $P(φ ⋆ ψ)$ pour #box[$⋆ ∈ {∧, ∨, →, ↔}$]
       #v(-0.5em)
       Alors $P(φ)$ est vraie pour toute formule $φ ∈ cal(F)(V)$.
     ]
   ],
   [
     #exercice[
-      On note $abs(φ)$ la longueur du mot $φ$, parenthèses comprises. Exprimer $abs(φ)$ en fonction du nombre $b(φ)$ de connecteurs binaires et $n(φ)$ de négations.
+      Exprimer $abs(φ)$ en fonction du nombre $b(φ)$ de connecteurs binaires et $n(φ)$ de négations.
     ]
   ],
 )
@@ -152,6 +148,7 @@ Pour les exemples OCaml, on se limite aux connecteurs $¬$, $∧$ et $∨$.
 )
 
 #slides-only[== Modèles]
+#v(-0.5em)
 #definition(title: [Modèle et contre-modèle], item-by-item[
   Soit $v$ une valuation et $φ$ une formule.
   - $v$ est un _modèle_ de $φ$, noté $v ⊨ φ$, si $v$ satisfait $φ$, c'est-à-dire $v(φ) = 1$.
@@ -165,11 +162,10 @@ Pour les exemples OCaml, on se limite aux connecteurs $¬$, $∧$ et $∨$.
   - On note $cal(M)(Γ) = ⋂_(φ ∈ Γ) cal(M)(φ)$ l'ensemble des valuations satisfaisant toutes les formules de $Γ$.
   - On dit qu'une formule $φ$ est une _conséquence logique_ de $Γ$, noté $Γ ⊨ φ$, si $cal(M)(Γ) ⊂ cal(M)(φ)$.
   - On note $Γ ⊭ φ$ lorsqu'il existe un modèle de $Γ$ qui est un contre-modèle de $φ$.
-
   On note simplement $ψ ⊨ φ$ si $Γ = {ψ}$ et $⊨ φ$ si $Γ = ∅$.
 ]
 
-Intuitivement, $Γ ⊨ φ$ signifie : quand $Γ$ est vrai, $φ$ est vraie.
+#underline[Intuitivement] : $Γ ⊨ φ$ signifie « quand $Γ$ est vrai, $φ$ est vraie ».
 
 #slide()
 #exercice[
@@ -292,7 +288,7 @@ Ces équivalences permettent d'éliminer $→$ et $↔$ pour obtenir une formule
         [1], [0], [0], [1],
         [1], [1], [1], [1],
       )),
-      caption: [Table de vérité de $(x → y) → x$],
+      caption: [Table de vérité de $φ = (x → y) → x$],
     )
   ],
 )
@@ -441,8 +437,8 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 
 #slides-only[== Calcul d'une FNC en OCaml]
 #exercice[Programmation][
-  Reprendre le type `formule` défini plus haut. On veut calculer une FNC équivalente à une formule donnée, sans construire sa table de vérité.
-  + Écrire `fnn : formule -> formule` qui calcule une FNN équivalente à son argument.
+  On veut calculer une FNC équivalente à une `formule` définie plus haut, sans construire sa table de vérité.
+  + Écrire `fnn : formule -> formule` qui calcule une FNN équivalente.
   + Écrire `distribuer : formule -> formule -> formule` qui, étant données deux FNC `p` et `q`, calcule une FNC équivalente à `Ou (p, q)`.
   + En déduire `fnc : formule -> formule`. Justifier sa correction.
   + En utilisant `fnc` et les lois de De Morgan, écrire `fnd : formule -> formule` qui calcule une FND équivalente à son argument.
@@ -517,7 +513,6 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   On note $T(v)$ l'étiquette de la feuille atteinte en suivant les arêtes étiquetées par $v(x)$ pour chaque nœud interne $x$ rencontré.\
   $T$ _représente_ une formule $φ$ s'il renvoie $v(φ)$ pour toute valuation $v$.
 ]
-#v(-0.4em)
 #underline[Attention] : Ne pas confondre arbre de dérivation (syntaxique) et arbre de décision (sémantique).
 
 #slide()
