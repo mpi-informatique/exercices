@@ -66,7 +66,6 @@
       L'_arbre d'une formule_ $φ$ est l'arbre enraciné où :
       - Les feuilles sont les variables et constantes.
       - Les nœuds internes sont les connecteurs logiques.
-
       Une _sous-formule_ de $φ$ est une formule correspondant à un sous-arbre de l'arbre de $φ$.
     ]<arbre-formule>
   ],
@@ -90,7 +89,7 @@
 ]
 
 #slides-only[== Priorités et parenthèses]
-Pour alléger les écritures, on omet certaines parenthèses : $¬$ est prioritaire sur $∧$, puis viennent $∨$, $→$ et $↔$, dans cet ordre.
+Pour alléger les écritures, on omet certaines parenthèses : $¬$ est prioritaire sur $∧$, puis dans l'ordre $∨$, $→$ et $↔$.\
 Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
 
 #slides-only[== Induction sur les formules]
@@ -130,8 +129,8 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
     $v(φ ∧ ψ) = min(v(φ), v(ψ))$,
     $v(φ ∨ ψ) = max(v(φ), v(ψ))$,
   )
-  Avant l'évaluation, on remplace récursivement $φ → ψ$ par $¬ φ ∨ ψ$ et $φ ↔ ψ$ par $(¬ φ ∨ ψ) ∧ (¬ ψ ∨ φ)$.
-  On note ${0, 1}^V$ l'ensemble des valuations sur $V$.
+  On définit aussi $v(φ → ψ) = v(¬ φ ∨ ψ)$ et $v(φ ↔ ψ) = v((φ → ψ) ∧ (ψ → φ))$.\
+  L'ensemble des valuations sur $V$ est noté ${0, 1}^V$.
 ]
 Une valuation peut aussi être vue comme un ensemble (des variables évaluées à $1$) ou un mot de ${0, 1}^(|V|)$.
 
@@ -151,6 +150,7 @@ Pour les exemples OCaml, on se limite aux connecteurs $¬$, $∧$ et $∨$.
   - $v$ est un _contre-modèle_ de $φ$, noté $v ⊭ φ$, si $v(φ) = 0$.
   - On note $cal(M)(φ)$ l'_ensemble des modèles_ de $φ$.
 ])
+#underline[Intuitivement] : un modèle est une interprétation des variables qui rend la formule vraie.
 
 #slides-only[== Conséquence logique]
 #definition[Conséquence logique][
@@ -310,7 +310,7 @@ Ces équivalences permettent d'éliminer $→$ et $↔$ pour obtenir une formule
   Une table de vérité comporte $2^n$ lignes, chacune portant une valeur dans ${0, 1}$ : il existe donc $2^(2^n)$ tables possibles. Toute table est réalisable par une formule, comme le montrera la construction d'une FND au @thm-fnd-fnc. Il existe donc exactement $2^(2^n)$ classes d'équivalence.
 ]
 
-== Substitution
+== Substitution et quantificateurs
 
 #definition[Substitution][
   On note $substituer(φ, x, ψ)$ la formule obtenue en remplaçant chaque occurrence d'une variable $x$ dans $φ$ par $ψ$.
@@ -318,25 +318,16 @@ Ces équivalences permettent d'éliminer $→$ et $↔$ pour obtenir une formule
 
 #underline[Exemple] : $substituer((x ∧ ¬ y), x, (y ∨ z)) = (y ∨ z) ∧ ¬ y$.
 
-== Quantificateurs
+#slides-only[== Quantificateurs]
 
 #definition[Quantificateurs][
-  On définit les _quantificateurs propositionnels_ $∃$ et $∀$ par :
+  On définit les _quantificateurs propositionnels_ $∃$ et $∀$ où $x ∈ V$ : #v(-0.5em)
   #formules-reparties(
     empiler-presentation: true,
     $∃ x thin φ := substituer(φ, x, ⊥) ∨ substituer(φ, x, ⊤)$,
     $∀ x thin φ := substituer(φ, x, ⊥) ∧ substituer(φ, x, ⊤)$,
   )
-  La variable $x$ prend les valeurs $0$ et $1$.
 ]
-
-#slides-only[== Élimination des quantificateurs]
-Ces notations peuvent être imbriquées. On élimine les quantificateurs de l'intérieur vers l'extérieur en les remplaçant par leur définition, puis on simplifie.
-
-#underline[Exemple] :
-$ ∃ x thin (x ∧ y) ≡ (⊥ ∧ y) ∨ (⊤ ∧ y) ≡ y. $
-
-Chaque élimination peut doubler la taille de la formule. Le développement peut donc être exponentiel en le nombre de quantificateurs.
 
 #slides-only[== Ordre des quantificateurs]
 #exercice[
@@ -356,7 +347,7 @@ Chaque élimination peut doubler la taille de la formule. Le développement peut
 #colonnes-cours(
   columns: (1fr, 1fr),
   saut-slide: true,
-  encadrer: propriete.with(coeur: true),
+  encadrer: propriete.with(coeur: true, title: [Équivalences usuelles]),
   [
     $
         φ ∧ ⊤ & ≡ φ &      φ ∨ ⊥ & ≡ φ \
@@ -399,7 +390,6 @@ En algèbre de Boole, on note $overline(a)$ pour $¬ a$, $a + b$ pour $a ∨ b$ 
 On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$ se traduit en $φ ∧ (ψ ∨ χ) ≡ (φ ∧ ψ) ∨ (φ ∧ χ)$.
 
 #theoreme[
-  Soient $I$ et $J$ deux ensembles finis.
   #formules-reparties(
     $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j $,
     $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j $,
@@ -407,8 +397,10 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
 ]
 #solution[
   En appliquant successivement les distributivités :
-  $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j, $
-  $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j. $
+  #formules-reparties(
+    $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j, $,
+    $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j. $,
+  )
 ]
 
 = Formes normales <formes-normales>
@@ -449,11 +441,9 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   - Une _forme normale conjonctive_ (FNC) est une conjonction de clauses : #box[$(x ∨ z) ∧ (¬ y ∨ z)$].
   - Une _forme normale disjonctive_ (FND) est une disjonction de termes : #box[$(x ∧ ¬ y) ∨ z$].
   #v(-0.4em)
-  Une conjonction vide vaut $⊤$, une disjonction vide vaut $⊥$.
 ]
 
 #slides-only[== Existence des FND et FNC]
-Les FNC et FND ci-dessus ne contiennent pas de quantificateur. Pour une formule quantifiée, on élimine d'abord les quantificateurs à l'aide de leur définition.
 
 #theoreme(coeur: true)[Toute formule est équivalente à une FND et à une FNC.]<thm-fnd-fnc>
 
@@ -491,10 +481,9 @@ Les FNC et FND ci-dessus ne contiennent pas de quantificateur. Pour une formule 
 #exercice[Programmation][
   On veut calculer une FNC équivalente à une `formule` définie plus haut, sans construire sa table de vérité.
   + Écrire `fnn : formule -> formule` qui calcule une FNN équivalente.
-  + Écrire `ou : formule -> formule -> formule` qui, étant données deux FNC `p` et `q`, calcule une FNC équivalente à `Ou (p, q)`.
-  + En déduire `fnc : formule -> formule`. Justifier sa correction.
-  + En utilisant `fnc` et les lois de De Morgan, écrire `fnd : formule -> formule` qui calcule une FND équivalente à son argument.
-  On représentera $⊤$ et $⊥$ par `Top` et `Bot`, et on simplifiera les constantes lors des distributions. Il n'est pas demandé de minimiser les formes normales obtenues.
+  + Écrire `ou : formule -> formule -> formule` calculant une FNC équivalente à la disjonction de deux FNC.
+  + En déduire `fnc : formule -> formule`.
+  + Écrire `fnd : formule -> formule` qui calcule une FND équivalente à son argument.
 ]
 #solution[
   + On supprime les doubles négations et on applique les lois de De Morgan pour pousser les négations jusqu'aux variables :
@@ -507,27 +496,8 @@ Les FNC et FND ci-dessus ne contiennent pas de quantificateur. Pour une formule 
     #code-extrait(ocaml, "fnd")
 ]
 
-== Problème #pb("SAT")
-#colonnes-cours(
-  columns: (1fr, 1.3fr),
-  [
-    #probleme(pb("SAT"))[
-      - #underline[Entrée] : une formule propositionnelle $φ$.
-      - #underline[Question] : $φ$ est-elle satisfiable ?
-    ]
-  ],
-  [
-    #probleme([$k$-#pb("SAT") ($k$ fixé)])[
-      - #underline[Entrée] : $φ$ FNC avec au plus $k$ littéraux par clause.
-      - #underline[Question] : $φ$ est-elle satisfiable ?
-    ]
-  ],
-)
-
 = Algorithme de Quine
-
-On considère dans cette partie des formules sans quantificateur.
-
+#v(-0.5em)
 == Arbre de décision
 
 #definition[Arbre de décision][
@@ -535,7 +505,7 @@ On considère dans cette partie des formules sans quantificateur.
   - chaque nœud interne est étiqueté par une variable et possède deux fils, reliés par des arêtes étiquetées $0$ et $1$.
   - chaque feuille est étiquetée par $0$ ou $1$.
   - une variable est testée au plus une fois sur un chemin de la racine à une feuille.
-  On note $T(v)$ l'étiquette de la feuille atteinte en suivant les arêtes étiquetées par $v(x)$ pour chaque nœud interne $x$ rencontré.\
+  On note $T(v)$ la feuille atteinte en suivant les arêtes étiquetées par $v(x)$ pour chaque nœud interne $x$ rencontré.\
   $T$ _représente_ une formule $φ$ s'il renvoie $v(φ)$ pour toute valuation $v$.
 ]
 #underline[Attention] : Ne pas confondre arbre de dérivation (syntaxique) et arbre de décision (sémantique).
