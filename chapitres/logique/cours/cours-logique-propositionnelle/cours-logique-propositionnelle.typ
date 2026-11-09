@@ -368,27 +368,82 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j. $
 ]
 
+= Substitution et quantificateurs
+
+#definition[Substitution][
+  On note $substituer(φ, x, ψ)$ la formule obtenue en remplaçant chaque occurrence d'une variable $x$ dans $φ$ par $ψ$.
+]
+
+#underline[Exemple] : $substituer((x ∧ ¬ y), x, (y ∨ z)) = (y ∨ z) ∧ ¬ y$.
+
+== Quantificateurs
+
+#definition[Quantificateurs][
+  On définit les _quantificateurs propositionnels_ $∃$ et $∀$ par :
+  #formules-reparties(
+    empiler-presentation: true,
+    $∃ x thin φ := substituer(φ, x, ⊥) ∨ substituer(φ, x, ⊤)$,
+    $∀ x thin φ := substituer(φ, x, ⊥) ∧ substituer(φ, x, ⊤)$,
+  )
+  La variable $x$ prend les valeurs $0$ et $1$.
+]
+
+#slides-only[== Élimination des quantificateurs]
+Ces notations peuvent être imbriquées. On élimine les quantificateurs de l'intérieur vers l'extérieur en les remplaçant par leur définition, puis on simplifie.
+
+#underline[Exemple] :
+$ ∃ x thin (x ∧ y) ≡ (⊥ ∧ y) ∨ (⊤ ∧ y) ≡ y. $
+
+Chaque élimination peut doubler la taille de la formule. Le développement peut donc être exponentiel en le nombre de quantificateurs.
+
+#slides-only[== Ordre des quantificateurs]
+#exercice[
+  Simplifier $∀ x thin ∃ y thin (x ↔ y)$ et $∃ y thin ∀ x thin (x ↔ y)$. Expliquer pourquoi l'ordre des quantificateurs compte.
+]
+#solution[
+  On élimine d'abord le quantificateur intérieur :
+  $ ∃ y thin (x ↔ y) ≡ ¬ x ∨ x ≡ ⊤, $
+  $ ∀ x thin (x ↔ y) ≡ ¬ y ∧ y ≡ ⊥. $
+  Ainsi, $∀ x thin ∃ y thin (x ↔ y) ≡ ⊤$, tandis que $∃ y ∀ x thin (x ↔ y) ≡ ⊥$.
+
+  Dans la première formule, on peut choisir $y = x$ pour chaque valeur de $x$. Dans la seconde, il faudrait choisir une même valeur de $y$ convenant aux deux valeurs de $x$, ce qui est impossible.
+]
+
 = Formes normales <formes-normales>
 
 == Forme normale négative <forme-normale-negative>
 
 #definition[Forme normale négative][
-  Une formule logique est en _forme normale négative_ (FNN) si elle n'utilise que les connecteurs $∧$, $∨$, $¬$ et les constantes $⊤$, $⊥$, et si ses négations ne portent que sur des variables.
+  Une formule logique, éventuellement écrite avec des quantificateurs, est en _forme normale négative_ (FNN) si elle n'utilise que les connecteurs $∧$, $∨$, $¬$, les quantificateurs $∃$, $∀$ et les constantes $⊤$, $⊥$, et si ses négations ne portent que sur des variables.
 ]
+
+#propriete[Négation des quantificateurs][
+  #formules-reparties(
+    empiler-presentation: true,
+    $¬ (∃ x thin φ) ≡ ∀ x thin ¬ φ$,
+    $¬ (∀ x thin φ) ≡ ∃ x thin ¬ φ$,
+  )
+]
+
+#slides-only[== Passage en FNN]
 #colonnes-cours(
   columns: (1fr, 1fr),
   [
     #theoreme[Toute formule est équivalente à une FNN.]
   ],
   [
-    #underline[Exemple] : $¬ (x ∨ (¬ y ∧ z)) ≡ ¬ x ∧ (y ∨ ¬ z)$.
+    #underline[Exemples] :
+    $ ¬ (x ∨ (¬ y ∧ z)) ≡ ¬ x ∧ (y ∨ ¬ z), $
+    $ ¬ (∃ x thin (x ∧ ¬ y)) ≡ ∀ x thin (¬ x ∨ y). $
   ],
 )
 
 #solution[
-  Après élimination des connecteurs $→$ et $↔$ à l'aide des équivalences précédentes, on montre simultanément, par induction sur la formule obtenue, que celle-ci et sa négation sont équivalentes à des FNN.
+  Après élimination des connecteurs $→$ et $↔$ à l'aide des équivalences précédentes, on montre simultanément, par induction sur l'écriture obtenue, que celle-ci et sa négation sont équivalentes à des FNN, en conservant les quantificateurs.
 
   Pour une variable ou une constante, le résultat est immédiat, avec $¬ ⊤ ≡ ⊥$ et $¬ ⊥ ≡ ⊤$. Le cas $¬ ψ$ échange les deux formes obtenues pour $ψ$, en utilisant $¬ ¬ ψ ≡ ψ$. Pour $ψ ∧ χ$ et $ψ ∨ χ$, on combine les formes obtenues pour les sous-formules, en appliquant les lois de De Morgan pour la négation.
+
+  Pour $∃ x thin ψ$ et $∀ x thin ψ$, on conserve le quantificateur et on utilise la FNN obtenue pour $ψ$. Pour leur négation, on échange $∃$ et $∀$ et on utilise la FNN obtenue pour $¬ ψ$.
 ]
 
 
@@ -402,6 +457,9 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   #v(-0.4em)
   Une conjonction vide vaut $⊤$, une disjonction vide vaut $⊥$.
 ]
+
+#slides-only[== Existence des FND et FNC]
+Les FNC et FND ci-dessus ne contiennent pas de quantificateur. Pour une formule quantifiée, on élimine d'abord les quantificateurs à l'aide de leur définition.
 
 #theoreme(coeur: true)[Toute formule est équivalente à une FND et à une FNC.]<thm-fnd-fnc>
 
@@ -472,36 +530,9 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   ],
 )
 
-= Substitution, quantificateurs et algorithme de Quine
+= Algorithme de Quine
 
-#definition[Substitution][
-  On note $substituer(φ, x, ψ)$ la formule obtenue en remplaçant chaque occurrence d'une variable $x$ dans $φ$ par $ψ$.
-]
-
-#underline[Exemple] : $substituer((x ∧ ¬ y), x, (y ∨ z)) = (y ∨ z) ∧ ¬ y$.
-
-== Quantificateurs
-
-#definition[Quantificateurs][
-  On définit les quantificateurs $∃$ et $∀$ par :
-  #formules-reparties(
-    empiler-presentation: false,
-    $∃ p thin φ := substituer(φ, p, ⊥) ∨ substituer(φ, p, ⊤)$,
-    $∀ p thin φ := substituer(φ, p, ⊥) ∧ substituer(φ, p, ⊤)$,
-  )
-]
-#v(-0.4em)
-#exercice[
-  Simplifier $∀ p thin ∃ q thin (p ↔ q)$ et $∃ q thin ∀ p thin (p ↔ q)$. Expliquer pourquoi l'ordre des quantificateurs compte.
-]
-#solution[
-  On élimine d'abord le quantificateur intérieur :
-  $ ∃ q thin (p ↔ q) ≡ ¬ p ∨ p ≡ ⊤, $
-  $ ∀ p thin (p ↔ q) ≡ ¬ q ∧ q ≡ ⊥. $
-  Ainsi, $∀ p thin ∃ q thin (p ↔ q) ≡ ⊤$, tandis que $∃ q ∀ p thin (p ↔ q) ≡ ⊥$.
-
-  Dans la première formule, on peut choisir $q = p$ pour chaque valeur de $p$. Dans la seconde, il faudrait choisir une même valeur de $q$ convenant aux deux valeurs de $p$, ce qui est impossible.
-]
+On considère dans cette partie des formules sans quantificateur.
 
 == Arbre de décision
 
