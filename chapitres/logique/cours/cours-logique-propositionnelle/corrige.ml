@@ -21,19 +21,19 @@ let rec fnn = function
   | Ou (p, q) -> Ou (fnn p, fnn q)
   | p -> p
 
-let rec distribuer p q =
+let rec ou p q =
   match p, q with
   | Top, _ | _, Top -> Top
   | Bot, q -> q
   | p, Bot -> p
-  | Et (a, b), q -> Et (distribuer a q, distribuer b q)
-  | p, Et (a, b) -> Et (distribuer p a, distribuer p b)
+  | Et (a, b), q -> Et (ou a q, ou b q)
+  | p, Et (a, b) -> Et (ou p a, ou p b)
   | p, q -> Ou (p, q)
 
 let fnc p =
   let rec convertir = function
     | Et (p, q) -> Et (convertir p, convertir q)
-    | Ou (p, q) -> distribuer (convertir p) (convertir q)
+    | Ou (p, q) -> ou (convertir p) (convertir q)
     | p -> p
   in
   convertir (fnn p)
