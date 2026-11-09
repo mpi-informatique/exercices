@@ -310,61 +310,7 @@ Ces équivalences permettent d'éliminer $→$ et $↔$ pour obtenir une formule
   Une table de vérité comporte $2^n$ lignes, chacune portant une valeur dans ${0, 1}$ : il existe donc $2^(2^n)$ tables possibles. Toute table est réalisable par une formule, comme le montrera la construction d'une FND au @thm-fnd-fnc. Il existe donc exactement $2^(2^n)$ classes d'équivalence.
 ]
 
-== Équivalences usuelles
-
-#colonnes-cours(
-  columns: (1fr, 1fr),
-  saut-slide: true,
-  encadrer: propriete.with(coeur: true),
-  [
-    $
-        φ ∧ ⊤ & ≡ φ &      φ ∨ ⊥ & ≡ φ \
-        φ ∧ ⊥ & ≡ ⊥ &      φ ∨ ⊤ & ≡ ⊤ \
-        φ ∧ φ & ≡ φ &      φ ∨ φ & ≡ φ \
-      φ ∧ ¬ φ & ≡ ⊥ &    φ ∨ ¬ φ & ≡ ⊤ \
-        ¬ ¬ φ & ≡ φ & wide φ → ψ & ≡ ¬ ψ → ¬ φ
-    $
-  ],
-  [
-    #grid(
-      columns: (auto, 1fr),
-      column-gutter: 0em,
-      row-gutter: 0.7em,
-      align: left + horizon,
-      [_De Morgan_ :],
-      [$
-        ¬ (φ ∧ ψ) & ≡ ¬ φ ∨ ¬ ψ \
-        ¬ (φ ∨ ψ) & ≡ ¬ φ ∧ ¬ ψ
-      $],
-
-      [_Distributivité_ :],
-      [$
-        φ ∧ (ψ ∨ χ) & ≡ (φ ∧ ψ) ∨ (φ ∧ χ) \
-        φ ∨ (ψ ∧ χ) & ≡ (φ ∨ ψ) ∧ (φ ∨ χ)
-      $],
-    )
-  ],
-)
-
-== Algèbre de Boole
-
-En algèbre de Boole, on note $overline(a)$ pour $¬ a$, $a + b$ pour $a ∨ b$ et $a b$ pour $a ∧ b$. \
-On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$ se traduit en $φ ∧ (ψ ∨ χ) ≡ (φ ∧ ψ) ∨ (φ ∧ χ)$.
-
-#theoreme[
-  Soient $I$ et $J$ deux ensembles finis.
-  #formules-reparties(
-    $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j $,
-    $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j $,
-  )
-]
-#solution[
-  En appliquant successivement les distributivités :
-  $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j, $
-  $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j. $
-]
-
-= Substitution et quantificateurs
+== Substitution
 
 #definition[Substitution][
   On note $substituer(φ, x, ψ)$ la formule obtenue en remplaçant chaque occurrence d'une variable $x$ dans $φ$ par $ψ$.
@@ -405,20 +351,72 @@ Chaque élimination peut doubler la taille de la formule. Le développement peut
   Dans la première formule, on peut choisir $y = x$ pour chaque valeur de $x$. Dans la seconde, il faudrait choisir une même valeur de $y$ convenant aux deux valeurs de $x$, ce qui est impossible.
 ]
 
+== Équivalences usuelles
+
+#colonnes-cours(
+  columns: (1fr, 1fr),
+  saut-slide: true,
+  encadrer: propriete.with(coeur: true),
+  [
+    $
+        φ ∧ ⊤ & ≡ φ &      φ ∨ ⊥ & ≡ φ \
+        φ ∧ ⊥ & ≡ ⊥ &      φ ∨ ⊤ & ≡ ⊤ \
+        φ ∧ φ & ≡ φ &      φ ∨ φ & ≡ φ \
+      φ ∧ ¬ φ & ≡ ⊥ &    φ ∨ ¬ φ & ≡ ⊤ \
+        ¬ ¬ φ & ≡ φ & wide φ → ψ & ≡ ¬ ψ → ¬ φ
+    $
+  ],
+  [
+    #grid(
+      columns: (auto, 1fr),
+      column-gutter: 0em,
+      row-gutter: 0.7em,
+      align: left + horizon,
+      [_De Morgan_ :],
+      [$
+        ¬ (φ ∧ ψ) & ≡ ¬ φ ∨ ¬ ψ \
+        ¬ (φ ∨ ψ) & ≡ ¬ φ ∧ ¬ ψ
+      $],
+
+      [_Quantificateurs_ :],
+      [$
+        ¬ (∃ x thin φ) & ≡ ∀ x thin ¬ φ \
+        ¬ (∀ x thin φ) & ≡ ∃ x thin ¬ φ
+      $],
+
+      [_Distributivité_ :],
+      [$
+        φ ∧ (ψ ∨ χ) & ≡ (φ ∧ ψ) ∨ (φ ∧ χ) \
+        φ ∨ (ψ ∧ χ) & ≡ (φ ∨ ψ) ∧ (φ ∨ χ)
+      $],
+    )
+  ],
+)
+
+== Algèbre de Boole
+
+En algèbre de Boole, on note $overline(a)$ pour $¬ a$, $a + b$ pour $a ∨ b$ et $a b$ pour $a ∧ b$. \
+On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$ se traduit en $φ ∧ (ψ ∨ χ) ≡ (φ ∧ ψ) ∨ (φ ∧ χ)$.
+
+#theoreme[
+  Soient $I$ et $J$ deux ensembles finis.
+  #formules-reparties(
+    $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j $,
+    $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j $,
+  )
+]
+#solution[
+  En appliquant successivement les distributivités :
+  $ (or.big_(i ∈ I) φ_i) ∧ (or.big_(j ∈ J) ψ_j) ≡ or.big_((i, j) ∈ I × J) φ_i ∧ ψ_j, $
+  $ (and.big_(i ∈ I) φ_i) ∨ (and.big_(j ∈ J) ψ_j) ≡ and.big_((i, j) ∈ I × J) φ_i ∨ ψ_j. $
+]
+
 = Formes normales <formes-normales>
 
 == Forme normale négative <forme-normale-negative>
 
 #definition[Forme normale négative][
   Une formule logique, éventuellement écrite avec des quantificateurs, est en _forme normale négative_ (FNN) si elle n'utilise que les connecteurs $∧$, $∨$, $¬$, les quantificateurs $∃$, $∀$ et les constantes $⊤$, $⊥$, et si ses négations ne portent que sur des variables.
-]
-
-#propriete[Négation des quantificateurs][
-  #formules-reparties(
-    empiler-presentation: true,
-    $¬ (∃ x thin φ) ≡ ∀ x thin ¬ φ$,
-    $¬ (∀ x thin φ) ≡ ∃ x thin ¬ φ$,
-  )
 ]
 
 #slides-only[== Passage en FNN]
