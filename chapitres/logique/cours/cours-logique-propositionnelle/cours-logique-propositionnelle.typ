@@ -130,11 +130,7 @@ Par convention : #equation-slide($φ → ψ → χ = φ → (ψ → χ).$)
     $v(φ ∧ ψ) = min(v(φ), v(ψ))$,
     $v(φ ∨ ψ) = max(v(φ), v(ψ))$,
   )
-  #formules-reparties(
-    empiler-presentation: true,
-    $v(φ → ψ) = max(1 - v(φ), v(ψ))$,
-    $ v(φ ↔ ψ) = cases(1 & "si " v(φ) = v(ψ), 0 & "sinon") $,
-  )
+  Avant l'évaluation, on remplace récursivement $φ → ψ$ par $¬ φ ∨ ψ$ et $φ ↔ ψ$ par $(¬ φ ∨ ψ) ∧ (¬ ψ ∨ φ)$.
   On note ${0, 1}^V$ l'ensemble des valuations sur $V$.
 ]
 Une valuation peut aussi être vue comme un ensemble (des variables évaluées à $1$) ou un mot de ${0, 1}^(|V|)$.
