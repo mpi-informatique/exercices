@@ -543,8 +543,10 @@ On considère dans cette partie des formules sans quantificateur.
 #slide()
 #theoreme[
   Soit $T$ un arbre de décision représentant une formule $φ$.
-  - $φ$ est satisfiable si et seulement si #completer()
-  - $φ$ est une tautologie si et seulement si #completer()
+  #colonnes-cours(
+    [- $φ$ est satisfiable si et seulement si #completer()],
+    [- $φ$ est une tautologie si et seulement si #completer()],
+  )
 ]
 
 == Algorithme de Quine par backtracking
