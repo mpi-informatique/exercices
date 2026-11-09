@@ -544,8 +544,9 @@ On considère dans cette partie des formules sans quantificateur.
 #theoreme[
   Soit $T$ un arbre de décision représentant une formule $φ$.
   #colonnes-cours(
-    [- $φ$ est satisfiable si et seulement si #completer()],
-    [- $φ$ est une tautologie si et seulement si #completer()],
+    empiler-presentation: false,
+    [- $φ$ satisfiable $<==>$ #completer()],
+    [- $φ$ tautologie $<==>$ #completer()],
   )
 ]
 
