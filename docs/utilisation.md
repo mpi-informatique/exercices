@@ -4,6 +4,8 @@
 
 Les [commandes essentielles](../README.md#démarrer) se lancent depuis la racine, dans `nix develop .`. `flake.lock` verrouille les outils et les packages Typst.
 
+Le [socle OCaml/C](https://github.com/mpi-informatique/tp-environnement) est partagé avec la bibliothèque et les TP ; ce dépôt ajoute les outils Typst. Pour actualiser le socle : `nix flake update environnement`.
+
 Sans ouvrir le terminal Nix, préfixer la commande par `nix develop . -c`. Les [scripts Python](../scripts/README.md) fonctionnent aussi sans Just. Hors de Nix, installer Typst, Python 3.11+, OCaml et, facultativement, Just.
 
 Nix inclut les fichiers suivis avec leurs modifications locales : ajouter les nouveaux fichiers nécessaires avec `git add` avant de compiler. Éviter `path:.` en usage courant, car il inclut aussi les sorties ignorées. Pour plusieurs commandes, garder le même terminal Nix.

@@ -1,16 +1,17 @@
 {
   description = "Ressources pédagogiques mpi-informatique/exercices";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs.environnement.url = "github:mpi-informatique/tp-environnement";
+  inputs.nixpkgs.follows = "environnement/nixpkgs";
   inputs.code-extract = {
     url = "github:mpi-informatique/typst-code-extract";
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, code-extract }:
+  outputs = { self, nixpkgs, environnement, code-extract }:
     let
-      systems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
+      systems = environnement.lib.systems;
       forAllSystems = nixpkgs.lib.genAttrs systems;
-      packagesFor = system: import nixpkgs { inherit system; };
+      packagesFor = system: environnement.legacyPackages.${system}.pkgs;
       manifest = (builtins.fromTOML (builtins.readFile ./typst.toml)).package;
       source = nixpkgs.lib.cleanSourceWith {
         src = self;
@@ -51,8 +52,8 @@
         });
       devShells = forAllSystems (system:
         let pkgs = packagesFor system; in {
-          default = pkgs.mkShellNoCC {
-            packages = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ocaml pkgs.stdenv.cc pkgs.ripgrep ];
+          default = environnement.lib.mkShell system {
+            packages = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ripgrep ];
             TYPST_PACKAGE_PATH = self.packages.${system}.typst-packages;
             TYPST_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts";
           };

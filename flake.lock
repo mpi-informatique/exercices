@@ -20,18 +20,35 @@
         "type": "github"
       }
     },
+    "environnement": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1794324928,
+        "narHash": "sha256-cspBHJHytjOem7cOJUC+xPQBNlQ6mPf5jGI1fkj3hAg=",
+        "owner": "mpi-informatique",
+        "repo": "tp-environnement",
+        "rev": "04750537892b54f4c2d9bcf6896aedca3f977721",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mpi-informatique",
+        "repo": "tp-environnement",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1790185690,
-        "narHash": "sha256-xJ+X4hBtOcAFGBOe5nAMyMUeF9foJBmIOu3NjBqBycU=",
+        "lastModified": 1794319310,
+        "narHash": "sha256-W6NNHzKpjm9gXScY/gB+SsW7cdMvPJCgKxUl6+R2iCY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "4975466d324710c576dc11ad614684e6bd8cad8e",
+        "rev": "4041ddd0014d2cbe4bd80911ce22c546e84e1714",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -39,7 +56,11 @@
     "root": {
       "inputs": {
         "code-extract": "code-extract",
-        "nixpkgs": "nixpkgs"
+        "environnement": "environnement",
+        "nixpkgs": [
+          "environnement",
+          "nixpkgs"
+        ]
       }
     }
   },
