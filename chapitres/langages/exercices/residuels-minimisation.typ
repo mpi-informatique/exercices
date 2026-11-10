@@ -201,4 +201,6 @@
   #ensembles-distinguants
 
   #residuels
+
+  Pour mettre en œuvre la minimisation par raffinement de partitions, voir le #link("https://mpi-informatique.github.io/cours/tp/tp_minimisation/")[TP de minimisation d'un automate].
 ]
