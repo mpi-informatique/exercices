@@ -25,11 +25,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1794324928,
-        "narHash": "sha256-cspBHJHytjOem7cOJUC+xPQBNlQ6mPf5jGI1fkj3hAg=",
+        "lastModified": 1794325471,
+        "narHash": "sha256-eBydYiFK0KYT0XUwzAJbiIeJx13hPEvXZbRbG/rqQyU=",
         "owner": "mpi-informatique",
         "repo": "tp-environnement",
-        "rev": "04750537892b54f4c2d9bcf6896aedca3f977721",
+        "rev": "64f7ee15722942ce6f22bbf37a097a91cc3ba621",
         "type": "github"
       },
       "original": {
