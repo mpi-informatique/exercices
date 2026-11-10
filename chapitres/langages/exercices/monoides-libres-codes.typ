@@ -37,13 +37,13 @@
               Pour une lettre $a ∈ Σ$, le langage ${a^n ∣ n ≥ 1}$ est stable par concaténation, mais ne contient pas $ε$.
             ]
 
-    Pour un sous-monoïde $M$, on note $M_+ = M ∖ {ε}$ et on appelle *indécomposable* un mot de $M_+$ qui ne s'écrit pas comme concaténation de deux mots de $M_+$. On note $B(M)$ l'ensemble de ces mots.
+    Pour un sous-monoïde $M$, on note $M_+ = M - {ε}$ et on appelle *indécomposable* un mot de $M_+$ qui ne s'écrit pas comme concaténation de deux mots de $M_+$. On note $B(M)$ l'ensemble de ces mots.
 
     #question[
               Exprimer $B(M)$ à l'aide de $M_+$ et des opérations sur les langages. Montrer que $B(M)$ engendre $M$.
             ][
               Par définition :
-              $ B(M) = M_+ ∖ M_+ M_+. $
+              $ B(M) = M_+ - M_+ M_+. $
               Comme $B(M) ⊂ M$ et $M$ est un sous-monoïde, $B(M)^* ⊂ M$.
 
               Montrons l'autre inclusion par récurrence forte sur la taille d'un mot $w ∈ M$.
@@ -61,7 +61,7 @@
               Pour $b ∈ B(M)$, écrivons $b = x_1 ⋯ x_k$ avec les $x_i$ dans $X$.
               Comme $b ≠ ε$, on a $k ≥ 1$. Si $k ≥ 2$, les mots $x_1$ et $x_2 ⋯ x_k$ appartiennent à $M_+$, ce qui contredit l'indécomposabilité de $b$. Donc $k = 1$ et $b ∈ X$.
 
-              Supposons que $X$ soit un code. Si $x ∈ X ∖ B(M)$, on peut écrire $x = u v$ avec $u, v ∈ M_+$.
+              Supposons que $X$ soit un code. Si $x ∈ X - B(M)$, on peut écrire $x = u v$ avec $u, v ∈ M_+$.
               En décomposant $u$ et $v$ en mots de $X$, on obtient une décomposition de $x$ en au moins deux facteurs de $X$, distincte de la décomposition à un seul facteur $x$. C'est impossible.
               Ainsi $X ⊂ B(M)$, puis $X = B(M)$.
 
@@ -152,8 +152,8 @@
               Montrer qu'un sous-monoïde $M$ est régulier si et seulement si $B(M)$ est régulier.
               Un sous-monoïde régulier est-il nécessairement engendré par un langage fini ?
             ][
-              Si $M$ est régulier, $M_+ = M ∖ {ε}$ est régulier, puis $M_+ M_+$ l'est par stabilité par concaténation.
-              Les langages réguliers sont stables par différence, donc $B(M) = M_+ ∖ M_+ M_+$ est régulier.
+              Si $M$ est régulier, $M_+ = M - {ε}$ est régulier, puis $M_+ M_+$ l'est par stabilité par concaténation.
+              Les langages réguliers sont stables par différence, donc $B(M) = M_+ - M_+ M_+$ est régulier.
 
               Réciproquement, si $B(M)$ est régulier, $M = B(M)^*$ est régulier par stabilité par étoile.
 
@@ -174,14 +174,14 @@
     Ce mot représente ce qui a déjà été lu dans la seconde décomposition mais pas encore dans la première. Il vaut $ε$ lorsque les deux coupures sont à la même position.
 
     Soit $S$ l'ensemble formé de $ε$ et des suffixes propres non vides des mots de $C$.
-    On définit le graphe orienté $G = (S, A)$ par les arcs suivants, pour $r ∈ S ∖ {ε}$ et $s ∈ S$ :
+    On définit le graphe orienté $G = (S, A)$ par les arcs suivants, pour $r ∈ S - {ε}$ et $s ∈ S$ :
     $ (r, s) ∈ A ⟺ ∃c ∈ C, #sep (r s = c " ou " c s = r). $
     Aucun arc ne part de $ε$. Les sommets de départ forment l'ensemble :
     $ R = {r ∈ Σ^+ ∣ ∃x, y ∈ C, #sep x ≠ y " et " x r = y}. $
     Un chemin peut avoir une longueur nulle.
 
     #question[
-              Justifier que $R ⊂ S$ et que, pour $r ∈ S ∖ {ε}$ et $c ∈ C$, tout mot $s$ vérifiant $r s = c$ ou $c s = r$ appartient à $S$.
+              Justifier que $R ⊂ S$ et que, pour $r ∈ S - {ε}$ et $c ∈ C$, tout mot $s$ vérifiant $r s = c$ ou $c s = r$ appartient à $S$.
               Majorer $abs(S)$ en fonction de $N$, puis $abs(A)$ en fonction de $abs(S)$ et $abs(C)$.
             ][
               Si $x r = y$ avec $x, y ∈ C$ et $r ≠ ε$, alors $r$ est un suffixe propre non vide de $y$, puisque $x ≠ ε$. Donc $R ⊂ S$.

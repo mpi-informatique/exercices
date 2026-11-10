@@ -162,7 +162,7 @@
           Tous ces monômes seraient donc des singletons, rendant $T$ fini, contradiction.
 
           d) Sur $A={a,b}$,
-          $ A^*∖T=b A^* ∪ A^* a ∪ A^* a a A^* ∪ A^* b b A^*. $
+          $ A^* - T=b A^* ∪ A^* a ∪ A^* a a A^* ∪ A^* b b A^*. $
           En effet, un mot non vide qui commence par $a$, termine par $b$ et n'a pas deux lettres consécutives égales appartient à $(a b)^*$ ; $ε$ appartient aussi à $T$.
           Ce complémentaire est une union finie de monômes, mais son complémentaire $T$ ne l'est pas.
         ]

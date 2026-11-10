@@ -71,10 +71,10 @@
           Montrer qu'il existe un nombre fini de langages locaux sur un alphabet fixé.
         ][
           Tout langage local est de la forme
-          $ (P Σ^* ∩ Σ^* S) ∖ Σ^* N Σ^* $
+          $ (P Σ^* ∩ Σ^* S) - Σ^* N Σ^* $
           où $P ⊂ Σ$, $S ⊂ Σ$, $N ⊂ Σ × Σ$, en rajoutant éventuellement $ε$.
           Si $n = abs(Σ)$, il y a au plus $2^n$ choix pour $P$, $2^n$ pour $S$ et $2^(n^2)$ pour $N$, car $abs(Σ × Σ) = n^2$.
-          Il y a donc au plus $2^n × 2^n × 2^(n^2)$ valeurs différentes pour l'ensemble $(P Σ^* ∩ Σ^* S) ∖ Σ^* N Σ^*$, et au plus $2^(n^2 + 2n + 1)$ langages locaux en tenant compte du choix d'ajouter $ε$.
+          Il y a donc au plus $2^n × 2^n × 2^(n^2)$ valeurs différentes pour l'ensemble $(P Σ^* ∩ Σ^* S) - Σ^* N Σ^*$, et au plus $2^(n^2 + 2n + 1)$ langages locaux en tenant compte du choix d'ajouter $ε$.
         ]
 
   #question[

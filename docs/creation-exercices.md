@@ -86,6 +86,7 @@ Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le doss
 | Objet | Convention |
 | --- | --- |
 | Mot | « taille », y compris pour les préfixes, suffixes et facteurs. Noter `m` un mot considéré seul ; conserver `u`, `v`, etc. pour plusieurs mots ou facteurs en jeu, et éviter les collisions avec une autre quantité déjà notée `m`. |
+| Différence d'ensembles | `A - B`, avec des espaces autour du signe et des parenthèses si nécessaire. |
 | Langage | `cal(L)(A)` pour l'automate, `cal(L)(e)` pour l'expression ; « régulier », « non-contextuel », union d'expressions par `\|`. |
 | Composition | `∘`, sans juxtaposition. |
 | Formules | Espaces autour des opérateurs et après les virgules, aussi dans les indices et légendes ; préserver exposants et indices. Parenthéser les indices et séparer par une espace la parenthèse qui introduit l'argument d'une fonction : `δ_(B) (·, σ)`. Écrire `RR_n [X]`. |

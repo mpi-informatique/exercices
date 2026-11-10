@@ -283,7 +283,7 @@ Un automate déterministe complet (ADC) a une fonction de transition de la forme
   La borne est-elle optimale ?
 ]
 #solution[
-  Supposons $LA ≠ Σ^*$ et soit $m ∈ Σ^* \\ LA$ de taille minimale.
+  Supposons $LA ≠ Σ^*$ et soit $m ∈ Σ^* - LA$ de taille minimale.
   Par hypothèse, $abs(m) ≥ n$.
   Parmi les états atteints après lecture de ses $n + 1$ premiers préfixes, deux sont égaux.
   On peut donc écrire $m = x y z$, avec $y ≠ ε$, et
@@ -292,7 +292,7 @@ Un automate déterministe complet (ADC) a une fonction de transition de la forme
   Donc $x z ∉ LA$ et $|x z| < |m|$, ce qui contredit la minimalité de $m$.
 
   La borne est optimale sur $Σ = {a}$.
-  En effet, soit $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q ∖ {n - 1}$ et
+  En effet, soit $Q = {0, …, n - 1}$, l'état initial $0$, les états finaux $Q - {n - 1}$ et
   $ δ(i, a) = min(i + 1, n - 1). $
   Cet automate accepte tous les mots de taille strictement inférieure à $n - 1$, mais pas $a^(n - 1)$.
 ]
@@ -467,12 +467,12 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
 == Complémentaire
 
 #theoreme(coeur: true, title: [Stabilité par complémentaire])[
-  Si $L ∈ Lrec(Σ)$ alors $Σ^* ∖ L ∈ Lrec(Σ)$.
+  Si $L ∈ Lrec(Σ)$ alors $Σ^* - L ∈ Lrec(Σ)$.
 ] <thm-complementaire>
 
 #solution[
   #pause
-  Prendre un ADC reconnaissant $L$ et remplacer $F$ par $Q ∖ F$.
+  Prendre un ADC reconnaissant $L$ et remplacer $F$ par $Q - F$.
   Chaque mot possède un unique chemin, qui aboutit dans un état final exactement lorsque le mot n'appartient pas à $L$.
 ]
 #slide()
@@ -496,13 +496,13 @@ L'automate des parties possède $2^(abs(Q))$ états. En pratique, on ne construi
     inset: (x: 0.5em, y: 0.5em),
     table.header(
       [], $L_1 ∩ L_2$,
-      $L_1 ∪ L_2$, $L_1 ∖ L_2$,
+      $L_1 ∪ L_2$, $L_1 - L_2$,
     ),
     $F$,
     ..(
       $F_1 timess F_2$,
       $(F_1 timess Q_2) ∪ (Q_1 timess F_2)$,
-      $F_1 timess (Q_2 ∖ F_2)$,
+      $F_1 timess (Q_2 - F_2)$,
     ).map(reponse => if est-corrige() { reponse } else { completer() }),
   ))
 ]

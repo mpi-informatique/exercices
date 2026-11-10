@@ -35,7 +35,7 @@
   - La _taille_ $abs(m)$ de $m$ est son nombre de lettres.
   - Le _mot vide_, ne contenant aucune lettre, est noté $ε$.
   - Des mots $u = u_1 … u_n$ et $v = v_1 … v_p$ de $Σ$ sont _égaux_ si $n = p$ et : $forall i ∈ [|1, n|]$, $u_i = v_i$.
-  - On note $Σ^*$ l'ensemble des mots sur $Σ$ et $Σ^+ = Σ^* ∖ {ε}$.
+  - On note $Σ^*$ l'ensemble des mots sur $Σ$ et $Σ^+ = Σ^* - {ε}$.
 ])
 #underline[Attention] : $ε$ est un mot, pas une lettre.
 

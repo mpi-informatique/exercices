@@ -10,7 +10,7 @@
       matiere: "mathématiques",
     ),
 )[
-  Soient $E$ un espace vectoriel réel de dimension $n ≥ 2$, $a ∈ E ∖ {0}$ et $φ$ une forme linéaire non nulle sur $E$.
+  Soient $E$ un espace vectoriel réel de dimension $n ≥ 2$, $a ∈ E - {0}$ et $φ$ une forme linéaire non nulle sur $E$.
   On définit $u ∈ cal(L)(E)$ par $u(x) = φ(x)a$ et on pose $t = φ(a)$.
 
   #question[Déterminer le noyau et l'image de $u$, puis calculer $u^2$.][Comme $a ≠ 0$, $ker u = ker φ$, de dimension $n - 1$.

@@ -36,7 +36,7 @@
           Notons $l(L_1,L_2)$ la plus petite taille d'un mot appartenant à l'un des deux langages mais pas à l'autre.
           Montrer que $l(L_1,L_2)<n_1 n_2$.
         ][
-          Le produit d'états $Q_1×Q_2$, initial $(i_1,i_2)$, de transition $δ((q_1,q_2),a)=(δ_1(q_1,a),δ_2(q_2,a))$ et de finaux $(F_1×(Q_2∖F_2))∪((Q_1∖F_1)×F_2)$ reconnaît $L_1 △ L_2$.
+          Le produit d'états $Q_1×Q_2$, initial $(i_1,i_2)$, de transition $δ((q_1,q_2),a)=(δ_1(q_1,a),δ_2(q_2,a))$ et de finaux $(F_1×(Q_2 - F_2))∪((Q_1 - F_1)×F_2)$ reconnaît $L_1 △ L_2$.
           Ce langage est non vide et le produit possède $n_1 n_2$ états.
           La question 2 donne un mot distinguant de taille strictement inférieure à $n_1 n_2$.
         ]

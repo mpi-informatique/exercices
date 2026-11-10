@@ -112,7 +112,7 @@
   Soit $G$ la taille maximale d'un mot de pile figurant dans une transition, avec $G=0$ s'il n'y a aucune transition.
 
   #question[
-          Montrer que, si $η>G$ et $w∈LA∖cal(L)_(≤η)(A)$, tout calcul acceptant de $w$ possède une $(η-G)$-montagne.
+          Montrer que, si $η>G$ et $w∈LA - cal(L)_(≤η)(A)$, tout calcul acceptant de $w$ possède une $(η-G)$-montagne.
         ][
           Fixons un calcul acceptant. Sa simulation tronquée doit se bloquer en tentant de dépiler son dernier symbole ; sinon elle accepterait aussi $w$.
           Depuis la dernière troncature ayant supprimé un préfixe, on a donc une position $m$ de hauteur $h_m$ et une position ultérieure $r_0$ de hauteur $h_m-η≥1$.

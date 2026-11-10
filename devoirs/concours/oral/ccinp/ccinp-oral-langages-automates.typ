@@ -46,7 +46,7 @@
               $ x y^2 z=a^(n+r) b a^n ∉ L_2, $
               puisque $n+r>n$.
               C'est absurde : $L_2$ n'est pas reconnaissable, donc n'est pas régulier.],
-            [On a $L_2=L_1 ∖ L_3$.
+            [On a $L_2=L_1 - L_3$.
               Si $L_3$ était régulier, la stabilité des langages réguliers par complément et intersection rendrait $L_2$ régulier, puisque $L_1$ l'est.
               Donc $L_3$ n'est pas régulier.],
             [La somme $n+m$ est paire si et seulement si $n$ et $m$ ont la même parité.

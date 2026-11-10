@@ -794,7 +794,7 @@
             La finitude de l'automate sera établie à la question suivante.
           ]
 
-    Pour $w ∈ Σ^* ∖ {ε}$ et toutes expressions $E,F$, on vérifie les relations
+    Pour $w ∈ Σ^* - {ε}$ et toutes expressions $E,F$, on vérifie les relations
     $ ∂_w(E | F)=∂_w(E) ∪ ∂_w(F) quad "(III.1)", $
     $
       ∂_w(E F) ⊂ ∂_w(E) dot {F} ∪ union_(v ∈ S^+(w)) ∂_v(F)
@@ -806,7 +806,7 @@
     $
     où $S^+(w)$ est l'ensemble des suffixes non vides de $w$.
     On pose
-    $ Q(E)=union_(w ∈ Σ^* ∖ {ε}) ∂_w(E). $
+    $ Q(E)=union_(w ∈ Σ^* - {ε}) ∂_w(E). $
 
     #question[Montrer que $abs(Q(E))$ est majoré par le nombre de lettres présentes dans l'écriture syntaxique de $E$, noté $norm(E)$.
               Qu'en déduit-on sur l'automate d'Antimirov ?][
