@@ -511,8 +511,13 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #slides-only[== De raa au tiers exclu]
 #exercice[
   On ajoute raa à la logique intuitionniste et on veut prouver te.
-  + Prouver $¬ (A ∨ ¬ A) scripts(⊢)_i ¬ A$.
-  + Prouver $scripts(⊢)_c A ∨ ¬ A$.
+  #colonnes-cours(
+    columns: (auto, 1fr),
+    align: left + top,
+    empiler-presentation: false,
+    [#enum([Prouver $¬ (A ∨ ¬ A) scripts(⊢)_i ¬ A$.])],
+    [#enum(start: 2, [Prouver $scripts(⊢)_c A ∨ ¬ A$.])],
+  )
 ]
 
 #solution[
