@@ -1,6 +1,12 @@
 #import "/load.typ": colonnes-cours, est-corrige, est-presentation, formules-reparties, only, pause, uncover
 #import "@preview/curryst:0.6.0": prooftree
 
+// Le séquent ASCII est transmis à l'outil ; le contenu conserve les notations du cours.
+#let sequent(enonce, body) = {
+  let cible = enonce.replace(" ", "").replace("&", "%26").replace("|", "%7C").replace(">", "%3E")
+  link("https://mpi-informatique.github.io/deduction-naturelle/?sequent=" + cible, body)
+}
+
 #let arbre(body) = block(width: 100%, context layout(size => {
   let largeur = measure(body).width
   align(center, if largeur > size.width { scale(x: size.width / largeur * 100%, reflow: true, body) } else { body })
