@@ -20,8 +20,15 @@
           !(builtins.elem name [ ".git" ".direnv" ".astro" "dist" "build" "tmp" "__pycache__" "node_modules" ".DS_Store" "web" "shared" ])
           && !(nixpkgs.lib.hasSuffix ".log" name);
       };
+      typst = system:
+        let pkgs = packagesFor system; in {
+          packages = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ripgrep ];
+          TYPST_PACKAGE_PATH = self.packages.${system}.typst-packages;
+          TYPST_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts";
+        };
       dependencies = builtins.fromJSON (builtins.readFile ./nix/typst-packages.json);
     in {
+      lib = { inherit typst; };
       packages = forAllSystems (system:
         let
           pkgs = packagesFor system;
@@ -52,17 +59,11 @@
         });
       devShells = forAllSystems (system:
         let pkgs = packagesFor system; in {
-          default = environnement.lib.mkShell system {
-            packages = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ripgrep ];
-            TYPST_PACKAGE_PATH = self.packages.${system}.typst-packages;
-            TYPST_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts";
-          };
-          web = pkgs.mkShellNoCC {
-            packages = [ pkgs.nodejs_22 pkgs.typst pkgs.just pkgs.python3 pkgs.ripgrep pkgs.newcomputermodern pkgs.dejavu_fonts ];
-            TYPST_PACKAGE_PATH = self.packages.${system}.typst-packages;
-            TYPST_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts";
+          default = environnement.lib.mkShell system (typst system);
+          web = pkgs.mkShellNoCC ((typst system) // {
+            packages = (typst system).packages ++ [ pkgs.nodejs_22 pkgs.newcomputermodern pkgs.dejavu_fonts ];
             EXERCICES_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts:${pkgs.dejavu_fonts}/share/fonts";
-          };
+          });
         });
       checks = forAllSystems (system:
         let pkgs = packagesFor system; in {
