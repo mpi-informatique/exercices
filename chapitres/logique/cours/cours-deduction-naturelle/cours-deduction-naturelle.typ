@@ -1,5 +1,5 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp, pause,
+  article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp, liste-cours, pause,
   slide, slides-only, solution, taille-presentation, theoremes, uncover,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
@@ -511,12 +511,9 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #slides-only[== De raa au tiers exclu]
 #exercice[
   On ajoute raa à la logique intuitionniste et on veut prouver te.
-  #colonnes-cours(
-    columns: (auto, 1fr),
-    align: left + top,
-    empiler-presentation: false,
-    [#enum([Prouver #sequent[$¬ (A ∨ ¬ A) scripts(⊢)_i ¬ A$].])],
-    [#enum(start: 2, [Prouver #sequent[$scripts(⊢)_c A ∨ ¬ A$].])],
+  #liste-cours(
+    [Prouver #sequent[$¬ (A ∨ ¬ A) scripts(⊢)_i ¬ A$].],
+    [Prouver #sequent[$scripts(⊢)_c A ∨ ¬ A$].],
   )
 ]
 
