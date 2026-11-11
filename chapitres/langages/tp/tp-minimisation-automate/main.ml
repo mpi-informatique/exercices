@@ -52,7 +52,9 @@ let dessiner nom a =
     (Filename.quote fichier_dot) (Filename.quote fichier_svg)
   in
   if Sys.command commande <> 0 then
-    failwith "Impossible de dessiner l'automate : vérifier l'installation de Graphviz."
+    failwith "Impossible de dessiner l'automate : vérifier l'installation de Graphviz.";
+  let chemin = if Filename.is_relative fichier_svg then Filename.concat (Sys.getcwd ()) fichier_svg else fichier_svg in
+  Printf.printf "Image créée : %s\n%!" chemin
 
 let classes_initiales _a =
   failwith "À compléter"

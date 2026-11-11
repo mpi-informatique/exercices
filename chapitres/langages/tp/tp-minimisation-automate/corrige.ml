@@ -129,3 +129,24 @@ module Tests = struct
 end
 
 let () = Tests.executer ()
+
+let dessiner nom a =
+  let transitions = ref [] in
+  Array.iteri (fun q ligne ->
+    Array.iteri (fun lettre destination ->
+      transitions := (q, Some lettre, destination) :: !transitions) ligne) a.delta;
+  let automate = Mpi.Automate.creer
+    ~nb_etats:(nb_etats a) ~initiaux:[a.initial] ~finaux:a.finaux
+    ~transitions:(List.rev !transitions)
+  in
+  let symbole x = if x = 0 then "a" else if x = 1 then "b" else string_of_int x in
+  let fichier_dot = nom ^ ".dot" in
+  let fichier_svg = nom ^ ".svg" in
+  Mpi.Dot.ecrire fichier_dot (Mpi.Dot.automate ~symbole automate);
+  let commande = Printf.sprintf "dot -Tsvg %s -o %s"
+    (Filename.quote fichier_dot) (Filename.quote fichier_svg)
+  in
+  if Sys.command commande <> 0 then
+    failwith "Impossible de dessiner l'automate : vérifier l'installation de Graphviz.";
+  let chemin = if Filename.is_relative fichier_svg then Filename.concat (Sys.getcwd ()) fichier_svg else fichier_svg in
+  Printf.printf "Image créée : %s\n%!" chemin
