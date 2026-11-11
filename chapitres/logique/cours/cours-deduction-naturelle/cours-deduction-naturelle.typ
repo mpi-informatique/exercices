@@ -232,6 +232,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 
 #let exercice-conjonction-implication = [
   #exercice[
+    #v(0.5em)
     + Prouver $(A ∧ B) → C ⊢ A → (B → C)$.
     + Prouver $A → (B → C) ⊢ (A ∧ B) → C$.
   ]
