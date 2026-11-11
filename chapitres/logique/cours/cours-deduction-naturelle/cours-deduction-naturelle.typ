@@ -586,8 +586,13 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 
 #slides-only[== Contraposée]
 #exercice[Contraposée][
-  + Prouver $A → B scripts(⊢)_i ¬ B → ¬ A$.
-  + Prouver $¬ B → ¬ A scripts(⊢)_i A → ¬ ¬ B$, puis en déduire $¬ B → ¬ A scripts(⊢)_c A → B$.
+  #colonnes-cours(
+    columns: (auto, 1fr),
+    align: left + top,
+    empiler-presentation: false,
+    [#enum([Prouver $A → B scripts(⊢)_i ¬ B → ¬ A$.])],
+    [#enum(start: 2, [Prouver $¬ B → ¬ A scripts(⊢)_i A → ¬ ¬ B$, puis en déduire $¬ B → ¬ A scripts(⊢)_c A → B$.])],
+  )
 ]
 #solution[
   Pour la première question, posons $C = A → B$ et $Γ = {C, ¬ B, A}$ :
