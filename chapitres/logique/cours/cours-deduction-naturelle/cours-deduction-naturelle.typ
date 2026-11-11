@@ -671,8 +671,7 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #slides-only[== Preuve et contre-modèle]
 #exercice[
   Soit $Γ = {A ∨ B, A → C, B → C}$.
-  + Prouver $Γ ⊢ C$.
-  + Donner un contre-modèle à $Γ ⊨ A$. En déduire $Γ scripts(⊬)_c A$.
+  Prouver $Γ ⊢ C$. Donner un contre-modèle à $Γ ⊨ A$. En déduire $Γ scripts(⊬)_c A$.
 ]
 #solution[
   Pour la première question, on raisonne par cas sur $A ∨ B$ :
