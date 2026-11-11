@@ -1,9 +1,36 @@
 #import "/load.typ": colonnes-cours, est-corrige, est-presentation, formules-reparties, only, pause, uncover
 #import "@preview/curryst:0.6.0": prooftree
 
-// Le séquent ASCII est transmis à l'outil ; le contenu conserve les notations du cours.
-#let sequent(enonce, body) = {
-  let cible = enonce.replace(" ", "").replace("&", "%26").replace("|", "%7C").replace(">", "%3E")
+// Convertit la formule affichée ; les indices de logique du symbole ⊢ sont ignorés.
+// `contexte` donne les hypothèses lorsque l'affichage utilise l'abréviation Γ.
+#let sequent(body, contexte: none) = {
+  let convertir(contenu) = {
+    let champs = contenu.fields()
+    if contenu == [ ] {
+      ""
+    } else if champs.keys().contains("text") {
+      contenu.text
+    } else if contenu.func() == math.attach {
+      let base = convertir(contenu.base)
+      assert(base == "⊢", message: "Seul le symbole ⊢ peut porter un indice dans un lien de séquent.")
+      base
+    } else if champs.keys().contains("children") {
+      contenu.children.map(convertir).join()
+    } else if contenu.func() in (math.equation, math.lr, math.scripts) {
+      convertir(contenu.body)
+    } else {
+      panic("Notation non prise en charge dans un lien de séquent : " + repr(contenu))
+    }
+  }
+  let cible = convertir(body)
+  if cible.contains("Γ") {
+    assert(contexte != none, message: "Préciser le contexte Γ du séquent.")
+    cible = cible.replace("Γ", convertir(contexte))
+  }
+  for (symbole, ascii) in (("⊢", "|-"), ("→", "->"), ("∧", "&"), ("∨", "|"), ("¬", "!"), ("⊥", "0")) {
+    cible = cible.replace(symbole, ascii)
+  }
+  cible = cible.replace(regex("\\s+"), "").replace("&", "%26").replace("|", "%7C").replace(">", "%3E")
   link("https://mpi-informatique.github.io/deduction-naturelle/?sequent=" + cible, body)
 }
 
