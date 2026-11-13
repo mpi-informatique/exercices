@@ -6,8 +6,13 @@
     url = "github:mpi-informatique/typst-code-extract";
     inputs.nixpkgs.follows = "nixpkgs";
   };
+  inputs.mpi = {
+    url = "github:mpi-informatique/lib";
+    inputs.environnement.follows = "environnement";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-  outputs = { self, nixpkgs, environnement, code-extract }:
+  outputs = { self, nixpkgs, environnement, code-extract, mpi }:
     let
       systems = environnement.lib.systems;
       forAllSystems = nixpkgs.lib.genAttrs systems;
@@ -59,7 +64,9 @@
         });
       devShells = forAllSystems (system:
         let pkgs = packagesFor system; in {
-          default = environnement.lib.mkShell system (typst system);
+          default = environnement.lib.mkShell system ((typst system) // {
+            packages = (typst system).packages ++ [ mpi.packages.${system}.default ];
+          });
           web = pkgs.mkShellNoCC ((typst system) // {
             packages = (typst system).packages ++ [ pkgs.nodejs_22 pkgs.newcomputermodern pkgs.dejavu_fonts ];
             EXERCICES_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts:${pkgs.dejavu_fonts}/share/fonts";
@@ -68,7 +75,7 @@
       checks = forAllSystems (system:
         let pkgs = packagesFor system; in {
           documents = pkgs.runCommand "exercices-check" {
-            nativeBuildInputs = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ocaml pkgs.stdenv.cc pkgs.git ];
+            nativeBuildInputs = [ pkgs.typst pkgs.just pkgs.python3 pkgs.ocaml pkgs.ocamlPackages.findlib mpi.packages.${system}.default pkgs.stdenv.cc pkgs.git ];
             TYPST_PACKAGE_PATH = self.packages.${system}.typst-packages;
             TYPST_FONT_PATHS = "${pkgs.newcomputermodern}/share/fonts";
           } ''

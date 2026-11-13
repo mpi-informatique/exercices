@@ -38,6 +38,29 @@
         "type": "github"
       }
     },
+    "mpi": {
+      "inputs": {
+        "environnement": [
+          "environnement"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794325557,
+        "narHash": "sha256-wFGM/jfkhX/SlXbDSLhlPtrKwDUsfpQd4vGJ0V8HblA=",
+        "owner": "mpi-informatique",
+        "repo": "lib",
+        "rev": "69909af102b98f8d9937ea7e1edd6b6a5cb5935f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mpi-informatique",
+        "repo": "lib",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1794319310,
@@ -57,6 +80,7 @@
       "inputs": {
         "code-extract": "code-extract",
         "environnement": "environnement",
+        "mpi": "mpi",
         "nixpkgs": [
           "environnement",
           "nixpkgs"

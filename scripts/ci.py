@@ -71,7 +71,7 @@ def selection(root, changed, entries):
 
 
 def native(plan, changed, entries):
-    from build import OCAML, documents, empreinte, run
+    from build import documents, empreinte, run, test_ocaml
 
     if plan['native_full']:
         run([sys.executable, ROOT / 'scripts/build.py', 'check'])
@@ -86,7 +86,10 @@ def native(plan, changed, entries):
             for script in sorted((ROOT / directory).rglob(pattern)):
                 folder = script.parent.relative_to(ROOT)
                 if any(folder in path.parents for path in related):
-                    run([OCAML, '-I', script.parent, script] if pattern == 'corrige.ml' else [sys.executable, script])
+                    if pattern == 'corrige.ml':
+                        test_ocaml(script)
+                    else:
+                        run([sys.executable, script])
 
 
 def main():
