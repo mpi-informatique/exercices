@@ -27,7 +27,13 @@
   = Représentation
 
   Le fichier `dnat.ml` définit les types suivants :
-  #code-extrait(support, ("formule", "sequent"))
+  #grid(
+    columns: (1fr, 1fr),
+    column-gutter: 1.5em,
+    align: left + top,
+    code-extrait(support, "formule"),
+    code-extrait(support, "sequent"),
+  )
 
   Compléter le fichier `main.ml`. On utilisera les types et fonctions de `dnat.ml` avec `open Dnat` au début du fichier.
 
