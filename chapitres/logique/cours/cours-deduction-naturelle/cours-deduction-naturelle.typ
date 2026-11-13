@@ -1,6 +1,6 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp, liste-cours, pause,
-  slide, slides-only, solution, taille-presentation, theoremes, uncover,
+  article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp, liste-cours, marge,
+  pause, slide, slides-only, solution, taille-presentation, theoremes, uncover,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
 #import "/load.typ": logique
@@ -44,9 +44,9 @@
 #slides-only[== Preuves]
 
 #definition[Preuve][
-  Dans un système formel, une _preuve_ (ou _arbre de preuve_, _dérivation_) est un arbre fini dont chaque nœud est une application d'une règle d'inférence.
+  Dans un système formel, une _preuve_ (ou _arbre de preuve_, _dérivation_) est un arbre dont chaque nœud est une application d'une règle d'inférence.
 
-  Les feuilles sont donc des applications d'axiomes. Le jugement à la racine est la _conclusion_ de la preuve. Un jugement est _prouvable_ (ou _dérivable_) s'il possède une preuve.
+  Les feuilles sont donc des applications d'axiomes.  Un jugement est _prouvable_ (ou _dérivable_) s'il est racine d'une preuve.
 ]
 
 #underline[Remarque] : on dessine habituellement un arbre de preuve avec la racine en bas.
@@ -123,12 +123,12 @@
 
 = Déduction naturelle
 
-La sémantique propositionnelle définit la vérité des formules à l'aide de valuations. \
-La déduction naturelle formalise les preuves à l'aide de règles d'inférence.
-#pause
+Soit $V$ un ensemble de variables propositionnelles et $cal(F)(V)$ l'ensemble des formules logiques sur $V$. \
+Il y a deux notions à distinguer :
+- Sémantique propositionnelle (MP2I) : formalise la notion de vérité à l'aide de valuations.#pause
+- Déduction naturelle : formalise la notion de preuve à l'aide de séquents et de règles d'inférence.
 
-Soit $V$ un ensemble de variables propositionnelles et $cal(F)(V)$ l'ensemble des formules logiques sur $V$.\
-Les formules de $cal(F)(V)$ sont souvent notées $A, B, C$ ou $X, Y, Z$ en déduction naturelle au lieu de $φ, ψ, χ$ en logique propositionnelle.
+Les formules logiques sont souvent notées $A, B$ ou $X, Y$ en déduction naturelle au lieu de $φ, ψ$ en logique propositionnelle.
 
 #slides-only[== Séquent]
 
@@ -141,17 +141,9 @@ Les formules de $cal(F)(V)$ sont souvent notées $A, B, C$ ou $X, Y, Z$ en dédu
 $Γ$ est l'ensemble des hypothèses actuelles lors d'une preuve.
 
 #pause
-#underline[Notation] : on note $Γ ⊬ A$ s'il n'existe pas de preuve du séquent $Γ ⊢ A$ dans le système considéré.
-
-#slides-only[== Contextes d'hypothèses]
-
-On utilise les abréviations :
-#formules-reparties(
-  empiler-presentation: true,
-  $Γ, X = Γ ∪ {X}$,
-  $Γ, Γ' = Γ ∪ Γ'$,
-  $⊢ X "au lieu de" ∅ ⊢ X$,
-)
+On utilise les notations suivantes :
+- $Γ ⊬ A$ s'il n'existe pas de preuve du séquent $Γ ⊢ A$ dans le système considéré.
+- $Γ, Γ' = Γ ∪ Γ'$ et $⊢ X "au lieu de" ∅ ⊢ X$.
 
 #slides-only[== Trois systèmes formels]
 
@@ -175,12 +167,12 @@ Suivant le système utilisé, les séquents prouvables ne sont pas les mêmes. O
 
 #slides-only[== Introduction et élimination]
 
-Les règles d'un connecteur se regroupent en règles d'introduction et d'élimination.\
+Chaque connecteur logique possède une règle d'introduction, permettant de le faire apparaître, et une règle d'élimination, permettant de l'utiliser.\ #pause
 Pour comprendre plus facilement une preuve, on annote chaque règle avec un symbole.
 
 = Déduction naturelle intuitionniste
 
-#underline[Convention] : Dans les règles, $Γ$ désigne un ensemble quelconque de formules et $X, Y, Z$ des formules quelconques. Dans les preuves, on utilise les lettres $A, B, C$.
+#underline[Convention] : Dans les règles, $Γ$ désigne un ensemble quelconque de formules et $X, Y, Z$ des formules quelconques. Dans les preuves, on note $A, B, C$ des formules quelconques.
 
 // Les mêmes exercices sont intercalés dans les slides et regroupés dans le cours.
 #let exercices-implication = [
@@ -398,7 +390,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
   ]
 
   #if est-presentation() [== Variantes des règles]
-  L'affaiblissement permet de ramener plusieurs contextes à leur union. On peut donc utiliser :
+  On peut donc utiliser :
 
   #colonnes-cours(
     empiler-presentation: false,
@@ -413,7 +405,6 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
       ))]
     ],
     [
-      #if est-presentation() { pause }
       #arbre[#prooftree(rule(name: [$∧_i$], [$Γ ⊢ X$], [$Γ' ⊢ Y$], [$Γ, Γ' ⊢ X ∧ Y$]))]
     ],
   )
@@ -457,9 +448,9 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 On obtient le système _classique_ en ajoutant aux règles intuitionnistes le _raisonnement par l'absurde_ (raa) ou, de manière équivalente, le _tiers exclu_ (te).
 
 #pause
-Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i A ==> Γ scripts(⊢)_c A$. La réciproque est fausse : pour une variable propositionnelle $p$, $¬ ¬ p scripts(⊬)_i p$, alors que $¬ ¬ p scripts(⊢)_c p$.
+Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i A ==> Γ scripts(⊢)_c A$. La réciproque est fausse.
 
-== Raisonnement par l'absurde et tiers-exclu
+#slides-only[== Raisonnement par l'absurde et tiers-exclu]
 
 #colonnes-cours(
   empiler-presentation: false,
@@ -524,7 +515,6 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 ]
 
 #slides-only[== Du tiers exclu à raa]
-#article-only[== Comparer les deux systèmes]
 
 #exercice[
   Prouver #sequent(($¬ ¬ A$, $A$), logique: $c$) en utilisant le tiers exclu. En déduire que l'on peut retrouver la règle raa à partir des règles intuitionnistes et de te.
@@ -704,11 +694,11 @@ On a donc $Γ scripts(⊢)_c A ⟺ Γ ⊨ A$.
 #if not est-presentation() [
   = Sémantique des ouverts
 
-  #exercice(hp: true)[
+  #marge("math")[#exercice[
     #for bloc in semantique-ouverts.contenu {
       if type(bloc) == content { bloc } else { enum.item(bloc.enonce) }
     }
-  ]
+  ]]
 
   #solution[
     #enum(..semantique-ouverts.contenu.filter(bloc => type(bloc) == dictionary).map(bloc => bloc.solution))

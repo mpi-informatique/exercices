@@ -7,7 +7,12 @@
 
 // Les blocs de rédaction sont convertis en données avant la mise en page.
 #let marquer-bloc(bloc) = metadata((exercices-bloc: true, bloc: bloc))
-#let est-bloc(it) = type(it) == content and it.func() == metadata and type(it.value) == dictionary and it.value.at("exercices-bloc", default: false)
+#let est-bloc(it) = (
+  type(it) == content
+    and it.func() == metadata
+    and type(it.value) == dictionary
+    and it.value.at("exercices-bloc", default: false)
+)
 #let contient-bloc(it) = {
   if type(it) == content {
     if est-bloc(it) { return true }
@@ -32,7 +37,10 @@
   for enfant in enfants {
     assert(type(enfant) in (content, dictionary), message: "Un corps contient des textes, questions et parties")
     if type(enfant) == content and not est-bloc(enfant) {
-      assert(not contient-bloc(enfant), message: "Placer question et partie directement dans le corps ; appliquer les styles locaux dans l'énoncé ou la solution, et le style général dans le modèle.")
+      assert(
+        not contient-bloc(enfant),
+        message: "Placer question et partie directement dans le corps ; appliquer les styles locaux dans l'énoncé ou la solution, et le style général dans le modèle.",
+      )
     }
     if est-bloc(enfant) or type(enfant) == dictionary or type(body) == array {
       let avant = texte-bloc(texte)
@@ -64,7 +72,10 @@
   assert(suite.pos().len() <= 1, message: "Une question reçoit un énoncé et une solution facultative")
   let solution = suite.pos().at(0, default: none)
   assert(type(enonce) == content and (solution == none or type(solution) == content))
-  assert(not contient-bloc(enonce) and not contient-bloc(solution), message: "Une question ne contient pas d'autre question ni de partie")
+  assert(
+    not contient-bloc(enonce) and not contient-bloc(solution),
+    message: "Une question ne contient pas d'autre question ni de partie",
+  )
   assert(label == none or type(label) == std.label, message: "label doit être une étiquette Typst ou none")
   assert(jury == none or type(jury) == content, message: "jury doit être un contenu Typst ou none")
   assert(notation == none or type(notation) == content, message: "notation doit être un contenu Typst ou none")
@@ -72,7 +83,15 @@
     bareme == none or bareme in (0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4),
     message: "Points autorisés : 0.25, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4 ou none",
   )
-  marquer-bloc((type: "question", enonce: enonce, jury: jury, solution: solution, bareme: bareme, notation: notation, label: label))
+  marquer-bloc((
+    type: "question",
+    enonce: enonce,
+    jury: jury,
+    solution: solution,
+    bareme: bareme,
+    notation: notation,
+    label: label,
+  ))
 }
 
 /// Associe une étiquette à l'énoncé en préservant son alignement et son numéro.
@@ -159,7 +178,15 @@
   assert(type(contexte) == array)
   assert(contexte.all(bloc => type(bloc) == content), message: "Le contexte contient uniquement du texte Typst")
   assert(jury == none or type(jury) == content)
-  marquer-bloc((jury: jury, type: "partie", numero: numero, titre: titre, contenu: lire-blocs(body), contexte: contexte, meta: meta))
+  marquer-bloc((
+    jury: jury,
+    type: "partie",
+    numero: numero,
+    titre: titre,
+    contenu: lire-blocs(body),
+    contexte: contexte,
+    meta: meta,
+  ))
 }
 
 // Les numéros sont fixés avant le filtrage des corrections de copies.
@@ -172,7 +199,11 @@
       let numero = if bloc.numero != auto { bloc.numero } else if prefixe == none { numbering("I", indice) } else {
         prefixe + "." + numbering(if niveau == 2 { "A" } else { "1" }, indice)
       }
-      resultat.push((..bloc, numero: numero, contenu: numeroter-parties(bloc.contenu, prefixe: numero, niveau: niveau + 1)))
+      resultat.push((
+        ..bloc,
+        numero: numero,
+        contenu: numeroter-parties(bloc.contenu, prefixe: numero, niveau: niveau + 1),
+      ))
     } else { resultat.push(bloc) }
   }
   resultat
@@ -184,7 +215,10 @@
 /// -> dictionary
 #let donnees(body) = {
   let blocs = numeroter-parties(lire-blocs(body))
-  assert(blocs.len() == 1 and type(blocs.first()) == dictionary, message: "donnees attend une question ou une partie unique")
+  assert(
+    blocs.len() == 1 and type(blocs.first()) == dictionary,
+    message: "donnees attend une question ou une partie unique",
+  )
   blocs.first()
 }
 
@@ -519,7 +553,7 @@
     message: "tp doit être un dictionnaire réservé aux documents de type tp",
   )
   verifier-bareme(bareme, exercices.map(ex => nombre-questions(ex.contenu)).sum(default: 0))
-  let titre-affiche = titre + if corrige { " : corrigé" } else { "" }
+  let titre-affiche = titre + if corrige { " (corrigé)" } else { "" }
   let duree = if type not in ("devoir", "concours") { none } else if duree != none { duree } else if (
     exercices.len() == 1
   ) { exercices.first().meta.duree } else { none }

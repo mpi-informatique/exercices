@@ -35,11 +35,7 @@ let appliquer_regle r s =
   | NotElim f, Bot -> Some [seq s.gamma (Not f); seq s.gamma f]
   | OrElim (f1, f2), _ ->
       (* Pour prouver phi par OrElim, il faut prouver qu'on a f1 \/ f2, puis que f1 implique phi, et f2 implique phi *)
-      Some [
-        seq s.gamma (Or (f1, f2));
-        seq (f1 :: s.gamma) s.phi;
-        seq (f2 :: s.gamma) s.phi
-      ]
+      Some [seq s.gamma (Or (f1, f2)); seq (f1 :: s.gamma) s.phi; seq (f2 :: s.gamma) s.phi]
   | _, _ -> None
 
 (* Question 5 *)

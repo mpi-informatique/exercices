@@ -9,7 +9,7 @@
 
 #let sujet = exercice(
   meta: (
-    titre: "TP 11 : Preuve automatique en déduction naturelle",
+    titre: "TP 5 : Preuve automatique en déduction naturelle",
     chapitres: ("logique",),
     algorithmes: ("retour-sur-trace",),
     structures: ("arbre", "liste"),
@@ -23,43 +23,35 @@
     La liste des règles candidates est distinguée des règles effectivement applicables. Un échec de recherche bornée ne signifie pas que le séquent est improuvable.
   ],
 )[
-  Dans ce TP, nous implémentons un prouveur de théorèmes pour la logique minimale en déduction naturelle.
+  Dans ce TP, nous implémentons un prouveur par backtracking pour la logique minimale en déduction naturelle.
 
   = Représentation
 
-  Le fichier `dnat.ml` définit les types suivants :
+  Le fichier `dnat.ml` définit les types et fonctions suivants :
   #grid(
     columns: (1fr, 1fr),
     column-gutter: 1.5em,
     align: left + top,
     code-extrait(support, "formule"),
     raw(
-      code-texte(support, "sequent") + "\n\n" + ```ocaml
-      (* Lit un séquent, par exemple :
-         "A, A -> B |- B".
-         Hypothèses séparées par des virgules,
-         puis |- et le but.
-         Sans |-, le contexte est vide.
-         Syntaxe : & | -> ! F. *)
-      val parse : string -> sequent
-      ```.text,
+      code-texte(support, "sequent")
+        + "\n\n"
+        + ```ocaml
+        (* convertit une chaîne en séquent *)
+        val parse : string -> sequent
+        ```.text,
       lang: "ocaml",
       block: true,
     ),
   )
 
 
-  Compléter le fichier `main.ml`, qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et `open Dnat`.
+  Le fichier à compléter est `main.ml`, qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et ```ocaml open Dnat```.
 
-  Depuis le dossier du TP, lancer `utop`, puis charger le fichier :
-  ```ocaml
-  #use "main.ml";;
-  ```
+  Depuis le dossier du TP, lancer `utop`, puis charger le fichier : ```ocaml #use "main.ml";;```
 
-  Après chaque modification, recharger le fichier avec cette même commande.
   Pour tester une question, appeler la fonction correspondante, par exemple `test_seq ();;` après la première question.
-  Une assertion réussie ne produit aucun message. Une assertion fausse lève `Assert_failure`.
-  Les tests ne s'exécutent pas automatiquement au chargement et peuvent donc être utilisés au fil du TP.
+  Une assertion réussie ne produit aucun message.
 
   #question[
     Écrire une fonction utilitaire `seq : formule list -> formule -> sequent` renvoyant un séquent $Γ ⊢ φ$ à partir de $Γ$ et $φ$.
@@ -96,15 +88,22 @@
     rempli: true,
     (
       (..regles.implication, condition-introduction: [`ImpliesIntro`], condition-elimination: [`ImpliesElim X`]),
-      (..regles.conjonction, condition-introduction: [`AndIntro`], condition-elimination: [`AndElim1 Y` et `AndElim2 X`]),
-      (..regles.disjonction, condition-introduction: [`OrIntro1` et `OrIntro2`], condition-elimination: [`OrElim (X, Y)`]),
+      (
+        ..regles.conjonction,
+        condition-introduction: [`AndIntro`],
+        condition-elimination: [`AndElim1 Y` et `AndElim2 X`],
+      ),
+      (
+        ..regles.disjonction,
+        condition-introduction: [`OrIntro1` et `OrIntro2`],
+        condition-elimination: [`OrElim (X, Y)`],
+      ),
       (..regles.negation, condition-introduction: [`NotIntro`], condition-elimination: [`NotElim X`]),
     ),
   )
 
   #question[
     Écrire `appliquer_regle : regle -> sequent -> sequent list option` vérifiant si la règle est applicable au séquent donné, et si oui, renvoyant la liste des prémisses à prouver. Si la règle n'est pas applicable, renvoyer `None`.
-    Pour simplifier, on utilise ci-dessous la fonction `parse : string -> sequent` de `dnat.ml` pour construire les séquents.
   ][#code-extrait(corrige, "appliquer_regle")]
 
   #code-extrait(tests, "test_appliquer_regle")
@@ -129,7 +128,7 @@
     Ainsi, sur un séquent $Γ ⊢ A$ :
     - Ajouter `Axiom` en tête de liste
     - Ajouter les règles d'introduction qui permettent d'obtenir $A$ (exemple : `AndIntro` si $A$ est de la forme $B ∧ C$)
-    - Ajouter seulement les éliminations suivantes, selon les sous-formules de $Γ$ :
+    - Ajouter les éliminations suivantes, selon les sous-formules de $Γ$ :
       - `AndElim1 X` si $A ∧ X$ est une sous-formule
       - `AndElim2 X` si $X ∧ A$ est une sous-formule
       - `ImpliesElim X` si $X → A$ est une sous-formule
@@ -144,14 +143,12 @@
   #question[
     Écrire `prouver : int -> sequent -> arbre_preuve option` qui, étant donné une profondeur maximale `depth` et un séquent, renvoie un arbre de preuve pour ce séquent s'il en trouve un, et `None` sinon. On utilisera `afficher_arbre_preuve : arbre_preuve -> unit` de `dnat.ml` pour afficher l'arbre de preuve.
 
-    Indications :
+    #underline[Indications] :
     - Cas de base : si `depth <= 0`, renvoyer `None`
     - Sinon, essayer les règles retournées par `regles_possibles` une par une
     - Pour une règle applicable, prouver toutes les prémisses avec profondeur `depth - 1`
     - Si une prémisse échoue, revenir en arrière (_backtracking_) et tester la règle suivante
 
-    Ici, la profondeur compte les nœuds du plus long chemin de la racine à une feuille : une preuve réduite à un axiome a profondeur $1$.
-    Un résultat `None` ne permet pas de conclure que le séquent est improuvable.
   ][#code-extrait(corrige, "prouver")]
 
   #code-extrait(tests, "test_prouver")
@@ -163,8 +160,6 @@
   ][#code-extrait(corrige, "prouver_min")]
 
   #code-extrait(tests, "test_prouver_min")
-
-  Quand vous avez fini, vous entraîner sur #link("https://fortierq.github.io/deduction-naturelle").
 ]
 
 #show: feuille.with(
