@@ -46,7 +46,7 @@
 }))
 
 // Les mêmes règles alimentent le tableau imprimé et les diapositives.
-#let cases-regles(regles, rempli: est-presentation() or est-corrige()) = {
+#let cases-regles(regles, rempli: est-presentation() or est-corrige(), hauteur: 3.4em) = {
   let arbres = regles.map(regle => {
     // Masquer les séquents conserve la longueur de la barre et la position du nom.
     let schema = if rempli { regle } else {
@@ -60,7 +60,7 @@
     )
     let lignes = if largeur <= size.width { (formules-reparties(..arbres),) } else { arbres.map(arbre) }
     for ligne in lignes {
-      block(width: 100%, height: 3.4em, above: 0pt, below: 0pt)[
+      block(width: 100%, height: hauteur, above: 0pt, below: 0pt)[
         #align(horizon, ligne)
       ]
     }
@@ -72,9 +72,10 @@
 /// - lignes (array): Lignes choisies dans `regles`, avec des remarques ou applications facultatives.
 /// - axiome (dictionary, none): Schéma de l’axiome, omis si `none`.
 /// - condition-axiome (content): Annotation sous le schéma de l’axiome, par exemple son constructeur OCaml.
+/// - compact (bool): Réduire la hauteur des schémas et les marges du tableau imprimé.
 /// - rempli (bool): Afficher les séquents ; par défaut, seulement dans le corrigé et la présentation.
 /// -> content
-#let tableau-regles(lignes, axiome: none, condition-axiome: [], rempli: est-presentation() or est-corrige()) = {
+#let tableau-regles(lignes, axiome: none, condition-axiome: [], compact: false, rempli: est-presentation() or est-corrige()) = {
   if est-presentation() {
     if axiome != none {
       heading(depth: 2)[Axiome]
@@ -116,10 +117,11 @@
       ligne.at("applications", default: [])
     }
   } else {
+    let hauteur = if compact { 2.4em } else { 3.4em }
     let cellules = ()
     if axiome != none {
       cellules += ([*Axiome*], table.cell(colspan: 2)[
-        #cases-regles((axiome,), rempli: rempli)
+        #cases-regles((axiome,), rempli: rempli, hauteur: hauteur)
         #text(size: 0.85em, condition-axiome)
       ])
     }
@@ -127,11 +129,11 @@
       cellules += (
         [*#ligne.titre*],
         [
-          #cases-regles(ligne.introduction, rempli: rempli)
+          #cases-regles(ligne.introduction, rempli: rempli, hauteur: hauteur)
           #text(size: 0.85em, ligne.at("condition-introduction", default: []))
         ],
         [
-          #cases-regles(ligne.elimination, rempli: rempli)
+          #cases-regles(ligne.elimination, rempli: rempli, hauteur: hauteur)
           #text(size: 0.85em, ligne.at("condition-elimination", default: []))
         ],
       )
@@ -139,7 +141,7 @@
     block(breakable: false, table(
       columns: (auto, 1fr, 1fr),
       align: center + horizon,
-      inset: (x: 0.6em, y: 0.8em),
+      inset: (x: 0.6em, y: if compact { 0.3em } else { 0.8em }),
       stroke: 0.4pt + luma(190),
       fill: (x, y) => if y == 0 { rgb("#e9eef5") } else if x == 0 { luma(96%) },
       table.header([*Opérateur*], [*Introduction*], [*Élimination*]),

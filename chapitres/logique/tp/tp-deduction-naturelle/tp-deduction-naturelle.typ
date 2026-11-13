@@ -92,6 +92,7 @@
   #tableau-regles(
     axiome: axiome,
     condition-axiome: [`Axiom`],
+    compact: true,
     rempli: true,
     (
       (..regles.implication, condition-introduction: [`ImpliesIntro`], condition-elimination: [`ImpliesElim X`]),
