@@ -12,6 +12,6 @@ just w chapitres/logique/tp/tp-deduction-naturelle/tp-deduction-naturelle.typ
 ocaml -I chapitres/logique/tp/tp-deduction-naturelle chapitres/logique/tp/tp-deduction-naturelle/corrige.ml
 ```
 
-Le corrigé charge `dnat.ml` avec `#mod_use` pour fonctionner dans l'interpréteur OCaml utilisé par les tests de la banque. Pour le travail des élèves, compiler `dnat.ml` avec `main.ml` comme indiqué dans l'énoncé.
+Pour les élèves : lancer `utop` depuis le dossier du TP et exécuter `#use "main.ml";;`. Le fichier charge lui-même `dnat.ml`. Recharger après chaque modification, puis appeler le test de la question, par exemple `test_seq ();;`. Les neuf fonctions `test_…` sont placées après les fonctions à compléter et affichées dans le sujet par extraction, sans copie du code ni exécution automatique.
 
-Les tests sont fournis à la fin de `main.ml`, dans le module `Tests`, et exécutés par `Tests.executer ()`. Ils échouent tant que les fonctions nécessaires restent à compléter. Les mêmes tests sont conservés dans `corrige.ml` pour vérifier les solutions.
+Le corrigé conserve ses vérifications plus complètes (règles, validité des arbres, profondeur minimale) pour les tests automatiques de la banque.

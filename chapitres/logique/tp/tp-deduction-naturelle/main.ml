@@ -1,117 +1,94 @@
+#mod_use "dnat.ml";;
+
 open Dnat
 
 (* Question 1 *)
 let seq (_gamma : formule list) (_phi : formule) : sequent =
   failwith "TODO: seq"
 
+let test_seq () =
+  assert (seq [Var "A"] (Var "B") = parse "A |- B")
+
 (* Question 2 *)
 let rec string_of_formule (_f : formule) : string =
   failwith "TODO: string_of_formule"
+
+let test_string_of_formule () =
+  assert (string_of_formule (And (Var "A", Not (Var "B"))) = "(A & (! B))");
+  assert (string_of_formule (parse "A -> (A | B)").phi = "(A -> (A | B))")
 
 (* Question 3 *)
 let string_of_sequent (_s : sequent) : string =
   failwith "TODO: string_of_sequent"
 
+let test_string_of_sequent () =
+  assert (string_of_sequent (parse "A, A -> B |- B") = "A, (A -> B) |- B")
+
 (* Question 4 *)
 let appliquer_regle (_r : regle) (_s : sequent) : sequent list option =
   failwith "TODO: appliquer_regle"
+
+let test_appliquer_regle () =
+  assert (appliquer_regle Axiom (parse "A |- A") = Some []);
+  assert (appliquer_regle Axiom (parse "A |- B") = None);
+  assert (appliquer_regle AndIntro (parse "A |- A & B") =
+    Some [parse "A |- A"; parse "A |- B"]);
+  assert (appliquer_regle (NotElim (Var "A")) (parse "A, !A |- F") =
+    Some [parse "A, !A |- !A"; parse "A, !A |- A"]);
+  assert (appliquer_regle (OrElim (Var "A", Var "B")) (parse "|- C") =
+    Some [parse "|- A | B"; parse "A |- C"; parse "B |- C"])
 
 (* Question 5 *)
 let rec sous_formules_f (_f : formule) : formule list =
   failwith "TODO: sous_formules_f"
 
+let test_sous_formules_f () =
+  let a = Var "A" and b = Var "B" and c = Var "C" in
+  assert (sous_formules_f (And (a, Or (b, c))) =
+    [And (a, Or (b, c)); a; Or (b, c); b; c]);
+  assert (sous_formules_f (Not a) = [Not a; a])
+
 (* Question 6 *)
 let sous_formules_gamma (_gamma : formule list) : formule list =
   failwith "TODO: sous_formules_gamma"
+
+let test_sous_formules_gamma () =
+  let a = Var "A" and b = Var "B" and c = Var "C" and d = Var "D" in
+  assert (sous_formules_gamma [And (a, b); Or (c, d)] =
+    [And (a, b); a; b; Or (c, d); c; d]);
+  assert (sous_formules_gamma [] = [])
 
 (* Question 7 *)
 let regles_possibles (_s : sequent) : regle list =
   failwith "TODO: regles_possibles"
 
+let test_regles_possibles () =
+  assert (regles_possibles (parse "A & B |- A") =
+    [Axiom; AndElim1 (Var "B")]);
+  assert (regles_possibles (parse "A & A |- A") =
+    [Axiom; AndElim1 (Var "A"); AndElim2 (Var "A")])
+
 (* Question 8 *)
 let rec prouver (_depth : int) (_s : sequent) : arbre_preuve option =
   failwith "TODO: prouver"
+
+let test_prouver () =
+  assert (prouver 0 (parse "A |- A") = None);
+  assert (prouver 1 (parse "A |- A") <> None);
+  assert (prouver 2 (parse "A |- B") = None);
+  assert (prouver 2 (parse "F |- A") = None);
+  prouver 2 (parse "A & B |- A") |> Option.get |> afficher_arbre_preuve;
+  prouver 4 (parse "|- (A & B) -> (B & A)")
+    |> Option.get |> afficher_arbre_preuve
 
 (* Question 9 *)
 let prouver_min (_max_depth : int) (_s : sequent) : arbre_preuve option =
   failwith "TODO: prouver_min"
 
-(* Tests à lancer une fois les fonctions complétées. *)
-module Tests = struct
-  let a = Var "A"
-  let b = Var "B"
-  let c = Var "C"
-
-  let verifier_regles () =
-    let g = [a] in
-    assert (appliquer_regle Axiom (seq g a) = Some []);
-    assert (appliquer_regle Axiom (seq g b) = None);
-    assert (appliquer_regle AndIntro (seq g (And (a, b))) =
-      Some [seq g a; seq g b]);
-    assert (appliquer_regle OrIntro1 (seq g (Or (a, b))) = Some [seq g a]);
-    assert (appliquer_regle OrIntro2 (seq g (Or (a, b))) = Some [seq g b]);
-    assert (appliquer_regle ImpliesIntro (seq g (Implies (a, b))) =
-      Some [seq (a :: g) b]);
-    assert (appliquer_regle NotIntro (seq g (Not a)) = Some [seq (a :: g) Bot]);
-    assert (appliquer_regle (ImpliesElim a) (seq g b) =
-      Some [seq g (Implies (a, b)); seq g a]);
-    assert (appliquer_regle (AndElim1 b) (seq g a) = Some [seq g (And (a, b))]);
-    assert (appliquer_regle (AndElim2 a) (seq g b) = Some [seq g (And (a, b))]);
-    assert (appliquer_regle (NotElim a) (seq g Bot) =
-      Some [seq g (Not a); seq g a]);
-    assert (appliquer_regle (OrElim (a, b)) (seq [] c) =
-      Some [seq [] (Or (a, b)); seq [a] c; seq [b] c]);
-    List.iter (fun r -> assert (appliquer_regle r (seq [] a) = None))
-      [AndIntro; OrIntro1; OrIntro2; ImpliesIntro; NotIntro; NotElim a]
-
-  (* Chaque sous-arbre doit prouver exactement une prémisse de la règle. *)
-  let rec verifier_arbre (Noeud (r, s, arbres)) =
-    match appliquer_regle r s with
-    | None -> assert false
-    | Some premisses ->
-        let conclusions = List.map (fun (Noeud (_, s, _)) -> s) arbres in
-        assert (conclusions = premisses);
-        List.iter verifier_arbre arbres
-
-  let rec profondeur (Noeud (_, _, arbres)) =
-    1 + List.fold_left (fun h a -> max h (profondeur a)) 0 arbres
-
-  let verifier_preuve texte hauteur =
-    let s = parse texte in
-    assert (prouver (hauteur - 1) s = None);
-    match prouver_min hauteur s with
-    | None -> assert false
-    | Some (Noeud (_, conclusion, _) as arbre) ->
-        assert (conclusion = s);
-        assert (profondeur arbre = hauteur);
-        verifier_arbre arbre
-
-  let executer () =
-    verifier_regles ();
-    assert (string_of_formule (And (a, Not b)) = "(A & (! B))");
-    assert (string_of_sequent (seq [a; Implies (a, b)] b) = "A, (A -> B) |- B");
-    assert (sous_formules_f (And (a, Or (b, c))) =
-      [And (a, Or (b, c)); a; Or (b, c); b; c]);
-    assert (sous_formules_gamma [] = []);
-    assert (regles_possibles (parse "(A & B) |- A") = [Axiom; AndElim1 b]);
-    assert (regles_possibles (parse "(A & A) |- A") =
-      [Axiom; AndElim1 a; AndElim2 a]);
-    assert (prouver 0 (seq [a] a) = None);
-    assert (prouver_min 0 (seq [a] a) = None);
-    assert (prouver_min (-1) (seq [a] a) = None);
-    assert (prouver_min 2 (parse "A |- B") = None);
-    assert (prouver_min 2 (parse "F |- A") = None);
-    List.iter (fun (texte, hauteur) -> verifier_preuve texte hauteur) [
-      "A |- A", 1;
-      "|- A -> A", 2;
-      "(A & B) |- A", 2;
-      "|- (A & B) -> (B & A)", 4;
-      "|- A -> (B -> A)", 3;
-      "|- ((A -> B) & A) -> B", 4;
-      "|- (A & !A) -> F", 4;
-      "|- (A & (B | C)) -> ((A & B) | (A & C))", 6;
-    ];
-    print_endline "Tests du prouveur : OK"
-end
-
-let () = Tests.executer ()
+let test_prouver_min () =
+  let s = parse "|- (A & B) -> (B & A)" in
+  assert (prouver_min 0 s = None);
+  assert (prouver_min 3 s = None);
+  assert (prouver_min 4 s <> None);
+  prouver_min 8 (parse "|- (A & (B | C)) -> ((A & B) | (A & C))")
+    |> Option.get |> afficher_arbre_preuve

@@ -5,6 +5,7 @@
 
 #let support = read("dnat.ml")
 #let corrige = read("corrige.ml")
+#let tests = read("main.ml")
 
 #let sujet = exercice(
   meta: (
@@ -35,40 +36,36 @@
     code-extrait(support, "sequent"),
   )
 
-  Compléter le fichier `main.ml`. On utilisera les types et fonctions de `dnat.ml` avec `open Dnat` au début du fichier.
+  Compléter le fichier `main.ml`, qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et `open Dnat`.
 
-  Compilation et exécution :
-  ```sh
-  ocamlc dnat.ml main.ml -o tp && ./tp
+  Depuis le dossier du TP, lancer `utop`, puis charger le fichier :
+  ```ocaml
+  #use "main.ml";;
   ```
 
-  On utilisera aussi `utop` pour les tests, en exécutant `#mod_use "dnat.ml";;` puis `#use "main.ml";;` depuis le dossier du TP.
+  Après chaque modification, recharger le fichier avec cette même commande.
+  Pour tester une question, appeler la fonction correspondante, par exemple `test_seq ();;` après la première question.
+  Une assertion réussie ne produit aucun message. Une assertion fausse lève `Assert_failure`.
+  Les tests ne s'exécutent pas automatiquement au chargement et peuvent donc être utilisés au fil du TP.
 
   #question[
     Écrire une fonction utilitaire `seq : formule list -> formule -> sequent` renvoyant un séquent $Γ ⊢ φ$ à partir de $Γ$ et $φ$.
   ][#code-extrait(corrige, "seq")]
+
+  #code-extrait(tests, "test_seq")
 
   #question[
     Écrire une fonction `string_of_formule : formule -> string` avec `F`, `&`, `|`, `!` pour faux, et, ou, non, et `->` pour l'implication.
     On rappelle que `^` sert à concaténer des chaînes en OCaml.
   ][#code-extrait(corrige, "string_of_formule")]
 
+  #code-extrait(tests, "test_string_of_formule")
+
   #question[
     Écrire une fonction `string_of_sequent : sequent -> string`.
   ][#code-extrait(corrige, "string_of_sequent")]
 
-  ```ocaml
-  string_of_formule (And (Var "A", Not (Var "B")))
-  (* "(A & (! B))" *)
-  string_of_formule (Implies (Var "A", Or (Var "A", Var "B")))
-  (* "(A -> (A | B))" *)
-
-  string_of_sequent {
-    gamma = [Var "A"; Implies (Var "A", Var "B")];
-    phi = Var "B";
-  }
-  (* "A, (A -> B) |- B" *)
-  ```
+  #code-extrait(tests, "test_string_of_sequent")
 
   = Règles et arbres de preuve
 
@@ -95,28 +92,7 @@
     Pour simplifier, on utilise ci-dessous la fonction `parse : string -> sequent` de `dnat.ml` pour construire les séquents.
   ][#code-extrait(corrige, "appliquer_regle")]
 
-  ```ocaml
-  appliquer_regle Axiom (parse "A |- A");;
-  - : sequent list option = Some []
-  appliquer_regle Axiom (parse "A |- B");;
-  - : sequent list option = None
-  appliquer_regle AndIntro (parse "A |- (A & B)");;
-  - : sequent list option =
-  Some [{gamma = [Var "A"]; phi = Var "A"};
-        {gamma = [Var "A"]; phi = Var "B"}]
-  appliquer_regle (NotElim (parse "A | B").phi)
-    (parse "B, !A |- F");;
-  - : sequent list option =
-  Some [{gamma = [Var "B"; Not (Var "A")];
-         phi = Not (Or (Var "A", Var "B"))};
-        {gamma = [Var "B"; Not (Var "A")];
-         phi = Or (Var "A", Var "B")}]
-  appliquer_regle (OrElim (Var "A", Var "B")) (parse "|- C");;
-  - : sequent list option =
-  Some [{gamma = []; phi = Or (Var "A", Var "B")};
-        {gamma = [Var "A"]; phi = Var "C"};
-        {gamma = [Var "B"]; phi = Var "C"}]
-  ```
+  #code-extrait(tests, "test_appliquer_regle")
 
   = Recherche de preuve
 
@@ -124,23 +100,13 @@
     Écrire `sous_formules_f : formule -> formule list` qui renvoie la liste de toutes les sous-formules d'une formule donnée (y compris la formule elle-même).
   ][#code-extrait(corrige, "sous_formules_f")]
 
-  ```ocaml
-  sous_formules_f (parse "A & (B | C)").phi;;
-  - : formule list =
-  [And (Var "A", Or (Var "B", Var "C")); Var "A";
-   Or (Var "B", Var "C"); Var "B"; Var "C"]
-  ```
+  #code-extrait(tests, "test_sous_formules_f")
 
   #question[
     Écrire `sous_formules_gamma : formule list -> formule list` qui renvoie la liste de toutes les sous-formules présentes dans le contexte `gamma`.
   ][#code-extrait(corrige, "sous_formules_gamma")]
 
-  ```ocaml
-  sous_formules_gamma (parse "(A & B), (C | D) |- A").gamma;;
-  - : formule list =
-  [And (Var "A", Var "B"); Var "A"; Var "B";
-   Or (Var "C", Var "D"); Var "C"; Var "D"]
-  ```
+  #code-extrait(tests, "test_sous_formules_gamma")
 
   #question[
     Écrire `regles_possibles : sequent -> regle list` qui, étant donné un séquent, renvoie une liste de règles candidates pour prouver ce séquent. On utilisera les sous-formules du contexte $Γ$ pour limiter les règles proposées.
@@ -158,11 +124,7 @@
     Ces règles seront ensuite vérifiées par `appliquer_regle`.
   ][#code-extrait(corrige, "regles_possibles")]
 
-  ```ocaml
-  regles_possibles (parse "(A & B) |- A");;
-  - : regle list =
-  [Axiom; AndElim1 (Var "B")]
-  ```
+  #code-extrait(tests, "test_regles_possibles")
 
   #question[
     Écrire `prouver : int -> sequent -> arbre_preuve option` qui, étant donné une profondeur maximale `depth` et un séquent, renvoie un arbre de preuve pour ce séquent s'il en trouve un, et `None` sinon. On utilisera `afficher_arbre_preuve : arbre_preuve -> unit` de `dnat.ml` pour afficher l'arbre de preuve.
@@ -177,20 +139,7 @@
     Un résultat `None` ne permet pas de conclure que le séquent est improuvable.
   ][#code-extrait(corrige, "prouver")]
 
-  ```ocaml
-  prouver 2 (parse "(A & B) |- A")
-    |> Option.iter afficher_arbre_preuve
-    [AndElim1(B)] (A & B) |- A
-      [Axiom] (A & B) |- (A & B)
-  prouver 4 (parse "|- (A & B) -> (B & A)")
-    |> Option.iter afficher_arbre_preuve
-    [ImpliesIntro]  |- ((A & B) -> (B & A))
-      [AndIntro] (A & B) |- (B & A)
-        [AndElim2(A)] (A & B) |- B
-          [Axiom] (A & B) |- (A & B)
-        [AndElim1(B)] (A & B) |- A
-          [Axiom] (A & B) |- (A & B)
-  ```
+  #code-extrait(tests, "test_prouver")
 
   Essayer avec d'autres séquents plus difficiles.
 
@@ -198,11 +147,7 @@
     Écrire `prouver_min : int -> sequent -> arbre_preuve option` qui, étant donné une profondeur maximale `max_depth` et un séquent, tente de trouver une preuve de ce séquent avec la plus petite profondeur possible parmi les preuves explorées (inférieure ou égale à `max_depth`).
   ][#code-extrait(corrige, "prouver_min")]
 
-  ```ocaml
-  prouver_min 8
-    (parse "|- (A & (B | C)) -> ((A & B) | (A & C))")
-    |> Option.iter afficher_arbre_preuve
-  ```
+  #code-extrait(tests, "test_prouver_min")
 
   Quand vous avez fini, vous entraîner sur #link("https://fortierq.github.io/deduction-naturelle").
 ]
