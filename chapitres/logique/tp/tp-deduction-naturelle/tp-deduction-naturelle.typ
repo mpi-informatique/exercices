@@ -1,6 +1,6 @@
 #import "/load.typ": code, est-corrige, exercice, feuille, question
 #import code: code-extrait
-#import "@preview/curryst:0.6.0": prooftree, rule
+#import "../../cours/cours-deduction-naturelle/regles.typ": axiome, regles, tableau-regles
 
 #let support = read("dnat.ml")
 #let corrige = read("corrige.ml")
@@ -70,25 +70,17 @@
 
   Par exemple, `ImpliesElim (And (Var "A", Var "B"))` correspond à appliquer la règle d'élimination de l'implication où $X$ est remplacé par $A ∧ B$.
 
-  Les règles utilisées sont données ci-dessous. Le contexte $Γ, X$ est représenté par `X :: gamma`.
+  Les règles utilisées sont données ci-dessous. Le contexte $Γ, X$ est représenté par `X :: gamma`. L’axiome correspond au constructeur `Axiom`.
 
-  #table(
-    columns: (auto, 1fr),
-    align: (left, center + horizon),
-    inset: (x: 0.6em, y: 0.5em),
-    stroke: 0.4pt + luma(190),
-    table.header([*Règle OCaml*], [*Schéma d'inférence*]),
-    [`Axiom`], [#prooftree(rule(name: [ax], [$Γ ⊢ A$])) #h(1em) ($A ∈ Γ$)],
-    [`ImpliesIntro`], prooftree(rule(name: [$scripts(→)_i$], [$Γ, X ⊢ Y$], [$Γ ⊢ X → Y$])),
-    [`ImpliesElim X`], prooftree(rule(name: [$scripts(→)_e$], [$Γ ⊢ X → A$], [$Γ ⊢ X$], [$Γ ⊢ A$])),
-    [`AndIntro`], prooftree(rule(name: [$∧_i$], [$Γ ⊢ X$], [$Γ ⊢ Y$], [$Γ ⊢ X ∧ Y$])),
-    [`AndElim1 X`], prooftree(rule(name: [$∧_e^g$], [$Γ ⊢ A ∧ X$], [$Γ ⊢ A$])),
-    [`AndElim2 X`], prooftree(rule(name: [$∧_e^d$], [$Γ ⊢ X ∧ A$], [$Γ ⊢ A$])),
-    [`OrIntro1`], prooftree(rule(name: [$∨_i^g$], [$Γ ⊢ X$], [$Γ ⊢ X ∨ Y$])),
-    [`OrIntro2`], prooftree(rule(name: [$∨_i^d$], [$Γ ⊢ Y$], [$Γ ⊢ X ∨ Y$])),
-    [`OrElim (X, Y)`], prooftree(rule(name: [$∨_e$], [$Γ ⊢ X ∨ Y$], [$Γ, X ⊢ A$], [$Γ, Y ⊢ A$], [$Γ ⊢ A$])),
-    [`NotIntro`], prooftree(rule(name: [$¬_i$], [$Γ, X ⊢ ⊥$], [$Γ ⊢ ¬ X$])),
-    [`NotElim X`], prooftree(rule(name: [$¬_e$], [$Γ ⊢ ¬ X$], [$Γ ⊢ X$], [$Γ ⊢ ⊥$])),
+  #tableau-regles(
+    axiome: axiome,
+    rempli: true,
+    (
+      (..regles.implication, condition-introduction: [`ImpliesIntro`], condition-elimination: [`ImpliesElim X`]),
+      (..regles.conjonction, condition-introduction: [`AndIntro`], condition-elimination: [`AndElim1 Y` et `AndElim2 X`]),
+      (..regles.disjonction, condition-introduction: [`OrIntro1` et `OrIntro2`], condition-elimination: [`OrElim (X, Y)`]),
+      (..regles.negation, condition-introduction: [`NotIntro`], condition-elimination: [`NotElim X`]),
+    ),
   )
 
   #question[

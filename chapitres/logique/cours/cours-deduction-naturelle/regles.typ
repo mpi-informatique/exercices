@@ -1,5 +1,5 @@
 #import "/load.typ": colonnes-cours, est-corrige, est-presentation, formules-reparties, only, pause, uncover
-#import "@preview/curryst:0.6.0": prooftree
+#import "@preview/curryst:0.6.0": prooftree, rule
 
 // Convertit la formule affichée ; les indices de logique du symbole ⊢ sont ignorés.
 // `contexte` donne les hypothèses lorsque l'affichage utilise l'abréviation Γ.
@@ -61,13 +61,13 @@
   })
 }
 
-#let tableau-regles(lignes, axiome: none) = {
+#let tableau-regles(lignes, axiome: none, rempli: est-presentation() or est-corrige()) = {
   if est-presentation() {
     if axiome != none {
       heading(depth: 2)[Axiome]
       only(1, cases-regles((axiome,), rempli: false))
       pause
-      only("2-", cases-regles((axiome,)))
+      only("2-", cases-regles((axiome,), rempli: rempli))
     }
     for ligne in lignes {
       heading(depth: 2, ligne.titre)
@@ -80,7 +80,7 @@
 
           #text(size: 0.75em, ligne.at("condition-introduction", default: []))
           #only(1, cases-regles(ligne.introduction, rempli: false))
-          #only("2-", cases-regles(ligne.introduction))
+          #only("2-", cases-regles(ligne.introduction, rempli: rempli))
           #uncover("2-")[
             #text(size: 0.75em, ligne.at("intuition-introduction", default: []))
           ]
@@ -90,7 +90,7 @@
 
           #text(size: 0.75em, ligne.at("condition-elimination", default: []))
           #only(1, cases-regles(ligne.elimination, rempli: false))
-          #only("2-", cases-regles(ligne.elimination))
+          #only("2-", cases-regles(ligne.elimination, rempli: rempli))
           #uncover("2-")[
             #text(size: 0.75em, ligne.at("intuition-elimination", default: []))
           ]
@@ -104,17 +104,17 @@
   } else {
     let cellules = ()
     if axiome != none {
-      cellules += ([*Axiome*], table.cell(colspan: 2, cases-regles((axiome,))))
+      cellules += ([*Axiome*], table.cell(colspan: 2, cases-regles((axiome,), rempli: rempli)))
     }
     for ligne in lignes {
       cellules += (
         [*#ligne.titre*],
         [
-          #cases-regles(ligne.introduction)
+          #cases-regles(ligne.introduction, rempli: rempli)
           #text(size: 0.85em, ligne.at("condition-introduction", default: []))
         ],
         [
-          #cases-regles(ligne.elimination)
+          #cases-regles(ligne.elimination, rempli: rempli)
           #text(size: 0.85em, ligne.at("condition-elimination", default: []))
         ],
       )
@@ -140,3 +140,47 @@
     }
   }
 }
+
+// Schémas communs au cours et au TP. Le TP omet les constantes.
+#let axiome = rule(name: [ax], [$Γ, X ⊢ X$])
+#let regles = (
+  constantes: (
+    titre: [Vrai $⊤$ et faux $⊥$],
+    introduction: (rule(name: [$⊤_i$], [$Γ ⊢ ⊤$]),),
+    elimination: (rule(name: [$⊥_e$], [$Γ ⊢ ⊥$], [$Γ ⊢ X$]),),
+  ),
+  implication: (
+    titre: [Implication $→$],
+    introduction: (rule(name: [$scripts(→)_i$], [$Γ, X ⊢ Y$], [$Γ ⊢ X → Y$]),),
+    elimination: (rule(name: [$scripts(→)_e$], [$Γ ⊢ X → Y$], [$Γ ⊢ X$], [$Γ ⊢ Y$]),),
+  ),
+  conjonction: (
+    titre: [Conjonction $∧$],
+    introduction: (rule(name: [$∧_i$], [$Γ ⊢ X$], [$Γ ⊢ Y$], [$Γ ⊢ X ∧ Y$]),),
+    elimination: (
+      rule(name: [$∧_e^g$], [$Γ ⊢ X ∧ Y$], [$Γ ⊢ X$]),
+      rule(name: [$∧_e^d$], [$Γ ⊢ X ∧ Y$], [$Γ ⊢ Y$]),
+    ),
+  ),
+  disjonction: (
+    titre: [Disjonction $∨$],
+    introduction: (
+      rule(name: [$∨_i^g$], [$Γ ⊢ X$], [$Γ ⊢ X ∨ Y$]),
+      rule(name: [$∨_i^d$], [$Γ ⊢ Y$], [$Γ ⊢ X ∨ Y$]),
+    ),
+    elimination: (
+      rule(
+        name: [$∨_e$],
+        [$Γ, X ⊢ Z$],
+        [$Γ, Y ⊢ Z$],
+        [$Γ ⊢ X ∨ Y$],
+        [$Γ ⊢ Z$],
+      ),
+    ),
+  ),
+  negation: (
+    titre: [Négation $¬$],
+    introduction: (rule(name: [$¬_i$], [$Γ, X ⊢ ⊥$], [$Γ ⊢ ¬ X$]),),
+    elimination: (rule(name: [$¬_e$], [$Γ ⊢ X$], [$Γ ⊢ ¬ X$], [$Γ ⊢ ⊥$]),),
+  ),
+)

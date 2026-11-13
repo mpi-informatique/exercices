@@ -3,7 +3,7 @@
   slide, slides-only, solution, taille-presentation, theoremes, uncover,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
-#import "regles.typ": arbre, sequent, tableau-regles
+#import "regles.typ": arbre, axiome, regles, sequent, tableau-regles
 #import "semantique-ouverts.typ": ex as semantique-ouverts
 #import theoremes: corollaire, definition, exercice, theoreme
 
@@ -419,52 +419,17 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 ]
 
 #tableau-regles(
-  axiome: rule(name: [ax], [$Γ, X ⊢ X$]),
+  axiome: axiome,
   (
+    regles.constantes,
+    (..regles.implication, applications: exercices-implication),
+    (..regles.conjonction, applications: [#contextes-differents #exercices-conjonction]),
     (
-      titre: [Vrai $⊤$ et faux $⊥$],
-      introduction: (rule(name: [$⊤_i$], [$Γ ⊢ ⊤$]),),
-      elimination: (rule(name: [$⊥_e$], [$Γ ⊢ ⊥$], [$Γ ⊢ X$]),),
-    ),
-    (
-      titre: [Implication $→$],
-      applications: exercices-implication,
-      introduction: (rule(name: [$scripts(→)_i$], [$Γ, X ⊢ Y$], [$Γ ⊢ X → Y$]),),
-      elimination: (rule(name: [$scripts(→)_e$], [$Γ ⊢ X → Y$], [$Γ ⊢ X$], [$Γ ⊢ Y$]),),
-    ),
-    (
-      titre: [Conjonction $∧$],
-      applications: [#contextes-differents #exercices-conjonction],
-      introduction: (rule(name: [$∧_i$], [$Γ ⊢ X$], [$Γ ⊢ Y$], [$Γ ⊢ X ∧ Y$]),),
-      elimination: (
-        rule(name: [$∧_e^g$], [$Γ ⊢ X ∧ Y$], [$Γ ⊢ X$]),
-        rule(name: [$∧_e^d$], [$Γ ⊢ X ∧ Y$], [$Γ ⊢ Y$]),
-      ),
-    ),
-    (
-      titre: [Disjonction $∨$],
+      ..regles.disjonction,
       remarque: [Il y a deux règles d'élimination pour $∧$ et deux règles d'introduction pour $∨$ : on peut utiliser l'une ou l'autre.],
       applications: [#exercices-disjonction #exercice-fausse-preuve],
-      introduction: (
-        rule(name: [$∨_i^g$], [$Γ ⊢ X$], [$Γ ⊢ X ∨ Y$]),
-        rule(name: [$∨_i^d$], [$Γ ⊢ Y$], [$Γ ⊢ X ∨ Y$]),
-      ),
-      elimination: (
-        rule(
-          name: [$∨_e$],
-          [$Γ, X ⊢ Z$],
-          [$Γ, Y ⊢ Z$],
-          [$Γ ⊢ X ∨ Y$],
-          [$Γ ⊢ Z$],
-        ),
-      ),
     ),
-    (
-      titre: [Négation $¬$],
-      applications: exercices-negation,
-      introduction: (rule(name: [$¬_i$], [$Γ, X ⊢ ⊥$], [$Γ ⊢ ¬ X$]),),
-      elimination: (rule(name: [$¬_e$], [$Γ ⊢ X$], [$Γ ⊢ ¬ X$], [$Γ ⊢ ⊥$]),),
-    ),
+    (..regles.negation, applications: exercices-negation),
   ),
 )
 
