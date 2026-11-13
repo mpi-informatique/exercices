@@ -74,10 +74,11 @@
 
   Par exemple, `ImpliesElim (And (Var "A", Var "B"))` correspond à appliquer la règle d'élimination de l'implication où $X$ est remplacé par $A ∧ B$.
 
-  Les règles utilisées sont données ci-dessous. Le contexte $Γ, X$ est représenté par `X :: gamma`. L’axiome correspond au constructeur `Axiom`.
+  Les règles utilisées sont données ci-dessous. Le contexte $Γ, X$ est représenté par `X :: gamma`.
 
   #tableau-regles(
     axiome: axiome,
+    condition-axiome: [`Axiom`],
     rempli: true,
     (
       (..regles.implication, condition-introduction: [`ImpliesIntro`], condition-elimination: [`ImpliesElim X`]),

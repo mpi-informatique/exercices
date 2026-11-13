@@ -71,15 +71,17 @@
 ///
 /// - lignes (array): Lignes choisies dans `regles`, avec des remarques ou applications facultatives.
 /// - axiome (dictionary, none): Schéma de l’axiome, omis si `none`.
+/// - condition-axiome (content): Annotation sous le schéma de l’axiome, par exemple son constructeur OCaml.
 /// - rempli (bool): Afficher les séquents ; par défaut, seulement dans le corrigé et la présentation.
 /// -> content
-#let tableau-regles(lignes, axiome: none, rempli: est-presentation() or est-corrige()) = {
+#let tableau-regles(lignes, axiome: none, condition-axiome: [], rempli: est-presentation() or est-corrige()) = {
   if est-presentation() {
     if axiome != none {
       heading(depth: 2)[Axiome]
       only(1, cases-regles((axiome,), rempli: false))
       pause
       only("2-", cases-regles((axiome,), rempli: rempli))
+      uncover("2-", text(size: 0.75em, condition-axiome))
     }
     for ligne in lignes {
       heading(depth: 2, ligne.titre)
@@ -116,7 +118,10 @@
   } else {
     let cellules = ()
     if axiome != none {
-      cellules += ([*Axiome*], table.cell(colspan: 2, cases-regles((axiome,), rempli: rempli)))
+      cellules += ([*Axiome*], table.cell(colspan: 2)[
+        #cases-regles((axiome,), rempli: rempli)
+        #text(size: 0.85em, condition-axiome)
+      ])
     }
     for ligne in lignes {
       cellules += (
