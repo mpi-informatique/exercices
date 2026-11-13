@@ -17,11 +17,6 @@
     niveaux: ("MPI",),
     difficulte: 3,
   ),
-  corrections: [
-    L'appel final `Option.iter (afficher_arbre_preuve 1)` est remplacé par `Option.iter afficher_arbre_preuve`, conformément au type de la fonction fournie.
-    Les éliminations sont filtrées selon la conclusion à prouver et les sous-formules du contexte, au lieu d’énumérer systématiquement quatre règles par sous-formule.
-    La liste des règles candidates est distinguée des règles effectivement applicables. Un échec de recherche bornée ne signifie pas que le séquent est improuvable.
-  ],
 )[
   Dans ce TP, nous implémentons un prouveur par backtracking pour la logique minimale en déduction naturelle.
 
@@ -107,7 +102,7 @@
   )
 
   #question[
-    Écrire `appliquer_regle : regle -> sequent -> sequent list option` vérifiant si la règle est applicable au séquent donné, et si oui, renvoyant la liste des prémisses à prouver. Si la règle n'est pas applicable, renvoyer `None`.
+    Écrire `appliquer_regle : regle -> sequent -> sequent list option` vérifiant si la règle est applicable au séquent donné, et si oui, renvoyant la liste des prémisses à prouver. Si la règle n'est pas applicable, renvoyer `None`.\
   ][#code-extrait(corrige, "appliquer_regle")]
 
   #code-extrait(tests, "test_appliquer_regle")

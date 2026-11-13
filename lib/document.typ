@@ -9,13 +9,22 @@
 
 #let couleur-liens = rgb("#233e6a")
 
-/// Affiche tous les liens, internes comme externes, en bleu foncé.
+/// Affiche les liens en bleu foncé avec un symbole cliquable en exposant.
+/// Les références sont également affichées en bleu foncé.
 /// À utiliser comme règle `show` ; les modèles A4 et Madrid l'installent automatiquement.
 ///
 /// - body (content): Contenu à mettre en forme.
 /// -> content
 #let configurer-liens(body) = {
-  show link: set text(fill: couleur-liens)
+  let symbole = image(
+    bytes("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='#233e6a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13.5a4 4 0 0 0 5.7 0l3.3-3.3a4 4 0 0 0-5.7-5.7l-1.9 1.9'/><path d='M14 10.5a4 4 0 0 0-5.7 0L5 13.8a4 4 0 0 0 5.7 5.7l1.9-1.9'/></svg>"),
+    format: "svg",
+    width: 0.9em,
+  )
+  show link: it => {
+    show link: it => it
+    text(fill: couleur-liens, link(it.dest, [#it.body#super(symbole)]))
+  }
   show ref: set text(fill: couleur-liens)
   body
 }

@@ -3,14 +3,14 @@
 open Dnat
 
 (* Question 1 *)
-let seq (_gamma : formule list) (_phi : formule) : sequent =
+let seq (gamma : formule list) (phi : formule) : sequent =
   failwith "TODO: seq"
 
 let test_seq () =
   assert (seq [Var "A"] (Var "B") = parse "A |- B")
 
 (* Question 2 *)
-let rec string_of_formule (_f : formule) : string =
+let rec string_of_formule (f : formule) : string =
   failwith "TODO: string_of_formule"
 
 let test_string_of_formule () =
@@ -18,14 +18,14 @@ let test_string_of_formule () =
   assert (string_of_formule (parse "A -> (A | B)").phi = "(A -> (A | B))")
 
 (* Question 3 *)
-let string_of_sequent (_s : sequent) : string =
+let string_of_sequent (s : sequent) : string =
   failwith "TODO: string_of_sequent"
 
 let test_string_of_sequent () =
   assert (string_of_sequent (parse "A, A -> B |- B") = "A, (A -> B) |- B")
 
 (* Question 4 *)
-let appliquer_regle (_r : regle) (_s : sequent) : sequent list option =
+let appliquer_regle (r : regle) (s : sequent) : sequent list option =
   failwith "TODO: appliquer_regle"
 
 let test_appliquer_regle () =
@@ -36,7 +36,7 @@ let test_appliquer_regle () =
   assert (appliquer_regle (OrElim (Var "A", Var "B")) (parse "|- C") = Some [parse "|- A | B"; parse "A |- C"; parse "B |- C"])
 
 (* Question 5 *)
-let rec sous_formules_f (_f : formule) : formule list =
+let rec sous_formules_f (f : formule) : formule list =
   failwith "TODO: sous_formules_f"
 
 let test_sous_formules_f () =
@@ -45,7 +45,7 @@ let test_sous_formules_f () =
   assert (sous_formules_f (Not a) = [Not a; a])
 
 (* Question 6 *)
-let sous_formules_gamma (_gamma : formule list) : formule list =
+let sous_formules_gamma (gamma : formule list) : formule list =
   failwith "TODO: sous_formules_gamma"
 
 let test_sous_formules_gamma () =
@@ -54,7 +54,7 @@ let test_sous_formules_gamma () =
   assert (sous_formules_gamma [] = [])
 
 (* Question 7 *)
-let regles_possibles (_s : sequent) : regle list =
+let regles_possibles (s : sequent) : regle list =
   failwith "TODO: regles_possibles"
 
 let test_regles_possibles () =
@@ -62,7 +62,7 @@ let test_regles_possibles () =
   assert (regles_possibles (parse "A & A |- A") = [Axiom; AndElim1 (Var "A"); AndElim2 (Var "A")])
 
 (* Question 8 *)
-let rec prouver (_depth : int) (_s : sequent) : arbre_preuve option =
+let rec prouver (depth : int) (s : sequent) : arbre_preuve option =
   failwith "TODO: prouver"
 
 let test_prouver () =
@@ -74,7 +74,7 @@ let test_prouver () =
   prouver 4 (parse "|- (A & B) -> (B & A)") |> Option.get |> afficher_arbre_preuve
 
 (* Question 9 *)
-let prouver_min (_max_depth : int) (_s : sequent) : arbre_preuve option =
+let prouver_min (max_depth : int) (s : sequent) : arbre_preuve option =
   failwith "TODO: prouver_min"
 
 let test_prouver_min () =
