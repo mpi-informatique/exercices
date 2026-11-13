@@ -75,28 +75,24 @@ let regles_possibles s =
 let rec prouver depth s =
   if depth <= 0 then None
   else
-    let rules = regles_possibles s in
-    let rec try_rules = function
+    let rec prouver_premisses arbres = function
+      | [] -> Some (List.rev arbres)
+      | p :: ps ->
+          match prouver (depth - 1) p with
+          | None -> None
+          | Some arbre -> prouver_premisses (arbre :: arbres) ps
+    in
+    let rec essayer_regles = function
       | [] -> None
       | r :: rs ->
           match appliquer_regle r s with
-          | None -> try_rules rs
-          | Some premises ->
-              let rec prove_all = function
-                | [] -> Some []
-                | p :: ps ->
-                    match prouver (depth - 1) p with
-                    | None -> None
-                    | Some tree ->
-                        match prove_all ps with
-                        | None -> None
-                        | Some trees -> Some (tree :: trees)
-              in
-              match prove_all premises with
-              | None -> try_rules rs
-              | Some trees -> Some (Noeud (r, s, trees))
+          | None -> essayer_regles rs
+          | Some premisses ->
+              match prouver_premisses [] premisses with
+              | None -> essayer_regles rs
+              | Some arbres -> Some (Noeud (r, s, arbres))
     in
-    try_rules rules
+    essayer_regles (regles_possibles s)
 
 (* Question 9 *)
 let prouver_min max_depth s =
