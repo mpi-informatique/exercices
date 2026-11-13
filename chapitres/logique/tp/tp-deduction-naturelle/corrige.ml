@@ -74,8 +74,7 @@ let regles_possibles s =
   in
   let eliminations = function
     | And (x, y) ->
-        (if x = s.phi then [AndElim1 y] else []) @
-        (if y = s.phi then [AndElim2 x] else [])
+        (if x = s.phi then [AndElim1 y] else []) @ (if y = s.phi then [AndElim2 x] else [])
     | Implies (x, y) when y = s.phi -> [ImpliesElim x]
     | Not x when s.phi = Bot -> [NotElim x]
     | Or (x, y) -> [OrElim (x, y)]
@@ -129,23 +128,17 @@ module Tests = struct
     let g = [a] in
     assert (appliquer_regle Axiom (seq g a) = Some []);
     assert (appliquer_regle Axiom (seq g b) = None);
-    assert (appliquer_regle AndIntro (seq g (And (a, b))) =
-      Some [seq g a; seq g b]);
+    assert (appliquer_regle AndIntro (seq g (And (a, b))) = Some [seq g a; seq g b]);
     assert (appliquer_regle OrIntro1 (seq g (Or (a, b))) = Some [seq g a]);
     assert (appliquer_regle OrIntro2 (seq g (Or (a, b))) = Some [seq g b]);
-    assert (appliquer_regle ImpliesIntro (seq g (Implies (a, b))) =
-      Some [seq (a :: g) b]);
+    assert (appliquer_regle ImpliesIntro (seq g (Implies (a, b))) = Some [seq (a :: g) b]);
     assert (appliquer_regle NotIntro (seq g (Not a)) = Some [seq (a :: g) Bot]);
-    assert (appliquer_regle (ImpliesElim a) (seq g b) =
-      Some [seq g (Implies (a, b)); seq g a]);
+    assert (appliquer_regle (ImpliesElim a) (seq g b) = Some [seq g (Implies (a, b)); seq g a]);
     assert (appliquer_regle (AndElim1 b) (seq g a) = Some [seq g (And (a, b))]);
     assert (appliquer_regle (AndElim2 a) (seq g b) = Some [seq g (And (a, b))]);
-    assert (appliquer_regle (NotElim a) (seq g Bot) =
-      Some [seq g (Not a); seq g a]);
-    assert (appliquer_regle (OrElim (a, b)) (seq [] c) =
-      Some [seq [] (Or (a, b)); seq [a] c; seq [b] c]);
-    List.iter (fun r -> assert (appliquer_regle r (seq [] a) = None))
-      [AndIntro; OrIntro1; OrIntro2; ImpliesIntro; NotIntro; NotElim a]
+    assert (appliquer_regle (NotElim a) (seq g Bot) = Some [seq g (Not a); seq g a]);
+    assert (appliquer_regle (OrElim (a, b)) (seq [] c) = Some [seq [] (Or (a, b)); seq [a] c; seq [b] c]);
+    List.iter (fun r -> assert (appliquer_regle r (seq [] a) = None)) [AndIntro; OrIntro1; OrIntro2; ImpliesIntro; NotIntro; NotElim a]
 
   (* Chaque sous-arbre doit prouver exactement une prémisse de la règle. *)
   let rec verifier_arbre (Noeud (r, s, arbres)) =
@@ -173,12 +166,10 @@ module Tests = struct
     verifier_regles ();
     assert (string_of_formule (And (a, Not b)) = "(A & (! B))");
     assert (string_of_sequent (seq [a; Implies (a, b)] b) = "A, (A -> B) |- B");
-    assert (sous_formules_f (And (a, Or (b, c))) =
-      [And (a, Or (b, c)); a; Or (b, c); b; c]);
+    assert (sous_formules_f (And (a, Or (b, c))) = [And (a, Or (b, c)); a; Or (b, c); b; c]);
     assert (sous_formules_gamma [] = []);
     assert (regles_possibles (parse "(A & B) |- A") = [Axiom; AndElim1 b]);
-    assert (regles_possibles (parse "(A & A) |- A") =
-      [Axiom; AndElim1 a; AndElim2 a]);
+    assert (regles_possibles (parse "(A & A) |- A") = [Axiom; AndElim1 a; AndElim2 a]);
     assert (prouver 0 (seq [a] a) = None);
     assert (prouver_min 0 (seq [a] a) = None);
     assert (prouver_min (-1) (seq [a] a) = None);
