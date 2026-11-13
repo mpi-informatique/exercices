@@ -36,6 +36,14 @@
     code-extrait(support, "sequent"),
   )
 
+  ```ocaml
+  (* Construit un séquent à partir d'une chaîne, par exemple "A, A -> B |- B".
+     Les hypothèses sont séparées par des virgules, puis suivies de |- et du but.
+     Sans |-, le contexte est vide. Les connecteurs sont & | -> ! et le faux F. *)
+  val parse : string -> sequent
+  ```
+
+
   Compléter le fichier `main.ml`, qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et `open Dnat`.
 
   Depuis le dossier du TP, lancer `utop`, puis charger le fichier :
