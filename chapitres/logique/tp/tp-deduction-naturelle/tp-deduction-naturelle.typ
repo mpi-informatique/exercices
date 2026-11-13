@@ -27,7 +27,7 @@
 
   = Représentation
 
-  Le fichier `dnat.ml` définit les types et fonctions suivants :
+  Le fichier #link("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-deduction-naturelle/dnat.ml")[`dnat.ml`] définit les types et fonctions suivants :
   #grid(
     columns: (1fr, 1fr),
     column-gutter: 1.5em,
@@ -46,7 +46,11 @@
   )
 
 
-  Le fichier à compléter est `main.ml`, qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et ```ocaml open Dnat```.
+  Le fichier à compléter est #link("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-deduction-naturelle/main.ml")[`main.ml`], qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et ```ocaml open Dnat```.
+
+  #if est-corrige() [
+    Le fichier #link("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-deduction-naturelle/corrige.ml")[`corrige.ml`] contient le corrigé.
+  ]
 
   Depuis le dossier du TP, lancer `utop`, puis charger le fichier : ```ocaml #use "main.ml";;```
 
