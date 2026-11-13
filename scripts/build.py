@@ -6,6 +6,7 @@ Point d'entrée utilisable directement ou depuis Just : déléguer la découvert
 """
 
 import argparse
+from functools import lru_cache
 import hashlib
 import os
 from pathlib import Path
@@ -22,6 +23,15 @@ OCAML = os.environ.get('OCAML', 'ocaml')
 def run(command):
     print(' '.join(map(str, command)), flush=True)
     subprocess.run(list(map(str, command)), cwd=ROOT, check=True)
+
+
+@lru_cache(maxsize=1)
+def mpi_path():
+    return subprocess.check_output(['ocamlfind', 'query', 'mpi-informatique'], cwd=ROOT, text=True).strip()
+
+
+def test_ocaml(script):
+    run([OCAML, '-I', mpi_path(), 'mpi.cma', '-I', script.parent, script])
 
 
 def empreinte():
@@ -70,11 +80,11 @@ def documents(selection, signature, categorie=None):
 
 
 def tests():
-    for script in ('test_package.py', 'test_sources.py', 'test_ci.py'):
+    for script in ('test_package.py', 'test_sources.py', 'test_ci.py', 'test_ocaml.py'):
         run([sys.executable, ROOT / 'lib/tests' / script])
     # Les tests restent à côté du code publié, sans liste de chemins à maintenir.
     for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('corrige.ml')):
-        run([OCAML, '-I', test.parent, test])
+        test_ocaml(test)
     for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('test.py')):
         run([sys.executable, test])
 

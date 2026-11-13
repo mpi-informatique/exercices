@@ -265,6 +265,8 @@ Il y a un _blocage_ lorsque $δ(q, a) = ∅$. $δ(q, a)$ est aussi noté $q ⋅ 
 
 Un automate déterministe complet (ADC) a une fonction de transition de la forme $δ : Q timess Σ → Q$ et $δ^* : Q timess Σ^* → Q$.
 
+#underline[Remarque] : $δ^*(q, m_1 ... m_n) = δ(δ(... δ(q, m_1), m_2)..., m_n)$ peut être définie simplement en OCaml avec ```ocaml List.fold_left```.
+
 #slide()
 #exercice[Propriétés des automates déterministes][
   Soient $A = (Q, Σ, q_0, F, δ)$ un AD, $q ∈ Q$, $m ∈ Σ^*$. Quelles sont les propositions vraies ?

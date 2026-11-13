@@ -1,9 +1,10 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp, pause,
-  slide, slides-only, solution, taille-presentation, theoremes, uncover,
+  article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp, liste-cours, marge,
+  pause, slide, slides-only, solution, taille-presentation, theoremes, uncover,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
-#import "regles.typ": arbre, tableau-regles
+#import "/load.typ": logique
+#import logique: arbre, axiome, regles, sequent, tableau-regles
 #import "semantique-ouverts.typ": ex as semantique-ouverts
 #import theoremes: corollaire, definition, exercice, theoreme
 
@@ -43,9 +44,9 @@
 #slides-only[== Preuves]
 
 #definition[Preuve][
-  Dans un système formel, une _preuve_ (ou _arbre de preuve_, _dérivation_) est un arbre fini dont chaque nœud est une application d'une règle d'inférence.
+  Dans un système formel, une _preuve_ (ou _arbre de preuve_, _dérivation_) est un arbre dont chaque nœud est une application d'une règle d'inférence.
 
-  Les feuilles sont donc des applications d'axiomes. Le jugement à la racine est la _conclusion_ de la preuve. Un jugement est _prouvable_ (ou _dérivable_) s'il possède une preuve.
+  Les feuilles sont donc des applications d'axiomes.  Un jugement est _prouvable_ (ou _dérivable_) s'il est racine d'une preuve.
 ]
 
 #underline[Remarque] : on dessine habituellement un arbre de preuve avec la racine en bas.
@@ -122,12 +123,12 @@
 
 = Déduction naturelle
 
-La sémantique propositionnelle définit la vérité des formules à l'aide de valuations. \
-La déduction naturelle formalise les preuves à l'aide de règles d'inférence.
-#pause
+Soit $V$ un ensemble de variables propositionnelles et $cal(F)(V)$ l'ensemble des formules logiques sur $V$. \
+Il y a deux notions à distinguer :
+- Sémantique propositionnelle (MP2I) : formalise la notion de vérité à l'aide de valuations.#pause
+- Déduction naturelle : formalise la notion de preuve à l'aide de séquents et de règles d'inférence.
 
-Soit $V$ un ensemble de variables propositionnelles et $cal(F)(V)$ l'ensemble des formules logiques sur $V$.\
-Les formules de $cal(F)(V)$ sont souvent notées $A, B, C$ ou $X, Y, Z$ en déduction naturelle au lieu de $φ, ψ, χ$ en logique propositionnelle.
+Les formules logiques sont souvent notées $A, B$ ou $X, Y$ en déduction naturelle au lieu de $φ, ψ$ en logique propositionnelle.
 
 #slides-only[== Séquent]
 
@@ -140,17 +141,9 @@ Les formules de $cal(F)(V)$ sont souvent notées $A, B, C$ ou $X, Y, Z$ en dédu
 $Γ$ est l'ensemble des hypothèses actuelles lors d'une preuve.
 
 #pause
-#underline[Notation] : on note $Γ ⊬ A$ s'il n'existe pas de preuve du séquent $Γ ⊢ A$ dans le système considéré.
-
-#slides-only[== Contextes d'hypothèses]
-
-On utilise les abréviations :
-#formules-reparties(
-  empiler-presentation: true,
-  $Γ, X = Γ ∪ {X}$,
-  $Γ, Γ' = Γ ∪ Γ'$,
-  $⊢ X "au lieu de" ∅ ⊢ X$,
-)
+On utilise les notations suivantes :
+- $Γ ⊬ A$ s'il n'existe pas de preuve du séquent $Γ ⊢ A$ dans le système considéré.
+- $Γ, Γ' = Γ ∪ Γ'$ et $⊢ X "au lieu de" ∅ ⊢ X$.
 
 #slides-only[== Trois systèmes formels]
 
@@ -174,12 +167,12 @@ Suivant le système utilisé, les séquents prouvables ne sont pas les mêmes. O
 
 #slides-only[== Introduction et élimination]
 
-Les règles d'un connecteur se regroupent en règles d'introduction et d'élimination.\
+Chaque connecteur logique possède une règle d'introduction, permettant de le faire apparaître, et une règle d'élimination, permettant de l'utiliser.\ #pause
 Pour comprendre plus facilement une preuve, on annote chaque règle avec un symbole.
 
 = Déduction naturelle intuitionniste
 
-#underline[Convention] : Dans les règles, $Γ$ désigne un ensemble quelconque de formules et $X, Y, Z$ des formules quelconques. Dans les preuves, on utilise les lettres $A, B, C$.
+#underline[Convention] : Dans les règles, $Γ$ désigne un ensemble quelconque de formules et $X, Y, Z$ des formules quelconques. Dans les preuves, on note $A, B, C$ des formules quelconques.
 
 // Les mêmes exercices sont intercalés dans les slides et regroupés dans le cours.
 #let exercices-implication = [
@@ -189,13 +182,13 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
     align: left + top,
     saut-slide: true,
     [
-      #exercice[Prouver $⊢ A → A$.]
+      #exercice[Prouver #sequent(([], $A → A$)).]
       #solution[
         #arbre[#prooftree(rule(name: [$scripts(→)_i$], rule(name: [ax], [$A ⊢ A$]), [$⊢ A → A$]))]
       ]
     ],
     [
-      #exercice[Prouver $A → B, B → C ⊢ A → C$.]
+      #exercice[Prouver #sequent(($A → B, B → C$, $A → C$)).]
       #solution[
         Posons $Γ = {A → B, B → C, A}$.
         #arbre[#prooftree(rule(
@@ -219,7 +212,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 ]
 
 #let exercice-conjonction = [
-  #exercice[Prouver $A ∧ B ⊢ B ∧ A$.]
+  #exercice[Prouver #sequent(($A ∧ B$, $B ∧ A$)).]
   #solution[
     #arbre[#prooftree(rule(
       name: [$∧_i$],
@@ -232,8 +225,8 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 
 #let exercice-conjonction-implication = [
   #exercice[
-    + Prouver $(A ∧ B) → C ⊢ A → (B → C)$.
-    + Prouver $A → (B → C) ⊢ (A ∧ B) → C$.
+    + Prouver #sequent(($(A ∧ B) → C$, $A → (B → C)$)).
+    + Prouver #sequent(($A → (B → C)$, $(A ∧ B) → C$)).
   ]
   #solution[
     Pour la première question :
@@ -287,7 +280,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 ]
 
 #let exercice-disjonction = [
-  #exercice[Prouver $A ∨ B ⊢ B ∨ A$.]
+  #exercice[Prouver #sequent(($A ∨ B$, $B ∨ A$)).]
   #solution[
     #arbre[#prooftree(rule(
       name: [$∨_e$],
@@ -301,8 +294,8 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 
 #let exercice-distributivite = [
   #exercice[
-    + Prouver $A ∨ (B ∧ C) ⊢ A ∨ B$.
-    + On admet aussi $A ∨ (B ∧ C) ⊢ A ∨ C$. En déduire $⊢ A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C)$.
+    + Prouver #sequent(($A ∨ (B ∧ C)$, $A ∨ B$)).
+    + On admet aussi #sequent(($A ∨ (B ∧ C)$, $A ∨ C$)). En déduire #sequent(([], $A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C)$)).
   ]
   #solution[
     Pour la première question, posons $Γ = {A ∨ (B ∧ C)}$.
@@ -348,7 +341,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
         rule(name: [$∨_e$], rule(name: [ax], [$A ∨ B ⊢ A ∨ B$]), [$A ∨ B ⊢ B$]),
         [$A ∨ B ⊢ A ∧ B$],
       ),
-      [$⊢ (A ∨ B) → (A ∧ B)$],
+      [#sequent(([], $(A ∨ B) → (A ∧ B)$))],
     ))]
   ]
   #solution[
@@ -363,7 +356,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
   #colonnes-cours(
     columns: (1fr, 1fr),
     [
-      #exercice[Prouver $A ⊢ ¬ ¬ A$.]
+      #exercice[Prouver #sequent(($A$, $¬ ¬ A$)).]
       #solution[
         #arbre[#prooftree(rule(
           name: [$¬_i$],
@@ -397,7 +390,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
   ]
 
   #if est-presentation() [== Variantes des règles]
-  L'affaiblissement permet de ramener plusieurs contextes à leur union. On peut donc utiliser :
+  On peut donc utiliser :
 
   #colonnes-cours(
     empiler-presentation: false,
@@ -412,59 +405,23 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
       ))]
     ],
     [
-      #if est-presentation() { pause }
       #arbre[#prooftree(rule(name: [$∧_i$], [$Γ ⊢ X$], [$Γ' ⊢ Y$], [$Γ, Γ' ⊢ X ∧ Y$]))]
     ],
   )
 ]
 
 #tableau-regles(
-  axiome: rule(name: [ax], [$Γ, X ⊢ X$]),
+  axiome: axiome,
   (
+    regles.constantes,
+    (..regles.implication, applications: exercices-implication),
+    (..regles.conjonction, applications: [#contextes-differents #exercices-conjonction]),
     (
-      titre: [Vrai $⊤$ et faux $⊥$],
-      introduction: (rule(name: [$⊤_i$], [$Γ ⊢ ⊤$]),),
-      elimination: (rule(name: [$⊥_e$], [$Γ ⊢ ⊥$], [$Γ ⊢ X$]),),
-    ),
-    (
-      titre: [Implication $→$],
-      applications: exercices-implication,
-      introduction: (rule(name: [$scripts(→)_i$], [$Γ, X ⊢ Y$], [$Γ ⊢ X → Y$]),),
-      elimination: (rule(name: [$scripts(→)_e$], [$Γ ⊢ X → Y$], [$Γ ⊢ X$], [$Γ ⊢ Y$]),),
-    ),
-    (
-      titre: [Conjonction $∧$],
-      applications: [#contextes-differents #exercices-conjonction],
-      introduction: (rule(name: [$∧_i$], [$Γ ⊢ X$], [$Γ ⊢ Y$], [$Γ ⊢ X ∧ Y$]),),
-      elimination: (
-        rule(name: [$∧_e^g$], [$Γ ⊢ X ∧ Y$], [$Γ ⊢ X$]),
-        rule(name: [$∧_e^d$], [$Γ ⊢ X ∧ Y$], [$Γ ⊢ Y$]),
-      ),
-    ),
-    (
-      titre: [Disjonction $∨$],
+      ..regles.disjonction,
       remarque: [Il y a deux règles d'élimination pour $∧$ et deux règles d'introduction pour $∨$ : on peut utiliser l'une ou l'autre.],
       applications: [#exercices-disjonction #exercice-fausse-preuve],
-      introduction: (
-        rule(name: [$∨_i^g$], [$Γ ⊢ X$], [$Γ ⊢ X ∨ Y$]),
-        rule(name: [$∨_i^d$], [$Γ ⊢ Y$], [$Γ ⊢ X ∨ Y$]),
-      ),
-      elimination: (
-        rule(
-          name: [$∨_e$],
-          [$Γ, X ⊢ Z$],
-          [$Γ, Y ⊢ Z$],
-          [$Γ ⊢ X ∨ Y$],
-          [$Γ ⊢ Z$],
-        ),
-      ),
     ),
-    (
-      titre: [Négation $¬$],
-      applications: exercices-negation,
-      introduction: (rule(name: [$¬_i$], [$Γ, X ⊢ ⊥$], [$Γ ⊢ ¬ X$]),),
-      elimination: (rule(name: [$¬_e$], [$Γ ⊢ X$], [$Γ ⊢ ¬ X$], [$Γ ⊢ ⊥$]),),
-    ),
+    (..regles.negation, applications: exercices-negation),
   ),
 )
 
@@ -491,9 +448,9 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 On obtient le système _classique_ en ajoutant aux règles intuitionnistes le _raisonnement par l'absurde_ (raa) ou, de manière équivalente, le _tiers exclu_ (te).
 
 #pause
-Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i A ==> Γ scripts(⊢)_c A$. La réciproque est fausse : pour une variable propositionnelle $p$, $¬ ¬ p scripts(⊬)_i p$, alors que $¬ ¬ p scripts(⊢)_c p$.
+Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i A ==> Γ scripts(⊢)_c A$. La réciproque est fausse.
 
-== Raisonnement par l'absurde et tiers-exclu
+#slides-only[== Raisonnement par l'absurde et tiers-exclu]
 
 #colonnes-cours(
   empiler-presentation: false,
@@ -511,8 +468,10 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #slides-only[== De raa au tiers exclu]
 #exercice[
   On ajoute raa à la logique intuitionniste et on veut prouver te.
-  + Prouver $¬ (A ∨ ¬ A) scripts(⊢)_i ¬ A$.
-  + Prouver $scripts(⊢)_c A ∨ ¬ A$.
+  #liste-cours(
+    [Prouver #sequent(($¬ (A ∨ ¬ A)$, $¬ A$), logique: $i$).],
+    [Prouver #sequent(([], $A ∨ ¬ A$), logique: $c$).],
+  )
 ]
 
 #solution[
@@ -556,10 +515,9 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 ]
 
 #slides-only[== Du tiers exclu à raa]
-#article-only[== Comparer les deux systèmes]
 
 #exercice[
-  Prouver $¬ ¬ A scripts(⊢)_c A$ en utilisant le tiers exclu. En déduire que l'on peut retrouver la règle raa à partir des règles intuitionnistes et de te.
+  Prouver #sequent(($¬ ¬ A$, $A$), logique: $c$) en utilisant le tiers exclu. En déduire que l'on peut retrouver la règle raa à partir des règles intuitionnistes et de te.
 ]
 #solution[
   Posons $Γ = {¬ ¬ A}$. On raisonne par cas sur $A ∨ ¬ A$ :
@@ -586,8 +544,10 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 
 #slides-only[== Contraposée]
 #exercice[Contraposée][
-  + Prouver $A → B scripts(⊢)_i ¬ B → ¬ A$.
-  + Prouver $¬ B → ¬ A scripts(⊢)_i A → ¬ ¬ B$, puis en déduire $¬ B → ¬ A scripts(⊢)_c A → B$.
+  #liste-cours(
+    [Prouver #sequent(($A → B$, $¬ B → ¬ A$), logique: $i$).],
+    [Prouver #sequent(($¬ B → ¬ A$, $A → ¬ ¬ B$), logique: $i$), puis en déduire #sequent(($¬ B → ¬ A$, $A → B$), logique: $c$).],
+  )
 ]
 #solution[
   Pour la première question, posons $C = A → B$ et $Γ = {C, ¬ B, A}$ :
@@ -670,9 +630,9 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 
 #slides-only[== Preuve et contre-modèle]
 #exercice[
-  Soit $Γ = {A ∨ B, A → C, B → C}$.
-  + Prouver $Γ ⊢ C$.
-  + Donner un contre-modèle à $Γ ⊨ A$. En déduire $Γ scripts(⊬)_c A$.
+  #let contexte = $A ∨ B, A → C, B → C$
+  Soit $Γ = {#contexte}$.
+  Prouver #sequent((contexte, $C$), contexte-affiche: $Γ$). Donner un contre-modèle à $Γ ⊨ A$. En déduire $Γ scripts(⊬)_c A$.
 ]
 #solution[
   Pour la première question, on raisonne par cas sur $A ∨ B$ :
@@ -734,11 +694,11 @@ On a donc $Γ scripts(⊢)_c A ⟺ Γ ⊨ A$.
 #if not est-presentation() [
   = Sémantique des ouverts
 
-  #exercice(hp: true)[
+  #marge("math")[#exercice[
     #for bloc in semantique-ouverts.contenu {
       if type(bloc) == content { bloc } else { enum.item(bloc.enonce) }
     }
-  ]
+  ]]
 
   #solution[
     #enum(..semantique-ouverts.contenu.filter(bloc => type(bloc) == dictionary).map(bloc => bloc.solution))

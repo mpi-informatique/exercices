@@ -16,6 +16,7 @@ Guide utilisateur : `docs/utilisation.md`. Cette référence est générée depu
   ("Blocs de solution", "/lib/blocs.typ"),
   ("Code et extraction", "/lib/code.typ"),
   ("Automates", "/lib/automate.typ"),
+  ("Logique et déduction naturelle", "/lib/logique/regles.typ"),
   ("Options de compilation", "/lib/options.typ"),
   ("Thème Madrid", "/lib/themes/madrid.typ"),
   ("Chargement du package", "/load.typ"),

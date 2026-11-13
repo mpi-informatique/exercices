@@ -205,6 +205,7 @@
     above: par.leading,
     grid(
       columns: columns,
+      row-gutter: par.leading,
       align: align,
       ..if separation { (column-gutter: 0pt, inset: (x: column-gutter / 2)) } else { (column-gutter: column-gutter) },
       ..if separation { range(1, columns.len()).map(x => grid.vline(x: x, stroke: 0.5pt + gray)) } else { () },

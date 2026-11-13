@@ -1,6 +1,7 @@
 #import "/load.typ": exercice, question
 #import "@preview/curryst:0.6.0": prooftree, rule
-#import "regles.typ": arbre
+#import "/load.typ": logique
+#import logique: arbre, sequent
 
 #let ex = exercice(
   meta: (
@@ -33,7 +34,7 @@
   ]
 
   #question[
-    Le séquent $⊢ ((A ∨ B) ∧ ¬ A) → B$ est-il valide pour cette sémantique ? Justifier.
+    Le séquent #sequent(([], $((A ∨ B) ∧ ¬ A) → B$)) est-il valide pour cette sémantique ? Justifier.
   ][
     Pour toute valuation $v$, on a $v(¬ A) = upright("Int")(v(A)^c) ⊆ v(A)^c$. Donc :
     $ v((A ∨ B) ∧ ¬ A) = (v(A) ∪ v(B)) ∩ upright("Int")(v(A)^c) = v(B) ∩ upright("Int")(v(A)^c) ⊆ v(B). $
@@ -41,7 +42,7 @@
   ]
 
   #question[
-    Prouver $scripts(⊢)_c (A → B) → (¬ A ∨ B)$.
+    Prouver #sequent(([], $(A → B) → (¬ A ∨ B)$), logique: $c$).
   ][
     Posons $C = A → B$. On utilise le tiers exclu et une disjonction de cas :
     #arbre[#prooftree(rule(
@@ -67,7 +68,7 @@
   ]
 
   #question[
-    Le séquent $⊢ (A → B) → (¬ A ∨ B)$ est-il valide pour cette sémantique ? Justifier.
+    Le séquent #sequent(([], $(A → B) → (¬ A ∨ B)$)) est-il valide pour cette sémantique ? Justifier.
   ][
     Non. Prenons $v(A) = v(B) = {0}^c$. Alors :
     - $v(A → B) = upright("Int")({0} ∪ {0}^c) = ℝ$

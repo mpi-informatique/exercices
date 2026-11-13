@@ -4,6 +4,7 @@
 #import "lib/blocs.typ": coeur-en-marge, epaisseur-trait, marge
 #import "lib/meta.typ" as meta
 #import "lib/automate.typ" as automate
+#import "lib/logique/regles.typ" as logique
 #import "lib/code.typ" as code
 #import "lib/theoremes.typ" as theoremes
 #import "lib/cours.typ": cours, espace-reponse, saut-page-cours, solution
