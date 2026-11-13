@@ -23,26 +23,16 @@ let string_of_sequent s =
 (* Question 4 *)
 let appliquer_regle r s =
   match r, s.phi with
-  | Axiom, _ ->
-      if List.mem s.phi s.gamma then Some [] else None
-  | AndIntro, And (f1, f2) ->
-      Some [seq s.gamma f1; seq s.gamma f2]
-  | OrIntro1, Or (f1, _) ->
-      Some [seq s.gamma f1]
-  | OrIntro2, Or (_, f2) ->
-      Some [seq s.gamma f2]
-  | ImpliesIntro, Implies (f1, f2) ->
-      Some [seq (f1 :: s.gamma) f2]
-  | NotIntro, Not f ->
-      Some [seq (f :: s.gamma) Bot]
-  | ImpliesElim f1, _ ->
-      Some [seq s.gamma (Implies (f1, s.phi)); seq s.gamma f1]
-  | AndElim1 f2, _ ->
-      Some [seq s.gamma (And (s.phi, f2))]
-  | AndElim2 f1, _ ->
-      Some [seq s.gamma (And (f1, s.phi))]
-  | NotElim f, Bot ->
-      Some [seq s.gamma (Not f); seq s.gamma f]
+  | Axiom, _ -> if List.mem s.phi s.gamma then Some [] else None
+  | AndIntro, And (f1, f2) -> Some [seq s.gamma f1; seq s.gamma f2]
+  | OrIntro1, Or (f1, _) -> Some [seq s.gamma f1]
+  | OrIntro2, Or (_, f2) -> Some [seq s.gamma f2]
+  | ImpliesIntro, Implies (f1, f2) -> Some [seq (f1 :: s.gamma) f2]
+  | NotIntro, Not f -> Some [seq (f :: s.gamma) Bot]
+  | ImpliesElim f1, _ -> Some [seq s.gamma (Implies (f1, s.phi)); seq s.gamma f1]
+  | AndElim1 f2, _ -> Some [seq s.gamma (And (s.phi, f2))]
+  | AndElim2 f1, _ -> Some [seq s.gamma (And (f1, s.phi))]
+  | NotElim f, Bot -> Some [seq s.gamma (Not f); seq s.gamma f]
   | OrElim (f1, f2), _ ->
       (* Pour prouver phi par OrElim, il faut prouver qu'on a f1 \/ f2, puis que f1 implique phi, et f2 implique phi *)
       Some [
@@ -55,8 +45,7 @@ let appliquer_regle r s =
 (* Question 5 *)
 let rec sous_formules_f f =
   match f with
-  | And (f1, f2) | Or (f1, f2) | Implies (f1, f2) ->
-      f :: (sous_formules_f f1 @ sous_formules_f f2)
+  | And (f1, f2) | Or (f1, f2) | Implies (f1, f2) -> f :: (sous_formules_f f1 @ sous_formules_f f2)
   | Not f1 -> f :: sous_formules_f f1
   | _ -> [f]
 
@@ -73,8 +62,7 @@ let regles_possibles s =
     | _ -> []
   in
   let eliminations = function
-    | And (x, y) ->
-        (if x = s.phi then [AndElim1 y] else []) @ (if y = s.phi then [AndElim2 x] else [])
+    | And (x, y) -> (if x = s.phi then [AndElim1 y] else []) @ (if y = s.phi then [AndElim2 x] else [])
     | Implies (x, y) when y = s.phi -> [ImpliesElim x]
     | Not x when s.phi = Bot -> [NotElim x]
     | Or (x, y) -> [OrElim (x, y)]
