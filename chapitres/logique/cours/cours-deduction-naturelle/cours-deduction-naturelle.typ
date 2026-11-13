@@ -3,7 +3,8 @@
   slide, slides-only, solution, taille-presentation, theoremes, uncover,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
-#import "regles.typ": arbre, axiome, regles, sequent, tableau-regles
+#import "/load.typ": logique
+#import logique: arbre, axiome, regles, sequent, tableau-regles
 #import "semantique-ouverts.typ": ex as semantique-ouverts
 #import theoremes: corollaire, definition, exercice, theoreme
 
@@ -189,13 +190,13 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
     align: left + top,
     saut-slide: true,
     [
-      #exercice[Prouver #sequent[$⊢ A → A$].]
+      #exercice[Prouver #sequent(([], $A → A$)).]
       #solution[
         #arbre[#prooftree(rule(name: [$scripts(→)_i$], rule(name: [ax], [$A ⊢ A$]), [$⊢ A → A$]))]
       ]
     ],
     [
-      #exercice[Prouver #sequent[$A → B, B → C ⊢ A → C$].]
+      #exercice[Prouver #sequent(($A → B, B → C$, $A → C$)).]
       #solution[
         Posons $Γ = {A → B, B → C, A}$.
         #arbre[#prooftree(rule(
@@ -219,7 +220,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 ]
 
 #let exercice-conjonction = [
-  #exercice[Prouver #sequent[$A ∧ B ⊢ B ∧ A$].]
+  #exercice[Prouver #sequent(($A ∧ B$, $B ∧ A$)).]
   #solution[
     #arbre[#prooftree(rule(
       name: [$∧_i$],
@@ -232,8 +233,8 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 
 #let exercice-conjonction-implication = [
   #exercice[
-    + Prouver #sequent[$(A ∧ B) → C ⊢ A → (B → C)$].
-    + Prouver #sequent[$A → (B → C) ⊢ (A ∧ B) → C$].
+    + Prouver #sequent(($(A ∧ B) → C$, $A → (B → C)$)).
+    + Prouver #sequent(($A → (B → C)$, $(A ∧ B) → C$)).
   ]
   #solution[
     Pour la première question :
@@ -287,7 +288,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 ]
 
 #let exercice-disjonction = [
-  #exercice[Prouver #sequent[$A ∨ B ⊢ B ∨ A$].]
+  #exercice[Prouver #sequent(($A ∨ B$, $B ∨ A$)).]
   #solution[
     #arbre[#prooftree(rule(
       name: [$∨_e$],
@@ -301,8 +302,8 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
 
 #let exercice-distributivite = [
   #exercice[
-    + Prouver #sequent[$A ∨ (B ∧ C) ⊢ A ∨ B$].
-    + On admet aussi #sequent[$A ∨ (B ∧ C) ⊢ A ∨ C$]. En déduire #sequent[$⊢ A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C)$].
+    + Prouver #sequent(($A ∨ (B ∧ C)$, $A ∨ B$)).
+    + On admet aussi #sequent(($A ∨ (B ∧ C)$, $A ∨ C$)). En déduire #sequent(([], $A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C)$)).
   ]
   #solution[
     Pour la première question, posons $Γ = {A ∨ (B ∧ C)}$.
@@ -348,7 +349,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
         rule(name: [$∨_e$], rule(name: [ax], [$A ∨ B ⊢ A ∨ B$]), [$A ∨ B ⊢ B$]),
         [$A ∨ B ⊢ A ∧ B$],
       ),
-      [#sequent[$⊢ (A ∨ B) → (A ∧ B)$]],
+      [#sequent(([], $(A ∨ B) → (A ∧ B)$))],
     ))]
   ]
   #solution[
@@ -363,7 +364,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
   #colonnes-cours(
     columns: (1fr, 1fr),
     [
-      #exercice[Prouver #sequent[$A ⊢ ¬ ¬ A$].]
+      #exercice[Prouver #sequent(($A$, $¬ ¬ A$)).]
       #solution[
         #arbre[#prooftree(rule(
           name: [$¬_i$],
@@ -477,8 +478,8 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #exercice[
   On ajoute raa à la logique intuitionniste et on veut prouver te.
   #liste-cours(
-    [Prouver #sequent[$¬ (A ∨ ¬ A) scripts(⊢)_i ¬ A$].],
-    [Prouver #sequent[$scripts(⊢)_c A ∨ ¬ A$].],
+    [Prouver #sequent(($¬ (A ∨ ¬ A)$, $¬ A$), logique: $i$).],
+    [Prouver #sequent(([], $A ∨ ¬ A$), logique: $c$).],
   )
 ]
 
@@ -526,7 +527,7 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #article-only[== Comparer les deux systèmes]
 
 #exercice[
-  Prouver #sequent[$¬ ¬ A scripts(⊢)_c A$] en utilisant le tiers exclu. En déduire que l'on peut retrouver la règle raa à partir des règles intuitionnistes et de te.
+  Prouver #sequent(($¬ ¬ A$, $A$), logique: $c$) en utilisant le tiers exclu. En déduire que l'on peut retrouver la règle raa à partir des règles intuitionnistes et de te.
 ]
 #solution[
   Posons $Γ = {¬ ¬ A}$. On raisonne par cas sur $A ∨ ¬ A$ :
@@ -554,8 +555,8 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #slides-only[== Contraposée]
 #exercice[Contraposée][
   #liste-cours(
-    [Prouver #sequent[$A → B scripts(⊢)_i ¬ B → ¬ A$].],
-    [Prouver #sequent[$¬ B → ¬ A scripts(⊢)_i A → ¬ ¬ B$], puis en déduire #sequent[$¬ B → ¬ A scripts(⊢)_c A → B$].],
+    [Prouver #sequent(($A → B$, $¬ B → ¬ A$), logique: $i$).],
+    [Prouver #sequent(($¬ B → ¬ A$, $A → ¬ ¬ B$), logique: $i$), puis en déduire #sequent(($¬ B → ¬ A$, $A → B$), logique: $c$).],
   )
 ]
 #solution[
@@ -641,7 +642,7 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #exercice[
   #let contexte = $A ∨ B, A → C, B → C$
   Soit $Γ = {#contexte}$.
-  Prouver #sequent(contexte: contexte)[$Γ ⊢ C$]. Donner un contre-modèle à $Γ ⊨ A$. En déduire $Γ scripts(⊬)_c A$.
+  Prouver #sequent((contexte, $C$), contexte-affiche: $Γ$). Donner un contre-modèle à $Γ ⊨ A$. En déduire $Γ scripts(⊬)_c A$.
 ]
 #solution[
   Pour la première question, on raisonne par cas sur $A ∨ B$ :

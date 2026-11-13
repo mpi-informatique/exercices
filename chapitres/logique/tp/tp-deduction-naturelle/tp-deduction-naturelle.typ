@@ -1,6 +1,7 @@
 #import "/load.typ": code, est-corrige, exercice, feuille, question
 #import code: code-extrait
-#import "../../cours/cours-deduction-naturelle/regles.typ": axiome, regles, tableau-regles
+#import "/load.typ": logique
+#import logique: axiome, regles, tableau-regles
 
 #let support = read("dnat.ml")
 #let corrige = read("corrige.ml")

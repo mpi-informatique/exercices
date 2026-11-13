@@ -33,10 +33,16 @@ with TemporaryDirectory() as dossier:
                         *[argument for valeur in inputs for argument in ('--input', valeur)],
                         str(source), str(racine / (nom + '.pdf'))], check=True)
 
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, exercice, partie, question, donnees, nombre-questions, est-corrige, lien
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": feuille, public, exercice, partie, question, donnees, nombre-questions, est-corrige, lien, logique
 #assert(public("templates/test-package.typ").extrait == "let reponse = 42")
 #assert(lien("test")[Site].dest == "https://mpi-informatique.github.io/exercices/test/")
 #assert(lien(<premiere>)[Question].dest == <premiere>)
+#let base = "https://mpi-informatique.github.io/deduction-naturelle/?sequent="
+#assert(logique.sequent(([], $A → A$)).dest == base + "%7C-A-%3EA")
+#assert(logique.sequent(($A ∧ B, ¬ C$, $⊥$)).dest == base + "A%26B,!C%7C-0")
+#let couple = ($A → B, A$, $B$)
+#assert(logique.sequent(couple, logique: $i$).dest == logique.sequent(couple).dest)
+#assert(logique.sequent(couple, contexte-affiche: $Γ$).dest == logique.sequent(couple).dest)
 #let ex = exercice(meta: (titre: "Exercice de test", chapitres: (), difficulte: 1))[
   = Section automatique <section-test>
   == Sous-section automatique <sous-section-test>

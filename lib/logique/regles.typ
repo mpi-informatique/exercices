@@ -1,19 +1,22 @@
-#import "/load.typ": colonnes-cours, est-corrige, est-presentation, formules-reparties, only, pause, uncover
+#import "../options.typ": est-corrige, est-presentation
+#import "../presentation.typ": colonnes-cours, formules-reparties, only, pause, uncover
 #import "@preview/curryst:0.6.0": prooftree, rule
 
-// Convertit la formule affichée ; les indices de logique du symbole ⊢ sont ignorés.
-// `contexte` donne les hypothèses lorsque l'affichage utilise l'abréviation Γ.
-#let sequent(body, contexte: none) = {
+/// Affiche un séquent et le lie au prouveur interactif.
+/// Exemple : `sequent(($A → B, A$, $B$))`.
+///
+/// - couple (array): Couple (hypothèses, conclusion) de contenus mathématiques ; `[]` pour le contexte vide.
+/// - logique (content, none): Indice affiché sous le symbole ⊢, par exemple `$i$` ou `$c$`.
+/// - contexte-affiche (content, none): Abréviation du contexte à afficher ; le lien utilise les hypothèses du couple.
+/// -> content
+#let sequent(couple, logique: none, contexte-affiche: none) = {
+  let (hypotheses, conclusion) = couple
   let convertir(contenu) = {
     let champs = contenu.fields()
     if contenu == [ ] {
       ""
     } else if champs.keys().contains("text") {
       contenu.text
-    } else if contenu.func() == math.attach {
-      let base = convertir(contenu.base)
-      assert(base == "⊢", message: "Seul le symbole ⊢ peut porter un indice dans un lien de séquent.")
-      base
     } else if champs.keys().contains("children") {
       contenu.children.map(convertir).join()
     } else if contenu.func() in (math.equation, math.lr, math.scripts) {
@@ -22,11 +25,10 @@
       panic("Notation non prise en charge dans un lien de séquent : " + repr(contenu))
     }
   }
-  let cible = convertir(body)
-  if cible.contains("Γ") {
-    assert(contexte != none, message: "Préciser le contexte Γ du séquent.")
-    cible = cible.replace("Γ", convertir(contexte))
-  }
+  let contexte = if contexte-affiche == none { hypotheses } else { contexte-affiche }
+  let these = if logique == none { $⊢$ } else { $scripts(⊢)_#logique$ }
+  let body = $#contexte #these #conclusion$
+  let cible = convertir(hypotheses) + "⊢" + convertir(conclusion)
   for (symbole, ascii) in (("⊢", "|-"), ("→", "->"), ("∧", "&"), ("∨", "|"), ("¬", "!"), ("⊥", "0")) {
     cible = cible.replace(symbole, ascii)
   }
@@ -34,6 +36,10 @@
   link("https://mpi-informatique.github.io/deduction-naturelle/?sequent=" + cible, body)
 }
 
+/// Centre un arbre de preuve et le réduit si sa largeur dépasse la place disponible.
+///
+/// - body (content): Arbre produit par `prooftree`.
+/// -> content
 #let arbre(body) = block(width: 100%, context layout(size => {
   let largeur = measure(body).width
   align(center, if largeur > size.width { scale(x: size.width / largeur * 100%, reflow: true, body) } else { body })
@@ -61,6 +67,12 @@
   })
 }
 
+/// Affiche les règles en tableau imprimé ou en diapositives avec révélation progressive.
+///
+/// - lignes (array): Lignes choisies dans `regles`, avec des remarques ou applications facultatives.
+/// - axiome (dictionary, none): Schéma de l’axiome, omis si `none`.
+/// - rempli (bool): Afficher les séquents ; par défaut, seulement dans le corrigé et la présentation.
+/// -> content
 #let tableau-regles(lignes, axiome: none, rempli: est-presentation() or est-corrige()) = {
   if est-presentation() {
     if axiome != none {
