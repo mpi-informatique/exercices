@@ -13,3 +13,5 @@ ocaml -I chapitres/logique/tp/tp-deduction-naturelle chapitres/logique/tp/tp-ded
 ```
 
 Le corrigé charge `dnat.ml` avec `#mod_use` pour fonctionner dans l'interpréteur OCaml utilisé par les tests de la banque. Pour le travail des élèves, compiler `dnat.ml` avec `main.ml` comme indiqué dans l'énoncé.
+
+Les tests sont fournis à la fin de `main.ml`, dans le module `Tests`, et exécutés par `Tests.executer ()`. Ils échouent tant que les fonctions nécessaires restent à compléter. Les mêmes tests sont conservés dans `corrige.ml` pour vérifier les solutions.
