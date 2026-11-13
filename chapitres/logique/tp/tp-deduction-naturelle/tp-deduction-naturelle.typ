@@ -1,5 +1,5 @@
 #import "/load.typ": code, est-corrige, exercice, feuille, question
-#import code: code-extrait
+#import code: code-extrait, code-texte
 #import "/load.typ": logique
 #import logique: axiome, regles, tableau-regles
 
@@ -33,15 +33,20 @@
     column-gutter: 1.5em,
     align: left + top,
     code-extrait(support, "formule"),
-    code-extrait(support, "sequent"),
+    raw(
+      code-texte(support, "sequent") + "\n\n" + ```ocaml
+      (* Lit un séquent, par exemple :
+         "A, A -> B |- B".
+         Hypothèses séparées par des virgules,
+         puis |- et le but.
+         Sans |-, le contexte est vide.
+         Syntaxe : & | -> ! F. *)
+      val parse : string -> sequent
+      ```.text,
+      lang: "ocaml",
+      block: true,
+    ),
   )
-
-  ```ocaml
-  (* Construit un séquent à partir d'une chaîne, par exemple "A, A -> B |- B".
-     Les hypothèses sont séparées par des virgules, puis suivies de |- et du but.
-     Sans |-, le contexte est vide. Les connecteurs sont & | -> ! et le faux F. *)
-  val parse : string -> sequent
-  ```
 
 
   Compléter le fichier `main.ml`, qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et `open Dnat`.
