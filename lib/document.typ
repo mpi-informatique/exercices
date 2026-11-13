@@ -16,14 +16,14 @@
 /// - body (content): Contenu à mettre en forme.
 /// -> content
 #let configurer-liens(body) = {
-  let symbole = image(
-    bytes("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='#233e6a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13.5a4 4 0 0 0 5.7 0l3.3-3.3a4 4 0 0 0-5.7-5.7l-1.9 1.9'/><path d='M14 10.5a4 4 0 0 0-5.7 0L5 13.8a4 4 0 0 0 5.7 5.7l1.9-1.9'/></svg>"),
+  let symbole = box(image(
+    bytes("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='" + couleur-liens.to-hex() + "' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13.5a4 4 0 0 0 5.7 0l3.3-3.3a4 4 0 0 0-5.7-5.7l-1.9 1.9'/><path d='M14 10.5a4 4 0 0 0-5.7 0L5 13.8a4 4 0 0 0 5.7 5.7l1.9-1.9'/></svg>"),
     format: "svg",
     width: 0.9em,
-  )
-  show link: it => {
-    show link: it => it
-    text(fill: couleur-liens, link(it.dest, [#it.body#super(symbole)]))
+  ))
+  // Le lien du symbole ne doit pas recevoir lui-même un nouveau symbole.
+  show link: it => if it.body == symbole { it } else {
+    text(fill: couleur-liens, [#it#sym.wj#super(link(it.dest, symbole))])
   }
   show ref: set text(fill: couleur-liens)
   body
