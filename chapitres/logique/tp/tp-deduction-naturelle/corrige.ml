@@ -22,20 +22,21 @@ let string_of_sequent s =
 
 (* Question 4 *)
 let appliquer_regle r s =
+  let s2 = seq s.gamma in
   match r, s.phi with
   | Axiom, _ -> if List.mem s.phi s.gamma then Some [] else None
-  | AndIntro, And (f1, f2) -> Some [seq s.gamma f1; seq s.gamma f2]
-  | OrIntro1, Or (f1, _) -> Some [seq s.gamma f1]
-  | OrIntro2, Or (_, f2) -> Some [seq s.gamma f2]
+  | AndIntro, And (f1, f2) -> Some [s2 f1; s2 f2]
+  | OrIntro1, Or (f1, _) -> Some [s2 f1]
+  | OrIntro2, Or (_, f2) -> Some [s2 f2]
   | ImpliesIntro, Implies (f1, f2) -> Some [seq (f1 :: s.gamma) f2]
   | NotIntro, Not f -> Some [seq (f :: s.gamma) Bot]
-  | ImpliesElim f1, _ -> Some [seq s.gamma (Implies (f1, s.phi)); seq s.gamma f1]
-  | AndElim1 f2, _ -> Some [seq s.gamma (And (s.phi, f2))]
-  | AndElim2 f1, _ -> Some [seq s.gamma (And (f1, s.phi))]
-  | NotElim f, Bot -> Some [seq s.gamma (Not f); seq s.gamma f]
+  | ImpliesElim f1, _ -> Some [s2 (Implies (f1, s.phi)); s2 f1]
+  | AndElim1 f2, _ -> Some [s2 (And (s.phi, f2))]
+  | AndElim2 f1, _ -> Some [s2 (And (f1, s.phi))]
+  | NotElim f, Bot -> Some [s2 (Not f); s2 f]
   | OrElim (f1, f2), _ ->
       (* Pour prouver phi par OrElim, il faut prouver qu'on a f1 \/ f2, puis que f1 implique phi, et f2 implique phi *)
-      Some [seq s.gamma (Or (f1, f2)); seq (f1 :: s.gamma) s.phi; seq (f2 :: s.gamma) s.phi]
+      Some [s2 (Or (f1, f2)); seq (f1 :: s.gamma) s.phi; seq (f2 :: s.gamma) s.phi]
   | _, _ -> None
 
 (* Question 5 *)
