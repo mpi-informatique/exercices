@@ -9,24 +9,31 @@
 
 #let couleur-liens = rgb("#233e6a")
 
-/// Affiche les liens en bleu foncé avec un symbole cliquable en exposant.
+/// Affiche les liens en bleu foncé, sans symbole ajouté par défaut.
 /// Les références sont également affichées en bleu foncé.
 /// À utiliser comme règle `show` ; les modèles A4 et Madrid l'installent automatiquement.
 ///
 /// - body (content): Contenu à mettre en forme.
 /// -> content
 #let configurer-liens(body) = {
+  show link: set text(fill: couleur-liens)
+  show ref: set text(fill: couleur-liens)
+  body
+}
+
+/// Crée un lien vers un fichier à télécharger, avec un petit symbole cliquable en exposant.
+/// Exemple : `#telecharger("https://exemple.fr/main.ml")[Fichier OCaml]`.
+///
+/// - url (str): Adresse du fichier à télécharger.
+/// - body (content): Texte cliquable.
+/// -> content
+#let telecharger(url, body) = {
   let symbole = box(image(
     bytes("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='" + couleur-liens.to-hex() + "' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13.5a4 4 0 0 0 5.7 0l3.3-3.3a4 4 0 0 0-5.7-5.7l-1.9 1.9'/><path d='M14 10.5a4 4 0 0 0-5.7 0L5 13.8a4 4 0 0 0 5.7 5.7l1.9-1.9'/></svg>"),
     format: "svg",
-    width: 0.9em,
+    width: 0.7em,
   ))
-  // Le lien du symbole ne doit pas recevoir lui-même un nouveau symbole.
-  show link: it => if it.body == symbole { it } else {
-    text(fill: couleur-liens, [#it#sym.wj#super(link(it.dest, symbole))])
-  }
-  show ref: set text(fill: couleur-liens)
-  body
+  text(fill: couleur-liens, [#link(url, body)#sym.wj#super(link(url, symbole))])
 }
 
 /// Signale un complément ou un contenu hors programme par « HP » dans la marge.

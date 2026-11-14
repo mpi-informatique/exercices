@@ -1,4 +1,4 @@
-#import "/load.typ": automate, code, est-corrige, exercice, feuille, lien, partie, question
+#import "/load.typ": automate, code, est-corrige, exercice, feuille, lien, partie, question, telecharger
 #import code: code-extrait
 #import automate: dessiner-automate
 
@@ -22,7 +22,7 @@
 )[
   L'objectif de ce TP est d'implémenter l'_algorithme de Moore_ qui construit un automate minimal, c'est-à-dire un automate ayant le moins d'états possible parmi les automates déterministes complets reconnaissant un même langage.
 
-  Télécharger #link("https://mpi-informatique.github.io/exercices/banque/chapitres/langages/tp/tp-minimisation-automate/main.ml")[`main.ml`], le compléter et tester les fonctions dans `utop`. Les fonctions `nb_etats`, `nb_lettres`, `delta_etoile`, `accepte` et `equivalent_jusqua` sont fournies. Un mot est représenté par une liste de lettres.
+  Télécharger #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/langages/tp/tp-minimisation-automate/main.ml")[`main.ml`], le compléter et tester les fonctions dans `utop`. Les fonctions `nb_etats`, `nb_lettres`, `delta_etoile`, `accepte` et `equivalent_jusqua` sont fournies. Un mot est représenté par une liste de lettres.
 
   La fonction fournie `dessiner` utilise la #link("https://mpi-informatique.github.io/lib/")[bibliothèque MPI] et Graphviz. Si nécessaire, suivre les #link("https://github.com/mpi-informatique/lib#utilisation")[instructions d'installation] de la bibliothèque et installer Graphviz pour disposer de la commande `dot`. Depuis le dossier du TP, lancer `utop`, puis saisir :
   ```ocaml
