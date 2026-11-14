@@ -553,9 +553,14 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 
 #slides-only[== Contraposée]
 #exercice[Contraposée][
-  #liste-cours(
-    [Prouver #sequent(($A → B$, $¬ B → ¬ A$), logique: $i$).],
-    [Prouver #sequent(($¬ B → ¬ A$, $A → ¬ ¬ B$), logique: $i$), puis en déduire #sequent(($¬ B → ¬ A$, $A → B$), logique: $c$).],
+  #colonnes-cours(
+    columns: (1fr, 2fr),
+    align: left + top,
+    [#enum([Prouver #sequent(($A → B$, $¬ B → ¬ A$), logique: $i$).])],
+    [#enum(
+      start: 2,
+      [Prouver #sequent(($¬ B → ¬ A$, $A → ¬ ¬ B$), logique: $i$), puis en déduire #sequent(($¬ B → ¬ A$, $A → B$), logique: $c$).],
+    )],
   )
 ]
 #solution[
