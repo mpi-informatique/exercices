@@ -443,6 +443,15 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
   #exercices-negation
 ]
 
+    Par exemple, si $A ∨ B ∈ Γ$ :
+    #arbre[#prooftree(rule(
+      name: [$∨_e$],
+      [$ ⋮ \ Γ, A ⊢ C $],
+      [$ ⋮ \ Γ, B ⊢ C $],
+      rule(name: [ax], [$Γ ⊢ A ∨ B$]),
+      [$Γ ⊢ C$],
+    ))]
+
 = Déduction naturelle classique
 
 On obtient le système _classique_ en ajoutant aux règles intuitionnistes le _raisonnement par l'absurde_ (raa) ou, de manière équivalente, le _tiers exclu_ (te).
