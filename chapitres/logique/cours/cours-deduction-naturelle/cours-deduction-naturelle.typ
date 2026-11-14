@@ -1,12 +1,12 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp, liste-cours, marge,
-  pause, slide, slides-only, solution, taille-presentation, theoremes, uncover,
+  article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp,
+  liste-cours, marge, pause, slide, slides-only, solution, taille-presentation, theoremes, uncover,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
 #import "/load.typ": logique
 #import logique: arbre, axiome, regles, sequent, tableau-regles
 #import "semantique-ouverts.typ": ex as semantique-ouverts
-#import theoremes: corollaire, definition, exercice, theoreme
+#import theoremes: corollaire, definition, exercice, methode, theoreme
 
 #show: cours-et-presentation.with(titre: "Déduction naturelle", niveau: "MPI")
 
@@ -167,8 +167,7 @@ Suivant le système utilisé, les séquents prouvables ne sont pas les mêmes. O
 
 #slides-only[== Introduction et élimination]
 
-Chaque connecteur logique possède une règle d'introduction, permettant de le faire apparaître, et une règle d'élimination, permettant de l'utiliser.\ #pause
-Pour comprendre plus facilement une preuve, on annote chaque règle avec un symbole.
+Chaque connecteur logique possède une règle d'introduction, permettant de le faire apparaître, et une règle d'élimination, permettant de l'utiliser. #pause Pour comprendre plus facilement une preuve, on annote chaque règle avec un symbole.
 
 = Déduction naturelle intuitionniste
 
@@ -328,7 +327,6 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
   )
 ]
 
-// Adapté de mpi_gluher/Exercices/Preuves_fausses.tex (banque ups-mpi).
 #let exercice-fausse-preuve = [
   #if est-presentation() [== Preuve ou fausse preuve ?]
   #exercice[
@@ -390,24 +388,7 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
   ]
 
   #if est-presentation() [== Variantes des règles]
-  On peut donc utiliser :
-
-  #colonnes-cours(
-    empiler-presentation: false,
-    encadrer: block.with(breakable: false, above: 0.6em, below: 0pt),
-    align: center + horizon,
-    [
-      #arbre[#prooftree(rule(
-        name: [$scripts(→)_e$],
-        [$Γ ⊢ X → Y$],
-        [$Γ' ⊢ X$],
-        [$Γ, Γ' ⊢ Y$],
-      ))]
-    ],
-    [
-      #arbre[#prooftree(rule(name: [$∧_i$], [$Γ ⊢ X$], [$Γ' ⊢ Y$], [$Γ, Γ' ⊢ X ∧ Y$]))]
-    ],
-  )
+  En raisonnant de bas en haut, on peut donc « oublier » certaines hypothèses de $Γ$ pour alléger les séquents.
 ]
 
 #tableau-regles(
@@ -443,14 +424,18 @@ Pour comprendre plus facilement une preuve, on annote chaque règle avec un symb
   #exercices-negation
 ]
 
-    Par exemple, si $A ∨ B ∈ Γ$ :
+#methode[
+  - Si on arrive à un séquent faux, par exemple $A ∨ B ⊢ A ∧ B$, il faut revenir en arrière (on ne pourra pas le prouver d'après @thm-completude).
+  - On peut essayer de réfléchir à comment prouver intuitivement un séquent $Γ ⊢ A$ puis construire l'arbre en prenant la preuve « à l'envers ».
+  - Si $Γ$ contient une formule avec un connecteur logique, on peut essayer de le faire apparaître avec l'introduction de ce connecteur puis utiliser ax :
     #arbre[#prooftree(rule(
       name: [$∨_e$],
-      [$ ⋮ \ Γ, A ⊢ C $],
-      [$ ⋮ \ Γ, B ⊢ C $],
-      rule(name: [ax], [$Γ ⊢ A ∨ B$]),
-      [$Γ ⊢ C$],
+      [$ ⋮ $],
+      [$ ⋮ $],
+      rule(name: [ax], [$A ∨ B, ... ⊢ A ∨ B$]),
+      [$A ∨ B, ... ⊢ C$],
     ))]
+]
 
 = Déduction naturelle classique
 
@@ -526,7 +511,7 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #slides-only[== Du tiers exclu à raa]
 
 #exercice[
-  Prouver #sequent(($¬ ¬ A$, $A$), logique: $c$) en utilisant le tiers exclu. En déduire que l'on peut retrouver la règle raa à partir des règles intuitionnistes et de te.
+  Prouver #sequent(($¬ ¬ A$, $A$), logique: $c$) en utilisant te. En déduire qu'on peut retrouver raa à partir des règles intuitionnistes et de te.
 ]
 #solution[
   Posons $Γ = {¬ ¬ A}$. On raisonne par cas sur $A ∨ ¬ A$ :
@@ -559,7 +544,7 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
     [#enum([Prouver #sequent(($A → B$, $¬ B → ¬ A$), logique: $i$).])],
     [#enum(
       start: 2,
-      [Prouver #sequent(($¬ B → ¬ A$, $A → ¬ ¬ B$), logique: $i$), puis en déduire #sequent(($¬ B → ¬ A$, $A → B$), logique: $c$).],
+      [Prouver #sequent(($¬ B → ¬ A$, $A → ¬ ¬ B$), logique: $i$) puis #sequent(($¬ B → ¬ A$, $A → B$), logique: $c$).],
     )],
   )
 ]
@@ -687,7 +672,7 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 
 #slides-only[== Complétude]
 
-#theoreme(hp: true)[Complétude][Si $Γ ⊨ A$ alors $Γ scripts(⊢)_c A$.]
+#theoreme(hp: true)[Complétude][Si $Γ ⊨ A$ alors $Γ scripts(⊢)_c A$.]<thm-completude>
 
 On a donc $Γ scripts(⊢)_c A ⟺ Γ ⊨ A$.
 
