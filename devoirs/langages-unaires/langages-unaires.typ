@@ -82,7 +82,7 @@
               $P(L) = S(L) = {a}$ et $F(L) = {a a}$.
               Soit $u = a$. Alors $u$ a sa première lettre dans $P(L)$, sa dernière dans $S(L)$ et ses facteurs dans $F(L)$ mais $u in.not L$ : $L$ n'est pas local.
             ],
-          question(bareme: 2)[Construire, par l'algorithme de Berry-Sethi, l'automate de Glushkov de $(a a)^*$.][
+          question(bareme: 2, notation: [50 % au plus pour un automate reconnaissant le bon langage sans respecter la construction de Glushkov. Exiger la linéarisation ou une construction équivalente explicite par positions ; accepter tout renommage des états.])[Construire, par l'algorithme de Berry-Sethi, l'automate de Glushkov de $(a a)^*$.][
               $P(L) = {a_(1)}$, $S(L) = {a_(2)}$ et $F(L) = {a_(1) a_(2), a_(2) a_(1)}$. Après construction de l'automate et retour à l'alphabet de départ :
               #automate-glushkov
             ],
@@ -117,7 +117,7 @@
     Soit $cal(A) = ({a}, Q, q_(0), F, δ)$ un automate fini déterministe complet.
     On note $q_(n) = δ^*(q_(0), a^n)$.
 
-    #question(bareme: 2, label: <q-unaires-structure>)[
+    #question(bareme: 2, label: <q-unaires-structure>, notation: [Exiger une définition des paramètres par la première répétition, la distinction des états avant cette répétition et la propagation par déterminisme. Une description précise du chemin puis du cycle suffit, sans imposer une récurrence formellement rédigée. Une simple invocation de la finitude ne justifie pas tous les résultats demandés.])[
               Montrer qu'il existe $μ ∈ NN$ et $λ ∈ NN^*$ tels que les états $q_(0), …, q_(μ + λ - 1)$ soient deux à deux distincts et $q_(n + λ) = q_(n)$ pour tout $n ≥ μ$. Justifier que $μ + λ ≤ abs(Q)$.
             ][
               $Q$ est fini donc $(q_n)_(n ∈ NN)$ passe plusieurs fois par le même état.
@@ -153,13 +153,13 @@
     $ n ∈ E ⟺ n + p ∈ E $
     On dit alors que $E$ est $p$-périodique à partir de $n_0$.
 
-    #question(bareme: 1, label: <q-unaires-periodicite>)[Montrer que si $L$ est régulier alors $N(L) = {n ∈ NN | a^n ∈ L}$ est ultimement périodique.][
+    #question(bareme: 1, label: <q-unaires-periodicite>, notation: [Le seuil et la période doivent être précisés, et l'acceptation reliée au caractère final des états. Accepter une rédaction concise lorsque l'égalité des états établit immédiatement l'équivalence d'appartenance. Une répétition pour un décalage arbitraire ne convient pas.])[Montrer que si $L$ est régulier alors $N(L) = {n ∈ NN | a^n ∈ L}$ est ultimement périodique.][
               On considère un automate déterministe complet reconnaissant $L$ et les entiers $μ, λ$ de la question précédente. Pour $n ≥ μ$ :
               $ a^n ∈ L <==> q_(n) ∈ F <==> q_(n + λ) ∈ F <==> a^(n + λ) ∈ L $
               Ainsi $N(L)$ est $λ$-périodique à partir de $μ$.
             ]
 
-    #question(bareme: 1, label: <q-unaires-periodicite-automate>)[
+    #question(bareme: 1, label: <q-unaires-periodicite-automate>, notation: [La chaîne et le cycle ne suffisent pas : vérifier le choix des états finaux selon les tailles acceptées. Une construction correcte sans justification de l'acceptation ni caractérisation reste partielle.])[
               Réciproquement, construire un automate déterministe complet qui
               reconnaît $L$ lorsque $N(L)$ est ultimement périodique. En déduire une caractérisation des langages réguliers unaires.
             ][
@@ -186,7 +186,7 @@
               Le langage ${b^n c^n | n ∈ NN}$ n'est pas régulier, tandis que son ensemble de tailles est l'ensemble des entiers pairs, qui est $2$-périodique à partir de $0$.
             ]
 
-    #question(bareme: 2)[
+    #question(bareme: 2, notation: [50 % pour un seuil et une période corrects et justifiés, 50 % pour un automate déterministe complet reconnaissant exactement le langage. Accepter d'autres seuils, périodes et automates corrects, sans exiger la minimalité.])[
               Soit $K = L(3, 2) ∪ L(2, 3)$. Déterminer $n_0 ∈ NN$ et $p ∈ NN^*$ tels que $N(K)$ soit $p$-périodique à partir de $n_0$ et construire un automate déterministe complet reconnaissant $K$.
             ][
               Par définition, $N(K) = {3 k + 2 | k ∈ NN} ∪ {2 k + 3 | k ∈ NN}$. Pour $n ≥ 2$, on a donc $n ∈ N(K)$ si et seulement si $n ≡ 2 mod 3$ ou $n$ est impair.
@@ -196,7 +196,7 @@
               #automate-k
             ]
 
-    #question(bareme: 2, label: <q-unaires-union-progressions>)[
+    #question(bareme: 2, label: <q-unaires-union-progressions>, notation: [Évaluer séparément les deux implications. Pour le sens direct, exiger une union finie explicite couvrant aussi les tailles avant le seuil et la justification des deux inclusions. Un produit ou une décomposition en facteurs premiers de la période ne suffit pas à construire cette union. Pour la réciproque, la régularité des progressions et la stabilité par union finie suffisent.])[
               Montrer qu'un langage unaire est régulier si et seulement s'il est une union finie (éventuellement vide) de langages de la forme $L(α, β)$, avec $α, β ∈ NN$.
             ][
               - Supposons $L$ régulier. Soient $n_0 ∈ NN$ et $p ∈ NN^*$ tels que $N(L)$ soit $p$-périodique à partir de $n_0$. \
@@ -208,7 +208,7 @@
               - Dans l'autre sens, chaque $L(α, β)$ est régulier d'après la @q-unaires-progressions. La stabilité par union finie donne le résultat, y compris pour l'union vide.
             ]
 
-    #question(bareme: 1)[Écrire ${a^2, a^3}^*$ comme une union finie de langages de la forme $L(α, β)$.][
+    #question(bareme: 1, notation: [Accepter toute décomposition finie exacte, même redondante. Vérifier les tailles absentes et les concaténations mêlant les deux blocs. Ne pas pénaliser une omission locale dans un ensemble intermédiaire si la description des tailles et la décomposition finale sont sans ambiguïté et correctes.])[Écrire ${a^2, a^3}^*$ comme une union finie de langages de la forme $L(α, β)$.][
               Le mot $ε$ appartient à ce langage, mais pas $a$. Tout entier pair $n ≥ 2$ est un multiple de $2$, et tout entier impair $n ≥ 3$ s'écrit $3 + 2k$ avec $k ∈ NN$.
               Ainsi ${a^2, a^3}^* = {ε} ∪ {a^n | n ≥ 2} = L(0, 0) ∪ L(1, 2)$.
             ]
@@ -227,7 +227,7 @@
               La @q-unaires-union-progressions permet de conclure que $L^*$ est régulier.
             ]
 
-    #question(bareme: 2)[Soit $L$ un langage sur ${a, b}$. Le langage $L^*$ est-il nécessairement régulier ?][
+    #question(bareme: 2, notation: [Exiger un argument portant sur la non-régularité de l'étoile, pas seulement sur celle du langage de départ. Un langage non régulier simplement cité ne suffit pas. Accepter tout contre-exemple dont la propriété demandée est effectivement démontrée.])[Soit $L$ un langage sur ${a, b}$. Le langage $L^*$ est-il nécessairement régulier ?][
               Non. Prenons $K = {a^n b^n | n ∈ NN}$. On a $K^* ∩ a^* b^* = K$.
               On montre avec le lemme de l'étoile que $K$ n'est pas régulier. Si $K^*$ était régulier, $K$ le serait aussi par intersection avec le langage régulier $a^* b^*$. Donc $K^*$ n'est pas régulier.
             ]
@@ -241,7 +241,7 @@
 
     Une tortue et un lièvre partent de $q_(0)$. À chaque étape, la tortue avance d'une transition et le lièvre de deux transitions. Après $k$ étapes, la tortue est donc sur l'état $q_(k)$ et le lièvre est sur l'état $q_(2k)$.
 
-    #question(bareme: 1)[
+    #question(bareme: 1, notation: [50 % pour les deux paramètres, 50 % pour la simulation jusqu'à la première rencontre après au moins un déplacement. Créditer les étapes correctes d'une simulation partielle.])[
               Pour ```ocaml delta = [|1; 2; 3; 4; 2|]```, déterminer $μ$ et $λ$, puis donner les positions successives du lièvre et de la tortue jusqu'à leur première rencontre après au moins un déplacement.
             ][
               Les états parcourus sont $0, 1, 2, 3, 4, 2, 3, 4, …$, donc $μ = 2$ et $λ = 3$.
@@ -278,7 +278,7 @@
               Le compteur donne donc $λ$. Seuls deux états et un compteur sont conservés : l'espace auxiliaire est $O(1)$.
             ]
 
-    #question(bareme: 2)[
+    #question(bareme: 2, notation: [Évaluer les trois phases de Floyd et le couple renvoyé, puis les justifications de terminaison et de complexité. Distinguer une erreur propre au programme d'une méthode erronée déjà pénalisée aux questions précédentes. Une boucle sautée dès l'initialisation ou une comparaison des numéros d'états à la place du test de rencontre est une erreur algorithmique, pas une petite erreur de syntaxe.])[
               En déduire une fonction
               ```ocaml forme : int array -> int * int``` telle que
               ```ocaml forme delta``` renvoie $(μ, λ)$ avec l'algorithme de Floyd.
@@ -292,7 +292,7 @@
               compteurs : son espace auxiliaire est $O(1)$.
             ]
 
-    #question(bareme: 1)[
+    #question(bareme: 1, notation: [Le rang réduit est un nombre de transitions, pas nécessairement un numéro d'état. Exiger le traitement des longueurs avant l'entrée du cycle et la consultation du tableau des états finaux à l'état effectivement atteint. Les complexités doivent être justifiées.])[
               Les entiers $(μ, λ)$ ayant été calculés, expliquer comment tester en temps $O(n)$ si $a^p$ est reconnu par l'automate, pour $p ∈ NN$.
               Les états finaux sont indiqués par un tableau de booléens ```ocaml final```, indexé par les états.
               Justifier cette complexité et déterminer la complexité en mémoire, en supposant les opérations arithmétiques de coût constant.
@@ -306,7 +306,7 @@
   ]
 
   #partie("Tailles et preuve de non-régularité", numero: "IV")[
-    #question(bareme: 0.5)[Justifier que tout langage régulier unaire infini contient un langage $L(p, r)$ avec $p ≥ 1$.][
+    #question(bareme: 0.5, notation: [Accepter l'utilisation correcte du résultat de la question sur l'union finie de progressions même si sa démonstration précédente est incomplète. Exiger le lien entre infinitude de l'union et infinitude d'au moins une progression.])[Justifier que tout langage régulier unaire infini contient un langage $L(p, r)$ avec $p ≥ 1$.][
               C'est une conséquence de la @q-unaires-union-progressions : $L$ est une union finie de langages $L(α, β)$. Comme $L$ est infini, au moins l'un d'eux est infini, donc son paramètre $α$ est strictement positif.
             ]
 
@@ -316,7 +316,7 @@
               Il reste seulement un nombre fini d'écarts avant la taille $r$ : la suite des écarts est bornée.
             ]
 
-    #question(bareme: 1, label: <q-unaires-carres>)[En déduire que les langages ${a^(n^2) | n ∈ NN}$ et ${a^(3^n + 1) | n ∈ NN}$ ne sont pas réguliers.][
+    #question(bareme: 1, label: <q-unaires-carres>, notation: [50 % pour chaque langage : calcul de l'écart, caractère non borné et conclusion par contraposée. Ne pas exiger de redémontrer le résultat précédent. Une erreur locale de recopie dans une factorisation intermédiaire reste sans pénalité si l'écart final et son utilisation sont corrects et sans ambiguïté.])[En déduire que les langages ${a^(n^2) | n ∈ NN}$ et ${a^(3^n + 1) | n ∈ NN}$ ne sont pas réguliers.][
               Par contraposée, des écarts non bornés entre les tailles successives entraînent la non-régularité du langage.
               Pour $u_(n) = n^2$, l'écart vaut $2n + 1$, tandis que pour $u_(n) = 3^n + 1$, il vaut $2 · 3^n$. Ces deux suites d'écarts ne sont pas bornées : les deux langages ne sont pas réguliers.
             ]
@@ -354,7 +354,7 @@
   #partie("Grammaires unaire", numero: "V")[
     Dans cette partie, une grammaire non-contextuelle sur $Σ$ est dite _régulière à droite_ si toutes ses règles sont de la forme $X → a Y$ ou $X → ε$, où $X$ et $Y$ sont des variables.
 
-    #question(bareme: 0.5)[Construire une grammaire régulière à droite engendrant $L(3, 2)$.][
+    #question(bareme: 0.5, notation: [Vérifier à la fois la forme imposée des règles et le langage engendré. Une grammaire équivalente à plusieurs lettres terminales par règle ne satisfait pas entièrement la définition donnée ; une grammaire engendrant un autre langage ne reçoit pas de crédit pour la seule présence des blocs de tailles deux et trois.])[Construire une grammaire régulière à droite engendrant $L(3, 2)$.][
               Prenons $G = (Σ, {S, A, B}, R, S)$, où
               $ R = {S → a A, #sep A → a B, #sep B → ε, #sep B → a S}. $
               Toute dérivation terminale effectue un certain nombre $k ∈ NN$ de tours du cycle $S ⇒ a A ⇒ a^2 B ⇒ a^3 S$, puis se termine par $S ⇒ a A ⇒ a^2 B ⇒ a^2$.
