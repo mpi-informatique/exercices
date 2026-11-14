@@ -43,7 +43,7 @@
       - $P(L) = {a ∈ Σ ∣ a Σ^* ∩ L ≠ ∅}$ : premières lettres.
       - $S(L) = {a ∈ Σ ∣ Σ^* a ∩ L ≠ ∅}$ : dernières lettres.
       - $F(L) = {m ∈ Σ^2 ∣ Σ^* m Σ^* ∩ L ≠ ∅}$ : facteurs de taille $2$.
-      - $N(L) = Σ^2 - F(L)$ : facteurs de taille 2 interdits.
+      - $N(L) = Σ^2 ∖ F(L)$ : facteurs de taille 2 interdits.
     ]
   ],
   [
@@ -54,8 +54,8 @@
 #slide()
 #definition[Langage local][
   Soit $"Loc"(L)$ l'ensemble des mots dont la première lettre appartient à $P(L)$, la dernière à $S(L)$ et sans facteur de $N(L)$ :
-  $ "Loc"(L) = (P(L) Σ^* ∩ Σ^* S(L)) - Σ^* N(L) Σ^* $
-  On dit que $L$ est _local_ si $"Loc"(L) = L - {ε}$, c'est-à-dire, comme $L - {ε} ⊂ L$ est toujours vrai :
+  $ "Loc"(L) = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^* $
+  On dit que $L$ est _local_ si $"Loc"(L) = L\\{ε}$, c'est-à-dire, comme $L\\{ε} ⊂ L$ est toujours vrai :
   $ underbrace(m_1 ∈ P(L) ∧ m_n ∈ S(L) ∧ (∀ k ∈ [|1, n - 1|], #sep m_k m_(k + 1) ∈ F(L)), m ∈ "Loc"(L)) ==> m ∈ L $
   On note $Lloc(Σ)$ l'ensemble des langages locaux sur $Σ$.
 ]
@@ -242,8 +242,8 @@ La construction de Thompson est une alternative récursive à @algorithme-berry-
 ]
 
 #lemme[Élimination d'un état][
-  Soit $A = (Ereg(Σ), Q, I, F, δ)$ un automate généralisé et $q ∈ Q - (I ∪ F)$.\
-  Alors $A$ est équivalent à l'automate $A' = (Ereg(Σ), Q - {q}, I, F, δ')$ où, pour tout $p, r ∈ Q - {q}$ :
+  Soit $A = (Ereg(Σ), Q, I, F, δ)$ un automate généralisé et $q ∈ Q ∖ (I ∪ F)$.\
+  Alors $A$ est équivalent à l'automate $A' = (Ereg(Σ), Q ∖ {q}, I, F, δ')$ où, pour tout $p, r ∈ Q ∖ {q}$ :
   $ δ'(p, r) = δ(p, r) | δ(p, q) δ(q, q)^* δ(q, r) $
 ]<lemme-elimination>
 
@@ -298,7 +298,7 @@ La construction de Thompson est une alternative récursive à @algorithme-berry-
       + #underline[Sortie] : une expression régulière $e$ telle que $Le = LA$.
 
       + *Tant que* $|Q| > 2$ :
-        - Choisir un état $q ∈ Q - {q_i, q_f}$.
+        - Choisir un état $q ∈ Q ∖ {q_i, q_f}$.
         - Éliminer $q$ comme dans @lemme-elimination.
       + *Renvoyer* l'étiquette de $q_i$ à $q_f$, ou $∅$ si pas de transition.
     ]<algorithme-elimination>

@@ -9,13 +9,13 @@
       duree: (0, 20),
     ),
 )[
-  Sur $Σ = {a, b, c}$, soit $L_1 = {a b^n c^n | n ∈ NN}$, $L_2 = {a^n u | n ∈ NN - {1}, u ∈ {b, c}^*}$ et $L = L_1 ∪ L_2$.
+  Sur $Σ = {a, b, c}$, soit $L_1 = {a b^n c^n | n ∈ NN}$, $L_2 = {a^n u | n ∈ NN ∖ {1}, u ∈ {b, c}^*}$ et $L = L_1 ∪ L_2$.
 
   #question[
           Soit $m ∈ L$ tel que $abs(m) ≥ 2$.
           Montrer qu'il existe des mots $x, y, z$ tels que : $ m = x y z, #sep abs(x y) ≤ 2, #sep y ≠ ε, #sep x y^* z ⊂ L. $
         ][
-          - Si $m ∈ L_1$ : $m = a b^n c^n$ avec $n ≥ 1$. On choisit $x = ε$, $y = a$ et $z = b^n c^n$. Alors $x y z ∈ L_1$ et $x y^k z ∈ L_2$ pour $k ∈ NN - {1}$.
+          - Si $m ∈ L_1$ : $m = a b^n c^n$ avec $n ≥ 1$. On choisit $x = ε$, $y = a$ et $z = b^n c^n$. Alors $x y z ∈ L_1$ et $x y^k z ∈ L_2$ pour $k ∈ NN ∖ {1}$.
           - Si $m ∈ L_2$ : $m = a^n u$ avec $n ≠ 1$ et $u ∈ {b, c}^*$.
             - Si $n = 0$ : on écrit $u = u_1 u'$ avec $u_1 ∈ {b, c}$ et on choisit $x = ε$, $y = u_1$, $z = u'$. Alors $x y^* z ⊂ L_2$.
             - Si $n = 2$ : on choisit $x = ε$, $y = a a$, $z = u$. Alors $x y^k z = a^(2 k) u ∈ L_2$ pour tout $k ∈ NN$.

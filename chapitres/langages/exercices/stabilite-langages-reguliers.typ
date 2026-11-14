@@ -28,7 +28,7 @@
       ]
 
   #question[
-          Si $L$ est régulier sur un alphabet $Σ$ alors $Σ^* - L$
+          Si $L$ est régulier sur un alphabet $Σ$ alors $Σ^* ∖ L$
           (complémentaire de $L$) est régulier.
         ][Vrai comme démontré dans le cours sur les automates.]
 
@@ -55,8 +55,8 @@
           Une intersection dénombrable de langages réguliers est régulière
           ($L_1, …, L_n, …$ réguliers $==> ⋂_(k=1)^∞ L_k$ régulier).
         ][
-          Faux avec $L_n = Σ^* - {a^n b^n}$ pour $n ≥ 1$, sur $Σ = {a,b}$ : si
-          $ ⋂_(n=1)^∞ L_n = Σ^* - {a^n b^n | n ≥ 1} $
+          Faux avec $L_n = Σ^* ∖ {a^n b^n}$ pour $n ≥ 1$, sur $Σ = {a,b}$ : si
+          $ ⋂_(n=1)^∞ L_n = Σ^* ∖ {a^n b^n | n ≥ 1} $
           était régulier, son complémentaire ${a^n b^n | n ≥ 1}$ le serait aussi.
         ]
 ]

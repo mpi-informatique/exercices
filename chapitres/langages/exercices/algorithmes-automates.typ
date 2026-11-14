@@ -40,7 +40,7 @@
             Émonder $A$ puis réaliser un parcours en profondeur depuis $I$ : $A$ possède un cycle orienté si et seulement si un arc arrière (revenant sur un sommet en cours d'appel récursif) est trouvé.
             Avec une représentation par liste d'adjacence, le temps et l'espace total, émondage compris, sont $O(n + p)$.
           + - Déterminiser et compléter les automates : $O(|Sigma| 2^(n_1))$ + $O(|Sigma| 2^(n_2))$.
-            - Construire l'automate produit $A_1 times A_2$ pour reconnaître la différence symétrique $L_1 Delta L_2 = (L_1 union L_2) - (L_1 inter L_2)$ (avec $F = F_1 times (Q_2 - F_2) union (Q_1 - F_1) times F_2$) : $O(n_1 n_2)$.
+            - Construire l'automate produit $A_1 times A_2$ pour reconnaître la différence symétrique $L_1 Delta L_2 = L_1 union L_2 \\ L_1 inter L_2$ (avec $F = F_1 times (Q_2 \\ F_2) union (Q_1 \\ F_1) times F_2$) : $O(n_1 n_2)$.
             - Tester si $cal(L)(A_1 times A_2) = emptyset$ avec Q1 : $O(n_1 n_2 + p_1 p_2)$.
         ]
 ]

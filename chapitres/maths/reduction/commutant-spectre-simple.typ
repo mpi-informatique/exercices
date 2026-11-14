@@ -11,7 +11,7 @@
     ),
 )[
   Soit $E$ un espace vectoriel réel de dimension $n ≥ 2$. On considère $f ∈ cal(L)(E)$ ayant $n$ valeurs propres distinctes $λ_1, …, λ_n$.
-  Pour chaque $j$, on choisit $e_j ∈ E_(λ_j) (f) - {0}$.
+  Pour chaque $j$, on choisit $e_j ∈ E_(λ_j) (f) ∖ {0}$.
   On note $cal(C)(f) = {g ∈ cal(L)(E) | g ∘ f = f ∘ g}$.
 
   #question[Montrer que $(e_1, …, e_n)$ est une base de $E$ et caractériser les éléments de $cal(C)(f)$ par leur matrice dans cette base.][Les $n$ vecteurs propres associés à des valeurs propres distinctes sont libres, donc forment une base.

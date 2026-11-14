@@ -325,7 +325,7 @@
               Soit $(u_(n))_(n ∈ NN)$ une suite strictement croissante d'entiers naturels telle que la suite $u_(n + 1) - u_(n)$ est bornée.
               Le langage ${a^(u_(n)) | n ∈ NN}$ est-il nécessairement régulier ?
             ][
-              Non. Soit $C = Σ^* - {a^(n^2) | n ∈ NN}$ et énumérons ses
+              Non. Soit $C = Σ^* ∖ {a^(n^2) | n ∈ NN}$ et énumérons ses
               tailles dans l'ordre strictement croissant : $u_(0) = 2$, $u_(1) = 3$, $u_(2) = 5$, ...
               Deux entiers consécutifs supérieurs ou égaux à $2$ ne peuvent pas être tous deux des carrés : pour $m ≥ 1$, l'écart entre $m^2$ et $(m + 1)^2$ vaut $2m + 1 ≥ 3$.
               Entre deux tailles successives de $C$, il manque donc au plus un entier. Ainsi, pour tout $n ∈ NN$,
@@ -428,7 +428,7 @@
 
               *Hérédité.* Soient $e_1$ et $e_2$ deux expressions sans étoile vérifiant $cal(P)$. Posons $K = cal(L)(e_1)$ et $L = cal(L)(e_2)$. Par hypothèse d'induction, $K$ et $L$ sont chacun finis ou cofinis. Vérifions la propriété pour chaque construction autorisée.
 
-              - Le complémentaire de $e_1$ dénote $Σ^* - K$. Le complémentaire échange les langages finis et cofinis, donc cette expression vérifie $cal(P)$.
+              - Le complémentaire de $e_1$ dénote $Σ^* ∖ K$. Le complémentaire échange les langages finis et cofinis, donc cette expression vérifie $cal(P)$.
               - L'union de $e_1$ et $e_2$ dénote $K ∪ L$. Si $K$ et $L$ sont finis, leur union est finie. Sinon, elle contient un langage cofini et est donc cofinie. La propriété $cal(P)$ est vérifiée.
               - La concaténation de $e_1$ et $e_2$ dénote $K L$. Si $K$ et $L$ sont finis, $K L$ est fini. Si l'un est vide, $K L = ∅$. Dans les autres cas, l'un des deux est cofini et l'autre est non vide. Supposons $K$ cofini et choisissons $a^r ∈ L$. Il existe $n_0 ∈ NN$ tel que $a^n ∈ K$ pour tout $n ≥ n_0$. Pour $n ≥ n_0 + r$, $a^n = a^(n - r)a^r ∈ K L$, donc $K L$ est cofini. Le cas où $L$ est cofini se traite de même. La propriété $cal(P)$ est vérifiée.
 
