@@ -181,7 +181,7 @@ function reportPdfError(error) {
   vscode.postMessage({ type: 'pdfError', error: String(error) });
 }
 const variants = [...document.querySelectorAll('[data-variant]')].map(button => button.id);
-for (const id of [...variants, 'save', 'code', 'jumps', 'theme', 'fullscreen', 'restart']) {
+for (const id of [...variants, 'save', 'code', 'scan', 'jumps', 'theme', 'fullscreen', 'restart']) {
   document.getElementById(id).onclick = () => vscode.postMessage({ type: id });
 }
 window.addEventListener('message', ({ data }) => {
@@ -194,6 +194,7 @@ window.addEventListener('message', ({ data }) => {
   if (data.allowedVariants) for (const variant of variants) document.getElementById(variant).hidden = !data.allowedVariants.includes(variant);
   document.body.classList.toggle('native-preview', !!data.native);
   document.getElementById('code').hidden = !data.hasCode;
+  document.getElementById('scan').hidden = !data.hasScan;
   if (data.native) showProgress(pagination.get(data.variant));
   document.body.classList.toggle('pdf-dark', !data.native && data.theme !== 'vscode' && data.dark);
   document.body.classList.toggle('vscode-theme', data.theme === 'vscode');

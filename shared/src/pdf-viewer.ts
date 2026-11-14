@@ -16,6 +16,7 @@ export function pdfViewerHtml(options: {
       <nav aria-label="Outils de l'aperçu">${variants.map(value => `<button id="${value}" data-variant${hiddenVariants.includes(value) ? ' hidden' : ''} aria-pressed="${value === variant}">${escape(labels[value])}</button>`).join('')}
       <span class="spacer" aria-hidden="true"></span>
       <button id="code" title="Ouvrir les codes associés" aria-label="Ouvrir les codes associés" hidden><svg viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/></svg></button>
+      <button id="scan" title="Afficher le scan à côté" aria-label="Afficher le scan à côté" hidden><svg viewBox="0 0 24 24"><path d="M3 3h7v18H3zM14 3h7v18h-7zM16 7h3m-3 4h3m-3 4h3"/></svg></button>
       <div id="page-progress" role="group" aria-label="Pagination">
       <button id="previous-page" title="Page précédente (←)" aria-label="Page précédente" disabled>‹</button>
       <input id="page-number" type="number" min="1" step="1" aria-label="Page actuelle" title="Choisir une page et valider avec Entrée" disabled>
