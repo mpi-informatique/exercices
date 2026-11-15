@@ -470,6 +470,40 @@ Les règles suivantes découlent donc de celles de $∧$ et de $∨$. Elles s'ap
     ),
 ))
 
+#slides-only[== Quantificateur universel – exercice]
+#exercice[
+  Soient $X, Y$ deux formules et $x$ une variable propositionnelle. Prouver #sequent(($∀ x (X → Y), ∀ x X$, $∀ x Y$)).
+]
+#solution[
+  Posons $Γ = {∀ x (X → Y), ∀ x X}$ et, pour $b ∈ {⊥, ⊤}$, $X_b = X[x := b]$, $Y_b = Y[x := b]$.
+  #arbre[#prooftree(rule(
+    name: [$scripts(→)_e$],
+    rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢ ∀ x (X → Y)$]), [$Γ ⊢ X_b → Y_b$]),
+    rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢ ∀ x X$]), [$Γ ⊢ X_b$]),
+    [$Γ ⊢ Y_b$],
+  ))]
+  En appliquant cet arbre pour $b = ⊥$ puis pour $b = ⊤$, on obtient les deux prémisses de $∀_i$, d'où $Γ ⊢ ∀ x Y$.
+]
+
+#slides-only[== Quantificateur existentiel – exercice]
+#exercice[
+  Soient $X, Y$ deux formules et $x$ une variable propositionnelle. Prouver #sequent(($∀ x (X → Y), ∃ x X$, $∃ x Y$)).
+]
+#solution[
+  Posons $Γ = {∀ x (X → Y), ∃ x X}$ et, pour $b ∈ {⊥, ⊤}$, $X_b = X[x := b]$, $Y_b = Y[x := b]$.
+  #arbre[#prooftree(rule(
+    name: [$∃_i$],
+    rule(
+      name: [$scripts(→)_e$],
+      rule(name: [$∀_e$], rule(name: [ax], [$Γ, X_b ⊢ ∀ x (X → Y)$]), [$Γ, X_b ⊢ X_b → Y_b$]),
+      rule(name: [ax], [$Γ, X_b ⊢ X_b$]),
+      [$Γ, X_b ⊢ Y_b$],
+    ),
+    [$Γ, X_b ⊢ ∃ x Y$],
+  ))]
+  Les cas $b = ⊥$ et $b = ⊤$ donnent la même conclusion $∃ x Y$. Avec l'axiome $Γ ⊢ ∃ x X$, la règle $∃_e$ donne donc $Γ ⊢ ∃ x Y$.
+]
+
 = Déduction naturelle classique
 
 On obtient le système _classique_ en ajoutant aux règles intuitionnistes le _raisonnement par l'absurde_ (raa) ou, de manière équivalente, le _tiers exclu_ (te).
