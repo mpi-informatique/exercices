@@ -69,7 +69,7 @@
 
 /// Affiche les règles en tableau imprimé ou en diapositives avec révélation progressive.
 ///
-/// - lignes (array): Lignes choisies dans `regles`, avec des remarques ou applications facultatives.
+/// - lignes (array): Lignes choisies dans `regles`, avec des intuitions affichées en sous-ligne et des remarques ou applications facultatives.
 /// - axiome (dictionary, none): Schéma de l’axiome, omis si `none`.
 /// - condition-axiome (content): Annotation sous le schéma de l’axiome, par exemple son constructeur OCaml.
 /// - compact (bool): Réduire la hauteur des schémas et les marges du tableau imprimé.
@@ -126,8 +126,13 @@
       ])
     }
     for ligne in lignes {
+      let intuitions = (
+        ligne.at("intuition-introduction", default: []),
+        ligne.at("intuition-elimination", default: []),
+      )
+      let avec-intuitions = intuitions.any(body => body != [])
       cellules += (
-        [*#ligne.titre*],
+        table.cell(rowspan: if avec-intuitions { 2 } else { 1 })[*#ligne.titre*],
         [
           #cases-regles(ligne.introduction, rempli: rempli, hauteur: hauteur)
           #text(size: 0.85em, ligne.at("condition-introduction", default: []))
@@ -137,6 +142,9 @@
           #text(size: 0.85em, ligne.at("condition-elimination", default: []))
         ],
       )
+      if avec-intuitions {
+        cellules += intuitions.map(body => table.cell(align: left + top, text(size: 0.85em, body)))
+      }
     }
     block(breakable: false, table(
       columns: (auto, 1fr, 1fr),
@@ -147,16 +155,6 @@
       table.header([*Opérateur*], [*Introduction*], [*Élimination*]),
       ..cellules,
     ))
-    for ligne in lignes {
-      let intuitions = (
-        ligne.at("intuition-introduction", default: []),
-        ligne.at("intuition-elimination", default: []),
-      ).filter(body => body != [])
-      if intuitions.len() > 0 {
-        block(above: 0.8em)[*#ligne.titre*]
-        for intuition in intuitions { block(intuition) }
-      }
-    }
   }
 }
 
