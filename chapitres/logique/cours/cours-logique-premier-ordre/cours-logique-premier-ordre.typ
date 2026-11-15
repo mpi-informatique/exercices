@@ -35,6 +35,8 @@ Contrairement à la logique propositionnelle qui ne traite que des variables boo
   où $x ∈ cal(V)$, $c$ est un symbole de constante et $f$ un symbole de fonction d'arité $n > 0$, appliqué à exactement $n$ termes.
 ]
 
+#underline[Remarque] : contrairement à la logique propositionnelle, les variables ne sont pas forcément booléennes.
+
 #slides-only[== Formules du premier ordre]
 
 #definition[Formule du premier ordre][
@@ -42,7 +44,6 @@ Contrairement à la logique propositionnelle qui ne traite que des variables boo
   $ F ⟶ R(T, …, T) | ¬ F | (F ∧ F) | (F ∨ F) | (F → F) | ∃ x F | ∀ x F $
   où $R$ est un symbole de relation d'arité $n > 0$, appliqué à $n$ termes, $T$ est un terme et $x ∈ cal(V)$.
 ]
-
 #slide()
 #underline[Exemples] :
 - Théorie des groupes : $∀ x ∃ y (x ⋆ y = e)$ est une formule.
