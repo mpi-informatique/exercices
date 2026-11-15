@@ -437,6 +437,39 @@ Chaque connecteur logique possède une règle d'introduction, permettant de le f
     ))]
 ]
 
+= Quantificateurs propositionnels
+
+Comme dans le cours de logique propositionnelle, $x$ est une variable propositionnelle et $X[x := b]$ désigne le remplacement des occurrences libres de $x$ dans $X$ par $b ∈ {⊥, ⊤}$. Les quantificateurs sont définis par :
+$ ∀ x X := X[x := ⊥] ∧ X[x := ⊤], quad ∃ x X := X[x := ⊥] ∨ X[x := ⊤] $
+
+Les règles suivantes découlent donc de celles de $∧$ et de $∨$. Elles s'appliquent aux trois systèmes de déduction naturelle.
+
+#tableau-regles((
+    (
+      titre: [Quantificateur universel $∀$],
+      condition-elimination: [Avec $b ∈ {⊥, ⊤}$.],
+      intuition-introduction: [#underline[Intuitivement] : on prouve $X$ pour chacune des deux valeurs de $x$.],
+      intuition-elimination: [#underline[Intuitivement] : on utilise le cas $b$.],
+      introduction: (rule(name: [$∀_i$], [$Γ ⊢ X[x := ⊥]$], [$Γ ⊢ X[x := ⊤]$], [$Γ ⊢ ∀ x X$]),),
+      elimination: (rule(name: [$∀_e$], [$Γ ⊢ ∀ x X$], [$Γ ⊢ X[x := b]$]),),
+    ),
+    (
+      titre: [Quantificateur existentiel $∃$],
+      condition-introduction: [Avec $b ∈ {⊥, ⊤}$.],
+      condition-elimination: [On note $X_b = X[x := b]$.],
+      intuition-introduction: [#underline[Intuitivement] : il suffit de prouver $X$ pour la valeur $b$.],
+      intuition-elimination: [#underline[Intuitivement] : on raisonne sur les deux valeurs possibles de $x$.],
+      introduction: (rule(name: [$∃_i$], [$Γ ⊢ X[x := b]$], [$Γ ⊢ ∃ x X$]),),
+      elimination: (rule(
+        name: [$∃_e$],
+        [$Γ, X_⊥ ⊢ Y$],
+        [$Γ, X_⊤ ⊢ Y$],
+        [$Γ ⊢ ∃ x X$],
+        [$Γ ⊢ Y$],
+      ),),
+    ),
+))
+
 = Déduction naturelle classique
 
 On obtient le système _classique_ en ajoutant aux règles intuitionnistes le _raisonnement par l'absurde_ (raa) ou, de manière équivalente, le _tiers exclu_ (te).
