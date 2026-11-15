@@ -70,6 +70,7 @@
 /// Affiche les règles en tableau imprimé ou en diapositives avec révélation progressive.
 ///
 /// - lignes (array): Lignes choisies dans `regles`, avec des intuitions affichées en sous-ligne et des remarques ou applications facultatives.
+///   Les champs `intuition-introduction` et `intuition-elimination` contiennent les explications sans le libellé « Intuitivement ».
 /// - axiome (dictionary, none): Schéma de l’axiome, omis si `none`.
 /// - condition-axiome (content): Annotation sous le schéma de l’axiome, par exemple son constructeur OCaml.
 /// - compact (bool): Réduire la hauteur des schémas et les marges du tableau imprimé.
@@ -85,6 +86,10 @@
       uncover("2-", text(size: 0.75em, condition-axiome))
     }
     for ligne in lignes {
+      let intuition(champ) = {
+        let body = ligne.at(champ, default: [])
+        if body != [] { text(size: 0.75em)[#underline[Intuitivement] : #body] }
+      }
       heading(depth: 2, ligne.titre)
       colonnes-cours(
         empiler-presentation: false,
@@ -97,7 +102,7 @@
           #only(1, cases-regles(ligne.introduction, rempli: false))
           #only("2-", cases-regles(ligne.introduction, rempli: rempli))
           #uncover("2-")[
-            #text(size: 0.75em, ligne.at("intuition-introduction", default: []))
+            #intuition("intuition-introduction")
           ]
         ],
         [
@@ -107,7 +112,7 @@
           #only(1, cases-regles(ligne.elimination, rempli: false))
           #only("2-", cases-regles(ligne.elimination, rempli: rempli))
           #uncover("2-")[
-            #text(size: 0.75em, ligne.at("intuition-elimination", default: []))
+            #intuition("intuition-elimination")
           ]
         ],
       )
@@ -132,7 +137,7 @@
       )
       let avec-intuitions = intuitions.any(body => body != [])
       cellules += (
-        table.cell(rowspan: if avec-intuitions { 2 } else { 1 })[*#ligne.titre*],
+        [*#ligne.titre*],
         [
           #cases-regles(ligne.introduction, rempli: rempli, hauteur: hauteur)
           #text(size: 0.85em, ligne.at("condition-introduction", default: []))
@@ -143,6 +148,7 @@
         ],
       )
       if avec-intuitions {
+        cellules += (text(size: 0.85em)[#underline[Intuitivement]],)
         cellules += intuitions.map(body => table.cell(align: left + top, text(size: 0.85em, body)))
       }
     }
