@@ -12,6 +12,10 @@
 
 // TODO : Théorème de compacité
 // https://chatgpt.com/share/6aedca09-89bc-83ed-8d0a-6c33ab0c3cb3?ogimg=plain
+Il y a 3 points de vue sur les formules :
+- Syntaxe : construction des formules à partir de symboles, sans leur donner de sens.
+- Sémantique : interprétation des formules avec une valuation.
+- Preuve (ce cours) : arbre de preuve utilisant des règles de déduction.
 
 = Systèmes formels
 
@@ -294,7 +298,7 @@ Chaque connecteur logique possède une règle d'introduction, permettant de le f
 #let exercice-distributivite = [
   #exercice[
     + Prouver #sequent(($A ∨ (B ∧ C)$, $A ∨ B$)).
-    + On admet aussi #sequent(($A ∨ (B ∧ C)$, $A ∨ C$)). En déduire #sequent(([], $A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C)$)).
+    + On admet #sequent(($A ∨ (B ∧ C)$, $A ∨ C$)). En déduire #sequent(([], $A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C)$)).
   ]
   #solution[
     Pour la première question, posons $Γ = {A ∨ (B ∧ C)}$.
@@ -379,7 +383,7 @@ Chaque connecteur logique possède une règle d'introduction, permettant de le f
   == Contextes différents
 
   #theoreme[Affaiblissement][
-    Si $Γ ⊆ Γ'$ et $Γ ⊢ A$ alors $Γ' ⊢ A$.
+    Si $Γ ⊂ Γ'$ et $Γ ⊢ A$ alors $Γ' ⊢ A$.
   ]
   #solution[
     On raisonne par induction sur l'arbre de preuve de $Γ ⊢ A$, en ajoutant toutes les formules de $Γ'$ à chacun de ses contextes.
@@ -405,6 +409,11 @@ Chaque connecteur logique possède une règle d'introduction, permettant de le f
     (..regles.negation, applications: exercices-negation),
   ),
 )
+#underline[Remarques] :
+- Ces règles ne sont pas à apprendre par cœur (elles sont rappelées) mais à comprendre et à savoir utiliser efficacement.
+- $∨_e$ correspond à la disjonction de cas.
+- $¬_e$ est souvent utilisé avec $⊥_e$.
+- Les règles $scripts(→)_e$, $∧_e$, $∨_e$, $¬_e$ sont souvent plus difficiles à utiliser car elles demandent d'introduire une nouvelle formule à prouver.
 
 #if not est-presentation() [
   #contextes-differents
@@ -437,72 +446,70 @@ Chaque connecteur logique possède une règle d'introduction, permettant de le f
     ))]
 ]
 
-= Quantificateurs propositionnels
+// = Quantificateurs propositionnels
 
-Comme dans le cours de logique propositionnelle, $x$ est une variable propositionnelle et $X[x := b]$ désigne le remplacement des occurrences libres de $x$ dans $X$ par $b ∈ {⊥, ⊤}$. Les quantificateurs sont définis par :
-$ ∀ x X := X[x := ⊥] ∧ X[x := ⊤], quad ∃ x X := X[x := ⊥] ∨ X[x := ⊤] $
+// Comme dans le cours de logique propositionnelle, $X[x := b]$ désigne le remplacement des occurrences libres de la variable $x$ par $b ∈ {⊥, ⊤}$. Les quantificateurs sont définis par :
+// $ ∀ x X = X[x := ⊥] ∧ X[x := ⊤], quad ∃ x X = X[x := ⊥] ∨ X[x := ⊤] $
 
-Les règles suivantes découlent donc de celles de $∧$ et de $∨$. Elles s'appliquent aux trois systèmes de déduction naturelle.
+// Les règles suivantes découlent donc de celles de $∧$ et de $∨$. Elles s'appliquent aux trois systèmes de déduction naturelle.
 
-#tableau-regles((
-    (
-      titre: [Quantificateur universel $∀$],
-      condition-elimination: [Avec $b ∈ {⊥, ⊤}$.],
-      intuition-introduction: [#underline[Intuitivement] : on prouve $X$ pour chacune des deux valeurs de $x$.],
-      intuition-elimination: [#underline[Intuitivement] : on utilise le cas $b$.],
-      introduction: (rule(name: [$∀_i$], [$Γ ⊢ X[x := ⊥]$], [$Γ ⊢ X[x := ⊤]$], [$Γ ⊢ ∀ x X$]),),
-      elimination: (rule(name: [$∀_e$], [$Γ ⊢ ∀ x X$], [$Γ ⊢ X[x := b]$]),),
-    ),
-    (
-      titre: [Quantificateur existentiel $∃$],
-      condition-introduction: [Avec $b ∈ {⊥, ⊤}$.],
-      condition-elimination: [On note $X_b = X[x := b]$.],
-      intuition-introduction: [#underline[Intuitivement] : il suffit de prouver $X$ pour la valeur $b$.],
-      intuition-elimination: [#underline[Intuitivement] : on raisonne sur les deux valeurs possibles de $x$.],
-      introduction: (rule(name: [$∃_i$], [$Γ ⊢ X[x := b]$], [$Γ ⊢ ∃ x X$]),),
-      elimination: (rule(
-        name: [$∃_e$],
-        [$Γ, X_⊥ ⊢ Y$],
-        [$Γ, X_⊤ ⊢ Y$],
-        [$Γ ⊢ ∃ x X$],
-        [$Γ ⊢ Y$],
-      ),),
-    ),
-))
+// #tableau-regles((
+//   (
+//     titre: [$∀$],
+//     condition-elimination: [Avec $b ∈ {⊥, ⊤}$.],
+//     introduction: (rule(name: [$∀_i$], [$Γ ⊢ X[x := ⊥]$], [$Γ ⊢ X[x := ⊤]$], [$Γ ⊢ ∀ x X$]),),
+//     elimination: (rule(name: [$∀_e$], [$Γ ⊢ ∀ x X$], [$Γ ⊢ X[x := b]$]),),
+//   ),
+//   (
+//     titre: [$∃$],
+//     condition-introduction: [Avec $b ∈ {⊥, ⊤}$.],
+//     condition-elimination: [On note $X_b = X[x := b]$.],
+//     introduction: (rule(name: [$∃_i$], [$Γ ⊢ X[x := b]$], [$Γ ⊢ ∃ x X$]),),
+//     elimination: (
+//       rule(
+//         name: [$∃_e$],
+//         [$Γ, X_⊥ ⊢ Y$],
+//         [$Γ, X_⊤ ⊢ Y$],
+//         [$Γ ⊢ ∃ x X$],
+//         [$Γ ⊢ Y$],
+//       ),
+//     ),
+//   ),
+// ))
 
-#slides-only[== Quantificateur universel – exercice]
-#exercice[
-  Soient $X, Y$ deux formules et $x$ une variable propositionnelle. Prouver #sequent(($∀ x (X → Y), ∀ x X$, $∀ x Y$)).
-]
-#solution[
-  Posons $Γ = {∀ x (X → Y), ∀ x X}$ et, pour $b ∈ {⊥, ⊤}$, $X_b = X[x := b]$, $Y_b = Y[x := b]$.
-  #arbre[#prooftree(rule(
-    name: [$scripts(→)_e$],
-    rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢ ∀ x (X → Y)$]), [$Γ ⊢ X_b → Y_b$]),
-    rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢ ∀ x X$]), [$Γ ⊢ X_b$]),
-    [$Γ ⊢ Y_b$],
-  ))]
-  En appliquant cet arbre pour $b = ⊥$ puis pour $b = ⊤$, on obtient les deux prémisses de $∀_i$, d'où $Γ ⊢ ∀ x Y$.
-]
+// #slides-only[== Quantificateur universel – exercice]
+// #exercice[
+//   Soient $X, Y$ deux formules et $x$ une variable propositionnelle. Prouver #sequent(($∀ x (X → Y), ∀ x X$, $∀ x Y$)).
+// ]
+// #solution[
+//   Posons $Γ = {∀ x (X → Y), ∀ x X}$ et, pour $b ∈ {⊥, ⊤}$, $X_b = X[x := b]$, $Y_b = Y[x := b]$.
+//   #arbre[#prooftree(rule(
+//     name: [$scripts(→)_e$],
+//     rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢ ∀ x (X → Y)$]), [$Γ ⊢ X_b → Y_b$]),
+//     rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢ ∀ x X$]), [$Γ ⊢ X_b$]),
+//     [$Γ ⊢ Y_b$],
+//   ))]
+//   En appliquant cet arbre pour $b = ⊥$ puis pour $b = ⊤$, on obtient les deux prémisses de $∀_i$, d'où $Γ ⊢ ∀ x Y$.
+// ]
 
-#slides-only[== Quantificateur existentiel – exercice]
-#exercice[
-  Soient $X, Y$ deux formules et $x$ une variable propositionnelle. Prouver #sequent(($∀ x (X → Y), ∃ x X$, $∃ x Y$)).
-]
-#solution[
-  Posons $Γ = {∀ x (X → Y), ∃ x X}$ et, pour $b ∈ {⊥, ⊤}$, $X_b = X[x := b]$, $Y_b = Y[x := b]$.
-  #arbre[#prooftree(rule(
-    name: [$∃_i$],
-    rule(
-      name: [$scripts(→)_e$],
-      rule(name: [$∀_e$], rule(name: [ax], [$Γ, X_b ⊢ ∀ x (X → Y)$]), [$Γ, X_b ⊢ X_b → Y_b$]),
-      rule(name: [ax], [$Γ, X_b ⊢ X_b$]),
-      [$Γ, X_b ⊢ Y_b$],
-    ),
-    [$Γ, X_b ⊢ ∃ x Y$],
-  ))]
-  Les cas $b = ⊥$ et $b = ⊤$ donnent la même conclusion $∃ x Y$. Avec l'axiome $Γ ⊢ ∃ x X$, la règle $∃_e$ donne donc $Γ ⊢ ∃ x Y$.
-]
+// #slides-only[== Quantificateur existentiel – exercice]
+// #exercice[
+//   Soient $X, Y$ deux formules et $x$ une variable propositionnelle. Prouver #sequent(($∀ x (X → Y), ∃ x X$, $∃ x Y$)).
+// ]
+// #solution[
+//   Posons $Γ = {∀ x (X → Y), ∃ x X}$ et, pour $b ∈ {⊥, ⊤}$, $X_b = X[x := b]$, $Y_b = Y[x := b]$.
+//   #arbre[#prooftree(rule(
+//     name: [$∃_i$],
+//     rule(
+//       name: [$scripts(→)_e$],
+//       rule(name: [$∀_e$], rule(name: [ax], [$Γ, X_b ⊢ ∀ x (X → Y)$]), [$Γ, X_b ⊢ X_b → Y_b$]),
+//       rule(name: [ax], [$Γ, X_b ⊢ X_b$]),
+//       [$Γ, X_b ⊢ Y_b$],
+//     ),
+//     [$Γ, X_b ⊢ ∃ x Y$],
+//   ))]
+//   Les cas $b = ⊥$ et $b = ⊤$ donnent la même conclusion $∃ x Y$. Avec l'axiome $Γ ⊢ ∃ x X$, la règle $∃_e$ donne donc $Γ ⊢ ∃ x Y$.
+// ]
 
 = Déduction naturelle classique
 
