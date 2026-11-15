@@ -75,8 +75,9 @@
 /// - condition-axiome (content): Annotation sous le schéma de l’axiome, par exemple son constructeur OCaml.
 /// - compact (bool): Réduire la hauteur des schémas et les marges du tableau imprimé.
 /// - rempli (bool): Afficher les séquents ; par défaut, seulement dans le corrigé et la présentation.
+/// - conditions-dessus (bool): Placer les conditions d'introduction et d'élimination au-dessus des règles dans le tableau imprimé.
 /// -> content
-#let tableau-regles(lignes, axiome: none, condition-axiome: [], compact: false, rempli: est-presentation() or est-corrige()) = {
+#let tableau-regles(lignes, axiome: none, condition-axiome: [], compact: false, rempli: est-presentation() or est-corrige(), conditions-dessus: false) = {
   if est-presentation() {
     if axiome != none {
       heading(depth: 2)[Axiome]
@@ -139,12 +140,14 @@
       cellules += (
         [*#ligne.titre*],
         [
+          #if conditions-dessus { text(size: 0.85em, ligne.at("condition-introduction", default: [])) }
           #cases-regles(ligne.introduction, rempli: rempli, hauteur: hauteur)
-          #text(size: 0.85em, ligne.at("condition-introduction", default: []))
+          #if not conditions-dessus { text(size: 0.85em, ligne.at("condition-introduction", default: [])) }
         ],
         [
+          #if conditions-dessus { text(size: 0.85em, ligne.at("condition-elimination", default: [])) }
           #cases-regles(ligne.elimination, rempli: rempli, hauteur: hauteur)
-          #text(size: 0.85em, ligne.at("condition-elimination", default: []))
+          #if not conditions-dessus { text(size: 0.85em, ligne.at("condition-elimination", default: [])) }
         ],
       )
       if avec-intuitions {
