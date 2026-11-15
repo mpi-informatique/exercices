@@ -148,7 +148,7 @@
         ],
       )
       if avec-intuitions {
-        cellules += (text(size: 0.85em)[#underline[Intuitivement]],)
+        cellules += (table.hline(stroke: none), text(size: 0.85em)[#underline[Intuitivement]])
         cellules += intuitions.map(body => table.cell(align: left + top, text(size: 0.85em, body)))
       }
     }
