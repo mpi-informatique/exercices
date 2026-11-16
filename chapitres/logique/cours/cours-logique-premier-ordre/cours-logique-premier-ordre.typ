@@ -338,6 +338,34 @@ Les règles de l'égalité sont disponibles quelle que soit la théorie $T$. Les
     Les introductions de $∀$ sont valides car les axiomes de $T'$ sont des formules closes.
 ]
 
+#slides-only[== Accessibilité dans un graphe]
+// Inspiration : Lev-Ami et al., Simulating Reachability Using First-Order Logic (2009), §3.
+#taille-presentation(0.85em)[
+  #exercice[Accessibilité dans un graphe][
+    Sur une signature comportant deux relations binaires $E$ et $R$, on considère la théorie $T$ donnée par :
+    #formules-reparties($∀ x R(x, x),$, $∀ x ∀ y (E(x, y) → R(x, y)),$)
+    #formules-reparties($∀ x ∀ y ∀ z ((R(x, y) ∧ R(y, z)) → R(x, z)).$)
+    Dans un graphe orienté, $E$ représente les arcs. On souhaite utiliser $R$ pour l'accessibilité.
+    + Prouver $E(x, y), E(y, z) ⊢_T R(x, z)$.
+    + Ces axiomes imposent-ils que $R(x, y)$ signifie exactement « il existe un chemin de $x$ à $y$ », en autorisant les chemins de longueur nulle ? Justifier.
+  ]
+]
+#solution[
+  + Posons $Γ = {E(x, y), E(y, z)}$. Les règles dérivées « arc » et « trans » s'obtiennent en instanciant les deux derniers axiomes par $∀_e$, puis en appliquant $scripts(→)_e$ (et $∧_i$ pour « trans »).
+    #arbre[#prooftree(rule(
+      name: [trans],
+      rule(name: [arc], rule(name: [ax], [$Γ ⊢_T E(x, y)$]), [$Γ ⊢_T R(x, y)$]),
+      rule(name: [arc], rule(name: [ax], [$Γ ⊢_T E(y, z)$]), [$Γ ⊢_T R(y, z)$]),
+      [$Γ ⊢_T R(x, z)$],
+    ))]
+
+  + Non. Prenons $D = {a, b}$ avec $a ≠ b$, $E^cal(M) = ∅$ et $R^cal(M) = D × D$.
+    La relation $R^cal(M)$ est réflexive et transitive, et l'implication $E(x, y) → R(x, y)$ est toujours vraie puisque $E^cal(M)$ est vide. Cette structure est donc un modèle de $T$.
+    Pourtant, $R(a, b)$ est vraie alors qu'aucun chemin ne relie $a$ à $b$.
+
+    Ces axiomes n'imposent donc pas la minimalité de $R$. Or l'accessibilité est la _plus petite_ relation réflexive et transitive contenant les arcs.
+]
+
 == Correction et complétude
 
 // Sources : Dowek, Les démonstrations et les algorithmes, §2.2–2.4 ; Lassaigne, §3.
