@@ -337,70 +337,67 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
     Les introductions de $∀$ sont valides car les axiomes de $T'$ sont des formules closes.
 ]
 
-#slides-only[== Accessibilité dans un graphe]
-// Inspiration : Lev-Ami et al., Simulating Reachability Using First-Order Logic (2009), §3.
+#slides-only[== Arithmétique de Peano]
+// Source : Robert Atkey, CS208, Arithmetic and Induction, sections sur les axiomes et la récurrence.
+// https://personal.cis.strath.ac.uk/robert.atkey/cs208/induction.html ; les opérations sont ici définies sur le second argument.
 #taille-presentation(0.85em)[
-  #exercice[Accessibilité dans un graphe][
-    Sur une signature comportant deux relations binaires $E$ et $R$, on considère la théorie $T$ donnée par :
-    #formules-reparties($∀ x R(x, x),$, $∀ x ∀ y (E(x, y) → R(x, y)),$)
-    #formules-reparties($∀ x ∀ y ∀ z ((R(x, y) ∧ R(y, z)) → R(x, z)).$)
-    Dans un graphe orienté, $E$ représente les arcs. On souhaite utiliser $R$ pour l'accessibilité.
-    + Prouver $E(x, y), E(y, z) ⊢_T R(x, z)$.
-    + Soit $cal(M) = (D, E^cal(M), R^cal(M))$ un modèle de $T$. La relation $R^cal(M)$ est-elle nécessairement la relation d'accessibilité du graphe orienté $(D, E^cal(M))$ (chemins de longueur nulle autorisés) ? Justifier.
-  ]
+  #definition[Arithmétique de Peano][
+    Sur la signature avec égalité, une constante $0$, une fonction unaire $S$ (successeur) et deux fonctions binaires $+$ et $×$, l'_arithmétique de Peano_, notée $upright("PA")$, est la théorie donnée par les axiomes :
+    #formules-reparties($∀ x ¬ (S(x) = 0),$, $∀ x ∀ y (S(x) = S(y) → x = y),$)
+    #formules-reparties($∀ x (x + 0 = x),$, $∀ x ∀ y (x + S(y) = S(x + y)),$)
+    #formules-reparties($∀ x (x × 0 = 0),$, $∀ x ∀ y (x × S(y) = x × y + x),$)
+    et le _schéma de récurrence_ : pour toute formule $A$, on ajoute l'axiome
+    $ (A[x := 0] ∧ ∀ x (A → A[x := S(x)])) → ∀ x A, $
+    où les autres variables libres sont quantifiées universellement. Il s'agit donc d'une famille infinie d'axiomes, un pour chaque formule $A$.
+
+    On note $1 = S(0)$.
+  ] <pa>
+]
+
+#slides-only[== Exercice sur PA]
+#exercice[Arithmétique de Peano][
+  + Prouver $⊢_upright("PA") ∀ x (0 + x = x)$ en utilisant le schéma de récurrence.
+  + En déduire $⊢_upright("PA") ∀ x (x × 1 = x)$.
 ]
 #solution[
-  + Notons $A = ∀ x ∀ y (E(x, y) → R(x, y))$ et $B = ∀ x ∀ y ∀ z ((R(x, y) ∧ R(y, z)) → R(x, z))$ les deux derniers axiomes de $T$. Construisons les règles dérivées dans un contexte $Δ$, avec des variables $a, b, c$ distinctes de $x, y, z$.
+  + Notons $P(t)$ la formule $0 + t = t$ et posons $D = ∀ x (P(x) → P(S(x)))$. L'instance du schéma de récurrence pour $P(x)$ est $I = (P(0) ∧ D) → ∀ x P(x)$.
 
-    Pour la règle « arc », deux applications de $∀_e$ et une application de $scripts(→)_e$ donnent :
+    L'axiome $∀ u (u + 0 = u)$, instancié en $0$ par $∀_e$, donne $P(0)$.
+    Pour l'hérédité, supposons $P(y)$. L'axiome de l'addition avec un successeur, instancié en $0$ et $y$, puis la compatibilité de $S$ avec l'égalité donnent :
+    $ 0 + S(y) = S(0 + y) = S(y). $
+    On obtient donc $P(S(y))$. Ce calcul justifie le raccourci « calcul » dans l'arbre suivant :
     #arbre[#prooftree(rule(
       name: [$scripts(→)_e$],
+      rule(name: [ax], [$⊢_upright("PA") I$]),
       rule(
-        name: [$∀_e$],
+        name: [$∧_i$],
         rule(
           name: [$∀_e$],
-          rule(name: [ax], [$Δ ⊢_T A$]),
-          [$Δ ⊢_T ∀ y (E(a, y) → R(a, y))$],
+          rule(name: [ax], [$⊢_upright("PA") ∀ u (u + 0 = u)$]),
+          [$⊢_upright("PA") P(0)$],
         ),
-        [$Δ ⊢_T E(a, b) → R(a, b)$],
-      ),
-      [$Δ ⊢_T E(a, b)$],
-      [$Δ ⊢_T R(a, b)$],
-    ))]
-
-    Pour la règle « trans », on instancie les trois quantificateurs de $B$, puis on réunit les deux prémisses par $∧_i$ :
-    #arbre[#prooftree(rule(
-      name: [$scripts(→)_e$],
-      rule(
-        name: [$∀_e$],
         rule(
-          name: [$∀_e$],
+          name: [$∀_i$],
           rule(
-            name: [$∀_e$],
-            rule(name: [ax], [$Δ ⊢_T B$]),
-            [$Δ ⊢_T ∀ y ∀ z ((R(a, y) ∧ R(y, z)) → R(a, z))$],
+            name: [$scripts(→)_i$],
+            rule(
+              name: [calcul],
+              rule(name: [ax], [$P(y) ⊢_upright("PA") P(y)$]),
+              [$P(y) ⊢_upright("PA") P(S(y))$],
+            ),
+            [$⊢_upright("PA") P(y) → P(S(y))$],
           ),
-          [$Δ ⊢_T ∀ z ((R(a, b) ∧ R(b, z)) → R(a, z))$],
+          [$⊢_upright("PA") D$],
         ),
-        [$Δ ⊢_T (R(a, b) ∧ R(b, c)) → R(a, c)$],
+        [$⊢_upright("PA") P(0) ∧ D$],
       ),
-      rule(name: [$∧_i$], [$Δ ⊢_T R(a, b)$], [$Δ ⊢_T R(b, c)$], [$Δ ⊢_T R(a, b) ∧ R(b, c)$]),
-      [$Δ ⊢_T R(a, c)$],
+      [$⊢_upright("PA") ∀ x P(x)$],
     ))]
+    La règle $scripts(→)_i$ décharge l'hypothèse $P(y)$. L'introduction de $∀$ est valide car les axiomes de $upright("PA")$ sont clos et il ne reste aucune autre hypothèse.
 
-    En posant $Γ = {E(x, y), E(y, z)}$, ces deux règles donnent l'arbre suivant :
-    #arbre[#prooftree(rule(
-      name: [trans],
-      rule(name: [arc], rule(name: [ax], [$Γ ⊢_T E(x, y)$]), [$Γ ⊢_T R(x, y)$]),
-      rule(name: [arc], rule(name: [ax], [$Γ ⊢_T E(y, z)$]), [$Γ ⊢_T R(y, z)$]),
-      [$Γ ⊢_T R(x, z)$],
-    ))]
-
-  + Non. Prenons $D = {a, b}$ avec $a ≠ b$, $E^cal(M) = ∅$ et $R^cal(M) = D × D$.
-    La relation $R^cal(M)$ est réflexive et transitive, et l'implication $E(x, y) → R(x, y)$ est toujours vraie puisque $E^cal(M)$ est vide. Cette structure est donc un modèle de $T$.
-    Pourtant, $R(a, b)$ est vraie alors qu'aucun chemin ne relie $a$ à $b$.
-
-    Ces axiomes n'imposent donc pas la minimalité de $R$. Or l'accessibilité est la _plus petite_ relation réflexive et transitive contenant les arcs.
+  + Pour une variable $x$ quelconque, les axiomes de la multiplication et le résultat de la première question donnent :
+    $ x × 1 = x × S(0) = x × 0 + x = 0 + x = x. $
+    Les axiomes sont instanciés par $∀_e$, les égalités sont composées avec les règles de l'égalité et le résultat de la première question est instancié en $x$. On conclut par $∀_i$, car les axiomes de $upright("PA")$ sont clos.
 ]
 
 == Correction et complétude
@@ -450,9 +447,9 @@ $ ⊢_T (A ∨ ¬ A), quad ⊬_T A, quad ⊬_T ¬ A. $
 
 #hp[== Incomplétude de l'arithmétique]
 
-On note $upright("PA")$ l'_arithmétique de Peano_ du premier ordre : ses axiomes décrivent $0$, le successeur, l'addition et la multiplication, et comprennent les instances du raisonnement par récurrence exprimables dans ce langage.
+On reprend l'arithmétique de Peano #link(<pa>)[$upright("PA")$] définie précédemment.
 
-Une théorie $T$ contenant $upright("PA")$ est _cohérente_ si $⊬_T 0 = 1$, où $1$ désigne le successeur de $0$. Ses axiomes sont _énumérables_ si un programme peut les produire tous, éventuellement sans s'arrêter.
+Une théorie $T$ contenant $upright("PA")$ est _cohérente_ si $⊬_T 0 = 1$. Ses axiomes sont _énumérables_ si un programme peut les produire tous, éventuellement sans s'arrêter.
 
 Les deux théorèmes suivants sont admis.
 
