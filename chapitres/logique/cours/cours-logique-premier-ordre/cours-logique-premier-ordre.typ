@@ -227,6 +227,56 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
   ),
 ))
 
+#slides-only[== Involution et égalité]
+#exercice[Involution][
+  Soit $f$ un symbole de fonction unaire et $I = ∀ x (f(f(x)) = x)$. En supposant $I$, prouver que $f$ est bijective :
+  $ I ⊢ ∀ x ∀ y (f(x) = f(y) → x = y) quad "et" quad I ⊢ ∀ y ∃ x (f(x) = y). $
+]
+#solution[
+  Pour l'injectivité, posons $H = (f(x) = f(y))$ et $Γ = {I, H}$. Pour alléger l'arbre, notons $s = f(f(x))$ et $t = f(f(y))$ : ce sont des abréviations de termes.
+  Les étiquettes sym, trans et cong désignent la symétrie, la transitivité et la compatibilité de $f$ avec l'égalité.
+  #arbre[#prooftree(rule(
+    name: [$∀_i$],
+    rule(
+      name: [$∀_i$],
+      rule(
+        name: [$scripts(→)_i$],
+        rule(
+          name: [trans],
+          rule(
+            name: [trans],
+            rule(
+              name: [sym],
+              rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢ I$]), [$Γ ⊢ s = x$]),
+              [$Γ ⊢ x = s$],
+            ),
+            rule(name: [cong], rule(name: [ax], [$Γ ⊢ f(x) = f(y)$]), [$Γ ⊢ s = t$]),
+            [$Γ ⊢ x = t$],
+          ),
+          rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢ I$]), [$Γ ⊢ t = y$]),
+          [$Γ ⊢ x = y$],
+        ),
+        [$I ⊢ f(x) = f(y) → x = y$],
+      ),
+      [$I ⊢ ∀ y (f(x) = f(y) → x = y)$],
+    ),
+    [$I ⊢ ∀ x ∀ y (f(x) = f(y) → x = y)$],
+  ))]
+  La règle $scripts(→)_i$ décharge l'hypothèse $H$. Les deux applications de $∀_i$ sont valides car l'hypothèse $I$ est une formule close.
+
+  Pour la surjectivité, on choisit le terme $f(y)$ comme témoin de $x$ :
+  #arbre[#prooftree(rule(
+    name: [$∀_i$],
+    rule(
+      name: [$∃_i$],
+      rule(name: [$∀_e$], rule(name: [ax], [$I ⊢ I$]), [$I ⊢ f(f(y)) = y$]),
+      [$I ⊢ ∃ x (f(x) = y)$],
+    ),
+    [$I ⊢ ∀ y ∃ x (f(x) = y)$],
+  ))]
+  La dernière application de $∀_i$ est valide car $y$ n'est pas libre dans l'hypothèse $I$.
+]
+
 == Théorie
 
 #definition[Théorie][
@@ -286,56 +336,6 @@ Les règles de l'égalité sont disponibles quelle que soit la théorie $T$. Les
       [$⊢_(T') ∀ x ∀ y (x ⋆ y = y ⋆ x)$],
     ))]
     Les introductions de $∀$ sont valides car les axiomes de $T'$ sont des formules closes.
-]
-
-#slides-only[== Involution et égalité]
-#exercice[Involution][
-  Sur la signature avec égalité et un symbole de fonction unaire $f$, on considère la théorie $T = {I}$ où $I = ∀ x (f(f(x)) = x)$. Prouver que $f$ est bijective :
-  $ ⊢_T ∀ x ∀ y (f(x) = f(y) → x = y) quad "et" quad ⊢_T ∀ y ∃ x (f(x) = y). $
-]
-#solution[
-  Pour l'injectivité, posons $H = (f(x) = f(y))$ et $Γ = {H}$. Pour alléger l'arbre, notons $s = f(f(x))$ et $t = f(f(y))$ : ce sont des abréviations de termes.
-  Les étiquettes sym, trans et cong désignent la symétrie, la transitivité et la compatibilité de $f$ avec l'égalité.
-  #arbre[#prooftree(rule(
-    name: [$∀_i$],
-    rule(
-      name: [$∀_i$],
-      rule(
-        name: [$scripts(→)_i$],
-        rule(
-          name: [trans],
-          rule(
-            name: [trans],
-            rule(
-              name: [sym],
-              rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢_T I$]), [$Γ ⊢_T s = x$]),
-              [$Γ ⊢_T x = s$],
-            ),
-            rule(name: [cong], rule(name: [ax], [$Γ ⊢_T f(x) = f(y)$]), [$Γ ⊢_T s = t$]),
-            [$Γ ⊢_T x = t$],
-          ),
-          rule(name: [$∀_e$], rule(name: [ax], [$Γ ⊢_T I$]), [$Γ ⊢_T t = y$]),
-          [$Γ ⊢_T x = y$],
-        ),
-        [$⊢_T f(x) = f(y) → x = y$],
-      ),
-      [$⊢_T ∀ y (f(x) = f(y) → x = y)$],
-    ),
-    [$⊢_T ∀ x ∀ y (f(x) = f(y) → x = y)$],
-  ))]
-  La règle $scripts(→)_i$ décharge l'hypothèse $H$. Les deux applications de $∀_i$ sont valides car ni $x$ ni $y$ n'est libre dans l'unique axiome $I$ de $T$.
-
-  Pour la surjectivité, on choisit le terme $f(y)$ comme témoin de $x$ :
-  #arbre[#prooftree(rule(
-    name: [$∀_i$],
-    rule(
-      name: [$∃_i$],
-      rule(name: [$∀_e$], rule(name: [ax], [$⊢_T I$]), [$⊢_T f(f(y)) = y$]),
-      [$⊢_T ∃ x (f(x) = y)$],
-    ),
-    [$⊢_T ∀ y ∃ x (f(x) = y)$],
-  ))]
-  La dernière application de $∀_i$ est valide car $y$ n'est pas libre dans l'unique axiome $I$ de $T$.
 ]
 
 == Correction et complétude
