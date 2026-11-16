@@ -144,14 +144,23 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 
 #underline[Exemple] : la structure de domaine $ℤ$ qui interprète $⋆$ par $+$, $e$ par $0$ et $i(n)$ par $-n$ est un modèle de la #link(<groupes>)[théorie des groupes] : elle satisfait l'associativité, les deux axiomes du neutre et les deux axiomes de l'inverse.
 
-#slides-only[== Deux modèles de PA]
+#slides-only[== Modèles standards de PA]
 // Source : Andrew Marks, Computability theory (2024), §10.1, p. 47.
 // https://math.berkeley.edu/~marks/notes/computability_notes_v1.pdf
 #paragraphe([Exemples], trait: true)[
   - Le _modèle standard_ $cal(N)$ de #link(<pa>)[$upright("PA")$] a pour domaine $ℕ$, avec $0^cal(N) = 0$, $S^cal(N)(n) = n + 1$ et les opérations usuelles $+$ et $×$. Tous les axiomes de $upright("PA")$, y compris chaque instance de récurrence, y sont vrais.
-  - Il existe aussi un _modèle non standard_ $cal(M) ⊨ upright("PA")$ dont le domaine contient un élément $a$ différent de tous les éléments
-    $ 0^cal(M), quad S^cal(M)(0^cal(M)), quad S^cal(M)(S^cal(M)(0^cal(M))), quad … $
-    Autrement dit, $a ≠ overline(n)^cal(M)$ pour tout $n ∈ ℕ$, où $overline(n)$ est le terme obtenu en appliquant $n$ fois $S$ à $0$. L'existence d'un tel modèle est admise ; elle résulte du théorème de compacité du premier ordre.
+  - Sur les entiers pairs $2 ℕ$, on définit la structure $cal(E)$ par :
+    $ 0^cal(E) = 0, quad S^cal(E)(x) = x + 2, quad x +_cal(E) y = x + y, quad x ×_cal(E) y = (x y)/2. $
+    La bijection $f : ℕ → 2 ℕ$, $n ↦ 2 n$, préserve $0$, le successeur, l'addition et la multiplication. Par exemple :
+    $ f(n m) = 2 n m = ((2 n)(2 m))/2 = f(n) ×_cal(E) f(m). $
+    Ainsi, $cal(E)$ est une copie isomorphe du modèle standard et satisfait tous les axiomes de $upright("PA")$. Le terme $1 = S(0)$ y désigne l'entier usuel $2$.
+]
+
+#slides-only[== Modèle non standard de PA]
+#paragraphe([Exemple], trait: true)[
+  Il existe aussi un _modèle non standard_ $cal(M) ⊨ upright("PA")$ dont le domaine contient un élément $a$ différent de tous les éléments
+  $ 0^cal(M), quad S^cal(M)(0^cal(M)), quad S^cal(M)(S^cal(M)(0^cal(M))), quad … $
+  Autrement dit, $a ≠ overline(n)^cal(M)$ pour tout $n ∈ ℕ$, où $overline(n)$ est le terme obtenu en appliquant $n$ fois $S$ à $0$. L'existence d'un tel modèle est admise ; elle résulte du théorème de compacité du premier ordre.
 ]
 
 #slides-only[== Conséquence logique]
