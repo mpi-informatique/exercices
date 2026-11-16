@@ -22,6 +22,8 @@ Contrairement à la logique propositionnelle qui ne traite que des variables boo
   Une _signature du premier ordre_ $Σ$ est la donnée de _symboles de fonctions_ et de _symboles de relations_, chacun muni d'une _arité_ (nombre d'arguments). Un symbole de fonction d'arité $0$ est une _constante_.
 ]
 
+Dans ce cours, on travaille _avec égalité_ : la signature comprend toujours le symbole de relation binaire $=$, qui exprime l’égalité entre les objets du domaine.
+
 #slide()
 #underline[Exemples] :
 - Théorie des groupes : constante $e$, fonction $attach(#[], tr: -1)$ d'arité $1$, fonction $⋆$ d'arité $2$ et relation $=$ d'arité $2$.
@@ -76,6 +78,8 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
   - pour chaque constante $c$, un élément $c^cal(M) ∈ D$
   - pour chaque symbole de fonction $f$ d'arité $n > 0$, une fonction $f^cal(M) : D^n → D$
   - pour chaque symbole de relation $R$ d'arité $n$, une relation $R^cal(M) ⊂ D^n$
+
+  L'interprétation de $=$ est imposée : c'est la relation d'identité sur $D$.
 ]
 
 #slides-only[== Affectations et valeur des termes]
@@ -91,6 +95,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
 
   La valeur de vérité $⟦A⟧_(cal(M), ρ) ∈ {0, 1}$ d'une formule $A$ est définie par :
   - $⟦R(t_1, …, t_n)⟧_(cal(M), ρ) = 1$ si et seulement si $(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ)) ∈ R^cal(M)$.
+  - en particulier, $⟦s = t⟧_(cal(M), ρ) = 1$ si et seulement si $⟦s⟧_(cal(M), ρ) = ⟦t⟧_(cal(M), ρ)$.
   - les connecteurs suivent les mêmes tables de vérité qu'en logique propositionnelle.
   - $⟦∀ x A⟧_(cal(M), ρ) = 1$ si et seulement si $⟦A⟧_(cal(M), ρ[x := a]) = 1$ pour tout $a ∈ D$.
   - $⟦∃ x A⟧_(cal(M), ρ) = 1$ si et seulement si $⟦A⟧_(cal(M), ρ[x := a]) = 1$ pour au moins un $a ∈ D$.
@@ -105,8 +110,8 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
 
 #slides-only[== Exemples]
 #underline[Exemples] :
-- Arithmétique de Peano : sur la signature $Σ = {0, S, +, ×}$, la structure de domaine $ℕ$ interprète $0$ par $0$, $S(n)$ par $n + 1$, et $+$ et $×$ par les opérations usuelles. C'est un modèle des axiomes de Peano ; par exemple, $cal(M) ⊨ ∀ x (x + 0 = x)$.
-- Théorie des groupes : sur la signature $Σ = {⋆, e, i}$, la structure de domaine $ℤ$ interprète $⋆$ par l'addition, $e$ par $0$ et $n^(−1)$ par $-n$. C'est un modèle des axiomes des groupes : l'addition sur $ℤ$ est associative, possède $0$ pour élément neutre et chaque entier $n$ a pour inverse $-n$.
+- Arithmétique de Peano : sur la signature $Σ = {0, S, +, ×, =}$, la structure de domaine $ℕ$ interprète $0$ par $0$, $S(n)$ par $n + 1$, et $+$ et $×$ par les opérations usuelles. C'est un modèle des axiomes de Peano ; par exemple, $cal(M) ⊨ ∀ x (x + 0 = x)$.
+- Théorie des groupes : sur la signature $Σ = {⋆, e, i, =}$, la structure de domaine $ℤ$ interprète $⋆$ par l'addition, $e$ par $0$ et $n^(−1)$ par $-n$. C'est un modèle des axiomes des groupes : l'addition sur $ℤ$ est associative, possède $0$ pour élément neutre et chaque entier $n$ a pour inverse $-n$.
 
 #slides-only[== Conséquence logique]
 #definition[Conséquence logique][
@@ -218,6 +223,20 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
     La règle $∨_e$ décharge les hypothèses $A_y$ et $B_y$ dans leurs branches respectives. La règle $∃_e$ décharge $A_y ∨ B_y$. Elle est valide car $y$ n'est libre ni dans $Γ$ ni dans $C$.
 ]
 
+#article-only[== Égalité]
+
+#tableau-regles((
+  (
+    titre: [Égalité],
+    intuition-introduction: [tout objet est égal à lui-même.],
+    intuition-elimination: [on peut remplacer un objet par un objet égal dans une formule.],
+    introduction: (rule(name: [$scripts(=)_i$], [$Γ ⊢ t = t$]),),
+    elimination: (rule(name: [$scripts(=)_e$], [$Γ ⊢ s = t$], [$Γ ⊢ A[x := s]$], [$Γ ⊢ A[x := t]$]),),
+  ),
+))
+
+Les substitutions sont effectuées sans capture de variables. On déduit de ces règles la symétrie, la transitivité et la compatibilité avec les fonctions : de $s = t$, on peut notamment déduire $f(s) = f(t)$. Ces propriétés seront utilisées comme raccourcis dans les arbres.
+
 == Théorie
 
 #definition[Théorie][
@@ -226,7 +245,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
   On note $Γ ⊢_T A$ si $T ∪ Γ ⊢ A$ : la formule $A$ est démontrable à partir des axiomes de $T$ et des hypothèses de $Γ$.
 ]
 
-On peut introduire des règles propres à $T$ lorsqu'elles se déduisent de ses axiomes et des règles logiques. Ce sont des raccourcis de preuve valables dans les modèles de $T$, mais pas nécessairement dans toutes les structures. En particulier, les règles de l'égalité sont des règles logiques générales, contrairement aux propriétés propres aux groupes ou aux ordres.
+Les règles de l'égalité sont disponibles quelle que soit la théorie $T$. Les axiomes de $T$ sont des hypothèses supplémentaires.
 
 #slides-only[== Groupes]
 #taille-presentation(0.85em)[
@@ -281,7 +300,7 @@ On peut introduire des règles propres à $T$ lorsqu'elles se déduisent de ses 
 
 #slides-only[== Involution et égalité]
 #exercice[Involution][
-  Sur la signature avec égalité et un symbole de fonction unaire $f$, on considère la théorie $T = {I}$ où $I = ∀ x (f(f(x)) = x)$. On utilise la symétrie, la transitivité et la compatibilité $s = t ==> f(s) = f(t)$ pour tous termes $s, t$.\ Prouver que $f$ est bijective :
+  Sur la signature avec égalité et un symbole de fonction unaire $f$, on considère la théorie $T = {I}$ où $I = ∀ x (f(f(x)) = x)$. Prouver que $f$ est bijective :
   $ ⊢_T ∀ x ∀ y (f(x) = f(y) → x = y) quad "et" quad ⊢_T ∀ y ∃ x (f(x) = y). $
 ]
 #solution[
