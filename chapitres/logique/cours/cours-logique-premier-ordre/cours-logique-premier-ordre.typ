@@ -347,11 +347,49 @@ Les règles de l'égalité sont disponibles quelle que soit la théorie $T$. Les
     #formules-reparties($∀ x ∀ y ∀ z ((R(x, y) ∧ R(y, z)) → R(x, z)).$)
     Dans un graphe orienté, $E$ représente les arcs. On souhaite utiliser $R$ pour l'accessibilité.
     + Prouver $E(x, y), E(y, z) ⊢_T R(x, z)$.
-    + Ces axiomes imposent-ils que $R(x, y)$ signifie exactement « il existe un chemin de $x$ à $y$ », en autorisant les chemins de longueur nulle ? Justifier.
+    + Soit $cal(M) = (D, E^cal(M), R^cal(M))$ un modèle de $T$. La relation $R^cal(M)$ est-elle nécessairement la relation d'accessibilité du graphe orienté $(D, E^cal(M))$ (chemins de longueur nulle autorisés) ? Justifier.
   ]
 ]
 #solution[
-  + Posons $Γ = {E(x, y), E(y, z)}$. Les règles dérivées « arc » et « trans » s'obtiennent en instanciant les deux derniers axiomes par $∀_e$, puis en appliquant $scripts(→)_e$ (et $∧_i$ pour « trans »).
+  + Notons $A = ∀ x ∀ y (E(x, y) → R(x, y))$ et $B = ∀ x ∀ y ∀ z ((R(x, y) ∧ R(y, z)) → R(x, z))$ les deux derniers axiomes de $T$. Construisons les règles dérivées dans un contexte $Δ$, avec des variables $a, b, c$ distinctes de $x, y, z$.
+
+    Pour la règle « arc », deux applications de $∀_e$ et une application de $scripts(→)_e$ donnent :
+    #arbre[#prooftree(rule(
+      name: [$scripts(→)_e$],
+      rule(
+        name: [$∀_e$],
+        rule(
+          name: [$∀_e$],
+          rule(name: [ax], [$Δ ⊢_T A$]),
+          [$Δ ⊢_T ∀ y (E(a, y) → R(a, y))$],
+        ),
+        [$Δ ⊢_T E(a, b) → R(a, b)$],
+      ),
+      [$Δ ⊢_T E(a, b)$],
+      [$Δ ⊢_T R(a, b)$],
+    ))]
+
+    Pour la règle « trans », on instancie les trois quantificateurs de $B$, puis on réunit les deux prémisses par $∧_i$ :
+    #arbre[#prooftree(rule(
+      name: [$scripts(→)_e$],
+      rule(
+        name: [$∀_e$],
+        rule(
+          name: [$∀_e$],
+          rule(
+            name: [$∀_e$],
+            rule(name: [ax], [$Δ ⊢_T B$]),
+            [$Δ ⊢_T ∀ y ∀ z ((R(a, y) ∧ R(y, z)) → R(a, z))$],
+          ),
+          [$Δ ⊢_T ∀ z ((R(a, b) ∧ R(b, z)) → R(a, z))$],
+        ),
+        [$Δ ⊢_T (R(a, b) ∧ R(b, c)) → R(a, c)$],
+      ),
+      rule(name: [$∧_i$], [$Δ ⊢_T R(a, b)$], [$Δ ⊢_T R(b, c)$], [$Δ ⊢_T R(a, b) ∧ R(b, c)$]),
+      [$Δ ⊢_T R(a, c)$],
+    ))]
+
+    En posant $Γ = {E(x, y), E(y, z)}$, ces deux règles donnent l'arbre suivant :
     #arbre[#prooftree(rule(
       name: [trans],
       rule(name: [arc], rule(name: [ax], [$Γ ⊢_T E(x, y)$]), [$Γ ⊢_T R(x, y)$]),
