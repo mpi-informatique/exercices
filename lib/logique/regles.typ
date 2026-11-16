@@ -77,7 +77,14 @@
 /// - rempli (bool): Afficher les séquents ; par défaut, seulement dans le corrigé et la présentation.
 /// - conditions-dessus (bool): Placer les conditions d'introduction et d'élimination au-dessus des règles dans le tableau imprimé.
 /// -> content
-#let tableau-regles(lignes, axiome: none, condition-axiome: [], compact: false, rempli: est-presentation() or est-corrige(), conditions-dessus: false) = {
+#let tableau-regles(
+  lignes,
+  axiome: none,
+  condition-axiome: [],
+  compact: false,
+  rempli: est-presentation() or est-corrige(),
+  conditions-dessus: false,
+) = {
   if est-presentation() {
     if axiome != none {
       heading(depth: 2)[Axiome]
@@ -126,10 +133,13 @@
     let hauteur = if compact { 2.4em } else { 3.4em }
     let cellules = ()
     if axiome != none {
-      cellules += ([*Axiome*], table.cell(colspan: 2)[
-        #cases-regles((axiome,), rempli: rempli, hauteur: hauteur)
-        #text(size: 0.85em, condition-axiome)
-      ])
+      cellules += (
+        [*Axiome*],
+        table.cell(colspan: 2)[
+          #cases-regles((axiome,), rempli: rempli, hauteur: hauteur)
+          #text(size: 0.85em, condition-axiome)
+        ],
+      )
     }
     for ligne in lignes {
       let intuitions = (
@@ -151,7 +161,7 @@
         ],
       )
       if avec-intuitions {
-        cellules += (table.hline(stroke: none), text(size: 0.85em)[#underline[Intuitivement]])
+        cellules += (table.hline(stroke: none), text(size: 0.85em)[Intuitivement])
         cellules += intuitions.map(body => table.cell(align: left + top, text(size: 0.85em, body)))
       }
     }

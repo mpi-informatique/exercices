@@ -1,6 +1,6 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, pause, slide, slides-only, solution,
-  taille-presentation, theoremes,
+  article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, pause, slide, slides-only,
+  solution, taille-presentation, theoremes,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
 #import "/load.typ": logique
@@ -10,8 +10,8 @@
 #show: cours-et-presentation.with(titre: "Logique du premier ordre", niveau: "MPI")
 
 Comme pour la logique propositionnelle, il y a 3 points de vue sur les formules :
-- Syntaxe : construction des formules à partir de symboles, sans leur donner de sens.
-- Sémantique : interprétation des formules avec une valuation.
+- Syntaxe : construction des formules à partir de symboles.
+- Sémantique : interprétation des formules avec une valuation/structure.
 - Preuve : arbre de preuve utilisant des règles de déduction.
 
 = Syntaxe : signature du premier ordre
@@ -21,8 +21,6 @@ Contrairement à la logique propositionnelle qui ne traite que des variables boo
 #definition[Signature du premier ordre][
   Une _signature du premier ordre_ $Σ$ est la donnée de _symboles de fonctions_ et de _symboles de relations_, chacun muni d'une _arité_ (nombre d'arguments). Un symbole de fonction d'arité $0$ est une _constante_.
 ]
-
-Dans ce cours, on travaille _avec égalité_ : la signature comprend toujours le symbole de relation binaire $=$, qui exprime l’égalité entre les objets du domaine.
 
 #slide()
 #underline[Exemples] :
@@ -51,9 +49,6 @@ Dans ce cours, on travaille _avec égalité_ : la signature comprend toujours le
 - Théorie des groupes : $∀ x ∃ y (x ⋆ y = e)$ est une formule.
 - Théorie des ensembles : $∀ x ∀ y ((x ∪ y)^c = x^c ∩ y^c)$ est une formule.
 
-#pause
-#underline[Attention] : ne pas confondre variable (terme décrivant un objet du domaine étudié), par exemple un nombre réel, et variable propositionnelle (objet qui possède une valeur de vérité).
-
 #slides-only[== Occurrences libres et liées]
 
 #definition[Occurrence libre, occurrence liée][
@@ -68,7 +63,7 @@ Dans ce cours, on travaille _avec égalité_ : la signature comprend toujours le
 ]
 
 #underline[Exemple] : si $A = (∀ x (x = x)) ∧ ∃ y (x = y)$ alors
-$A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
+$ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 
 #hp[= Sémantique : structures et modèles]
 
@@ -78,40 +73,39 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
   - pour chaque constante $c$, un élément $c^cal(M) ∈ D$
   - pour chaque symbole de fonction $f$ d'arité $n > 0$, une fonction $f^cal(M) : D^n → D$
   - pour chaque symbole de relation $R$ d'arité $n$, une relation $R^cal(M) ⊂ D^n$
-
-  L'interprétation de $=$ est imposée : c'est la relation d'identité sur $D$.
 ]
+#underline[Exemple] : la relation d'égalité $=$ est généralement interprétée par la relation $R^cal(M) = \{(a, a) | a in D\}$.
 
 #slides-only[== Affectations et valeur des termes]
 #definition[Affectation][
-  Une _affectation_ $ρ : cal(V) → D$ donne une valeur aux variables. La valeur $⟦t⟧_(cal(M), ρ) ∈ D$ d'un terme $t$ est définie par :
+  Une _affectation_ $ρ : cal(V) → D$ donne une valeur aux variables. La _valeur_ $⟦t⟧_(cal(M), ρ) ∈ D$ d'un terme $t$ est définie par :
   $ ⟦x⟧_(cal(M), ρ) = ρ(x), quad ⟦c⟧_(cal(M), ρ) = c^cal(M) $
   $ ⟦f(t_1, …, t_n)⟧_(cal(M), ρ) = f^cal(M)(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ)) $
-]
+]#pause
+
+#underline[Remarque] : on retrouve la logique propositionnelle si $D = {0, 1}$ (une affectation est alors une valuation) et les constantes sont $⊤$ et $⊥$.
 
 #slides-only[== Valeur de vérité]
 #definition[Valeur de vérité][
-  Pour $a ∈ D$, on note $ρ[x := a]$ l'affectation qui donne à $x$ la valeur $a$ et qui coïncide avec $ρ$ pour les autres variables.
-
   La valeur de vérité $⟦A⟧_(cal(M), ρ) ∈ {0, 1}$ d'une formule $A$ est définie par :
   - $⟦R(t_1, …, t_n)⟧_(cal(M), ρ) = 1$ si et seulement si $(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ)) ∈ R^cal(M)$.
-  - en particulier, $⟦s = t⟧_(cal(M), ρ) = 1$ si et seulement si $⟦s⟧_(cal(M), ρ) = ⟦t⟧_(cal(M), ρ)$.
-  - les connecteurs suivent les mêmes tables de vérité qu'en logique propositionnelle.
+  - En particulier, $⟦s = t⟧_(cal(M), ρ) = 1$ si et seulement si $⟦s⟧_(cal(M), ρ) = ⟦t⟧_(cal(M), ρ)$.
+  - Les connecteurs suivent les mêmes tables de vérité qu'en logique propositionnelle.
   - $⟦∀ x A⟧_(cal(M), ρ) = 1$ si et seulement si $⟦A⟧_(cal(M), ρ[x := a]) = 1$ pour tout $a ∈ D$.
   - $⟦∃ x A⟧_(cal(M), ρ) = 1$ si et seulement si $⟦A⟧_(cal(M), ρ[x := a]) = 1$ pour au moins un $a ∈ D$.
 ]
 
 #slides-only[== Satisfaction et modèles]
 #definition[Satisfaction et modèle][
-  On note $(cal(M), ρ) ⊨ A$ si $⟦A⟧_(cal(M), ρ) = 1$ : $A$ est alors vraie dans $cal(M)$ pour $ρ$.
+  On note $(cal(M), ρ) ⊨ A$ si $⟦A⟧_(cal(M), ρ) = 1$ : $A$ est alors _vraie_ dans $cal(M)$ pour $ρ$.
 
   On note $cal(M) ⊨ A$ si $(cal(M), ρ) ⊨ A$ pour toute affectation $ρ$ : $cal(M)$ est alors un _modèle_ de $A$.
 ]
 
 #slides-only[== Exemples]
 #underline[Exemples] :
-- Arithmétique de Peano : sur la signature $Σ = {0, S, +, ×, =}$, la structure de domaine $ℕ$ interprète $0$ par $0$, $S(n)$ par $n + 1$, et $+$ et $×$ par les opérations usuelles. C'est un modèle des axiomes de Peano ; par exemple, $cal(M) ⊨ ∀ x (x + 0 = x)$.
-- Théorie des groupes : sur la signature $Σ = {⋆, e, i, =}$, la structure de domaine $ℤ$ interprète $⋆$ par l'addition, $e$ par $0$ et $n^(−1)$ par $-n$. C'est un modèle des axiomes des groupes : l'addition sur $ℤ$ est associative, possède $0$ pour élément neutre et chaque entier $n$ a pour inverse $-n$.
+- Arithmétique de Peano : sur la signature $Σ = {0, S, +, ×, =}$, on note $cal(M)$ la structure de domaine $ℕ$ qui interprète $0$ par $0$, $S(n)$ par $n + 1$, et $+$ et $×$ par les opérations usuelles. Alors $cal(M) ⊨ ∀ x (x + 0 = x)$.
+- Théorie des groupes : sur la signature $Σ = {⋆, e, i, =}$, la structure $cal(M)$ de domaine $ℤ$ qui interprète $⋆$ par $+$, $e$ par $0$ et $n^(−1)$ par $-n$ vérifie $cal(M) ⊨ ∀ x ∀ y ∀ z (x ⋆ (y ⋆ z) = (x ⋆ y) ⋆ z)$.
 
 #slides-only[== Conséquence logique]
 #definition[Conséquence logique][
@@ -232,8 +226,6 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
     elimination: (rule(name: [$scripts(=)_e$], [$Γ ⊢ s = t$], [$Γ ⊢ A[x := s]$], [$Γ ⊢ A[x := t]$]),),
   ),
 ))
-
-Les substitutions sont effectuées sans capture de variables. On déduit de ces règles la symétrie, la transitivité et la compatibilité avec les fonctions : de $s = t$, on peut notamment déduire $f(s) = f(t)$. Ces propriétés seront utilisées comme raccourcis dans les arbres.
 
 == Théorie
 

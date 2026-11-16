@@ -330,11 +330,8 @@ Ces équivalences permettent d'éliminer $→$ et $↔$ pour obtenir une formule
 ]
 
 #slide()
-#underline[Attention] : remplacer une variable dans une formule avec des quantificateurs demande une précaution. Si $A = ∀ y thin (x ∨ y)$, remplacer naïvement $x$ par $y$ donne $∀ y thin (y ∨ y) ≡ ⊥$ : le $y$ introduit est désormais lié par $∀ y$. C'est une _capture de variable_.
-
-On renomme d'abord la variable quantifiée : $A ≡ ∀ z thin (x ∨ z)$. On obtient alors :
-$ substituer(A, x, y) = ∀ z thin (y ∨ z) ≡ y. $
-Le résultat dépend bien de $y$, comme $A$ dépendait de $x$.
+#underline[Attention aux _captures de variable_] : Si $A = ∀ y thin (x ∨ y)$, remplacer $x$ par $y$ donne $∀ y thin (y ∨ y) ≡ ⊥$ : le $y$ introduit est désormais lié par $∀ y$. Il faut d'abord renommer $A ≡ ∀ z thin (x ∨ z)$ puis
+$substituer(A, x, y) = ∀ z thin (y ∨ z) ≡ y.$
 
 #slides-only[== Ordre des quantificateurs]
 #exercice[
@@ -427,8 +424,8 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   [
     #underline[Exemples] :
     $
-      ¬ (x ∨ (¬ y ∧ z)) &≡ ¬ x ∧ (y ∨ ¬ z), \
-      ¬ (∃ x thin (x ∧ ¬ y)) &≡ ∀ x thin (¬ x ∨ y).
+           ¬ (x ∨ (¬ y ∧ z)) & ≡ ¬ x ∧ (y ∨ ¬ z), \
+      ¬ (∃ x thin (x ∧ ¬ y)) & ≡ ∀ x thin (¬ x ∨ y).
     $
   ],
 )
@@ -550,10 +547,10 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   Un parcours postfixe de l'arbre traite chaque nœud une seule fois, en temps constant par nœud, en réutilisant les sous-arbres conservés. Le coût total est donc $O(|φ|)$.
 ]
 
-#theoreme[Décomposition de Shannon][
-  Une formule $φ$ est satisfiable si et seulement si l'une des deux formules $substituer(φ, x, ⊥)$, $substituer(φ, x, ⊤)$ est satisfiable :
-  $ φ ≡ (¬ x ∧ substituer(φ, x, ⊥)) ∨ (x ∧ substituer(φ, x, ⊤)). $
-]
+// #theoreme[Décomposition de Shannon][
+//   Une formule $φ$ est satisfiable si et seulement si l'une des deux formules $substituer(φ, x, ⊥)$, $substituer(φ, x, ⊤)$ est satisfiable :
+//   $ φ ≡ (¬ x ∧ substituer(φ, x, ⊥)) ∨ (x ∧ substituer(φ, x, ⊤)). $
+// ]
 
 #slide()
 
