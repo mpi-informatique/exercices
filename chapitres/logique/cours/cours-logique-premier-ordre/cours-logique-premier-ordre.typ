@@ -228,8 +228,6 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
 #tableau-regles((
   (
     titre: [Égalité],
-    intuition-introduction: [tout objet est égal à lui-même.],
-    intuition-elimination: [on peut remplacer un objet par un objet égal dans une formule.],
     introduction: (rule(name: [$scripts(=)_i$], [$Γ ⊢ t = t$]),),
     elimination: (rule(name: [$scripts(=)_e$], [$Γ ⊢ s = t$], [$Γ ⊢ A[x := s]$], [$Γ ⊢ A[x := t]$]),),
   ),
