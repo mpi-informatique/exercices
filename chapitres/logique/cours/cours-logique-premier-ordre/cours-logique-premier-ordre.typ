@@ -70,6 +70,33 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
   Une _théorie_ $T$ est un ensemble de formules closes sur une même signature, appelées _axiomes_.
 ]
 
+#slides-only[== Théorie des groupes]
+#taille-presentation(0.85em)[
+  #definition[Théorie des groupes][
+    Sur la signature $Σ = {⋆, e, i, =}$, avec une constante $e$, une fonction binaire $⋆$ et une fonction unaire $i$ notée $i(x) = x^(-1)$, la _théorie des groupes_ est donnée par les axiomes :
+    #formules-reparties($∀ x ∀ y ∀ z ((x ⋆ y) ⋆ z = x ⋆ (y ⋆ z))$)
+    #formules-reparties($∀ x (x ⋆ e = x),$, $∀ x (e ⋆ x = x)$)
+    #formules-reparties($∀ x (x ⋆ x^(-1) = e)$, $∀ x (x^(-1) ⋆ x = e)$)
+  ] <groupes>
+]
+
+#slides-only[== Arithmétique de Peano]
+// Source : Robert Atkey, CS208, Arithmetic and Induction, sections sur les axiomes et la récurrence.
+// https://personal.cis.strath.ac.uk/robert.atkey/cs208/induction.html ; les opérations sont ici définies sur le second argument.
+#taille-presentation(0.85em)[
+  #definition[Arithmétique de Peano][
+    Sur la signature avec égalité, une constante $0$, une fonction unaire $S$ (successeur) et deux fonctions binaires $+$ et $×$, l'_arithmétique de Peano_, notée $upright("PA")$, est la théorie donnée par les axiomes :
+    #formules-reparties($∀ x ¬ (S(x) = 0),$, $∀ x ∀ y (S(x) = S(y) → x = y),$)
+    #formules-reparties($∀ x (x + 0 = x),$, $∀ x ∀ y (x + S(y) = S(x + y)),$)
+    #formules-reparties($∀ x (x × 0 = 0),$, $∀ x ∀ y (x × S(y) = x × y + x),$)
+    et le _schéma de récurrence_ : pour toute formule $A$, on ajoute l'axiome
+    $ (A[x := 0] ∧ ∀ x (A → A[x := S(x)])) → ∀ x A, $
+    où les autres variables libres sont quantifiées universellement. Il s'agit donc d'une famille infinie d'axiomes, un pour chaque formule $A$.
+
+    On note $1 = S(0)$.
+  ] <pa>
+]
+
 #hp[= Sémantique : structures et modèles]
 
 #definition[Structure et interprétation][
@@ -292,10 +319,7 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
 #slides-only[== Groupes]
 #taille-presentation(0.85em)[
   #exercice[Groupes][
-    Sur la signature avec égalité, une constante $e$, une fonction binaire $⋆$ et une fonction unaire notée $x ↦ x^(-1)$, on considère la théorie $T$ des groupes, donnée par les axiomes :
-    #formules-reparties($∀ x ∀ y ∀ z ((x ⋆ y) ⋆ z = x ⋆ (y ⋆ z))$)
-    #formules-reparties($∀ x (x ⋆ e = x),$, $∀ x (e ⋆ x = x)$)
-    #formules-reparties($∀ x (x ⋆ x^(-1) = e)$, $∀ x (x^(-1) ⋆ x = e)$)
+    On considère la #link(<groupes>)[théorie des groupes] $T$.
     + Prouver $⊢_T ∀ x ∃ y (x ⋆ y = x)$.
     + On pose $T' = T ∪ {∀ u (u ⋆ u = e)}$. Prouver que tout groupe dont chaque élément est son propre inverse est commutatif : $⊢_(T') ∀ x ∀ y (x ⋆ y = y ⋆ x)$.
   ]
@@ -340,25 +364,9 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
     Les introductions de $∀$ sont valides car les axiomes de $T'$ sont des formules closes.
 ]
 
-#slides-only[== Arithmétique de Peano]
-// Source : Robert Atkey, CS208, Arithmetic and Induction, sections sur les axiomes et la récurrence.
-// https://personal.cis.strath.ac.uk/robert.atkey/cs208/induction.html ; les opérations sont ici définies sur le second argument.
-#taille-presentation(0.85em)[
-  #definition[Arithmétique de Peano][
-    Sur la signature avec égalité, une constante $0$, une fonction unaire $S$ (successeur) et deux fonctions binaires $+$ et $×$, l'_arithmétique de Peano_, notée $upright("PA")$, est la théorie donnée par les axiomes :
-    #formules-reparties($∀ x ¬ (S(x) = 0),$, $∀ x ∀ y (S(x) = S(y) → x = y),$)
-    #formules-reparties($∀ x (x + 0 = x),$, $∀ x ∀ y (x + S(y) = S(x + y)),$)
-    #formules-reparties($∀ x (x × 0 = 0),$, $∀ x ∀ y (x × S(y) = x × y + x),$)
-    et le _schéma de récurrence_ : pour toute formule $A$, on ajoute l'axiome
-    $ (A[x := 0] ∧ ∀ x (A → A[x := S(x)])) → ∀ x A, $
-    où les autres variables libres sont quantifiées universellement. Il s'agit donc d'une famille infinie d'axiomes, un pour chaque formule $A$.
-
-    On note $1 = S(0)$.
-  ] <pa>
-]
-
 #slides-only[== Exercice sur PA]
 #exercice[Arithmétique de Peano][
+  On considère l'#link(<pa>)[arithmétique de Peano $upright("PA")$].
   + Prouver $⊢_upright("PA") ∀ x (0 + x = x)$ en utilisant le schéma de récurrence.
   + En déduire $⊢_upright("PA") ∀ x (x × 1 = x)$.
 ]
