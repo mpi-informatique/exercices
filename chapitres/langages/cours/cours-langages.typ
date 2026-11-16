@@ -181,19 +181,17 @@
   + Donner deux algorithmes de MP2I pour chercher un facteur dans un mot.
 ]
 #solution[
-  #slides-only[== Recherche d'un facteur : corrigé]
-  #taille-presentation(0.78em, code-extrait(corrige-c, "facteur", language: "c"))
-  #pause
-  Chaque position de départ est testée, y compris celle de fin si le motif est vide.
-  Pour des tailles $n$ et $p$, le coût est $O(p + n + (p - n + 1) n)$ si $n ≤ p$, et $O(p + n)$ sinon, calcul des tailles compris.
-]
-#solution[
-  #slides-only[== Recherche d'un sous-mot : corrigé]
-  #taille-presentation(0.78em, code-extrait(corrige-ocaml, "sous_mot"))
-  #pause
-  On associe chaque lettre de $u$ à sa première occurrence disponible dans $v$ : choisir une occurrence plus tardive ne laisserait pas davantage de possibilités.
-  Chaque appel avance dans $v$, donc le coût est $O(n + p)$, calcul des tailles compris.
-  Pour chercher un facteur : recherche naïve et algorithme de Rabin–Karp.
+  + #slides-only[== Recherche d'un facteur : corrigé]
+    #taille-presentation(0.78em, code-extrait(corrige-c, "facteur", language: "c"))
+    #pause
+    Chaque position de départ est testée, y compris celle de fin si le motif est vide.
+    Pour des tailles $n$ et $p$, le coût est $O(p + n + (p - n + 1) n)$ si $n ≤ p$, et $O(p + n)$ sinon, calcul des tailles compris.
+  + #slides-only[== Recherche d'un sous-mot : corrigé]
+    #taille-presentation(0.78em, code-extrait(corrige-ocaml, "sous_mot"))
+    #pause
+    On associe chaque lettre de $u$ à sa première occurrence disponible dans $v$ : choisir une occurrence plus tardive ne laisserait pas davantage de possibilités.
+    Chaque appel avance dans $v$, donc le coût est $O(n + p)$, calcul des tailles compris.
+  + Pour chercher un facteur : recherche naïve et algorithme de Rabin–Karp.
 ]
 
 = Langage

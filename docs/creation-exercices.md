@@ -60,6 +60,7 @@ Lors d'un transfert entre dépôts demandé par l'utilisateur, déplacer le doss
 - Construire une progression : exemples, résultats intermédiaires, caractérisation, applications. Demander de trouver puis de justifier les méthodes et relations, sans donner systématiquement le résultat attendu.
 - Rédiger le corrigé avec l'énoncé. Vérifier hypothèses, cas limites, réciproques et dépendances entre questions ; distinguer les sens d'une équivalence et les étapes d'un algorithme.
 - Réserver les corrigés au document corrigé imprimé, sans les projeter dans les diapositives, y compris lors d'une conversion. Dans un cours, utiliser `#solution[...]` ; n'activer `presentation: true` que sur demande explicite de l'utilisateur, sans créer de fonction qui force la projection des corrections.
+- Pour un exercice de cours comportant plusieurs questions, regrouper les réponses numérotées dans un seul bloc `#solution[...]`.
 - Pour une récurrence ou une induction, expliciter la propriété démontrée, le paramètre ou la structure sur lesquels porte la preuve et les hypothèses de récurrence ou d'induction, puis traiter les cas de base et l'hérédité.
 - Après déplacement ou ajout, vérifier tous les renvois, adapter le barème et la durée. Lors d'une relecture, proposer les questions supplémentaires avant de les intégrer.
 - Écrire un français direct et concis. Consignes à l'infinitif (« Donner… »), preuves avec des verbes conjugués (« Supposons… », « Montrons… »). Mettre les nouveaux termes en italique et éviter les points-virgules dans la prose.

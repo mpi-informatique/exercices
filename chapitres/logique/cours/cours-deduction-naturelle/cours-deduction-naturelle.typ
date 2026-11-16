@@ -232,44 +232,41 @@ Chaque connecteur logique possède une règle d'introduction, permettant de le f
     + Prouver #sequent(($A → (B → C)$, $(A ∧ B) → C$)).
   ]
   #solution[
-    Pour la première question :
-    #arbre[#prooftree(rule(
-      name: [$scripts(→)_i$],
-      rule(
+    + #arbre[#prooftree(rule(
+        name: [$scripts(→)_i$],
+        rule(
+          name: [$scripts(→)_i$],
+          rule(
+            name: [$scripts(→)_e$],
+            rule(name: [ax], [$(A ∧ B) → C ⊢ (A ∧ B) → C$]),
+            rule(
+              name: [$∧_i$],
+              rule(name: [ax], [$A ⊢ A$]),
+              rule(name: [ax], [$B ⊢ B$]),
+              [$A, B ⊢ A ∧ B$],
+            ),
+            [$(A ∧ B) → C, A, B ⊢ C$],
+          ),
+          [$(A ∧ B) → C, A ⊢ B → C$],
+        ),
+        [$(A ∧ B) → C ⊢ A → (B → C)$],
+      ))]
+    + Posons $Γ = {A → (B → C), A ∧ B}$.
+      #arbre[#prooftree(rule(
         name: [$scripts(→)_i$],
         rule(
           name: [$scripts(→)_e$],
-          rule(name: [ax], [$(A ∧ B) → C ⊢ (A ∧ B) → C$]),
           rule(
-            name: [$∧_i$],
-            rule(name: [ax], [$A ⊢ A$]),
-            rule(name: [ax], [$B ⊢ B$]),
-            [$A, B ⊢ A ∧ B$],
+            name: [$scripts(→)_e$],
+            rule(name: [ax], [$Γ ⊢ A → (B → C)$]),
+            rule(name: [$∧_e^g$], rule(name: [ax], [$Γ ⊢ A ∧ B$]), [$Γ ⊢ A$]),
+            [$Γ ⊢ B → C$],
           ),
-          [$(A ∧ B) → C, A, B ⊢ C$],
+          rule(name: [$∧_e^d$], rule(name: [ax], [$Γ ⊢ A ∧ B$]), [$Γ ⊢ B$]),
+          [$Γ ⊢ C$],
         ),
-        [$(A ∧ B) → C, A ⊢ B → C$],
-      ),
-      [$(A ∧ B) → C ⊢ A → (B → C)$],
-    ))]
-  ]
-  #solution[
-    Pour la seconde question, posons $Γ = {A → (B → C), A ∧ B}$.
-    #arbre[#prooftree(rule(
-      name: [$scripts(→)_i$],
-      rule(
-        name: [$scripts(→)_e$],
-        rule(
-          name: [$scripts(→)_e$],
-          rule(name: [ax], [$Γ ⊢ A → (B → C)$]),
-          rule(name: [$∧_e^g$], rule(name: [ax], [$Γ ⊢ A ∧ B$]), [$Γ ⊢ A$]),
-          [$Γ ⊢ B → C$],
-        ),
-        rule(name: [$∧_e^d$], rule(name: [ax], [$Γ ⊢ A ∧ B$]), [$Γ ⊢ B$]),
-        [$Γ ⊢ C$],
-      ),
-      [$A → (B → C) ⊢ (A ∧ B) → C$],
-    ))]
+        [$A → (B → C) ⊢ (A ∧ B) → C$],
+      ))]
   ]
 ]
 
@@ -301,24 +298,22 @@ Chaque connecteur logique possède une règle d'introduction, permettant de le f
     + On admet #sequent(($A ∨ (B ∧ C)$, $A ∨ C$)). En déduire #sequent(([], $A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C)$)).
   ]
   #solution[
-    Pour la première question, posons $Γ = {A ∨ (B ∧ C)}$.
-    #arbre[#prooftree(rule(
-      name: [$∨_e$],
-      rule(name: [$∨_i^g$], rule(name: [ax], [$Γ, A ⊢ A$]), [$Γ, A ⊢ A ∨ B$]),
-      rule(
-        name: [$∨_i^d$],
-        rule(name: [$∧_e^g$], rule(name: [ax], [$Γ, B ∧ C ⊢ B ∧ C$]), [$Γ, B ∧ C ⊢ B$]),
-        [$Γ, B ∧ C ⊢ A ∨ B$],
-      ),
-      rule(name: [ax], [$Γ ⊢ A ∨ (B ∧ C)$]),
-      [$Γ ⊢ A ∨ B$],
-    ))]
-  ]
-  #solution[
-    Pour la seconde question, les deux séquents ont le même contexte $Γ = {A ∨ (B ∧ C)}$.
-    La règle $∧_i$ donne $Γ ⊢ (A ∨ B) ∧ (A ∨ C)$.
-    En déchargeant l'hypothèse $A ∨ (B ∧ C)$ avec $scripts(→)_i$, on obtient
-    $ ⊢ A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C). $
+    + Posons $Γ = {A ∨ (B ∧ C)}$.
+      #arbre[#prooftree(rule(
+        name: [$∨_e$],
+        rule(name: [$∨_i^g$], rule(name: [ax], [$Γ, A ⊢ A$]), [$Γ, A ⊢ A ∨ B$]),
+        rule(
+          name: [$∨_i^d$],
+          rule(name: [$∧_e^g$], rule(name: [ax], [$Γ, B ∧ C ⊢ B ∧ C$]), [$Γ, B ∧ C ⊢ B$]),
+          [$Γ, B ∧ C ⊢ A ∨ B$],
+        ),
+        rule(name: [ax], [$Γ ⊢ A ∨ (B ∧ C)$]),
+        [$Γ ⊢ A ∨ B$],
+      ))]
+    + Les deux séquents ont le même contexte $Γ = {A ∨ (B ∧ C)}$.
+      La règle $∧_i$ donne $Γ ⊢ (A ∨ B) ∧ (A ∨ C)$.
+      En déchargeant l'hypothèse $A ∨ (B ∧ C)$ avec $scripts(→)_i$, on obtient
+      $ ⊢ A ∨ (B ∧ C) → (A ∨ B) ∧ (A ∨ C). $
   ]
 ]
 
@@ -543,43 +538,41 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 ]
 
 #solution[
-  Pour la première question, posons $Γ = {¬ (A ∨ ¬ A)}$.
-  #arbre[#prooftree(rule(
-    name: [$¬_i$],
-    rule(
-      name: [$¬_e$],
-      rule(name: [ax], [$Γ, A ⊢ ¬ (A ∨ ¬ A)$]),
-      rule(name: [$∨_i^g$], rule(name: [ax], [$Γ, A ⊢ A$]), [$Γ, A ⊢ A ∨ ¬ A$]),
-      [$Γ, A ⊢ ⊥$],
-    ),
-    [$¬ (A ∨ ¬ A) scripts(⊢)_i ¬ A$],
-  ))]
-]
-#solution[
-  Pour la seconde question, on conserve $Γ = {¬ (A ∨ ¬ A)}$.
-  #arbre[#prooftree(rule(
-    name: [raa],
-    rule(
-      name: [$¬_e$],
-      rule(name: [ax], [$Γ ⊢ ¬ (A ∨ ¬ A)$]),
+  + Posons $Γ = {¬ (A ∨ ¬ A)}$.
+    #arbre[#prooftree(rule(
+      name: [$¬_i$],
       rule(
-        name: [$∨_i^d$],
-        rule(
-          name: [$¬_i$],
-          rule(
-            name: [$¬_e$],
-            rule(name: [ax], [$Γ, A ⊢ ¬ (A ∨ ¬ A)$]),
-            rule(name: [$∨_i^g$], rule(name: [ax], [$Γ, A ⊢ A$]), [$Γ, A ⊢ A ∨ ¬ A$]),
-            [$Γ, A ⊢ ⊥$],
-          ),
-          [$Γ ⊢ ¬ A$],
-        ),
-        [$Γ ⊢ A ∨ ¬ A$],
+        name: [$¬_e$],
+        rule(name: [ax], [$Γ, A ⊢ ¬ (A ∨ ¬ A)$]),
+        rule(name: [$∨_i^g$], rule(name: [ax], [$Γ, A ⊢ A$]), [$Γ, A ⊢ A ∨ ¬ A$]),
+        [$Γ, A ⊢ ⊥$],
       ),
-      [$Γ ⊢ ⊥$],
-    ),
-    [$scripts(⊢)_c A ∨ ¬ A$],
-  ))]
+      [$¬ (A ∨ ¬ A) scripts(⊢)_i ¬ A$],
+    ))]
+  + On conserve $Γ = {¬ (A ∨ ¬ A)}$.
+    #arbre[#prooftree(rule(
+      name: [raa],
+      rule(
+        name: [$¬_e$],
+        rule(name: [ax], [$Γ ⊢ ¬ (A ∨ ¬ A)$]),
+        rule(
+          name: [$∨_i^d$],
+          rule(
+            name: [$¬_i$],
+            rule(
+              name: [$¬_e$],
+              rule(name: [ax], [$Γ, A ⊢ ¬ (A ∨ ¬ A)$]),
+              rule(name: [$∨_i^g$], rule(name: [ax], [$Γ, A ⊢ A$]), [$Γ, A ⊢ A ∨ ¬ A$]),
+              [$Γ, A ⊢ ⊥$],
+            ),
+            [$Γ ⊢ ¬ A$],
+          ),
+          [$Γ ⊢ A ∨ ¬ A$],
+        ),
+        [$Γ ⊢ ⊥$],
+      ),
+      [$scripts(⊢)_c A ∨ ¬ A$],
+    ))]
 ]
 
 #slides-only[== Du tiers exclu à raa]
@@ -623,51 +616,49 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
   )
 ]
 #solution[
-  Pour la première question, posons $C = A → B$ et $Γ = {C, ¬ B, A}$ :
-  #arbre[#prooftree(rule(
-    name: [$scripts(→)_i$],
-    rule(
-      name: [$¬_i$],
+  + Posons $C = A → B$ et $Γ = {C, ¬ B, A}$ :
+    #arbre[#prooftree(rule(
+      name: [$scripts(→)_i$],
       rule(
-        name: [$¬_e$],
+        name: [$¬_i$],
         rule(
-          name: [$scripts(→)_e$],
-          rule(name: [ax], [$Γ ⊢ C$]),
-          rule(name: [ax], [$Γ ⊢ A$]),
-          [$Γ ⊢ B$],
-        ),
-        rule(name: [ax], [$Γ ⊢ ¬ B$]),
-        [$Γ ⊢ ⊥$],
-      ),
-      [$C, ¬ B ⊢ ¬ A$],
-    ),
-    [$A → B ⊢ ¬ B → ¬ A$],
-  ))]
-]
-#solution[
-  Pour la seconde question, posons $C = ¬ B → ¬ A$ et $Γ = {C, A, ¬ B}$ :
-  #arbre[#prooftree(rule(
-    name: [$scripts(→)_i$],
-    rule(
-      name: [$¬_i$],
-      rule(
-        name: [$¬_e$],
-        rule(name: [ax], [$Γ ⊢ A$]),
-        rule(
-          name: [$scripts(→)_e$],
-          rule(name: [ax], [$Γ ⊢ C$]),
+          name: [$¬_e$],
+          rule(
+            name: [$scripts(→)_e$],
+            rule(name: [ax], [$Γ ⊢ C$]),
+            rule(name: [ax], [$Γ ⊢ A$]),
+            [$Γ ⊢ B$],
+          ),
           rule(name: [ax], [$Γ ⊢ ¬ B$]),
-          [$Γ ⊢ ¬ A$],
+          [$Γ ⊢ ⊥$],
         ),
-        [$Γ ⊢ ⊥$],
+        [$C, ¬ B ⊢ ¬ A$],
       ),
-      [$C, A ⊢ ¬ ¬ B$],
-    ),
-    [$¬ B → ¬ A ⊢ A → ¬ ¬ B$],
-  ))]
+      [$A → B ⊢ ¬ B → ¬ A$],
+    ))]
+  + Posons $C = ¬ B → ¬ A$ et $Γ = {C, A, ¬ B}$ :
+    #arbre[#prooftree(rule(
+      name: [$scripts(→)_i$],
+      rule(
+        name: [$¬_i$],
+        rule(
+          name: [$¬_e$],
+          rule(name: [ax], [$Γ ⊢ A$]),
+          rule(
+            name: [$scripts(→)_e$],
+            rule(name: [ax], [$Γ ⊢ C$]),
+            rule(name: [ax], [$Γ ⊢ ¬ B$]),
+            [$Γ ⊢ ¬ A$],
+          ),
+          [$Γ ⊢ ⊥$],
+        ),
+        [$C, A ⊢ ¬ ¬ B$],
+      ),
+      [$¬ B → ¬ A ⊢ A → ¬ ¬ B$],
+    ))]
 
-  #pause
-  Cette preuve est aussi classique. Dans le contexte ${C, A}$, l'élimination de la double négation donne alors $B$. En introduisant $→$, on obtient $¬ B → ¬ A scripts(⊢)_c A → B$.
+    #pause
+    Cette preuve est aussi classique. Dans le contexte ${C, A}$, l'élimination de la double négation donne alors $B$. En introduisant $→$, on obtient $¬ B → ¬ A scripts(⊢)_c A → B$.
 ]
 
 = Correction et complétude de la déduction naturelle en logique classique
@@ -708,29 +699,27 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
   Prouver #sequent((contexte, $C$), contexte-affiche: $Γ$). Donner un contre-modèle à $Γ ⊨ A$. En déduire $Γ scripts(⊬)_c A$.
 ]
 #solution[
-  Pour la première question, on raisonne par cas sur $A ∨ B$ :
-  #arbre[#prooftree(rule(
-    name: [$∨_e$],
-    rule(
-      name: [$scripts(→)_e$],
-      rule(name: [ax], [$Γ, A ⊢ A → C$]),
-      rule(name: [ax], [$Γ, A ⊢ A$]),
-      [$Γ, A ⊢ C$],
-    ),
-    rule(
-      name: [$scripts(→)_e$],
-      rule(name: [ax], [$Γ, B ⊢ B → C$]),
-      rule(name: [ax], [$Γ, B ⊢ B$]),
-      [$Γ, B ⊢ C$],
-    ),
-    rule(name: [ax], [$Γ ⊢ A ∨ B$]),
-    [$Γ ⊢ C$],
-  ))]
-]
-#solution[
-  La valuation $v(A) = 0$, $v(B) = 1$, $v(C) = 1$ satisfait les trois formules de $Γ$ et ne satisfait pas $A$. Donc $Γ ⊭ A$.
-  #pause
-  Si $Γ scripts(⊢)_c A$, la correction donnerait $Γ ⊨ A$, ce qui contredit ce contre-modèle. Ainsi $Γ scripts(⊬)_c A$.
+  + On raisonne par cas sur $A ∨ B$ :
+    #arbre[#prooftree(rule(
+      name: [$∨_e$],
+      rule(
+        name: [$scripts(→)_e$],
+        rule(name: [ax], [$Γ, A ⊢ A → C$]),
+        rule(name: [ax], [$Γ, A ⊢ A$]),
+        [$Γ, A ⊢ C$],
+      ),
+      rule(
+        name: [$scripts(→)_e$],
+        rule(name: [ax], [$Γ, B ⊢ B → C$]),
+        rule(name: [ax], [$Γ, B ⊢ B$]),
+        [$Γ, B ⊢ C$],
+      ),
+      rule(name: [ax], [$Γ ⊢ A ∨ B$]),
+      [$Γ ⊢ C$],
+    ))]
+  + La valuation $v(A) = 0$, $v(B) = 1$, $v(C) = 1$ satisfait les trois formules de $Γ$ et ne satisfait pas $A$. Donc $Γ ⊭ A$.
+  + #pause
+    Si $Γ scripts(⊢)_c A$, la correction donnerait $Γ ⊨ A$, ce qui contredit ce contre-modèle. Ainsi $Γ scripts(⊬)_c A$.
 ]
 
 #slides-only[== Cohérence]
