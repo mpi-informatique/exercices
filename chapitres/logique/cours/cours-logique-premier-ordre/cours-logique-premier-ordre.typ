@@ -1,5 +1,5 @@
 #import "/load.typ": (
-  colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, pause, slide, slides-only, solution,
+  article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, pause, slide, slides-only, solution,
   taille-presentation, theoremes,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
@@ -147,7 +147,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
 
 = Preuves : déduction naturelle du premier ordre
 
-== Quantificateurs
+#article-only[== Quantificateurs]
 
 #tableau-regles(conditions-dessus: true, (
   (
