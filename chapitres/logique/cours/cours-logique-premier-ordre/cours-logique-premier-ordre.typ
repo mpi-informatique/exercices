@@ -1,5 +1,5 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, pause, slide, slides-only,
+  article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, paragraphe, pause, slide, slides-only,
   solution, taille-presentation, theoremes,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
@@ -434,12 +434,14 @@ Pour montrer $Γ ⊬_T A$, il suffit donc de trouver un modèle de $T$ et une af
 
 #slides-only[== Exemple : commutativité des groupes]
 
-#underline[Exemple] : soit $T$ la théorie des groupes et $A = ∀ x ∀ y (x ⋆ y = y ⋆ x).$ Alors :
-- Le groupe $(ℤ, +)$ est un modèle de $T$ dans lequel $A$ est vraie.
-- Le groupe $S_3$ des permutations de ${1, 2, 3}$, muni de la composition, est un modèle de $T$ dans lequel $A$ est fausse : échanger $1$ et $2$, puis $2$ et $3$, ne donne pas la même permutation que dans l'ordre inverse.
-#v(-0.5em)
-Par correction, une preuve de $A$ à partir de $T$ imposerait que $A$ soit vraie dans $S_3$. Une preuve de $¬ A$ imposerait que $¬ A$ soit vraie dans $(ℤ, +)$. Ainsi :
-$ ⊬_T A quad "et" quad ⊬_T ¬ A. $
+#paragraphe([Exemple], trait: true)[
+  soit $T$ la théorie des groupes et $A = ∀ x ∀ y (x ⋆ y = y ⋆ x).$ Alors :
+  - Le groupe $(ℤ, +)$ est un modèle de $T$ dans lequel $A$ est vraie.
+  - Le groupe $S_3$ des permutations de ${1, 2, 3}$, muni de la composition, est un modèle de $T$ dans lequel $A$ est fausse : échanger $1$ et $2$, puis $2$ et $3$, ne donne pas la même permutation que dans l'ordre inverse.
+  #v(-0.5em)
+  Par correction, une preuve de $A$ à partir de $T$ imposerait que $A$ soit vraie dans $S_3$. Une preuve de $¬ A$ imposerait que $¬ A$ soit vraie dans $(ℤ, +)$. Ainsi :
+  $ ⊬_T A quad "et" quad ⊬_T ¬ A. $
+]
 
 #slides-only[== Tiers exclu]
 #underline[Remarque] : cet exemple ne contredit pas le tiers exclu. Dans chaque modèle de $T$, $A$ est soit vraie, soit fausse.\

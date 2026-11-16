@@ -1,6 +1,6 @@
 #import "theoremes.typ": configurer-theoremes
 #import "code.typ": configurer-code
-#import "blocs.typ": epaisseur-trait, marge
+#import "blocs.typ": bloc-solution, epaisseur-trait, marge
 #import "options.typ": est-presentation
 
 #let sep = h(0.5em)
@@ -63,6 +63,20 @@
 /// - body (content): Contenu à signaler.
 /// -> content
 #let tp(id: none, body) = marge(if id == none { [TP] } else { lien(id)[TP] }, body)
+
+/// Introduit un exemple, une remarque ou un autre passage par un titre souligné suivi de deux-points.
+/// Avec `trait: true`, le cours A4 utilise le même trait vertical sécable que les solutions.
+/// En présentation, le trait est omis. Le contenu est toujours visible.
+/// Exemple : `#paragraphe([Exemple], trait: true)[Un exemple développé sur plusieurs paragraphes.]`.
+///
+/// - titre (content, str): Libellé, par exemple « Exemple », « Remarque » ou « Attention ».
+/// - trait (bool): Ajouter un trait vertical à gauche dans le cours et le corrigé.
+/// - body (content): Contenu du passage.
+/// -> content
+#let paragraphe(titre, trait: false, body) = {
+  let contenu = [#underline(titre) : #body]
+  if trait and not est-presentation() { bloc-solution(contenu) } else { contenu }
+}
 
 /// Trace des pointillés sur la largeur restante de la ligne, sauf en présentation.
 ///
