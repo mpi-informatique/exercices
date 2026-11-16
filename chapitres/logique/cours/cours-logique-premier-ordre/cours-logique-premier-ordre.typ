@@ -219,6 +219,7 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 
 #article-only[== Égalité]
 
+L'égalité est une relation qui appartient à la plupart des signatures du premier ordre, avec les règles suivantes :
 #tableau-regles((
   (
     titre: [Égalité],
@@ -284,8 +285,6 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 
   On note $Γ ⊢_T A$ si $T ∪ Γ ⊢ A$ : la formule $A$ est démontrable à partir des axiomes de $T$ et des hypothèses de $Γ$.
 ]
-
-Les règles de l'égalité sont disponibles quelle que soit la théorie $T$. Les axiomes de $T$ sont des hypothèses supplémentaires.
 
 #slides-only[== Groupes]
 #taille-presentation(0.85em)[
