@@ -50,7 +50,9 @@
   let arbres = regles.map(regle => {
     // Masquer les séquents conserve la longueur de la barre et la position du nom.
     let schema = if rempli { regle } else {
-      regle + (premises: regle.premises.map(hide), conclusion: hide(regle.conclusion))
+      // Réserver aussi une ligne au-dessus des règles sans prémisse pour aligner les barres.
+      let premises = if regle.premises.len() == 0 { (regle.conclusion,) } else { regle.premises }
+      regle + (premises: premises.map(hide), conclusion: hide(regle.conclusion))
     }
     prooftree(schema)
   })
