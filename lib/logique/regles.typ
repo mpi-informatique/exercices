@@ -1,4 +1,5 @@
 #import "../options.typ": est-corrige, est-presentation
+#import "../document.typ": tableau
 #import "../presentation.typ": colonnes-cours, formules-reparties, only, pause, uncover
 #import "@preview/curryst:0.6.0": prooftree, rule
 
@@ -167,12 +168,9 @@
         cellules += intuitions.map(body => table.cell(align: left + top, text(size: 0.85em, body)))
       }
     }
-    block(breakable: false, table(
+    block(breakable: false, tableau(
       columns: (auto, 1fr, 1fr),
-      align: center + horizon,
       inset: (x: 0.6em, y: if compact { 0.3em } else { 0.8em }),
-      stroke: 0.4pt + luma(190),
-      fill: (x, y) => if y == 0 { rgb("#e9eef5") } else if x == 0 { luma(96%) },
       table.header([*Opérateur*], [*Introduction*], [*Élimination*]),
       ..cellules,
     ))

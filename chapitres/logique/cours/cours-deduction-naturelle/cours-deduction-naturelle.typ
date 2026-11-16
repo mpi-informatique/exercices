@@ -1,6 +1,6 @@
 #import "/load.typ": (
   article-only, colonnes-cours, cours-et-presentation, est-corrige, est-presentation, formules-reparties, hp,
-  liste-cours, marge, pause, slide, slides-only, solution, taille-presentation, theoremes, uncover,
+  liste-cours, marge, pause, slide, slides-only, solution, tableau, taille-presentation, theoremes, uncover,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
 #import "/load.typ": logique
@@ -154,11 +154,8 @@ On utilise les notations suivantes :
 Les trois systèmes suivants ont pour jugements les mêmes séquents. Ils diffèrent par les règles d'inférence autorisées :
 
 #taille-presentation(0.85em)[
-  #table(
+  #tableau(
     columns: (auto, auto, 1fr),
-    align: center + horizon,
-    inset: 0.5em,
-    stroke: 0.4pt + luma(190),
     table.header([*Système*], [*Dérivabilité*], [*Règles autorisées*]),
     [Logique _minimale_], [$Γ scripts(⊢)_m A$], [Axiome et règles usuelles pour $⊤$, $→$, $∧$, $∨$, $¬$],
     [Logique _intuitionniste_], [$Γ scripts(⊢)_i A$], [Logique minimale + élimination de $⊥$],

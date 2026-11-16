@@ -114,6 +114,23 @@
   body
 }
 
+/// Crée un tableau avec un en-tête bleu pâle, une première colonne grisée et des traits fins.
+/// La première ligne est à fournir avec `table.header` ; les titres restent à mettre en gras.
+/// Accepte les arguments de `table`, qui permettent de remplacer les réglages par défaut.
+/// Exemple : `#tableau(columns: 2, table.header([*Nom*], [*Valeur*]), [Exemple], [42])`.
+///
+/// - ..args (arguments): Colonnes, cellules et options de la table native Typst.
+/// -> content
+#let tableau(..args) = {
+  set table(
+    align: center + horizon,
+    inset: (x: 0.6em, y: 0.5em),
+    stroke: 0.4pt + luma(190),
+    fill: (x, y) => if y == 0 { rgb("#e9eef5") } else if x == 0 { luma(96%) },
+  )
+  table(..args)
+}
+
 #let auteur-par-defaut = "Q. Fortier"
 
 /// Rend un titre cliquable vers sa page sur le site, avec la couleur commune des liens.
