@@ -41,7 +41,7 @@ Contrairement à la logique propositionnelle qui ne traite que des variables boo
 
 #definition[Formule du premier ordre][
   Soit $Σ$ une signature du premier ordre. Les _formules de la logique du premier ordre_ sont définies par la grammaire :
-  $ F ⟶ R(T, …, T) | ¬ F | (F ∧ F) | (F ∨ F) | (F → F) | ∃ x F | ∀ x F $
+  $ F ⟶ ⊤ | ⊥ | R(T, …, T) | ¬ F | (F ∧ F) | (F ∨ F) | (F → F) | ∃ x F | ∀ x F $
   où $R$ est un symbole de relation d'arité $n > 0$, appliqué à $n$ termes, $T$ est un terme et $x ∈ cal(V)$.
 ]
 #slide()
@@ -106,7 +106,7 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
   - pour chaque symbole de fonction $f$ d'arité $n > 0$, une fonction $f^cal(M) : D^n → D$
   - pour chaque symbole de relation $R$ d'arité $n$, une relation $R^cal(M) ⊂ D^n$
 ]
-#underline[Exemple] : la relation d'égalité $=$ est généralement interprétée par la relation $R^cal(M) = \{(a, a) | a in D\}$.
+#underline[Convention] : dans une structure avec égalité, le symbole $=$ est toujours interprété par l'égalité du domaine $D$, c'est-à-dire la relation $\{(a, a) | a ∈ D\}$.
 
 #slides-only[== Affectations et valeur des termes]
 #definition[Affectation][
@@ -115,11 +115,12 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
   $ ⟦f(t_1, …, t_n)⟧_(cal(M), ρ) = f^cal(M)(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ)) $
 ]#pause
 
-#underline[Remarque] : on retrouve la logique propositionnelle si $D = {0, 1}$ (une affectation est alors une valuation) et les constantes sont $⊤$ et $⊥$.
+#underline[Remarque] : en logique propositionnelle, une valuation attribue une valeur de vérité à chaque variable propositionnelle. Au premier ordre, une affectation attribue un élément du domaine à chaque variable, tandis que la structure interprète les symboles de la signature.
 
 #slides-only[== Valeur de vérité]
 #definition[Valeur de vérité][
   La valeur de vérité $⟦A⟧_(cal(M), ρ) ∈ {0, 1}$ d'une formule $A$ est définie par :
+  - $⟦⊤⟧_(cal(M), ρ) = 1$ et $⟦⊥⟧_(cal(M), ρ) = 0$.
   - $⟦R(t_1, …, t_n)⟧_(cal(M), ρ) = 1$ si et seulement si $(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ)) ∈ R^cal(M)$.
   - En particulier, $⟦s = t⟧_(cal(M), ρ) = 1$ si et seulement si $⟦s⟧_(cal(M), ρ) = ⟦t⟧_(cal(M), ρ)$.
   - Les connecteurs suivent les mêmes tables de vérité qu'en logique propositionnelle.
