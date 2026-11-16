@@ -445,3 +445,30 @@ $ ⊬_T A quad "et" quad ⊬_T ¬ A. $
 #underline[Remarque] : cet exemple ne contredit pas le tiers exclu. Dans chaque modèle de $T$, $A$ est soit vraie, soit fausse.\
 On a donc simultanément :
 $ ⊢_T (A ∨ ¬ A), quad ⊬_T A, quad ⊬_T ¬ A. $
+
+#hp[== Incomplétude de l'arithmétique]
+
+On note $upright("PA")$ l'_arithmétique de Peano_ du premier ordre : ses axiomes décrivent $0$, le successeur, l'addition et la multiplication, et comprennent les instances du raisonnement par récurrence exprimables dans ce langage.
+
+Une théorie $T$ contenant $upright("PA")$ est _cohérente_ si $⊬_T 0 = 1$, où $1$ désigne le successeur de $0$. Ses axiomes sont _énumérables_ si un programme peut les produire tous, éventuellement sans s'arrêter.
+
+Les deux théorèmes suivants sont admis.
+
+#slides-only[== Premier théorème d'incomplétude]
+// Sources : Florian Rabe, Logic, § Incompleteness, https://github.com/florian-rabe/Teaching/blob/master/logic/fol-proofs_models.tex ;
+// UniMath, Symmetry Book, Metamathematical remarks, https://github.com/UniMath/SymmetryBook/blob/master/metamath.tex.
+#theoreme(hp: true)[Premier théorème d'incomplétude de Gödel][
+  Soit $T$ une théorie cohérente sur la signature de $upright("PA")$, contenant $upright("PA")$ et dont les axiomes sont énumérables. Il existe une formule close $A$ telle que :
+  $ ⊬_T A quad "et" quad ⊬_T ¬ A. $
+]
+
+En particulier, comme les axiomes de $upright("PA")$ sont vrais dans $ℕ$, on peut choisir une formule $A$ vraie dans $ℕ$ que $upright("PA")$ ne démontre ni ne réfute.
+
+#slides-only[== Cohérence et second théorème]
+Les preuves peuvent être codées par des entiers. On peut ainsi construire une formule arithmétique $upright("Con")(T)$ exprimant, pour le codage usuel des preuves, qu'aucune preuve à partir de $T$ n'aboutit à $0 = 1$.
+
+#theoreme(hp: true)[Second théorème d'incomplétude de Gödel][
+  Si $T$ est une théorie cohérente sur la signature de $upright("PA")$, contenant $upright("PA")$ et dont les axiomes sont énumérables, alors $⊬_T upright("Con")(T)$.
+]
+
+Ce résultat n'exclut pas une preuve de la cohérence de $T$ dans une autre théorie. Il ne contredit pas non plus la complétude de la logique : celle-ci concerne les formules vraies dans *tous* les modèles de $T$, et non celles qui sont vraies dans la seule structure $ℕ$.
