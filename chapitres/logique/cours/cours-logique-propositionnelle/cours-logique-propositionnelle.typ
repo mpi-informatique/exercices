@@ -329,6 +329,13 @@ Ces équivalences permettent d'éliminer $→$ et $↔$ pour obtenir une formule
   )
 ]
 
+#slide()
+#underline[Attention] : remplacer une variable dans une formule avec des quantificateurs demande une précaution. Si $A = ∀ y thin (x ∨ y)$, remplacer naïvement $x$ par $y$ donne $∀ y thin (y ∨ y) ≡ ⊥$ : le $y$ introduit est désormais lié par $∀ y$. C'est une _capture de variable_.
+
+On renomme d'abord la variable quantifiée : $A ≡ ∀ z thin (x ∨ z)$. On obtient alors :
+$ substituer(A, x, y) = ∀ z thin (y ∨ z) ≡ y. $
+Le résultat dépend bien de $y$, comme $A$ dépendait de $x$.
+
 #slides-only[== Ordre des quantificateurs]
 #exercice[
   Simplifier $∀ x thin ∃ y thin (x ↔ y)$ et $∃ y thin ∀ x thin (x ↔ y)$. Expliquer pourquoi l'ordre des quantificateurs compte.
