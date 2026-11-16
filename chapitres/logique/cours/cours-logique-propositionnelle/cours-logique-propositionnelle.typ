@@ -426,8 +426,10 @@ On peut alors faire l'analogie entre formules et réels : $a(b + c) = a b + a c$
   ],
   [
     #underline[Exemples] :
-    $ ¬ (x ∨ (¬ y ∧ z)) ≡ ¬ x ∧ (y ∨ ¬ z), $
-    $ ¬ (∃ x thin (x ∧ ¬ y)) ≡ ∀ x thin (¬ x ∨ y). $
+    $
+      ¬ (x ∨ (¬ y ∧ z)) &≡ ¬ x ∧ (y ∨ ¬ z), \
+      ¬ (∃ x thin (x ∧ ¬ y)) &≡ ∀ x thin (¬ x ∨ y).
+    $
   ],
 )
 
