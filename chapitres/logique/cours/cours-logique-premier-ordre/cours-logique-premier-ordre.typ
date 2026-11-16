@@ -65,6 +65,11 @@ Contrairement à la logique propositionnelle qui ne traite que des variables boo
 #underline[Exemple] : si $A = (∀ x (x = x)) ∧ ∃ y (x = y)$ alors
 $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 
+#slides-only[== Théorie]
+#definition[Théorie][
+  Une _théorie_ $T$ est un ensemble de formules closes sur une même signature, appelées _axiomes_.
+]
+
 #hp[= Sémantique : structures et modèles]
 
 #definition[Structure et interprétation][
@@ -278,11 +283,9 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
   La dernière application de $∀_i$ est valide car $y$ n'est pas libre dans l'hypothèse $I$.
 ]
 
-== Théorie
+== Démontrabilité dans une théorie
 
-#definition[Théorie][
-  Une _théorie_ $T$ est un ensemble de formules closes sur une même signature, appelées _axiomes_.
-
+#definition[Démontrabilité][
   On note $Γ ⊢_T A$ si $T ∪ Γ ⊢ A$ : la formule $A$ est démontrable à partir des axiomes de $T$ et des hypothèses de $Γ$.
 ]
 
