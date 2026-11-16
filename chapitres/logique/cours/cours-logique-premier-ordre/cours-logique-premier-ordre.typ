@@ -171,27 +171,27 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z)$.
 #slides-only[== Quantificateurs – exercices]
 #exercice[
   #liste-cours(
-    [Prouver $¬ (∃ x φ) ⊢ ∀ x ¬ φ$.],
+    [Prouver $¬ (∃ x A) ⊢ ∀ x ¬ A$.],
     [Prouver $∃ x (A ∨ B) ⊢ (∃ x A) ∨ (∃ x B)$.],
   )
 ]
 #solution[
-  + Posons $Γ = {¬ (∃ x φ)}$.
+  + Posons $Γ = {¬ (∃ x A)}$.
     #arbre[#prooftree(rule(
       name: [$∀_i$],
       rule(
         name: [$¬_i$],
         rule(
           name: [$¬_e$],
-          rule(name: [$∃_i$], rule(name: [ax], [$Γ, φ ⊢ φ$]), [$Γ, φ ⊢ ∃ x φ$]),
-          rule(name: [ax], [$Γ, φ ⊢ ¬ (∃ x φ)$]),
-          [$Γ, φ ⊢ ⊥$],
+          rule(name: [$∃_i$], rule(name: [ax], [$Γ, A ⊢ A$]), [$Γ, A ⊢ ∃ x A$]),
+          rule(name: [ax], [$Γ, A ⊢ ¬ (∃ x A)$]),
+          [$Γ, A ⊢ ⊥$],
         ),
-        [$Γ ⊢ ¬ φ$],
+        [$Γ ⊢ ¬ A$],
       ),
-      [$Γ ⊢ ∀ x ¬ φ$],
+      [$Γ ⊢ ∀ x ¬ A$],
     ))]
-    La règle $∃_i$ utilise le terme $x$ comme témoin. La règle $¬_i$ décharge l'hypothèse $φ$. Enfin, $∀_i$ est valide car $x$ n'est pas libre dans $¬ (∃ x φ)$.
+    La règle $∃_i$ utilise le terme $x$ comme témoin. La règle $¬_i$ décharge l'hypothèse $A$. Enfin, $∀_i$ est valide car $x$ n'est pas libre dans $¬ (∃ x A)$.
 
   + Posons $Γ = {∃ x (A ∨ B)}$ et $C = (∃ x A) ∨ (∃ x B)$.
     Choisissons une variable $y$ absente de $A$ et $B$, et notons $A_y = A[x := y]$, $B_y = B[x := y]$ et $Δ = Γ ∪ {A_y ∨ B_y}$.
