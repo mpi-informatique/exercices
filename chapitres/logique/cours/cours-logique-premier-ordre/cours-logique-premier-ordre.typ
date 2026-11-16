@@ -134,10 +134,24 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
   On note $cal(M) ⊨ A$ si $(cal(M), ρ) ⊨ A$ pour toute affectation $ρ$ : $cal(M)$ est alors un _modèle_ de $A$.
 ]
 
-#slides-only[== Exemples]
-#underline[Exemples] :
-- Arithmétique de Peano : sur la signature $Σ = {0, S, +, ×, =}$, on note $cal(M)$ la structure de domaine $ℕ$ qui interprète $0$ par $0$, $S(n)$ par $n + 1$, et $+$ et $×$ par les opérations usuelles. Alors $cal(M) ⊨ ∀ x (x + 0 = x)$.
-- Théorie des groupes : sur la signature $Σ = {⋆, e, i, =}$, la structure $cal(M)$ de domaine $ℤ$ qui interprète $⋆$ par $+$, $e$ par $0$ et $n^(−1)$ par $-n$ vérifie $cal(M) ⊨ ∀ x ∀ y ∀ z (x ⋆ (y ⋆ z) = (x ⋆ y) ⋆ z)$.
+#slides-only[== Modèle d'une théorie]
+#definition[Modèle d'une théorie][
+  Une structure $cal(M)$ est un _modèle_ d'une théorie $T$, noté $cal(M) ⊨ T$, si elle satisfait tous ses axiomes :
+  $ cal(M) ⊨ T quad ⟺ quad ∀ A ∈ T, cal(M) ⊨ A. $
+  Les axiomes étant des formules closes, leur vérité ne dépend pas de l'affectation des variables.
+]
+
+#underline[Exemple] : la structure de domaine $ℤ$ qui interprète $⋆$ par $+$, $e$ par $0$ et $i(n)$ par $-n$ est un modèle de la #link(<groupes>)[théorie des groupes] : elle satisfait l'associativité, les deux axiomes du neutre et les deux axiomes de l'inverse.
+
+#slides-only[== Deux modèles de PA]
+// Source : Andrew Marks, Computability theory (2024), §10.1, p. 47.
+// https://math.berkeley.edu/~marks/notes/computability_notes_v1.pdf
+#paragraphe([Exemples], trait: true)[
+  - Le _modèle standard_ $cal(N)$ de #link(<pa>)[$upright("PA")$] a pour domaine $ℕ$, avec $0^cal(N) = 0$, $S^cal(N)(n) = n + 1$ et les opérations usuelles $+$ et $×$. Tous les axiomes de $upright("PA")$, y compris chaque instance de récurrence, y sont vrais.
+  - Il existe aussi un _modèle non standard_ $cal(M) ⊨ upright("PA")$ dont le domaine contient un élément $a$ différent de tous les éléments
+    $ 0^cal(M), quad S^cal(M)(0^cal(M)), quad S^cal(M)(S^cal(M)(0^cal(M))), quad … $
+    Autrement dit, $a ≠ overline(n)^cal(M)$ pour tout $n ∈ ℕ$, où $overline(n)$ est le terme obtenu en appliquant $n$ fois $S$ à $0$. L'existence d'un tel modèle est admise ; elle résulte du théorème de compacité du premier ordre.
+]
 
 #slides-only[== Conséquence logique]
 #definition[Conséquence logique][
