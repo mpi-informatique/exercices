@@ -1,6 +1,6 @@
 (* Dans utop, depuis le dossier du TP :
    #require "mpi-informatique";;
-   #use "main.ml";;
+   #use "tp-minimisation-automate.ml";;
    La fonction dessiner nécessite aussi la commande dot de Graphviz. *)
 
 type adc = {

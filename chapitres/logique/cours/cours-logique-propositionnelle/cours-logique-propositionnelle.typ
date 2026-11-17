@@ -15,7 +15,7 @@
   draw-edge: (marks: "-", stroke: 0.05em),
 )(..args)
 
-#let ocaml = read("corrige.ml")
+#let ocaml = read("cours-logique-propositionnelle-cor.ml")
 
 #show: cours-et-presentation.with(titre: "Logique propositionnelle (MP2I)", niveau: "MPI")
 #set text(size: 10.5pt) if not est-presentation()

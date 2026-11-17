@@ -3,7 +3,7 @@
 
 #import automate: LA, dessiner-automate
 
-#let code = code-extrait.with(read("corrige.ml"))
+#let code = code-extrait.with(read("mcnaughton-yamada-cor.ml"))
 
 #let ex = exercice(
   meta: (

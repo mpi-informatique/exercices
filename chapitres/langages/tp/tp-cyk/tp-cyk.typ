@@ -2,8 +2,8 @@
 #import code: code-extrait
 #import theoremes: algorithme
 #import "../../exercices/forme-normale-chomsky.typ": chomsky
-#let corrige = read("corrige.ml")
-#let squelette = read("tp4.ml")
+#let corrige = read("tp-cyk-cor.ml")
+#let squelette = read("tp-cyk.ml")
 
 #let sujet = exercice(
   meta: (
@@ -136,9 +136,9 @@
   niveau: "MPI",
   exercices: (sujet,),
   tp: (
-    ouvrir: "tp4.ml",
-    squelette: ((source: "tp4.ml"),),
-    corrige: ((source: "corrige.ml"),),
+    ouvrir: "tp-cyk.ml",
+    squelette: ((source: "tp-cyk.ml"),),
+    corrige: ((source: "tp-cyk-cor.ml"),),
   ),
   corrige: est-corrige(),
 )

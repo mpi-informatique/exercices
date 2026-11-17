@@ -1,6 +1,6 @@
 /// `code-extrait` et `code-texte` sont réexportés du package `@local/code-extract`.
 /// Le premier affiche les déclarations nommées, le second renvoie leur texte.
-/// Exemple : `code-extrait(read("corrige.ml"), ("regle", "grammaire"))`.
+/// Exemple : `code-extrait(read("sujet-cor.ml"), ("regle", "grammaire"))`.
 /// Ajouter `language: "c"` pour du C. Les versions sont verrouillées par Nix.
 
 #import "blocs.typ": epaisseur-trait

@@ -2,7 +2,7 @@
 #import code: code-extrait
 #import automate: dessiner-automate
 
-#let corrige = read("corrige.ml")
+#let corrige = read("tp-minimisation-automate-cor.ml")
 
 #let sujet = exercice(
   meta: (
@@ -22,15 +22,15 @@
 )[
   L'objectif de ce TP est d'implémenter l'_algorithme de Moore_ qui construit un automate minimal, c'est-à-dire un automate ayant le moins d'états possible parmi les automates déterministes complets reconnaissant un même langage.
 
-  Télécharger #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/langages/tp/tp-minimisation-automate/main.ml")[`main.ml`], le compléter et tester les fonctions dans `utop`. Les fonctions `nb_etats`, `nb_lettres`, `delta_etoile`, `accepte` et `equivalent_jusqua` sont fournies. Un mot est représenté par une liste de lettres.
+  Télécharger #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/langages/tp/tp-minimisation-automate/tp-minimisation-automate.ml")[`tp-minimisation-automate.ml`], le compléter et tester les fonctions dans `utop`. Les fonctions `nb_etats`, `nb_lettres`, `delta_etoile`, `accepte` et `equivalent_jusqua` sont fournies. Un mot est représenté par une liste de lettres.
 
   La fonction fournie `dessiner` utilise la #link("https://mpi-informatique.github.io/lib/")[bibliothèque MPI] et Graphviz. Si nécessaire, suivre les #link("https://github.com/mpi-informatique/lib#utilisation")[instructions d'installation] de la bibliothèque et installer Graphviz pour disposer de la commande `dot`. Depuis le dossier du TP, lancer `utop`, puis saisir :
   ```ocaml
   #require "mpi-informatique";;
-  #use "main.ml";;
+  #use "tp-minimisation-automate.ml";;
   dessiner "exemple" exemple;;
   ```
-  Ouvrir le fichier `exemple.svg` créé dans ce dossier, par exemple dans un navigateur. Après avoir modifié `main.ml`, le recharger avec `#use "main.ml";;`.
+  Ouvrir le fichier `exemple.svg` créé dans ce dossier, par exemple dans un navigateur. Après avoir modifié `tp-minimisation-automate.ml`, le recharger avec `#use "tp-minimisation-automate.ml";;`.
 
   Toutes les notions utiles sont rappelées ci-dessous. L'exercice #lien("residuels-minimisation")[Ensembles distinguants, résiduels et minimisation] propose un approfondissement théorique.
 
@@ -47,7 +47,7 @@
   $ q ∼ r ⟺ ∀ u ∈ Σ^*, (δ^*(q, u) ∈ F ⟺ δ^*(r, u) ∈ F). $
   Pour montrer que deux états ne sont pas équivalents, il suffit donc de trouver un _mot distinguant_, accepté depuis l'un et rejeté depuis l'autre. Le mot vide distingue notamment un état final d'un état non final.
 
-  L'automate `exemple` ci-dessous servira tout au long du TP. Dans le code, les lettres $a$ et $b$ sont représentées respectivement par `0` et `1`. Sa définition est fournie dans `main.ml`.
+  L'automate `exemple` ci-dessous servira tout au long du TP. Dans le code, les lettres $a$ et $b$ sont représentées respectivement par `0` et `1`. Sa définition est fournie dans `tp-minimisation-automate.ml`.
 
   #dessiner-automate(
     (
@@ -219,9 +219,9 @@
   niveau: "MPI",
   exercices: (sujet,),
   tp: (
-    ouvrir: "main.ml",
-    squelette: ((source: "main.ml"),),
-    corrige: ((source: "corrige.ml"),),
+    ouvrir: "tp-minimisation-automate.ml",
+    squelette: ((source: "tp-minimisation-automate.ml"),),
+    corrige: ((source: "tp-minimisation-automate-cor.ml"),),
   ),
   corrige: est-corrige(),
   espacement: 0.7em,

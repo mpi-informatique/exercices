@@ -5,7 +5,7 @@ import shlex
 import subprocess
 from tempfile import TemporaryDirectory
 
-source = Path(__file__).with_name('corrige.c')
+source = Path(__file__).with_name('langages-reguliers-cor.c')
 with TemporaryDirectory() as dossier:
     executable = Path(dossier) / 'facteur'
     commande = shlex.split(os.environ.get('CC', 'cc'))

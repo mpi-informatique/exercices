@@ -82,11 +82,11 @@ def native(plan, changed, entries):
         documents(selected, empreinte())
     related = [Path(path) for path in changed | set(plan['resources'])]
     for directory in ('chapitres', 'devoirs'):
-        for pattern in ('corrige.ml', 'test.py'):
+        for pattern in ('*-cor.ml', '*-test.py'):
             for script in sorted((ROOT / directory).rglob(pattern)):
                 folder = script.parent.relative_to(ROOT)
                 if any(folder in path.parents for path in related):
-                    if pattern == 'corrige.ml':
+                    if pattern == '*-cor.ml':
                         test_ocaml(script)
                     else:
                         run([sys.executable, script])

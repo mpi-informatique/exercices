@@ -22,7 +22,7 @@
 }
 
 /// Crée un lien vers un fichier à télécharger, avec un petit symbole cliquable en exposant.
-/// Exemple : `#telecharger("https://exemple.fr/main.ml")[Fichier OCaml]`.
+/// Exemple : `#telecharger("https://exemple.fr/tp-automates.ml")[Fichier OCaml]`.
 ///
 /// - url (str): Adresse du fichier à télécharger.
 /// - body (content): Texte cliquable.

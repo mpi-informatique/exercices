@@ -9,7 +9,7 @@
 #import "@preview/finite:0.5.1" as finite
 
 // Le code affiché est exactement celui compilé et testé.
-#let code = code-extrait.with(read("corrige.ml"))
+#let code = code-extrait.with(read("centrale-2022-mp-informatique-cor.ml"))
 
 #let automate-a1(miroir: false) = align(center, cetz.canvas(length: unite-automates, {
   import finite.draw: state, transition

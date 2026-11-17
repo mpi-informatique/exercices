@@ -6,7 +6,7 @@
 
 #import "/chapitres/langages/exercices/intersection-grammaire-ogden.typ": lemme-etoile
 
-#let source = read("corrige.ml")
+#let source = read("langages-unaires-cor.ml")
 #let code = code-extrait.with(source)
 
 #let automate-glushkov = dessiner-automate(

@@ -6,7 +6,7 @@
 #import "/load.typ": automate
 #import automate: dessiner-automate, rayon-etat, rayon-grand-etat
 
-#let code = code-extrait.with(read("corrige.ml"))
+#let code = code-extrait.with(read("centrale-2017-mp-informatique-cor.ml"))
 #let m0 = dessiner-automate(
   (("0", (0, 2), false, false), ("1", (4, 2), false, false), ("2", (2, -1), false, false)),
   (

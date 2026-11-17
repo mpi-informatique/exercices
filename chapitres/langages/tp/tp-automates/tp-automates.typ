@@ -2,8 +2,8 @@
 #import "/load.typ": exercice, feuille, question, code, automate
 #import automate: LA, dessiner-automate
 #import code: code-extrait
-#let corrige = read("corrige.ml")
-#let squelette = read("tp2.ml")
+#let corrige = read("tp-automates-cor.ml")
+#let squelette = read("tp-automates.ml")
 
 #let sujet = exercice(
   meta: (
@@ -16,7 +16,7 @@
     ),
 )[
   Ce TP est à effectuer en OCaml, sous Visual Studio Code, dans Codespaces ou sur un ordinateur personnel.
-  Compléter le fichier `tp2.ml` fourni. Pour exécuter les définitions dans utop, sélectionner les lignes puis appuyer sur Maj + Entrée.
+  Compléter le fichier `tp-automates.ml` fourni. Pour exécuter les définitions dans utop, sélectionner les lignes puis appuyer sur Maj + Entrée.
   Ajouter `;;` pour terminer une saisie dans utop. Interrompre une boucle infinie avec Ctrl + C.
 
   = Automate déterministe
@@ -104,9 +104,9 @@
   niveau: "MPI",
   exercices: (sujet,),
   tp: (
-    ouvrir: "tp2.ml",
-    squelette: ((source: "tp2.ml"),),
-    corrige: ((source: "corrige.ml"),),
+    ouvrir: "tp-automates.ml",
+    squelette: ((source: "tp-automates.ml"),),
+    corrige: ((source: "tp-automates-cor.ml"),),
   ),
   corrige: est-corrige(),
 )

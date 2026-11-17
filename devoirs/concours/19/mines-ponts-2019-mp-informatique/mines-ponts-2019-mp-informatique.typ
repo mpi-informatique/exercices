@@ -7,7 +7,7 @@
 #import "/load.typ": sep
 #import "@preview/cetz:0.4.2" as cetz
 
-#let code = code-extrait.with(read("corrige.ml"))
+#let code = code-extrait.with(read("mines-ponts-2019-mp-informatique-cor.ml"))
 
 #let dessiner = dessiner-automate.with(
   rayon: nom => if nom.contains(",") { rayon-grand-etat } else { rayon-etat },

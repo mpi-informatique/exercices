@@ -11,8 +11,8 @@
 #import "/load.typ": code
 #import code: code-extrait
 
-#let corrige-ocaml = read("langages-reguliers/corrige.ml")
-#let corrige-c = read("langages-reguliers/corrige.c")
+#let corrige-ocaml = read("langages-reguliers/langages-reguliers-cor.ml")
+#let corrige-c = read("langages-reguliers/langages-reguliers-cor.c")
 
 #show: cours-et-presentation.with(titre: "Langages réguliers", niveau: "MPI")
 

@@ -12,9 +12,9 @@
   niveau: "MPI",
   exercices: (sujet,),
   tp: (
-    ouvrir: "main.ml",
-    squelette: ((source: "main.ml"),),
-    corrige: ((source: "corrige.ml"),),
+    ouvrir: "sujet.ml",
+    squelette: ((source: "sujet.ml"),),
+    corrige: ((source: "sujet-cor.ml"),),
   ),
   corrige: est-corrige(),
 )

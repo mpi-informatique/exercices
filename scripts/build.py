@@ -83,9 +83,9 @@ def tests():
     for script in ('test_package.py', 'test_sources.py', 'test_ci.py', 'test_ocaml.py'):
         run([sys.executable, ROOT / 'lib/tests' / script])
     # Les tests restent à côté du code publié, sans liste de chemins à maintenir.
-    for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('corrige.ml')):
+    for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('*-cor.ml')):
         test_ocaml(test)
-    for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('test.py')):
+    for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('*-test.py')):
         run([sys.executable, test])
 
 

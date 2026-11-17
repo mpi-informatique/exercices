@@ -4,8 +4,8 @@
 #import logique: axiome, regles, tableau-regles
 
 #let support = read("dnat.ml")
-#let corrige = read("corrige.ml")
-#let tests = read("main.ml")
+#let corrige = read("tp-deduction-naturelle-cor.ml")
+#let tests = read("tp-deduction-naturelle.ml")
 
 #let sujet = exercice(
   meta: (
@@ -41,13 +41,13 @@
   )
 
 
-  Le fichier à compléter est #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-deduction-naturelle/main.ml")[`main.ml`], qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et ```ocaml open Dnat```.
+  Le fichier à compléter est #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-deduction-naturelle/tp-deduction-naturelle.ml")[`tp-deduction-naturelle.ml`], qui charge les types et fonctions de `dnat.ml` avec `#mod_use` et ```ocaml open Dnat```.
 
   #if est-corrige() [
-    Le fichier #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-deduction-naturelle/corrige.ml")[`corrige.ml`] contient le corrigé.
+    Le fichier #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-deduction-naturelle/tp-deduction-naturelle-cor.ml")[`tp-deduction-naturelle-cor.ml`] contient le corrigé.
   ]
 
-  Depuis le dossier du TP, lancer `utop`, puis charger le fichier : ```ocaml #use "main.ml";;```
+  Depuis le dossier du TP, lancer `utop`, puis charger le fichier : ```ocaml #use "tp-deduction-naturelle.ml";;```
 
   Pour tester une question, appeler la fonction correspondante, par exemple `test_seq ();;` après la première question.
   Une assertion réussie ne produit aucun message.
@@ -167,10 +167,10 @@
   niveau: "MPI",
   exercices: (sujet,),
   tp: (
-    ouvrir: "main.ml",
-    squelette: ((source: "main.ml"),),
+    ouvrir: "tp-deduction-naturelle.ml",
+    squelette: ((source: "tp-deduction-naturelle.ml"),),
     ressources: ((source: "dnat.ml"),),
-    corrige: ((source: "corrige.ml"),),
+    corrige: ((source: "tp-deduction-naturelle-cor.ml"),),
   ),
   corrige: est-corrige(),
 )

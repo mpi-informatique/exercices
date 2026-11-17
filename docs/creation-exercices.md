@@ -39,7 +39,7 @@ Importer l'API commune par `/load.typ` dans les deux dépôts :
 #import theoremes: definition, theoreme
 ```
 
-Lire les ressources voisines par chemin relatif. Pour afficher du code testé, utiliser `code-extrait(read("corrige.ml"), "fonction")` ; un tuple de noms extrait plusieurs déclarations. Le C demande `language: "c"`.
+Lire les ressources voisines par chemin relatif. Pour afficher du code testé, utiliser `code-extrait(read("sujet-cor.ml"), "fonction")` ; un tuple de noms extrait plusieurs déclarations. Le C demande `language: "c"`.
 
 Dans le dépôt privé, charger les contenus déjà publics avec `public(...)` et les brouillons voisins par des imports relatifs.
 
@@ -109,6 +109,6 @@ Dans les devoirs et concours, ordonner les champs : énoncé, `jury`, `solution`
 - Pour les arbres, utiliser [tdtr](https://typst.app/universe/package/tdtr/) avec une version fixée. Décrire la structure par une liste à puces imbriquée et les étiquettes d'arêtes par des éléments de liste numérotée avant les fils concernés, plutôt que placer manuellement les nœuds et les arêtes. Régler `text-size: 1em` pour suivre la taille du texte du cours ou de la présentation.
 - Pour les preuves de déduction naturelle, utiliser [curryst](https://typst.app/universe/package/curryst/) avec une version fixée (`@preview/curryst:0.6.0`). Construire les arbres avec des appels imbriqués à `rule`, les prémisses avant la conclusion et le nom de règle dans `name`, puis les afficher avec `prooftree`.
 - Pour les automates, employer le style de [lib/automate.typ](../lib/automate.typ), placer boucles et étiquettes vers l'extérieur et éviter les croisements. Préserver toutes les informations et fixer les versions des packages.
-- Conserver le code OCaml et ses tests dans `corrige.ml`, les tests Python dans `test.py`, à côté du sujet. Les tests d'outillage restent dans `lib/tests/` ; ne pas ajouter de `test.typ` aux sujets de concours.
+- Nommer les sources d’après le sujet : `sujet.ml` pour le squelette, `sujet-cor.ml` pour le corrigé, `sujet-test.ml` pour des tests séparés. Conserver le code OCaml et ses tests dans `sujet-cor.ml`, les tests Python dans `sujet-test.py`, à côté du sujet. Les tests d'outillage restent dans `lib/tests/` ; ne pas ajouter de `test.typ` aux sujets de concours.
 - Regrouper les vérifications OCaml dans `Tests`, avec les appels du corrigé hors de ce module.
 - Choisir les vérifications selon [AGENTS.md](../AGENTS.md#vérification-et-livraison). Ajouter un test ciblé si les lanceurs habituels ne couvrent pas le nouveau code.
