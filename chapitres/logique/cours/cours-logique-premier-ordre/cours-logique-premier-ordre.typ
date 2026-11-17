@@ -1,6 +1,6 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, paragraphe, pause, slide, slides-only,
-  solution, taille-presentation, theoremes,
+  article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, paragraphe, pause, slide,
+  slides-only, solution, taille-presentation, theoremes,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
 #import "/load.typ": logique
@@ -14,9 +14,9 @@ Comme pour la logique propositionnelle, il y a 3 points de vue sur les formules 
 - Sémantique : interprétation des formules avec une valuation/structure.
 - Preuve : arbre de preuve utilisant des règles de déduction.
 
-= Syntaxe : signature du premier ordre
+La logique du premier ordre enrichit la logique propositionnelle avec des symboles de fonctions et de relations pour raisonner sur d'autres objets que des booléens.
 
-Contrairement à la logique propositionnelle qui ne traite que des variables booléennes, la logique du premier ordre utilise des symboles de fonctions et de relations pour construire des termes et des formules.
+= Syntaxe : signature du premier ordre
 
 #definition[Signature du premier ordre][
   Une _signature du premier ordre_ $Σ$ est la donnée de _symboles de fonctions_ et de _symboles de relations_, chacun muni d'une _arité_ (nombre d'arguments). Un symbole de fonction d'arité $0$ est une _constante_.
@@ -84,8 +84,8 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 // Source : Robert Atkey, CS208, Arithmetic and Induction, sections sur les axiomes et la récurrence.
 // https://personal.cis.strath.ac.uk/robert.atkey/cs208/induction.html ; les opérations sont ici définies sur le second argument.
 #taille-presentation(0.85em)[
-  #definition[Arithmétique de Peano][
-    Sur la signature avec égalité, une constante $0$, une fonction unaire $S$ (successeur) et deux fonctions binaires $+$ et $×$, l'_arithmétique de Peano_, notée $upright("PA")$, est la théorie donnée par les axiomes :
+  #definition(hp: true)[Arithmétique de Peano][
+    Sur la signature $Σ = {0, S, +, ×, =}$, on considère la théorie $upright("PA")$ de l'_arithmétique de Peano_ :
     #formules-reparties($∀ x ¬ (S(x) = 0),$, $∀ x ∀ y (S(x) = S(y) → x = y),$)
     #formules-reparties($∀ x (x + 0 = x),$, $∀ x ∀ y (x + S(y) = S(x + y)),$)
     #formules-reparties($∀ x (x × 0 = 0),$, $∀ x ∀ y (x × S(y) = x × y + x),$)
@@ -151,9 +151,9 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
   - Le _modèle standard_ $cal(N)$ de #link(<pa>)[$upright("PA")$] a pour domaine $ℕ$, avec $0^cal(N) = 0$, $S^cal(N)(n) = n + 1$ et les opérations usuelles $+$ et $×$. Tous les axiomes de $upright("PA")$, y compris chaque instance de récurrence, y sont vrais.
   - Sur les entiers pairs $2 ℕ$, on définit la structure $cal(E)$ par :
     $ 0^cal(E) = 0, quad S^cal(E)(x) = x + 2, quad x +_cal(E) y = x + y, quad x ×_cal(E) y = (x y)/2. $
-    La bijection $f : ℕ → 2 ℕ$, $n ↦ 2 n$, préserve $0$, le successeur, l'addition et la multiplication. Par exemple :
+    On peut vérifier que $cal(E)$ est un modèle de $upright("PA")$, isomorphe au modèle standard par la bijection $f : n ↦ 2 n$.
+    Par exemple :
     $ f(n m) = 2 n m = ((2 n)(2 m))/2 = f(n) ×_cal(E) f(m). $
-    Ainsi, $cal(E)$ est une copie isomorphe du modèle standard et satisfait tous les axiomes de $upright("PA")$. Le terme $1 = S(0)$ y désigne l'entier usuel $2$.
 ]
 
 #slides-only[== Modèle non standard de PA]
@@ -338,6 +338,8 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
 
 #definition[Démontrabilité][
   On note $Γ ⊢_T A$ si $T ∪ Γ ⊢ A$ : la formule $A$ est démontrable à partir des axiomes de $T$ et des hypothèses de $Γ$.
+
+  $T$ est _cohérente_ si $⊬_T ⊥$.
 ]
 
 #slides-only[== Groupes]
@@ -435,7 +437,7 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
     Les axiomes sont instanciés par $∀_e$, les égalités sont composées avec les règles de l'égalité et le résultat de la première question est instancié en $x$. On conclut par $∀_i$, car les axiomes de $upright("PA")$ sont clos.
 ]
 
-== Correction et complétude
+== Théorèmes de correction et complétude de G
 
 // Sources : Dowek, Les démonstrations et les algorithmes, §2.2–2.4 ; Lassaigne, §3.
 Les théorèmes de correction et de complétude du calcul propositionnel restent valables en logique du premier ordre.
@@ -473,20 +475,14 @@ Pour montrer $Γ ⊬_T A$, il suffit donc de trouver un modèle de $T$ et une af
   #v(-0.5em)
   Par correction, une preuve de $A$ à partir de $T$ imposerait que $A$ soit vraie dans $S_3$. Une preuve de $¬ A$ imposerait que $¬ A$ soit vraie dans $(ℤ, +)$. Ainsi :
   $ ⊬_T A quad "et" quad ⊬_T ¬ A. $
+  Cet exemple ne contredit pas le tiers exclu. Dans chaque modèle de $T$, $A$ est soit vraie, soit fausse.\
+  On a donc simultanément :
+  $ ⊢_T (A ∨ ¬ A), quad ⊬_T A, quad ⊬_T ¬ A. $
 ]
-
-#slides-only[== Tiers exclu]
-#underline[Remarque] : cet exemple ne contredit pas le tiers exclu. Dans chaque modèle de $T$, $A$ est soit vraie, soit fausse.\
-On a donc simultanément :
-$ ⊢_T (A ∨ ¬ A), quad ⊬_T A, quad ⊬_T ¬ A. $
 
 #hp[== Incomplétude de l'arithmétique]
 
-On reprend l'arithmétique de Peano #link(<pa>)[$upright("PA")$] définie précédemment.
-
-Une théorie $T$ contenant $upright("PA")$ est _cohérente_ si $⊬_T 0 = 1$. Ses axiomes sont _énumérables_ si un programme peut les produire tous, éventuellement sans s'arrêter.
-
-Les deux théorèmes suivants sont admis.
+On reprend l'#link(<pa>)[arithmétique de Peano $upright("PA")$] définie précédemment. Ses axiomes sont _énumérables_ si un programme peut les produire tous, éventuellement sans s'arrêter.
 
 #slides-only[== Premier théorème d'incomplétude]
 // Sources : Florian Rabe, Logic, § Incompleteness, https://github.com/florian-rabe/Teaching/blob/master/logic/fol-proofs_models.tex ;
