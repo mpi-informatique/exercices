@@ -225,7 +225,7 @@
     #question(
       bareme: 2,
       label: <q-unaires-union-progressions>,
-      notation: [Évaluer séparément les deux implications. Pour le sens direct, exiger une union finie explicite couvrant aussi les tailles avant le seuil et la justification des deux inclusions. Un produit ou une décomposition en facteurs premiers de la période ne suffit pas à construire cette union. Pour la réciproque, la régularité des progressions et la stabilité par union finie suffisent.],
+      notation: [Évaluer séparément les deux implications. Pour le sens direct, exiger une union finie explicite couvrant aussi les tailles avant le seuil et la justification des deux inclusions. Un produit ou une décomposition en facteurs premiers de la période ne suffit pas à construire cette union. Ne pas confondre les combinaisons à coefficients naturels avec tous les multiples du pgcd : les petites tailles manquantes doivent être prises en compte. Une union indexée par toutes les longueurs de concaténation n'est pas encore une union finie. Pour la réciproque, la régularité des progressions et la stabilité par union finie suffisent.],
     )[
       Montrer qu'un langage unaire est régulier si et seulement s'il est une union finie (éventuellement vide) de langages de la forme $L(α, β)$, avec $α, β ∈ NN$.
     ][
@@ -287,7 +287,7 @@
       Les positions (tortue, lièvre) aux étapes $0, 1, 2, 3$ sont respectivement $(0, 0)$, $(1, 2)$, $(2, 4)$ et $(3, 3)$. La première rencontre après au moins un déplacement a donc lieu à l'étape $3$, dans l'état $3$.
     ]
 
-    #question(bareme: 1.5)[
+    #question(bareme: 1.5, notation: [La simulation de la question précédente ne prouve pas le résultat général : ne pas lui attribuer de nouveau crédit ici. Exiger un argument valable pour tout automate, établissant la rencontre, sa position après le seuil, la divisibilité et la borne demandées.])[
       Montrer qu'ils finissent par se rencontrer. Plus précisément, montrer que la première rencontre a lieu pour un entier $k ≥ μ$ qui est un multiple de $λ$, avec $k ≤ μ + λ$.
     ][
       Tant que $k < μ$, la tortue est dans le chemin. Elle ne peut pas rencontrer le lièvre : si celui-ci est aussi dans le chemin, les états $q_(k)$ et $q_(2k)$ sont distincts. S'il est déjà dans le cycle, aucun état du cycle ne peut revenir dans le chemin.
