@@ -7,7 +7,7 @@
   niveaux: ("MP",),
   difficulte: 2,
 ))[
-  Pour $n ≥ 1$ et $x ∈ RR$, poser $f_n (x) = sqrt(x^2 + 1 / n)$.
+  Pour $n ≥ 1$ et $x ∈ RR$, on pose $f_n (x) = sqrt(x^2 + 1 / n)$.
 
   #question[Déterminer la limite simple $f$ de $(f_n)$ sur $RR$. Calculer $sup_(x ∈ RR) abs(f_n (x) - f(x))$.][$f(x) = abs(x)$. En rationalisant,
     $ 0 ≤ f_n (x) - abs(x) = (1 / n) / (sqrt(x^2 + 1 / n) + abs(x)) ≤ 1 / sqrt(n). $

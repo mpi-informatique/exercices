@@ -7,7 +7,7 @@
   niveaux: ("MP",),
   difficulte: 1,
 ))[
-  Pour $n ≥ 1$, poser $u_n = (1 + (-1)^n / n, (-1)^n) ∈ RR^2$, muni de la norme $norm((x, y))_∞ = max(abs(x), abs(y))$.
+  Pour $n ≥ 1$, on pose $u_n = (1 + (-1)^n / n, (-1)^n) ∈ RR^2$, muni de la norme $norm((x, y))_∞ = max(abs(x), abs(y))$.
 
   #question[Calculer $norm(u_n)_∞$ selon la parité de $n$. La suite $(u_n)$ est-elle bornée ? La suite de ses normes converge-t-elle ?][Pour $n$ pair, $norm(u_n)_∞ = 1 + 1 / n$. Pour $n$ impair, $0 ≤ 1 - 1 / n ≤ 1$, donc $norm(u_n)_∞ = 1$.
     Les normes sont majorées par $3 / 2$ et tendent vers $1$. La suite de vecteurs est donc bornée.]

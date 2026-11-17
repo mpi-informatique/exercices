@@ -7,7 +7,7 @@
   niveaux: ("MP",),
   difficulte: 3,
 ))[
-  Sur $E = C^1 ([0, 1], RR)$, noter $norm(f)_∞ = max_(t ∈ [0, 1]) abs(f(t))$ et poser
+  Sur $E = C^1 ([0, 1], RR)$, on note $norm(f)_∞ = max_(t ∈ [0, 1]) abs(f(t))$ et on pose
   $ N(f) = abs(f(0)) + norm(f')_∞, quad M(f) = norm(f)_∞ + norm(f')_∞. $
 
   #question[Montrer que $N$ et $M$ sont des normes sur $E$.][Les expressions sont positives, homogènes et vérifient l'inégalité triangulaire.
@@ -22,7 +22,7 @@
 
   #question[Ces deux normes sont-elles équivalentes à $norm(·)_∞$ sur $E$ ?
     #linebreak()
-    _Indication : chercher des fonctions de petite amplitude dont la dérivée est grande._][Pour chaque entier $n ≥ 1$, poser $f_n (t) = sin(n t)$. Alors $norm(f_n)_∞ ≤ 1$, tandis que $f_n (0) = 0$ et $norm(f'_n)_∞ = n$, car $f'_n (t) = n cos(n t)$.
+    _Indication : chercher des fonctions de petite amplitude dont la dérivée est grande._][Pour chaque entier $n ≥ 1$, on pose $f_n (t) = sin(n t)$. Alors $norm(f_n)_∞ ≤ 1$, tandis que $f_n (0) = 0$ et $norm(f'_n)_∞ = n$, car $f'_n (t) = n cos(n t)$.
     On a donc $N(f_n) = n$. Il n'existe aucune constante $C$ telle que $N(f) ≤ C norm(f)_∞$ pour tout $f ∈ E$.
     La norme $N$ n'est pas équivalente à la norme uniforme. Puisque $N ≤ M$, la même obstruction vaut pour $M$.]
 ]

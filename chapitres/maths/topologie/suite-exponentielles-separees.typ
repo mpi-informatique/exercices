@@ -7,8 +7,8 @@
   niveaux: ("MP",),
   difficulte: 3,
 ))[
-  Munir $E = C([0, 2π], CC)$ de la norme $norm(f)_∞ = max_(t ∈ [0, 2π]) abs(f(t))$.
-  Pour $n ∈ NN$, poser $u_n (t) = e^(i n t)$.
+  On munit $E = C([0, 2π], CC)$ de la norme $norm(f)_∞ = max_(t ∈ [0, 2π]) abs(f(t))$.
+  Pour $n ∈ NN$, on pose $u_n (t) = e^(i n t)$.
 
   #question[Calculer $norm(u_n)_∞$. La suite $(u_n)$ est-elle bornée ?][$abs(e^(i n t)) = 1$ pour tout $t$, donc $norm(u_n)_∞ = 1$. La suite est bornée dans $E$.]
 

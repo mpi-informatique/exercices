@@ -7,7 +7,7 @@
   niveaux: ("MP",),
   difficulte: 1,
 ))[
-  Pour $v = (x, y) ∈ RR^2$, poser $N(v) = max(abs(x), abs(x + y))$ et $norm(v)_∞ = max(abs(x), abs(y))$.
+  Pour $v = (x, y) ∈ RR^2$, on pose $N(v) = max(abs(x), abs(x + y))$ et $norm(v)_∞ = max(abs(x), abs(y))$.
 
   #question[Montrer que $N$ est une norme. Dessiner sa boule unité fermée et en donner les sommets.][La positivité et l'homogénéité sont immédiates. Si $N(v) = 0$ alors $x = 0$ et $x + y = 0$, donc $v = 0$.
     Les inégalités triangulaires sur les deux formes linéaires donnent $N(v + w) ≤ N(v) + N(w)$.

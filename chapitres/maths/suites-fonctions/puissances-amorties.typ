@@ -7,7 +7,7 @@
   niveaux: ("MP",),
   difficulte: 2,
 ))[
-  Pour $n ≥ 1$ et $x ∈ [0, 1]$, poser $f_n (x) = x^n (1 - x)$.
+  Pour $n ≥ 1$ et $x ∈ [0, 1]$, on pose $f_n (x) = x^n (1 - x)$.
 
   #question[Étudier la convergence simple de $(f_n)$ sur $[0, 1]$.][Pour $0 ≤ x < 1$, $x^n ⟶ 0$, donc $f_n (x) ⟶ 0$. Pour $x = 1$, $f_n (1) = 0$. La limite simple est la fonction nulle.]
 
