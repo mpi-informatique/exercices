@@ -124,7 +124,7 @@
     #question(
       bareme: 1,
       label: <q-unaires-progressions>,
-      notation: [1/2 pour fini et 1/2 pour expression régulière],
+      notation: [1/2 pour déterminer quand L(α, β) est fini et 1/2 pour expression régulière],
     )[Déterminer pour quelles valeurs de $α$ et $β$ le langage $L(α, β)$ est fini et donner une expression régulière qui le dénote.][
       $L(α, β)$ est fini si et seulement si $α = 0$ : il vaut alors ${a^β}$. Si $α ≥ 1$, il est infini et est dénoté par $a^β (a^α)^*$. Cette expression convient aussi pour $α = 0$, avec la convention $a^0 = ε$, puisque $ε^*$ dénote ${ε}$.
     ]
@@ -287,7 +287,10 @@
       Les positions (tortue, lièvre) aux étapes $0, 1, 2, 3$ sont respectivement $(0, 0)$, $(1, 2)$, $(2, 4)$ et $(3, 3)$. La première rencontre après au moins un déplacement a donc lieu à l'étape $3$, dans l'état $3$.
     ]
 
-    #question(bareme: 1.5, notation: [La simulation de la question précédente ne prouve pas le résultat général : ne pas lui attribuer de nouveau crédit ici. Exiger un argument valable pour tout automate, établissant la rencontre, sa position après le seuil, la divisibilité et la borne demandées.])[
+    #question(
+      bareme: 1.5,
+      notation: [La simulation de la question précédente ne prouve pas le résultat général : ne pas lui attribuer de nouveau crédit ici. Exiger un argument valable pour tout automate, établissant la rencontre, sa position après le seuil, la divisibilité et la borne demandées.],
+    )[
       Montrer qu'ils finissent par se rencontrer. Plus précisément, montrer que la première rencontre a lieu pour un entier $k ≥ μ$ qui est un multiple de $λ$, avec $k ≤ μ + λ$.
     ][
       Tant que $k < μ$, la tortue est dans le chemin. Elle ne peut pas rencontrer le lièvre : si celui-ci est aussi dans le chemin, les états $q_(k)$ et $q_(2k)$ sont distincts. S'il est déjà dans le cycle, aucun état du cycle ne peut revenir dans le chemin.
