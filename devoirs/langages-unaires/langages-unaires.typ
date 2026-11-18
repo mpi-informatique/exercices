@@ -422,6 +422,7 @@
     #question(
       bareme: 1,
       label: <q-unaires-grammaires-automates>,
+      notation: [Accorder un crédit partiel pour la traduction correcte des états et des transitions avec le bon axiome. Vérifier les règles de terminaison : elles doivent correspondre exactement aux états finaux, même si l'état initial est final. Sans règle de terminaison, la grammaire engendre le langage vide.],
     )[Transformer un automate fini déterministe sur $Σ$ en une grammaire régulière à droite qui engendre le même langage.][
       Soit $A = (Σ, Q, q_0, F, δ)$ un automate. Construisons la grammaire $G = (Σ, V, R, X_(q_0))$, où $V = {X_q | q ∈ Q}$ contient une variable par état et
       $ R = {X_q → a X_r | q, r ∈ Q, #sep δ(q, a) = r} ∪ {X_f → ε | f ∈ F}. $
