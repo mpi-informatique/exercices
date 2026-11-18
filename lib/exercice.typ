@@ -59,6 +59,7 @@
 /// Construit une question dans le corps d'un exercice ou d'une partie.
 /// `label` permet les renvois `@etiquette` ; `notation` est réservée au correcteur.
 /// Écrire `#question(bareme: 1)[Énoncé.][Solution.]` ; le second bloc est facultatif.
+/// Les listes numérotées écrites avec `+` dans l'énoncé ou la solution utilisent `a)`, `b)`, etc. par défaut.
 ///
 /// - enonce (content): Question posée.
 /// - jury (content, none): Observation affichée dans le corrigé.
@@ -471,6 +472,7 @@
     }
     // Chaque énoncé est un paragraphe distinct ; les longues questions restent sécables.
     let enonce = cible-question(q, i, block(width: 100%, above: espacement, below: espacement, {
+      set enum(numbering: "a)")
       let points = if bareme == none { q.at("bareme", default: none) } else { bareme.at(i - 1) }
       if corrige and points != none {
         // Placement hors du corps : la note suit le début de la question sans réserver de hauteur.
@@ -488,6 +490,7 @@
       if q.jury != none {
         block(width: 100%, above: espacement, below: espacement, text(style: "italic", q.jury))
       }
+      set enum(numbering: "a)")
       bloc-solution(q.solution, above: espacement, below: espacement)
     }
     i += 1
