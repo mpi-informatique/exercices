@@ -71,8 +71,10 @@ let regles_possibles s =
 
 (* Question 8 *)
 let rec prouver depth s =
+  (* La profondeur borne la hauteur de l'arbre de preuve recherché. *)
   if depth <= 0 then None
   else
+    (* prouver_premisses arbres l prouve chaque séquent de l et renvoie la liste des arbres obtenus *)
     let rec prouver_premisses arbres = function
       | [] -> Some (List.rev arbres)
       | p :: ps ->
@@ -80,6 +82,7 @@ let rec prouver depth s =
           | None -> None
           | Some arbre -> prouver_premisses (arbre :: arbres) ps
     in
+    (* essayer_regles r essaie d'appliquer chaque règle à s *)
     let rec essayer_regles = function
       | [] -> None
       | r :: rs ->
