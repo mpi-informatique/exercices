@@ -42,11 +42,18 @@ let appliquer_regle (r : regle) (s : sequent) : sequent list option =
 
 
 let test_appliquer_regle () =
+  let egal_a_permutation_pres xs = function
+    | None -> false
+    | Some ys -> List.sort compare xs = List.sort compare ys
+  in
   assert (appliquer_regle Axiom (parse "A |- A") = Some []);
   assert (appliquer_regle Axiom (parse "A |- B") = None);
-  assert (appliquer_regle AndIntro (parse "A |- A & B") = Some [parse "A |- A"; parse "A |- B"]);
-  assert (appliquer_regle (NotElim (Var "A")) (parse "A, !A |- F") = Some [parse "A, !A |- !A"; parse "A, !A |- A"]);
-  assert (appliquer_regle (OrElim (Var "A", Var "B")) (parse "|- C") = Some [parse "|- A | B"; parse "A |- C"; parse "B |- C"])
+  assert (appliquer_regle AndIntro (parse "A |- A & B")
+    |> egal_a_permutation_pres [parse "A |- A"; parse "A |- B"]);
+  assert (appliquer_regle (NotElim (Var "A")) (parse "A, !A |- F")
+    |> egal_a_permutation_pres [parse "A, !A |- !A"; parse "A, !A |- A"]);
+  assert (appliquer_regle (OrElim (Var "A", Var "B")) (parse "|- C")
+    |> egal_a_permutation_pres [parse "|- A | B"; parse "A |- C"; parse "B |- C"])
 
 (* Question 5 *)
 let rec sous_formules_f (f : formule) : formule list =
