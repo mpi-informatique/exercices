@@ -302,7 +302,10 @@
       Pour $k ≥ μ$, les deux états sont dans le cycle et $q_(k) = q_(2k)$ si et seulement si leurs indices sont congrus modulo $λ$, c'est-à-dire si $k ≡ 0 mod λ$. Le plus petit multiple strictement positif de $λ$ supérieur ou égal à $μ$ convient et est au plus égal à $μ + λ$.
     ]
 
-    #question(bareme: 1.5)[
+    #question(
+      bareme: 1.5,
+      notation: [Vérifier que la méthode renvoie l'état d'entrée et le nombre de déplacements depuis l'état initial. Un doublon dans le tableau peut provenir d'états inaccessibles et ne suffit pas à déterminer $μ$. Tenir compte du cas $μ=0$.],
+    )[
       À partir de l'état de la première rencontre $q_(k) = q_(2k)$, proposer une méthode pour déterminer $μ$ et l'état d'entrée du cycle $q_(μ)$ en complexité mémoire $O(1)$, sans modifier le tableau de transitions.
     ][
       Replacer la tortue en $q_(0)$ et laisser le lièvre en $q_(k)$. Les faire avancer chacun d'une transition par étape jusqu'à leur rencontre, en comptant les étapes effectuées. Le compteur est initialisé à $0$ et la rencontre est testée avant chaque déplacement.
