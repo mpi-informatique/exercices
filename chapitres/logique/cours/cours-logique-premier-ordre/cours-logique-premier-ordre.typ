@@ -9,11 +9,6 @@
 
 #show: cours-et-presentation.with(titre: "Logique du premier ordre", niveau: "MPI")
 
-Comme pour la logique propositionnelle, il y a 3 points de vue sur les formules :
-- Syntaxe : construction des formules à partir de symboles.
-- Sémantique : interprétation des formules avec une valuation/structure.
-- Preuve : arbre de preuve utilisant des règles de déduction.
-
 La logique du premier ordre enrichit la logique propositionnelle avec des symboles de fonctions et de relations pour raisonner sur d'autres objets que des booléens.
 
 = Syntaxe : signature du premier ordre
