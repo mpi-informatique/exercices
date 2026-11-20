@@ -4,11 +4,9 @@
   theoremes,
 )
 #import theoremes: algorithme, corollaire, definition, exercice, lemme, theoreme
-#import automate: Ereg, LA, Le, Lrec, Lreg, dessiner-automate
+#import automate: Ereg, LA, Le, Lloc, Lrec, Lreg, dessiner-automate
 
 #show: cours-et-presentation.with(titre: "Théorème de Kleene", niveau: "MPI")
-
-#let Lloc = $cal(L)_("loc")$
 
 #slide()
 
@@ -35,30 +33,34 @@
 
 == Langages locaux
 
+#let definition-facteurs-locaux = definition[$P(L)$, $S(L)$, $F(L)$, $N(L)$][
+  Pour un langage $L ⊂ Σ^*$ :
+  - $P(L) = {a ∈ Σ ∣ a Σ^* ∩ L ≠ ∅}$ : premières lettres.
+  - $S(L) = {a ∈ Σ ∣ Σ^* a ∩ L ≠ ∅}$ : dernières lettres.
+  - $F(L) = {m ∈ Σ^2 ∣ Σ^* m Σ^* ∩ L ≠ ∅}$ : facteurs de taille $2$.
+  - $N(L) = Σ^2 ∖ F(L)$ : facteurs de taille 2 interdits.
+]
+
 #colonnes-cours(
   columns: (1.15fr, 1fr),
-  [
-    #definition[$P(L)$, $S(L)$, $F(L)$, $N(L)$][
-      Pour un langage $L ⊂ Σ^*$ :
-      - $P(L) = {a ∈ Σ ∣ a Σ^* ∩ L ≠ ∅}$ : premières lettres.
-      - $S(L) = {a ∈ Σ ∣ Σ^* a ∩ L ≠ ∅}$ : dernières lettres.
-      - $F(L) = {m ∈ Σ^2 ∣ Σ^* m Σ^* ∩ L ≠ ∅}$ : facteurs de taille $2$.
-      - $N(L) = Σ^2 ∖ F(L)$ : facteurs de taille 2 interdits.
-    ]
-  ],
+  definition-facteurs-locaux,
   [
     #exercice[Donner ces ensembles pour $L = a (a | b)^*$.]
   ],
 )
 
-#slide()
-#definition[Langage local][
+#let definition-langage-local = definition[Langage local][
   Soit $"Loc"(L)$ l'ensemble des mots dont la première lettre appartient à $P(L)$, la dernière à $S(L)$ et sans facteur de $N(L)$ :
   $ "Loc"(L) = (P(L) Σ^* ∩ Σ^* S(L)) ∖ Σ^* N(L) Σ^* $
-  On dit que $L$ est _local_ si $"Loc"(L) = L\\{ε}$, c'est-à-dire, comme $L\\{ε} ⊂ L$ est toujours vrai :
-  $ underbrace(m_1 ∈ P(L) ∧ m_n ∈ S(L) ∧ (∀ k ∈ [|1, n - 1|], #sep m_k m_(k + 1) ∈ F(L)), m ∈ "Loc"(L)) ==> m ∈ L $
+  On dit que $L$ est _local_ si $"Loc"(L) = L\\{ε}$.
   On note $Lloc(Σ)$ l'ensemble des langages locaux sur $Σ$.
 ]
+
+#slide()
+#definition-langage-local
+
+Comme $L\\{ε} ⊂ L$ est toujours vrai, $L$ est local si :
+$ underbrace(m_1 ∈ P(L) ∧ m_n ∈ S(L) ∧ (∀ k ∈ [|1, n - 1|], #sep m_k m_(k + 1) ∈ F(L)), m ∈ "Loc"(L)) ==> m ∈ L $
 
 #slide()
 #exercice[Montrer que $Lloc(Σ) ⊂ Lreg(Σ)$.]

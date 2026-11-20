@@ -1,9 +1,9 @@
-#import "/load.typ": automate, code, exercice, feuille, partie, question, sep, theoremes
+#import "/load.typ": automate, code, exercice, feuille, partie, question, sep
 #import automate: Lloc, dessiner-automate
 #import automate: cetz, finite, style-automates, unite-automates
 #import code: code-extrait
-#import theoremes: definition
 
+#import "/chapitres/langages/cours/cours-kleene.typ": definition-facteurs-locaux, definition-langage-local
 #import "/chapitres/langages/exercices/intersection-grammaire-ogden.typ": lemme-etoile
 
 #let source = read("langages-unaires-cor.ml")
@@ -70,15 +70,8 @@
     "Langages locaux unaires",
     numero: "I",
     (
-      definition[Langage local][
-        Pour un langage $L$, on note $P(L)$ l'ensemble des premières lettres de ses mots non vides, $S(L)$ l'ensemble de leurs dernières lettres, $F(L)$ l'ensemble des facteurs de taille deux de ses mots, $N(L) = Σ^* \\ L$ leur complémentaire et :
-        $ "Loc"(L) = (P(L) Σ^* ∩ Σ^* S(L)) \\ Σ^* N(L) Σ^* $
-        Le langage $L$ est _local_ si, pour tout mot $u = u_1…u_n != epsilon$ :
-        $
-          u ∈ L <==> u_1 ∈ P(L) ∧ u_n ∈ S(L)
-          ∧ (∀i ∈ {1, …, n - 1}, #sep u_(i) u_(i + 1) ∈ F(L)).
-        $
-      ],
+      definition-facteurs-locaux,
+      definition-langage-local,
       question(bareme: 1)[Est-ce que $L = (a a)^*$ est un langage local ?][
         $P(L) = S(L) = {a}$ et $F(L) = {a a}$.
         Soit $u = a$. Alors $u$ a sa première lettre dans $P(L)$, sa dernière dans $S(L)$ et ses facteurs dans $F(L)$ mais $u in.not L$ : $L$ n'est pas local.
