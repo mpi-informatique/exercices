@@ -132,7 +132,11 @@
     Soit $cal(A) = ({a}, Q, q_(0), F, δ)$ un automate fini déterministe complet.
     On note $q_(n) = δ^*(q_(0), a^n)$.
 
-    #question(bareme: 2, label: <q-unaires-structure>)[
+    #question(
+      bareme: 2,
+      label: <q-unaires-structure>,
+      notation: [Créditer la description du chemin et du cycle si elle justifie la répétition après un tour. Vérifier aussi que la construction établit la distinction des premiers états et la borne. L'égalité $μ+λ=abs(Q)$ suppose que tous les états sont accessibles.],
+    )[
       Montrer qu'il existe $μ ∈ NN$ et $λ ∈ NN^*$ tels que les états $q_(0), …, q_(μ + λ - 1)$ soient deux à deux distincts et $q_(n + λ) = q_(n)$ pour tout $n ≥ μ$. Justifier que $μ + λ ≤ abs(Q)$.
     ][
       $Q$ est fini donc $(q_n)_(n ∈ NN)$ passe plusieurs fois par le même état.
