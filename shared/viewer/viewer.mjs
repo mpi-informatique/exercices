@@ -1,268 +1,304 @@
 const vscode = acquireVsCodeApi();
 window.addEventListener('error', event => vscode.postMessage({ type: 'clientError', error: event.message }));
 window.addEventListener('unhandledrejection', event => vscode.postMessage({ type: 'clientError', error: String(event.reason) }));
-const status = document.getElementById('status');
-const compileError = document.getElementById('compile-error');
-const frames = new Map();
-const pagination = new Map();
-const pageRequests = new Map();
-const pageProgress = document.getElementById('page-progress');
-const pageNumber = document.getElementById('page-number');
-const pageTotal = document.getElementById('page-total');
-const previousPage = document.getElementById('previous-page');
-const nextPage = document.getElementById('next-page');
-const host = document.getElementById('viewers');
-let pdfPages = 0;
-let progressFrame;
-let currentProgress = { current: 0, total: 0 };
-let requestedPdfPage;
-let pdfNavigation;
-function showProgress(progress) {
-  const { current = 0, total = 0 } = progress ?? {};
-  const changed = current !== currentProgress.current || total !== currentProgress.total;
-  currentProgress = { current, total };
-  if (document.activeElement !== pageNumber || !total) pageNumber.value = total ? String(current) : '';
-  pageNumber.disabled = !total;
-  pageNumber.max = String(total);
-  pageTotal.textContent = total ? String(total) : '—';
-  previousPage.disabled = !total || current <= 1;
-  nextPage.disabled = !total || current >= total;
-  pageProgress.setAttribute('aria-label', total ? `Page ${current} sur ${total}` : 'Pagination indisponible');
-  if (changed) vscode.postMessage({ type: 'pageProgress', current, total });
-}
-function goToPage(value) {
-  if (!currentProgress.total || !Number.isInteger(value)) return;
-  const page = Math.max(1, Math.min(value, currentProgress.total));
-  if (state?.native) {
-    const frame = frames.get(state.variant);
-    if (!frame) return;
-    const navigation = (pageRequests.get(state.variant) ?? 0) + 1;
-    pageRequests.set(state.variant, navigation);
-    pagination.set(state.variant, { current: page, total: currentProgress.total });
-    showProgress({ current: page, total: currentProgress.total });
-    frame.contentWindow?.postMessage({ token: state.tokens?.[state.variant], type: 'goToPage', page, navigation }, new URL(frame.src).origin);
-  } else {
-    requestedPdfPage = page;
-    showProgress({ current: page, total: currentProgress.total });
-    const target = host.querySelector(`.page[data-page="${page}"]`);
-    if (target) {
-      host.scrollTo({ top: host.scrollTop + target.getBoundingClientRect().top - host.getBoundingClientRect().top, behavior: 'instant' });
-      pdfNavigation = { page, top: host.scrollTop };
-      requestedPdfPage = undefined;
-      schedulePdfProgress();
-    }
-  }
-}
-function choosePage() {
-  const value = pageNumber.value === '' ? NaN : Number(pageNumber.value);
-  if (Number.isInteger(value) && currentProgress.total) {
-    pageNumber.value = String(Math.max(1, Math.min(value, currentProgress.total)));
-    goToPage(Number(pageNumber.value));
-  } else pageNumber.value = currentProgress.total ? String(currentProgress.current) : '';
-}
-pageNumber.addEventListener('change', choosePage);
-pageNumber.addEventListener('blur', () => { pageNumber.value = currentProgress.total ? String(currentProgress.current) : ''; });
-pageNumber.addEventListener('keydown', event => {
-  if (event.key === 'Enter') { event.preventDefault(); choosePage(); pageNumber.blur(); }
-  if (event.key === 'Escape') { event.preventDefault(); pageNumber.value = String(currentProgress.current || ''); pageNumber.blur(); }
-});
-previousPage.onclick = () => goToPage(currentProgress.current - 1);
-nextPage.onclick = () => goToPage(currentProgress.current + 1);
-function updatePdfProgress() {
-  if (state?.native) return;
-  const bounds = host.getBoundingClientRect();
-  let current = 1, visible = -1, selectedVisible = false;
-  for (const page of host.querySelectorAll('.page')) {
-    const rect = page.getBoundingClientRect();
-    const height = Math.max(0, Math.min(rect.bottom, bounds.bottom) - Math.max(rect.top, bounds.top));
-    if (Number(page.dataset.page) === pdfNavigation?.page && height > 0) selectedVisible = true;
-    if (height > visible) { visible = height; current = Number(page.dataset.page); }
-  }
-  if (pdfNavigation && Math.abs(host.scrollTop - pdfNavigation.top) < 1 && selectedVisible) current = pdfNavigation.page;
-  else pdfNavigation = undefined;
-  showProgress({ current, total: pdfPages });
-}
-function schedulePdfProgress() {
-  cancelAnimationFrame(progressFrame);
-  progressFrame = requestAnimationFrame(updatePdfProgress);
-}
-host.addEventListener('scroll', schedulePdfProgress, { passive: true });
-let resizeTimer;
-function schedulePdfRender() {
-  schedulePdfProgress();
-  clearTimeout(resizeTimer);
-  if (!state?.pdf || state.native) return;
-  resizeTimer = setTimeout(() => {
-    if (state?.pdf && !state.native) void pdf(state.pdf).catch(reportPdfError);
-  }, 150);
-}
-new ResizeObserver(schedulePdfRender).observe(host);
-window.addEventListener('resize', schedulePdfRender);
-let state;
-let epoch = 0;
-let rendered;
-let renderedWidth;
-let renderedPixelRatio;
-let renderedColors;
+
 let workerSource;
-const controls = frame => {
-  const style = getComputedStyle(document.body);
-  const scrollbarForeground = style.getPropertyValue('--vscode-foreground').trim();
-  frame.contentWindow?.postMessage({ token: state.tokens?.[frame.dataset.variant], jumps: state.jumps, scrollbarForeground }, new URL(frame.src).origin);
-};
-new MutationObserver(() => { for (const frame of frames.values()) controls(frame); schedulePdfRender(); }).observe(document.body, { attributes: true, attributeFilter: ['class', 'style'] });
-async function pdf(data) {
-  const width = host.clientWidth;
-  const pixelRatio = window.devicePixelRatio || 1;
-  const style = getComputedStyle(document.body);
-  const pageColors = state?.theme === 'vscode' ? {
-    background: style.getPropertyValue('--vscode-editor-background').trim(),
-    foreground: (style.getPropertyValue('--vscode-editor-foreground') || style.getPropertyValue('--vscode-foreground')).trim()
-  } : undefined;
-  const colors = JSON.stringify(pageColors);
-  if (!width || (rendered === data && renderedWidth === width && renderedPixelRatio === pixelRatio && renderedColors === colors)) return;
-  const scrollTop = rendered === data ? host.scrollTop * width / renderedWidth : 0;
-  rendered = data;
-  renderedWidth = width;
-  renderedPixelRatio = pixelRatio;
-  renderedColors = colors;
-  const revision = ++epoch;
-  pdfPages = 0;
-  requestedPdfPage = undefined;
-  pdfNavigation = undefined;
-  showProgress();
-  host.replaceChildren();
-  host.scrollTop = 0;
-  const base = document.body.dataset.pdfjs;
-  const pdfjs = await import(base + 'pdf.mjs');
-  workerSource ??= fetch(base + 'pdf.worker.mjs').then(response => { if (!response.ok) throw new Error('Chargement du lecteur PDF impossible.'); return response.text(); });
-  // Workers loaded from a Blob and font outlines avoid webview origin/font-loading stalls.
-  const url = URL.createObjectURL(new Blob([await workerSource], { type: 'text/javascript' }));
-  const port = new Worker(url, { type: 'module' });
-  const worker = new pdfjs.PDFWorker({ port });
-  const loading = pdfjs.getDocument({ worker, useWorkerFetch: false, disableFontFace: true, data: Uint8Array.from(atob(data), c => c.charCodeAt(0)), cMapUrl: base + 'cmaps/', cMapPacked: true, standardFontDataUrl: base + 'standard_fonts/', wasmUrl: base + 'wasm/' });
-  try {
-    const doc = await loading.promise;
-    if (revision !== epoch) return;
-    pdfPages = doc.numPages;
-    for (let n = 1; n <= doc.numPages && revision === epoch; n++) {
-      const page = await doc.getPage(n);
-      const scale = Math.max(0.2, (width - 24) / page.getViewport({ scale: 1 }).width);
-      const viewport = page.getViewport({ scale });
-      const pageView = document.createElement('div'); pageView.className = 'page';
-      pageView.dataset.page = String(n);
-      const canvas = document.createElement('canvas');
-      // La taille CSS reste celle de la page ; le bitmap utilise les pixels physiques.
-      canvas.width = Math.ceil(viewport.width * pixelRatio);
-      canvas.height = Math.ceil(viewport.height * pixelRatio);
-      canvas.style.width = `${viewport.width}px`;
-      canvas.style.height = `${viewport.height}px`;
-      const textLayer = document.createElement('div'); textLayer.className = 'textLayer';
-      if (revision !== epoch) break;
-      pageView.append(canvas, textLayer); host.append(pageView);
-      if (requestedPdfPage === n) goToPage(n);
-      schedulePdfProgress();
-      await Promise.all([
-        page.render({ canvasContext: canvas.getContext('2d'), canvas, viewport, transform: [pixelRatio, 0, 0, pixelRatio, 0, 0], pageColors, intent: 'print' }).promise,
-        new pdfjs.TextLayer({ textContentSource: page.streamTextContent(), container: textLayer, viewport }).render()
-      ]);
-    }
-    if (revision === epoch) {
-      if (!pdfNavigation) host.scrollTop = scrollTop;
-      schedulePdfProgress();
-      const canvas = host.querySelector('canvas');
-      vscode.postMessage({ type: 'pdfReady', pages: doc.numPages, pixelRatio, width: canvas.width, displayWidth: canvas.getBoundingClientRect().width, pageColors, background: Array.from(canvas.getContext('2d').getImageData(0, 0, 1, 1).data) });
-    }
-  } finally { await loading.destroy(); worker.destroy(); port.terminate(); URL.revokeObjectURL(url); }
-}
-function reportPdfError(error) {
-  rendered = undefined;
-  status.textContent = String(error); status.hidden = false;
-  vscode.postMessage({ type: 'pdfError', error: String(error) });
-}
-const variants = [...document.querySelectorAll('[data-variant]')].map(button => button.id);
-for (const id of [...variants, 'save', 'code', 'scan', 'jumps', 'theme', 'fullscreen', 'restart']) {
-  document.getElementById(id).onclick = () => vscode.postMessage({ type: id });
-}
-window.addEventListener('message', ({ data }) => {
-  if (data?.channel !== document.body.dataset.channel) return;
-  if (data.type === 'reset') { ++epoch; rendered = undefined; pdfPages = 0; requestedPdfPage = undefined; pdfNavigation = undefined; pagination.clear(); pageRequests.clear(); showProgress(); for (const frame of frames.values()) { if (frame.src.startsWith('blob:')) URL.revokeObjectURL(frame.src); frame.remove(); } frames.clear(); }
-  if (data.type === 'status') { status.textContent = data.message; status.hidden = false; }
-  if (data.type === 'compileError') { compileError.textContent = data.message; compileError.hidden = !data.message; }
-  if (data.type !== 'show') return;
-  state = data;
-  if (data.allowedVariants) for (const variant of variants) document.getElementById(variant).hidden = !data.allowedVariants.includes(variant);
-  document.body.classList.toggle('native-preview', !!data.native);
-  document.getElementById('code').hidden = !data.hasCode;
-  document.getElementById('scan').hidden = !data.hasScan;
-  if (data.native) showProgress(pagination.get(data.variant));
-  document.body.classList.toggle('pdf-dark', !data.native && data.theme !== 'vscode' && data.dark);
-  document.body.classList.toggle('vscode-theme', data.theme === 'vscode');
-  document.getElementById('jumps').disabled = !data.native;
-  if (data.pdf) { status.hidden = true; void pdf(data.pdf).catch(reportPdfError); }
-  for (const [variant, source] of Object.entries(data.sessions)) {
-    if (!frames.has(variant)) {
-      const frame = document.createElement('iframe');
-      frame.title = `${data.labels[variant]} — Tinymist`;
-      frame.src = typeof source === 'string' ? source : URL.createObjectURL(new Blob([source.html], { type: 'text/html' }));
-      frame.dataset.variant = variant;
-      frame.addEventListener('load', () => { controls(frame); vscode.postMessage({ type: 'frameReady', variant }); });
-      frames.set(variant, frame);
-      document.getElementById('viewers').append(frame);
+
+function mountViewer(pane, prefix, post) {
+  const get = id => document.getElementById(prefix + id);
+  const status = get('status');
+  const compileError = get('compile-error');
+  const frames = new Map();
+  const pagination = new Map();
+  const pageRequests = new Map();
+  const pageProgress = get('page-progress');
+  const pageNumber = get('page-number');
+  const pageTotal = get('page-total');
+  const previousPage = get('previous-page');
+  const nextPage = get('next-page');
+  const host = get('viewers');
+  let pdfPages = 0;
+  let progressFrame;
+  let currentProgress = { current: 0, total: 0 };
+  let requestedPdfPage;
+  let pdfNavigation;
+  function showProgress(progress) {
+    const { current = 0, total = 0 } = progress ?? {};
+    const changed = current !== currentProgress.current || total !== currentProgress.total;
+    currentProgress = { current, total };
+    if (document.activeElement !== pageNumber || !total) pageNumber.value = total ? String(current) : '';
+    pageNumber.disabled = !total;
+    pageNumber.max = String(total);
+    pageTotal.textContent = total ? String(total) : '—';
+    previousPage.disabled = !total || current <= 1;
+    nextPage.disabled = !total || current >= total;
+    pageProgress.setAttribute('aria-label', total ? `Page ${current} sur ${total}` : 'Pagination indisponible');
+    if (changed) post({ type: 'pageProgress', current, total });
+  }
+  function goToPage(value) {
+    if (!currentProgress.total || !Number.isInteger(value)) return;
+    const page = Math.max(1, Math.min(value, currentProgress.total));
+    if (state?.native) {
+      const frame = frames.get(state.variant);
+      if (!frame) return;
+      const navigation = (pageRequests.get(state.variant) ?? 0) + 1;
+      pageRequests.set(state.variant, navigation);
+      pagination.set(state.variant, { current: page, total: currentProgress.total });
+      showProgress({ current: page, total: currentProgress.total });
+      frame.contentWindow?.postMessage({ token: state.tokens?.[state.variant], type: 'goToPage', page, navigation }, new URL(frame.src).origin);
+    } else {
+      requestedPdfPage = page;
+      showProgress({ current: page, total: currentProgress.total });
+      const target = host.querySelector(`.page[data-page="${page}"]`);
+      if (target) {
+        host.scrollTo({ top: host.scrollTop + target.getBoundingClientRect().top - host.getBoundingClientRect().top, behavior: 'instant' });
+        pdfNavigation = { page, top: host.scrollTop };
+        requestedPdfPage = undefined;
+        schedulePdfProgress();
+      }
     }
   }
-  for (const [variant, frame] of frames) { frame.hidden = variant !== data.variant; controls(frame); }
-  for (const variant of variants) document.getElementById(variant).setAttribute('aria-pressed', String(variant === data.variant));
-  document.getElementById('jumps').setAttribute('aria-pressed', String(data.jumps));
-  document.getElementById('theme').setAttribute('aria-pressed', String(data.dark));
-  status.hidden = !!data.pdf || frames.has(data.variant);
-});
+  function choosePage() {
+    const value = pageNumber.value === '' ? NaN : Number(pageNumber.value);
+    if (Number.isInteger(value) && currentProgress.total) {
+      pageNumber.value = String(Math.max(1, Math.min(value, currentProgress.total)));
+      goToPage(Number(pageNumber.value));
+    } else pageNumber.value = currentProgress.total ? String(currentProgress.current) : '';
+  }
+  pageNumber.addEventListener('change', choosePage);
+  pageNumber.addEventListener('blur', () => { pageNumber.value = currentProgress.total ? String(currentProgress.current) : ''; });
+  pageNumber.addEventListener('keydown', event => {
+    if (event.key === 'Enter') { event.preventDefault(); choosePage(); pageNumber.blur(); }
+    if (event.key === 'Escape') { event.preventDefault(); pageNumber.value = String(currentProgress.current || ''); pageNumber.blur(); }
+  });
+  previousPage.onclick = () => goToPage(currentProgress.current - 1);
+  nextPage.onclick = () => goToPage(currentProgress.current + 1);
+  function updatePdfProgress() {
+    if (state?.native) return;
+    const bounds = host.getBoundingClientRect();
+    let current = 1, visible = -1, selectedVisible = false;
+    for (const page of host.querySelectorAll('.page')) {
+      const rect = page.getBoundingClientRect();
+      const height = Math.max(0, Math.min(rect.bottom, bounds.bottom) - Math.max(rect.top, bounds.top));
+      if (Number(page.dataset.page) === pdfNavigation?.page && height > 0) selectedVisible = true;
+      if (height > visible) { visible = height; current = Number(page.dataset.page); }
+    }
+    if (pdfNavigation && Math.abs(host.scrollTop - pdfNavigation.top) < 1 && selectedVisible) current = pdfNavigation.page;
+    else pdfNavigation = undefined;
+    showProgress({ current, total: pdfPages });
+  }
+  function schedulePdfProgress() {
+    cancelAnimationFrame(progressFrame);
+    progressFrame = requestAnimationFrame(updatePdfProgress);
+  }
+  host.addEventListener('scroll', schedulePdfProgress, { passive: true });
+  let resizeTimer;
+  function schedulePdfRender() {
+    schedulePdfProgress();
+    clearTimeout(resizeTimer);
+    if (!state?.pdf || state.native) return;
+    resizeTimer = setTimeout(() => {
+      if (state?.pdf && !state.native) void pdf(state.pdf).catch(reportPdfError);
+    }, 150);
+  }
+  new ResizeObserver(schedulePdfRender).observe(host);
+  window.addEventListener('resize', schedulePdfRender);
+  let state;
+  let epoch = 0;
+  let rendered;
+  let renderedWidth;
+  let renderedPixelRatio;
+  let renderedColors;
+  const controls = frame => {
+    const style = getComputedStyle(pane);
+    const scrollbarForeground = style.getPropertyValue('--vscode-foreground').trim();
+    frame.contentWindow?.postMessage({ token: state.tokens?.[frame.dataset.variant], jumps: state.jumps, scrollbarForeground }, new URL(frame.src).origin);
+  };
+  new MutationObserver(() => { for (const frame of frames.values()) controls(frame); schedulePdfRender(); }).observe(document.body, { attributes: true, attributeFilter: ['class', 'style'] });
+  async function pdf(data) {
+    const width = host.clientWidth;
+    const pixelRatio = window.devicePixelRatio || 1;
+    const style = getComputedStyle(pane);
+    const pageColors = state?.theme === 'vscode' ? {
+      background: style.getPropertyValue('--vscode-editor-background').trim(),
+      foreground: (style.getPropertyValue('--vscode-editor-foreground') || style.getPropertyValue('--vscode-foreground')).trim()
+    } : undefined;
+    const colors = JSON.stringify(pageColors);
+    if (!width || (rendered === data && renderedWidth === width && renderedPixelRatio === pixelRatio && renderedColors === colors)) return;
+    const scrollTop = rendered === data ? host.scrollTop * width / renderedWidth : 0;
+    rendered = data;
+    renderedWidth = width;
+    renderedPixelRatio = pixelRatio;
+    renderedColors = colors;
+    const revision = ++epoch;
+    pdfPages = 0;
+    requestedPdfPage = undefined;
+    pdfNavigation = undefined;
+    showProgress();
+    host.replaceChildren();
+    host.scrollTop = 0;
+    const base = document.body.dataset.pdfjs;
+    const pdfjs = await import(base + 'pdf.mjs');
+    workerSource ??= fetch(base + 'pdf.worker.mjs').then(response => { if (!response.ok) throw new Error('Chargement du lecteur PDF impossible.'); return response.text(); });
+    // Workers loaded from a Blob and font outlines avoid webview origin/font-loading stalls.
+    const url = URL.createObjectURL(new Blob([await workerSource], { type: 'text/javascript' }));
+    const port = new Worker(url, { type: 'module' });
+    const worker = new pdfjs.PDFWorker({ port });
+    const loading = pdfjs.getDocument({ worker, useWorkerFetch: false, disableFontFace: true, data: Uint8Array.from(atob(data), c => c.charCodeAt(0)), cMapUrl: base + 'cmaps/', cMapPacked: true, standardFontDataUrl: base + 'standard_fonts/', wasmUrl: base + 'wasm/' });
+    try {
+      const doc = await loading.promise;
+      if (revision !== epoch) return;
+      pdfPages = doc.numPages;
+      for (let n = 1; n <= doc.numPages && revision === epoch; n++) {
+        const page = await doc.getPage(n);
+        const scale = Math.max(0.2, (width - 24) / page.getViewport({ scale: 1 }).width);
+        const viewport = page.getViewport({ scale });
+        const pageView = document.createElement('div'); pageView.className = 'page';
+        pageView.dataset.page = String(n);
+        const canvas = document.createElement('canvas');
+        // La taille CSS reste celle de la page ; le bitmap utilise les pixels physiques.
+        canvas.width = Math.ceil(viewport.width * pixelRatio);
+        canvas.height = Math.ceil(viewport.height * pixelRatio);
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
+        const textLayer = document.createElement('div'); textLayer.className = 'textLayer';
+        if (revision !== epoch) break;
+        pageView.append(canvas, textLayer); host.append(pageView);
+        if (requestedPdfPage === n) goToPage(n);
+        schedulePdfProgress();
+        await Promise.all([
+          page.render({ canvasContext: canvas.getContext('2d'), canvas, viewport, transform: [pixelRatio, 0, 0, pixelRatio, 0, 0], pageColors, intent: 'print' }).promise,
+          new pdfjs.TextLayer({ textContentSource: page.streamTextContent(), container: textLayer, viewport }).render()
+        ]);
+      }
+      if (revision === epoch) {
+        if (!pdfNavigation) host.scrollTop = scrollTop;
+        schedulePdfProgress();
+        const canvas = host.querySelector('canvas');
+        post({ type: 'pdfReady', pages: doc.numPages, pixelRatio, width: canvas.width, displayWidth: canvas.getBoundingClientRect().width, pageColors, background: Array.from(canvas.getContext('2d').getImageData(0, 0, 1, 1).data) });
+      }
+    } finally { await loading.destroy(); worker.destroy(); port.terminate(); URL.revokeObjectURL(url); }
+  }
+  function reportPdfError(error) {
+    rendered = undefined;
+    status.textContent = String(error); status.hidden = false;
+    post({ type: 'pdfError', error: String(error) });
+  }
+  const variants = [...pane.querySelectorAll('[data-variant]')].map(button => button.id);
+  for (const id of [...variants, 'save', 'code', 'scan', 'jumps', 'theme', 'fullscreen', 'restart']) {
+    get(id).onclick = () => post({ type: id });
+  }
+  function receive(data) {
+    if (data.type === 'reset') { ++epoch; rendered = undefined; pdfPages = 0; requestedPdfPage = undefined; pdfNavigation = undefined; pagination.clear(); pageRequests.clear(); showProgress(); for (const frame of frames.values()) { if (frame.src.startsWith('blob:')) URL.revokeObjectURL(frame.src); frame.remove(); } frames.clear(); }
+    if (data.type === 'status') { status.textContent = data.message; status.hidden = false; }
+    if (data.type === 'compileError') { compileError.textContent = data.message; compileError.hidden = !data.message; }
+    if (data.type !== 'show') return;
+    state = data;
+    if (data.allowedVariants) for (const variant of variants) get(variant).hidden = !data.allowedVariants.includes(variant);
+    pane.classList.toggle('native-preview', !!data.native);
+    get('code').hidden = !data.hasCode;
+    get('scan').hidden = !data.hasScan;
+    if (data.native) showProgress(pagination.get(data.variant));
+    pane.classList.toggle('pdf-dark', !data.native && data.theme !== 'vscode' && data.dark);
+    pane.classList.toggle('vscode-theme', data.theme === 'vscode');
+    get('jumps').disabled = !data.native;
+    if (data.pdf) { status.hidden = true; void pdf(data.pdf).catch(reportPdfError); }
+    for (const [variant, source] of Object.entries(data.sessions)) {
+      if (!frames.has(variant)) {
+        const frame = document.createElement('iframe');
+        frame.title = `${data.labels[variant]} — Tinymist`;
+        frame.src = typeof source === 'string' ? source : URL.createObjectURL(new Blob([source.html], { type: 'text/html' }));
+        frame.dataset.variant = variant;
+        frame.addEventListener('load', () => { controls(frame); post({ type: 'frameReady', variant }); });
+        frames.set(variant, frame);
+        host.append(frame);
+      }
+    }
+    for (const [variant, frame] of frames) { frame.hidden = variant !== data.variant; controls(frame); }
+    for (const variant of variants) get(variant).setAttribute('aria-pressed', String(variant === data.variant));
+    get('jumps').setAttribute('aria-pressed', String(data.jumps));
+    get('theme').setAttribute('aria-pressed', String(data.dark));
+    status.hidden = !!data.pdf || frames.has(data.variant);
+  }
+  function receiveFrame(event) {
+    const data = event.data;
+    if (!['pageProgress', 'pageStep', 'pageBoundary', 'selectVariant'].includes(data?.type)) return;
+    for (const [variant, frame] of frames) {
+      if (event.source !== frame.contentWindow || event.origin !== new URL(frame.src).origin || data.token !== state.tokens?.[variant]) continue;
+      if (data.type === 'selectVariant') {
+        if (state.variant === variant && variants.includes(data.variant)) post({ type: data.variant });
+        return;
+      }
+      if (data.type === 'pageBoundary') {
+        if (state.variant === variant && ['start', 'end'].includes(data.boundary)) goToPage(data.boundary === 'start' ? 1 : currentProgress.total);
+        return;
+      }
+      if (data.type === 'pageStep') {
+        if (state.variant === variant && [1, -1].includes(data.delta)) goToPage(currentProgress.current + data.delta);
+        return;
+      }
+      if (!Number.isInteger(data.current) || !Number.isInteger(data.total) || data.total < 1 || data.current < 1 || data.current > data.total) return;
+      const navigation = data.navigation ?? 0;
+      if (!Number.isInteger(navigation) || navigation < (pageRequests.get(variant) ?? 0)) return;
+      pagination.set(variant, { current: data.current, total: data.total });
+      if (state.variant === variant) showProgress(data);
+    }
+  }
+  function keydown(event) {
+    if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (['F5', 'F6', 'F7'].includes(event.key)) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      post({ type: event.key === 'F5' ? 'enonce' : event.key === 'F6' ? 'corrige' : 'presentation' });
+      return;
+    }
+    if (event.target.closest?.('input, textarea, [contenteditable="true"]')) return;
+    if (['Home', 'End'].includes(event.key)) {
+      event.preventDefault();
+      goToPage(event.key === 'Home' ? 1 : currentProgress.total);
+      return;
+    }
+    if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+      event.preventDefault();
+      goToPage(currentProgress.current + (event.key === 'ArrowRight' ? 1 : -1));
+      return;
+    }
+    if (state?.native || !['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp'].includes(event.key)) return;
+    event.preventDefault();
+    host.scrollBy({ top: (event.key.endsWith('Down') ? 1 : -1) * (event.key.startsWith('Page') ? host.clientHeight * .9 : 60) });
+  }
+  return { receive, receiveFrame, keydown };
+}
+
+const main = mountViewer(document.body, '', message => vscode.postMessage(message));
+const scanPane = document.getElementById('scan-pane');
+const scanButton = scanPane && document.getElementById('scan');
+scanButton?.setAttribute('aria-controls', scanPane.id);
+let scan;
 window.addEventListener('message', event => {
-  const data = event.data;
-  if (!['pageProgress', 'pageStep', 'pageBoundary', 'selectVariant'].includes(data?.type)) return;
-  for (const [variant, frame] of frames) {
-    if (event.source !== frame.contentWindow || event.origin !== new URL(frame.src).origin || data.token !== state.tokens?.[variant]) continue;
-    if (data.type === 'selectVariant') {
-      if (state.variant === variant && variants.includes(data.variant)) vscode.postMessage({ type: data.variant });
-      return;
+  const { data } = event;
+  if (data?.channel !== document.body.dataset.channel) return;
+  if (scanPane && (data.type === 'scanOpen' || data.type === 'scanClose')) {
+    const open = data.type === 'scanOpen';
+    scanPane.hidden = !open;
+    document.body.classList.toggle('scan-open', open);
+    const label = open ? 'Masquer le scan' : 'Afficher le scan à côté';
+    scanButton.title = label;
+    scanButton.setAttribute('aria-label', label);
+    scanButton.setAttribute('aria-pressed', String(open));
+    if (open && !scan) {
+      scan = mountViewer(scanPane, 'scan-', message => vscode.postMessage({ type: 'scanEvent', message }));
+      vscode.postMessage({ type: 'scanEvent', message: { type: 'ready' } });
     }
-    if (data.type === 'pageBoundary') {
-      if (state.variant === variant && ['start', 'end'].includes(data.boundary)) goToPage(data.boundary === 'start' ? 1 : currentProgress.total);
-      return;
-    }
-    if (data.type === 'pageStep') {
-      if (state.variant === variant && [1, -1].includes(data.delta)) goToPage(currentProgress.current + data.delta);
-      return;
-    }
-    if (!Number.isInteger(data.current) || !Number.isInteger(data.total) || data.total < 1 || data.current < 1 || data.current > data.total) return;
-    const navigation = data.navigation ?? 0;
-    if (!Number.isInteger(navigation) || navigation < (pageRequests.get(variant) ?? 0)) return;
-    pagination.set(variant, { current: data.current, total: data.total });
-    if (state.variant === variant) showProgress(data);
+  } else if (data.type === 'scanMessage') {
+    scan?.receive(data.message);
+  } else {
+    main.receive(data);
   }
 });
+window.addEventListener('message', main.receiveFrame);
 window.addEventListener('keydown', event => {
-  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-  if (['F5', 'F6', 'F7'].includes(event.key)) {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    vscode.postMessage({ type: event.key === 'F5' ? 'enonce' : event.key === 'F6' ? 'corrige' : 'presentation' });
-    return;
-  }
-  if (event.target.closest?.('input, textarea, [contenteditable="true"]')) return;
-  if (['Home', 'End'].includes(event.key)) {
-    event.preventDefault();
-    goToPage(event.key === 'Home' ? 1 : currentProgress.total);
-    return;
-  }
-  if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
-    event.preventDefault();
-    goToPage(currentProgress.current + (event.key === 'ArrowRight' ? 1 : -1));
-    return;
-  }
-  if (state?.native || !['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp'].includes(event.key)) return;
-  event.preventDefault();
-  const host = document.getElementById('viewers');
-  host.scrollBy({ top: (event.key.endsWith('Down') ? 1 : -1) * (event.key.startsWith('Page') ? host.clientHeight * .9 : 60) });
+  if (scan && scanPane.contains(event.target) && !['F5', 'F6', 'F7'].includes(event.key)) scan.keydown(event);
+  else main.keydown(event);
 }, true);
 vscode.postMessage({ type: 'ready' });
