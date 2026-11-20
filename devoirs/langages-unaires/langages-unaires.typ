@@ -339,7 +339,7 @@
 
     #question(
       bareme: 1,
-      notation: [Le rang réduit est un nombre de transitions, pas nécessairement un numéro d'état. Exiger le traitement des longueurs avant l'entrée du cycle et la consultation du tableau des états finaux à l'état effectivement atteint. Les complexités doivent être justifiées.],
+      notation: [Le rang réduit est un nombre de transitions, pas nécessairement un numéro d'état. Exiger le traitement des longueurs avant l'entrée du cycle et la consultation du tableau des états finaux à l'état effectivement atteint. Justifier les complexités à partir du nombre de transitions suivies et de la mémoire auxiliaire. Le tableau des états finaux fait partie de l'entrée.],
     )[
       Les entiers $(μ, λ)$ ayant été calculés, expliquer comment tester en temps $O(n)$ si $a^p$ est reconnu par l'automate, pour $p ∈ NN$.
       Les états finaux sont indiqués par un tableau de booléens ```ocaml final```, indexé par les états.
