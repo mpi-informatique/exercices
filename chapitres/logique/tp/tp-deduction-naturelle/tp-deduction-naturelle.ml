@@ -27,7 +27,7 @@ let test_string_of_sequent () =
 (* Question 4 *)
 let appliquer_regle (r : regle) (s : sequent) : sequent list option =
   match r, s.phi with
-  | Axiom, _ -> if List.mem s.phi s.gamma then failwith "TODO"
+  | Axiom, _ -> failwith "TODO"
   | AndIntro, And (f1, f2) -> failwith "TODO"
   | OrIntro1, Or (f1, _) -> failwith "TODO"
   | OrIntro2, Or (_, f2) -> failwith "TODO"
