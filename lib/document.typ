@@ -29,7 +29,11 @@
 /// -> content
 #let telecharger(url, body) = {
   let symbole = box(image(
-    bytes("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='" + couleur-liens.to-hex() + "' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13.5a4 4 0 0 0 5.7 0l3.3-3.3a4 4 0 0 0-5.7-5.7l-1.9 1.9'/><path d='M14 10.5a4 4 0 0 0-5.7 0L5 13.8a4 4 0 0 0 5.7 5.7l1.9-1.9'/></svg>"),
+    bytes(
+      "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='"
+        + couleur-liens.to-hex()
+        + "' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13.5a4 4 0 0 0 5.7 0l3.3-3.3a4 4 0 0 0-5.7-5.7l-1.9 1.9'/><path d='M14 10.5a4 4 0 0 0-5.7 0L5 13.8a4 4 0 0 0 5.7 5.7l1.9-1.9'/></svg>",
+    ),
     format: "svg",
     width: 0.7em,
   ))
@@ -140,7 +144,7 @@
     align: center + horizon,
     inset: (x: 0.6em, y: 0.5em),
     stroke: 0.4pt + luma(190),
-    fill: (x, y) => if y == 0 { rgb("#e9eef5") } else if x == 0 { luma(96%) },
+    fill: (x, y) => if x * y == 0 { luma(95%) },
   )
   table(..args)
 }

@@ -356,7 +356,7 @@
   #partie("Tailles et preuve de non-régularité", numero: "IV")[
     #question(
       bareme: 0.5,
-      notation: [Accepter l'utilisation correcte du résultat de la question sur l'union finie de progressions même si sa démonstration précédente est incomplète. Exiger le lien entre infinitude de l'union et infinitude d'au moins une progression.],
+      notation: [Accepter l'utilisation correcte du résultat sur l'union finie de progressions même si sa démonstration précédente est incomplète. Dans cette approche, relier l'infinitude de l'union à celle d'une composante. Accepter aussi une preuve par périodicité des tailles, en choisissant une taille acceptée au-delà du seuil et une période strictement positive.],
     )[Justifier que tout langage régulier unaire infini contient un langage $L(p, r)$ avec $p ≥ 1$.][
       C'est une conséquence de la @q-unaires-union-progressions : $L$ est une union finie de langages $L(α, β)$. Comme $L$ est infini, au moins l'un d'eux est infini, donc son paramètre $α$ est strictement positif.
     ]

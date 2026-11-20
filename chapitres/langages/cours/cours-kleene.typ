@@ -34,7 +34,7 @@
 == Langages locaux
 
 #let definition-facteurs-locaux = definition[$P(L)$, $S(L)$, $F(L)$, $N(L)$][
-  Pour un langage $L ⊂ Σ^*$ :
+  Pour un langage $L ⊂ Σ^*$, on note :
   - $P(L) = {a ∈ Σ ∣ a Σ^* ∩ L ≠ ∅}$ : premières lettres.
   - $S(L) = {a ∈ Σ ∣ Σ^* a ∩ L ≠ ∅}$ : dernières lettres.
   - $F(L) = {m ∈ Σ^2 ∣ Σ^* m Σ^* ∩ L ≠ ∅}$ : facteurs de taille $2$.

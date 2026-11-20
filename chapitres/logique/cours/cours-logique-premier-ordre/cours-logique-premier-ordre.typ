@@ -437,7 +437,7 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
     Les axiomes sont instanciés par $∀_e$, les égalités sont composées avec les règles de l'égalité et le résultat de la première question est instancié en $x$. On conclut par $∀_i$, car les axiomes de $upright("PA")$ sont clos.
 ]
 
-== Théorèmes de correction et complétude de G
+== Théorèmes de correction et complétude de Gödel
 
 // Sources : Dowek, Les démonstrations et les algorithmes, §2.2–2.4 ; Lassaigne, §3.
 Les théorèmes de correction et de complétude du calcul propositionnel restent valables en logique du premier ordre.
