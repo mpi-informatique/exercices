@@ -292,7 +292,7 @@
 
     #question(
       bareme: 1.5,
-      notation: [La simulation de la question précédente ne prouve pas le résultat général : ne pas lui attribuer de nouveau crédit ici. Exiger un argument valable pour tout automate, établissant la rencontre, sa position après le seuil, la divisibilité et la borne demandées.],
+      notation: [La simulation de la question précédente ne prouve pas le résultat général : ne pas lui attribuer de nouveau crédit ici. Exiger un argument valable pour tout automate, établissant la rencontre, le seuil, la divisibilité et la borne demandés. Si $μ>0$ et $λ$ divise $μ$, la première rencontre a lieu à l'entrée du cycle. Si $μ=0$, la rencontre au départ ne compte pas.],
     )[
       Montrer qu'ils finissent par se rencontrer. Plus précisément, montrer que la première rencontre a lieu pour un entier $k ≥ μ$ qui est un multiple de $λ$, avec $k ≤ μ + λ$.
     ][
