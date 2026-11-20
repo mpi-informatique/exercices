@@ -462,6 +462,7 @@
     #question(
       bareme: 1.5,
       label: <q-unaires-non-contextuels>,
+      notation: [Vérifier que l'union couvre exactement les tailles de $L$, y compris celles inférieures au seuil. Pour chaque reste présent au-delà du seuil, prendre la plus petite taille acceptée à partir du seuil et justifier les deux inclusions. Accorder un crédit partiel à une déduction correcte de la régularité à partir d'une union finie, même si la décomposition proposée est erronée.],
     )[En regroupant les tailles au moins égales à $n$ selon leur reste modulo $P$, écrire $L$ comme une union finie de langages de la forme $L(α, β)$. En déduire que tout langage non-contextuel unaire est régulier.][
       Soit $R$ l'ensemble des restes modulo $P$ des tailles au moins égales à $n$ de mots de $L$. Pour chaque $r ∈ R$, noter $m_r$ la plus petite de ces tailles ayant pour reste $r$.
       La question précédente donne, par récurrence, $L(P, m_r) ⊂ L$.
