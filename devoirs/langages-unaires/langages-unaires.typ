@@ -432,7 +432,10 @@
       Une dérivation dans $G$ produit exactement les étiquettes d'un chemin de $A$ issu de $q_0$ et ne peut terminer que dans un état final. Ainsi $L(G) = L(A)$.
     ]
 
-    #question(bareme: 1)[Transformer réciproquement une telle grammaire en un automate fini non déterministe.][
+    #question(
+      bareme: 1,
+      notation: [Accorder un crédit partiel pour une traduction correcte des transitions avec le bon état initial. Associer un état distinct à chaque variable, conserver toutes les transitions possibles sur une même lettre et rendre finaux exactement les états dont la variable a une règle vers $ε$.],
+    )[Transformer réciproquement une telle grammaire en un automate fini non déterministe.][
       Soit $G = (Σ, V, R, S)$ la grammaire donnée. Construisons l'automate $A = (Σ, V, {S}, F, T)$, où
       $ F = {X ∈ V | (X → ε) ∈ R}, quad T = {(X, a, Y) | X, Y ∈ V, #sep (X → a Y) ∈ R}. $
       Les dérivations terminales de $G$ correspondent exactement aux chemins acceptants de $A$. Ainsi $A$ reconnaît le langage engendré par $G$.
