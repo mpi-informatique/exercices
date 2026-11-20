@@ -195,7 +195,10 @@
       de tailles est ultimement périodique.
     ]
 
-    #question(bareme: 2)[
+    #question(
+      bareme: 2,
+      notation: [Évaluer séparément les deux sens. Pour le sens direct, vérifier que la construction conserve exactement les longueurs acceptées. Itérer un mot fixé ne suffit pas. Pour la réciproque, justifier la non-régularité du langage choisi et la périodicité de son ensemble de tailles.],
+    )[
       Généraliser le résultat de la @q-unaires-periodicite à l'ensemble ${abs(w) | w ∈ L}$ des tailles des mots d'un langage régulier $L ⊂ Γ^*$ sur un alphabet quelconque $Γ$.
       Montrer que la réciproque est fausse lorsque $abs(Γ) ≥ 2$.
     ][
