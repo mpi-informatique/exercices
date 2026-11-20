@@ -246,7 +246,10 @@
       Ainsi ${a^2, a^3}^* = {ε} ∪ {a^n | n ≥ 2} = L(0, 0) ∪ L(1, 2)$.
     ]
 
-    #question(bareme: 3)[
+    #question(
+      bareme: 3,
+      notation: [Créditer le choix d'une taille positive fixée dont l'ajout conserve l'appartenance à $L^*$, même si le regroupement des tailles reste incomplet. Une union indexée par toutes les tailles de $L^*$ ne prouve pas sa régularité. Accepter toute autre preuve qui vaut pour un langage de départ quelconque.],
+    )[
       Soit $L$ un langage unaire. Montrer que $L^*$ est régulier.
     ][
       Si $L ⊂ {ε}$, alors $L^* = {ε}$ est régulier. Sinon, soit $p ≥ 1$ tel que $a^p ∈ L$.
