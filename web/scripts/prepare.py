@@ -75,6 +75,9 @@ def export_pdfs(entries, bank, signature, pages):
             destination = bank / 'pdf' / entry['id'] / public_name
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / output, destination)
+            if entry.get('type') == 'colle':
+                # Lien durable pour les comptes rendus, même après une autre publication.
+                shutil.copyfile(ROOT / output, destination.with_name(filename))
             entry['pdfs']['enonce' if variant == 'cours' else variant] = destination.relative_to(WEB / 'public').as_posix()
 
 

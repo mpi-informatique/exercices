@@ -110,6 +110,9 @@ class TpExportTests(unittest.TestCase):
                     self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
                     export_pdfs(entries, root / 'web/public/banque', 'signature', {'tp-test': False})
                     self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
+                if document_type == 'colle':
+                    alias = root / 'web/public/banque/pdf/tp-test/tp-test-cor.pdf'
+                    self.assertEqual(alias.read_bytes(), b'%PDF-test')
 
     def test_tp_metadata_resources_and_correction_are_published(self):
         with TemporaryDirectory() as temporary:
