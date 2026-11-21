@@ -368,10 +368,9 @@ En Rocq, `exists x` applique $∃_i$ et `exact h` utilise l'hypothèse. En Lean,
 == Démontrabilité dans une théorie
 
 #definition[Démontrabilité][
-  On note $Γ ⊢_T A$ si $T ∪ Γ scripts(⊢)_c A$, où $scripts(⊢)_c$ désigne la déduction naturelle classique avec les règles des quantificateurs et de l'égalité : $A$ est démontrable à partir des axiomes de $T$ et des hypothèses de $Γ$.
-  Si $Γ$ est vide, on écrit $⊢_T A$.
-
-  $T$ est _cohérente_ si $⊬_T ⊥$.
+  - On note $Γ ⊢_T A$ si $T ∪ Γ scripts(⊢)_c A$.
+  - Si $Γ$ est vide, on écrit $⊢_T A$.
+  - $T$ est _cohérente_ si $⊬_T ⊥$.
 ]
 
 #slides-only[== Groupes]
