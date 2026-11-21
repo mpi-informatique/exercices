@@ -1,6 +1,6 @@
 #import "/load.typ": (
   article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, paragraphe, pause, slide,
-  slides-only, solution, taille-presentation, theoremes,
+  slides-only, solution, tableau, taille-presentation, theoremes,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
 #import "/load.typ": logique
@@ -40,9 +40,20 @@ La logique du premier ordre enrichit la logique propositionnelle avec des symbol
   où $R$ est un symbole de relation d'arité $n > 0$, appliqué à $n$ termes, $T$ est un terme et $x ∈ cal(V)$.
 ]
 #slide()
-#underline[Exemples] :
-- Théorie des groupes : $∀ x ∃ y (x ⋆ y = e)$ est une formule.
-- Théorie des ensembles : $∀ x ∀ y ((x ∪ y)^c = x^c ∩ y^c)$ est une formule.
+#tableau(
+  columns: (auto, 1fr, auto),
+  align: (center + horizon, left + horizon, center + horizon),
+  table.header([*Exemple*], [*Signature*], [*Exemple de formule*]),
+  [Groupes],
+  [Constante $e$ \ Fonction unaire $attach(#[], tr: -1)$ \ Fonction binaire $⋆$ \ Relation binaire $=$],
+  [$∀ x ∃ y (x ⋆ y = e)$],
+  [Ensembles],
+  [Constante $∅$ \ Fonction unaire $attach(#[], tr: c)$ \ Fonctions binaires $∩$, $∪$ \ Relations binaires $=$, $∈$, $⊂$],
+  [$∀ x ∀ y ((x ∪ y)^c = x^c ∩ y^c)$],
+  [Listes OCaml],
+  [Constante `[]` (liste vide) \ Fonction binaire `@` (concaténation) \ Relation binaire $=$],
+  [$∀ l (l #math.class("binary", raw("@")) #raw("[]") = l)$],
+)
 
 #slides-only[== Occurrences libres et liées]
 
