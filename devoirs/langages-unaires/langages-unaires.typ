@@ -484,7 +484,11 @@
       non-contextuelle ne l'engendre.
     ]
 
-    #question(bareme: 1.5, label: <q-unaires-ambiguite>)[
+    #question(
+      bareme: 1.5,
+      label: <q-unaires-ambiguite>,
+      notation: [Évaluer séparément les deux réponses. Pour la première, exiger une construction qui impose une dérivation unique : la présence d'une seule variable à chaque étape ne suffit pas, même dans une grammaire régulière à droite. Pour la seconde, créditer un exemple valide de grammaire ambiguë ou une construction qui introduit deux dérivations distinctes d'un même mot.],
+    )[
       Tout langage non-contextuel unaire peut-il être engendré par une grammaire non ambiguë ? Justifier.
       Toute grammaire qui l'engendre est-elle alors nécessairement non ambiguë ?
     ][
