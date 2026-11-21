@@ -370,6 +370,7 @@
     #question(
       bareme: 1.5,
       label: <q-unaires-ecarts>,
+      notation: [Créditer une borne correctement démontrée à partir d'un rang, même si les écarts initiaux sont omis. Pour une preuve par périodicité, vérifier que l'élève relie une taille acceptée suivante à la borne sur l'écart. La croissance stricte seule ne justifie pas cette borne.],
     )[Soit $(u_(n))_(n ∈ NN)$ une suite strictement croissante d'entiers naturels. Montrer que, si le langage ${a^(u_(n)) | n ∈ NN}$ est régulier, la suite des écarts $u_(n + 1) - u_(n)$ est bornée.][
       La question précédente fournit une progression $r + k p$ entièrement contenue dans l'ensemble des tailles.
       Pour $u_(n) ≥ r$, le premier terme de cette progression strictement supérieur à $u_(n)$ est au plus égal à $u_(n) + p$. Comme $u_(n + 1)$ est la taille acceptée suivante, $u_(n + 1) - u_(n) ≤ p$.
