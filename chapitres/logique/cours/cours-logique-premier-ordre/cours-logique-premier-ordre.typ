@@ -89,7 +89,7 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 #slides-only[== Arithmétique de Peano]
 // Source : Robert Atkey, CS208, Arithmetic and Induction, sections sur les axiomes et la récurrence.
 // https://personal.cis.strath.ac.uk/robert.atkey/cs208/induction.html ; les opérations sont ici définies sur le second argument.
-#taille-presentation(0.85em)[
+#taille-presentation(0.8em)[
   #definition(hp: true)[Arithmétique de Peano][
     Sur la signature $Σ = {0, 1, +, ×, =}$, on considère la théorie $upright("PA")$ de l'_arithmétique de Peano_ :
     #formules-reparties($∀ x ¬ (x + 1 = 0)$, $∀ x (x + 0 = x)$, $∀ x (x × 0 = 0)$)
