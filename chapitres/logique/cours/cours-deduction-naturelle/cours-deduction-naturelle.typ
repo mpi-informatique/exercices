@@ -157,9 +157,15 @@ Les trois systèmes suivants ont pour jugements les mêmes séquents. Ils diffè
   #tableau(
     columns: (auto, auto, 1fr),
     table.header([*Système*], [*Dérivabilité*], [*Règles autorisées*]),
-    [Logique _minimale_], [$Γ scripts(⊢)_m A$], [Axiome et règles usuelles pour $⊤$, $→$, $∧$, $∨$, $¬$],
-    [Logique _intuitionniste_], [$Γ scripts(⊢)_i A$], [Logique minimale + élimination de $⊥$],
-    [Logique _classique_], [$Γ scripts(⊢)_c A$], [Logique intuitionniste + raisonnement par l'absurde (ou tiers exclu)],
+    [Logique _minimale_],
+    [$Γ scripts(⊢)_m A$],
+    [Axiome et règles usuelles pour $⊤$, $→$, $∧$, $∨$, $¬$],
+    [Logique _intuitionniste_],
+    [$Γ scripts(⊢)_i A$],
+    [Logique minimale + élimination de $⊥$],
+    [Logique _classique_],
+    [$Γ scripts(⊢)_c A$],
+    [Logique intuitionniste + raisonnement par l'absurde (ou tiers exclu)],
   )
 ]
 
@@ -693,7 +699,7 @@ Toute preuve intuitionniste est aussi une preuve classique : $Γ scripts(⊢)_i 
 #exercice[
   #let contexte = $A ∨ B, A → C, B → C$
   Soit $Γ = {#contexte}$.
-  Prouver #sequent((contexte, $C$), contexte-affiche: $Γ$). Donner un contre-modèle à $Γ ⊨ A$. En déduire $Γ scripts(⊬)_c A$.
+  Prouver #sequent((contexte, $C$), contexte-affiche: $Γ$). Donner un contre-modèle à $Γ ⊨ A$ et en déduire $Γ scripts(⊬)_c A$.
 ]
 #solution[
   + On raisonne par cas sur $A ∨ B$ :

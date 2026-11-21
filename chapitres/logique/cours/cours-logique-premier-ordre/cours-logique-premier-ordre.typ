@@ -1,15 +1,15 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, formules-reparties, hp, liste-cours, paragraphe, pause, slide,
-  slides-only, solution, tableau, taille-presentation, theoremes,
+  article-only, colonnes-cours, cours-et-presentation, article-only, formules-reparties, hp, liste-cours, paragraphe,
+  pause, slide, slides-only, solution, tableau, taille-presentation, theoremes,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
 #import "/load.typ": logique
-#import logique: arbre, tableau-regles
+#import logique: PA, arbre, tableau-regles
 #import theoremes: definition, exercice, theoreme
 
 #show: cours-et-presentation.with(titre: "Logique du premier ordre", niveau: "MPI")
 
-La logique du premier ordre enrichit la logique propositionnelle avec des symboles de fonctions et de relations pour raisonner sur d'autres objets que des booléens.
+La logique du premier ordre permet de raisonner sur d'autres objets que les booléens de la logique propositionnelle.
 
 = Syntaxe : signature du premier ordre
 
@@ -17,48 +17,45 @@ La logique du premier ordre enrichit la logique propositionnelle avec des symbol
   Une _signature du premier ordre_ $Σ$ est la donnée de _symboles de fonctions_ et de _symboles de relations_, chacun muni d'une _arité_ (nombre d'arguments). Un symbole de fonction d'arité $0$ est une _constante_.
 ]
 
-#slide()
-#underline[Exemples] :
-- Théorie des groupes : constante $e$, fonction $attach(#[], tr: -1)$ d'arité $1$, fonction $⋆$ d'arité $2$ et relation $=$ d'arité $2$.
-- Théorie des ensembles : constante $∅$, fonction $attach(#[], tr: c)$ d'arité $1$, fonctions $∩$ et $∪$ d'arité $2$ et relations $=$, $∈$, $⊂$ d'arité $2$.
+Dans la suite, $Σ$ désigne une signature du premier ordre.
 
 #slides-only[== Termes]
 
 #definition[Terme][
-  Soit $cal(V)$ un ensemble de _variables_. Les _termes_ sont définis par la grammaire :
+  Soit $V$ un ensemble de _variables_. Les _termes_ de $Σ$ sont définis par la grammaire :
   $ T ⟶ x | c | f(T, …, T) $
-  où $x ∈ cal(V)$, $c$ est un symbole de constante et $f$ un symbole de fonction d'arité $n > 0$, appliqué à exactement $n$ termes.
+  où $x ∈ V$, $c$ est un symbole de constante et $f$ un symbole de fonction d'arité $n > 0$, appliqué à exactement $n$ termes.
 ]
 
-#underline[Remarque] : contrairement à la logique propositionnelle, les variables ne sont pas forcément booléennes.
+#underline[Attention] : en premier ordre, les variables ne sont pas forcément booléennes.
 
 #slides-only[== Formules du premier ordre]
 
 #definition[Formule du premier ordre][
-  Soit $Σ$ une signature du premier ordre. Les _formules de la logique du premier ordre_ sont définies par la grammaire :
+  Les _formules_ de la logique du premier ordre sont définies par la grammaire :
   $ F ⟶ ⊤ | ⊥ | R(T, …, T) | ¬ F | (F ∧ F) | (F ∨ F) | (F → F) | ∃ x F | ∀ x F $
-  où $R$ est un symbole de relation d'arité $n > 0$, appliqué à $n$ termes, $T$ est un terme et $x ∈ cal(V)$.
+  où $R$ est un symbole de relation d'arité $n > 0$, appliqué à $n$ termes, $T$ est un terme et $x ∈ V$.
 ]
 #slide()
 #tableau(
   columns: (auto, 1fr, auto),
-  align: (center + horizon, left + horizon, center + horizon),
-  table.header([*Exemple*], [*Signature*], [*Exemple de formule*]),
+  align: (center + horizon, center + horizon, center + horizon),
+  table.header([*Exemple*], [*Signature $Σ$*], [*Exemple de formule*]),
   [Groupes],
   [Constante $e$, fonction unaire $attach(#[], tr: -1)$, fonction binaire $⋆$, relation binaire $=$],
   [$∀ x ∃ y (x ⋆ y = e)$],
   [Ensembles],
-  [Constante $∅$, fonction unaire $attach(#[], tr: c)$, fonctions binaires $∩$, $∪$, relations binaires $=$, $∈$, $⊂$],
+  [Constante $∅$, fonction unaire $attach(#[], tr: c)$, fonctions binaires $∩$, $∪$, relations $=$, $∈$, $⊂$],
   [$∀ x ∀ y ((x ∪ y)^c = x^c ∩ y^c)$],
-  [Listes OCaml],
-  [Constante `[]` (liste vide), fonction binaire `@` (concaténation), relation binaire $=$],
+  [Listes],
+  [Constante `[]`, fonction binaire `@` (concaténation), relation binaire $=$],
   [$∀ l (l #math.class("binary", raw("@")) #raw("[]") = l)$],
 )
 
 #slides-only[== Occurrences libres et liées]
 
 #definition[Occurrence libre, occurrence liée][
-  Une occurrence d'une variable $x$ dans une formule $φ$ est _liée_ si elle est dans la portée d'un quantificateur $∃ x$ ou $∀ x$. Sinon, elle est _libre_. Une variable est libre dans $φ$ si elle y possède une occurrence libre. Une formule sans variable libre est dite _close_.
+  Une occurrence d'une variable $x$ dans une formule $φ$ est _liée_ si elle est dans la portée d'un quantificateur $∃ x$ ou $∀ x$. Sinon, elle est _libre_. Une formule sans variable libre est dite _close_.
 ]
 
 #underline[Exemple] : dans $∀ x (x = y)$, l'occurrence de $x$ est liée et celle de $y$ est libre.
@@ -69,20 +66,24 @@ La logique du premier ordre enrichit la logique propositionnelle avec des symbol
 ]
 
 #underline[Exemple] : si $A = (∀ x (x = x)) ∧ ∃ y (x = y)$ alors
-$ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
+$A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 
 #slides-only[== Théorie]
 #definition[Théorie][
-  Une _théorie_ $T$ est un ensemble de formules closes sur une même signature, appelées _axiomes_.
+  Une _théorie_ $T$ sur $Σ$ est un ensemble de formules closes, appelées _axiomes_.
 ]
 
 #slides-only[== Théorie des groupes]
 #taille-presentation(0.85em)[
-  #definition[Théorie des groupes][
+  #definition(marge: true)[Théorie des groupes][
     Sur la signature $Σ = {⋆, e, i, =}$, avec une constante $e$, une fonction binaire $⋆$ et une fonction unaire $i$ notée $i(x) = x^(-1)$, la _théorie des groupes_ est donnée par les axiomes :
-    #formules-reparties($∀ x ∀ y ∀ z ((x ⋆ y) ⋆ z = x ⋆ (y ⋆ z))$)
-    #formules-reparties($∀ x (x ⋆ e = x),$, $∀ x (e ⋆ x = x)$)
-    #formules-reparties($∀ x (x ⋆ x^(-1) = e)$, $∀ x (x^(-1) ⋆ x = e)$)
+    #formules-reparties(
+      $∀ x (x ⋆ e = x)$,
+      $∀ x (e ⋆ x = x)$,
+      $∀ x (x ⋆ x^(-1) = e)$,
+      $∀ x (x^(-1) ⋆ x = e)$,
+      $∀ x ∀ y ∀ z ((x ⋆ y) ⋆ z = x ⋆ (y ⋆ z))$,
+    )
   ] <groupes>
 ]
 
@@ -91,16 +92,15 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 // https://personal.cis.strath.ac.uk/robert.atkey/cs208/induction.html ; les opérations sont ici définies sur le second argument.
 #taille-presentation(0.8em)[
   #definition(hp: true)[Arithmétique de Peano][
-    Sur la signature $Σ = {0, 1, +, ×, =}$, on considère la théorie $upright("PA")$ de l'_arithmétique de Peano_ :
+    Sur la signature $Σ = {0, 1, +, ×, =}$, on considère la théorie $PA$ de l'_arithmétique de Peano_ :
     #formules-reparties($∀ x ¬ (x + 1 = 0)$, $∀ x (x + 0 = x)$, $∀ x (x × 0 = 0)$)
     #formules-reparties(
       $∀ x ∀ y (x + 1 = y + 1 → x = y)$,
       $∀ x ∀ y (x + (y + 1) = (x + y) + 1)$,
       $∀ x ∀ y (x × (y + 1) = x × y + x)$,
     )
-    et le _schéma de récurrence_ : pour toute formule $A$, on ajoute l'axiome
-    $ (A[x := 0] ∧ ∀ x (A → A[x := x + 1])) → ∀ x A, $
-    où les autres variables libres sont quantifiées universellement. Il s'agit donc d'une famille infinie d'axiomes, un pour chaque formule $A$.
+    et le _schéma de récurrence_ : pour toute formule $A$, on ajoute l'axiome :
+    $ (A[x := 0] ∧ ∀ x (A → A[x := x + 1])) → ∀ x A. $
   ] <pa>
 ]
 
@@ -108,75 +108,70 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 
 #definition[Structure et interprétation][
   Une _structure_ $cal(M)$ pour une signature $Σ$ est donnée par :
-  - un ensemble non vide $D$, appelé _domaine_
+  - un _domaine_ $D ≠ ∅$
   - pour chaque constante $c$, un élément $c^cal(M) ∈ D$
   - pour chaque symbole de fonction $f$ d'arité $n > 0$, une fonction $f^cal(M) : D^n → D$
   - pour chaque symbole de relation $R$ d'arité $n$, une relation $R^cal(M) ⊂ D^n$
 ]
-#underline[Convention] : dans une structure avec égalité, le symbole $=$ est toujours interprété par l'égalité du domaine $D$, c'est-à-dire la relation $\{(a, a) | a ∈ D\}$.
+#underline[Convention] : dans une structure avec égalité, le symbole $=$ est toujours interprété par $\{(a, a) | a ∈ D\}$.
 
 #slides-only[== Affectations et valeur des termes]
 #definition[Affectation][
-  Une _affectation_ $ρ : cal(V) → D$ donne une valeur aux variables. La _valeur_ $⟦t⟧_(cal(M), ρ) ∈ D$ d'un terme $t$ est définie par :
-  $ ⟦x⟧_(cal(M), ρ) = ρ(x), quad ⟦c⟧_(cal(M), ρ) = c^cal(M) $
-  $ ⟦f(t_1, …, t_n)⟧_(cal(M), ρ) = f^cal(M)(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ)) $
+  Une _affectation_ $ρ : V → D$ donne une valeur aux variables. La _valeur_ $⟦t⟧_(cal(M), ρ) ∈ D$ d'un terme $t$ est définie par :
+  #formules-reparties(
+    $⟦x⟧_(cal(M), ρ) = ρ(x)$,
+    $⟦c⟧_(cal(M), ρ) = c^cal(M)$,
+    $⟦f(t_1, …, t_n)⟧_(cal(M), ρ) = f^cal(M)(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ))$,
+  )
+  On note $ρ[x := a]$ l'affectation qui coïncide avec $ρ$ sur toutes les variables sauf $x$, pour laquelle elle donne la valeur $a$.
 ]#pause
-
-#underline[Remarque] : en logique propositionnelle, une valuation attribue une valeur de vérité à chaque variable propositionnelle. Au premier ordre, une affectation attribue un élément du domaine à chaque variable, tandis que la structure interprète les symboles de la signature.
 
 #slides-only[== Valeur de vérité]
 #definition[Valeur de vérité][
-  La valeur de vérité $⟦A⟧_(cal(M), ρ) ∈ {0, 1}$ d'une formule $A$ est définie par :
-  - $⟦⊤⟧_(cal(M), ρ) = 1$ et $⟦⊥⟧_(cal(M), ρ) = 0$.
-  - $⟦R(t_1, …, t_n)⟧_(cal(M), ρ) = 1$ si et seulement si $(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ)) ∈ R^cal(M)$.
-  - En particulier, $⟦s = t⟧_(cal(M), ρ) = 1$ si et seulement si $⟦s⟧_(cal(M), ρ) = ⟦t⟧_(cal(M), ρ)$.
-  - Les connecteurs suivent les mêmes tables de vérité qu'en logique propositionnelle.
-  - $⟦∀ x A⟧_(cal(M), ρ) = 1$ si et seulement si $⟦A⟧_(cal(M), ρ[x := a]) = 1$ pour tout $a ∈ D$.
-  - $⟦∃ x A⟧_(cal(M), ρ) = 1$ si et seulement si $⟦A⟧_(cal(M), ρ[x := a]) = 1$ pour au moins un $a ∈ D$.
+  La valeur de vérité $⟦A⟧_(cal(M), ρ) ∈ {0, 1}$ est définie inductivement :
+  #taille-presentation(0.65em)[
+    #align(center, tableau(
+      columns: 6,
+      inset: (x: 0.3em, y: 0.4em),
+      table.header([$A$], [$⊤$], [$⊥$], [$R(t_1, …, t_n)$], [$∀ x B$], [$∃ x B$]),
+      [$⟦A⟧_(cal(M), ρ) = 1$],
+      [Toujours],
+      [Jamais],
+      [$(⟦t_1⟧_(cal(M), ρ), …, ⟦t_n⟧_(cal(M), ρ)) ∈ R^cal(M)$],
+      [$∀ a ∈ D, ⟦B⟧_(cal(M), ρ[x := a]) = 1$],
+      [$∃ a ∈ D, ⟦B⟧_(cal(M), ρ[x := a]) = 1$],
+    ))
+  ]
+  Les connecteurs logiques sont définis comme en logique propositionnelle.
 ]
 
 #slides-only[== Satisfaction et modèles]
 #definition[Satisfaction et modèle][
-  On note $(cal(M), ρ) ⊨ A$ si $⟦A⟧_(cal(M), ρ) = 1$ : $A$ est alors _vraie_ dans $cal(M)$ pour $ρ$.
-
-  On note $cal(M) ⊨ A$ si $(cal(M), ρ) ⊨ A$ pour toute affectation $ρ$ : $cal(M)$ est alors un _modèle_ de $A$.
+  - $A$ est _vraie_ dans $cal(M)$ pour $ρ$, noté $(cal(M), ρ) ⊨ A$, si $⟦A⟧_(cal(M), ρ) = 1$.
+  - $cal(M)$ est un _modèle_ de $A$, noté $cal(M) ⊨ A$, si $(cal(M), ρ) ⊨ A$ pour toute affectation $ρ$.
+  - $cal(M)$ est un _modèle_ d'une théorie $T$, noté $cal(M) ⊨ T$, si elle satisfait tous ses axiomes : $∀ A ∈ T, cal(M) ⊨ A.$
 ]
 
-#slides-only[== Modèle d'une théorie]
-#definition[Modèle d'une théorie][
-  Une structure $cal(M)$ est un _modèle_ d'une théorie $T$, noté $cal(M) ⊨ T$, si elle satisfait tous ses axiomes :
-  $ cal(M) ⊨ T quad ⟺ quad ∀ A ∈ T, cal(M) ⊨ A. $
-  Les axiomes étant des formules closes, leur vérité ne dépend pas de l'affectation des variables.
-]
-
-#underline[Exemple] : la structure de domaine $ℤ$ qui interprète $⋆$ par $+$, $e$ par $0$ et $i(n)$ par $-n$ est un modèle de la #link(<groupes>)[théorie des groupes] : elle satisfait l'associativité, les deux axiomes du neutre et les deux axiomes de l'inverse.
-
-#slides-only[== Modèles standards de PA]
 // Source : Andrew Marks, Computability theory (2024), §10.1, p. 47.
 // https://math.berkeley.edu/~marks/notes/computability_notes_v1.pdf
 #paragraphe([Exemples], trait: true)[
-  - Le _modèle standard_ $cal(N)$ de #link(<pa>)[$upright("PA")$] a pour domaine $ℕ$, avec $0^cal(N) = 0$, $1^cal(N) = 1$ et les opérations usuelles $+$ et $×$. Tous les axiomes de $upright("PA")$, y compris chaque instance de récurrence, y sont vrais.
-  - Sur les entiers pairs $2 ℕ$, on définit la structure $cal(E)$ par :
-    $ 0^cal(E) = 0, quad 1^cal(E) = 2, quad x +_cal(E) y = x + y, quad x ×_cal(E) y = (x y)/2. $
-    On peut vérifier que $cal(E)$ est un modèle de $upright("PA")$, isomorphe au modèle standard par la bijection $f : n ↦ 2 n$.
-    Par exemple :
-    $ f(n m) = 2 n m = ((2 n)(2 m))/2 = f(n) ×_cal(E) f(m). $
-]
-
-#slides-only[== Modèle non standard de PA]
-#paragraphe([Exemple], trait: true)[
-  Il existe aussi un _modèle non standard_ $cal(M) ⊨ upright("PA")$ dont le domaine contient un élément $a$ différent de tous les éléments
+  - Tout groupe est un modèle de la #link(<groupes>)[théorie des groupes]. Par exemple, la structure de domaine $ℤ$ qui interprète $⋆$ par $+$, $e$ par $0$ et $n^(-1)$ par $-n$ est un modèle qui correspond au groupe $(ℤ, +)$.
+  - Le _modèle standard_ $cal(N)$ de #link(<pa>)[$PA$] a pour domaine $ℕ$, avec $0^cal(N) = 0$, $1^cal(N) = 1$ et les opérations usuelles $+$ et $×$.
+  - L'ensemble des entiers pairs $2 ℕ$ donne un autre modèle $cal(E)$ de $PA$ avec :
+    $0^cal(E) = 0, quad 1^cal(E) = 2, quad x +_cal(E) y = x + y, quad x ×_cal(E) y = (x y)/2.$
+  - Il existe aussi des modèles non standards de $PA$ dont le domaine contient un élément $a$ différent de tous les éléments
   $ 0^cal(M), quad (0 + 1)^cal(M), quad ((0 + 1) + 1)^cal(M), quad … $
-  Autrement dit, $a ≠ overline(n)^cal(M)$ pour tout $n ∈ ℕ$, où $overline(n)$ est le terme obtenu en partant de $0$ et en ajoutant $1$ à droite $n$ fois. L'existence d'un tel modèle est admise ; elle résulte du théorème de compacité du premier ordre.
 ]
 
 #slides-only[== Conséquence logique]
 #definition[Conséquence logique][
-  On note $Γ ⊨ A$ si, pour toute structure $cal(M)$ et toute affectation $ρ$, lorsque $(cal(M), ρ)$ satisfait toutes les formules de $Γ$, il satisfait aussi $A$.
-  Si $Γ$ est vide, on dit que $A$ est _valide_, et on note $⊨ A$.
+  Soit $Γ$ un ensemble de formules.
+  - On note $(cal(M), ρ) ⊨ Γ$ si $(cal(M), ρ) ⊨ B$ pour toute formule $B ∈ Γ$.\
+  - $A$ est une _conséquence_ de $Γ$, noté $Γ ⊨ A$, si, pour toute structure $cal(M)$ et toute affectation $ρ$ : $(cal(M), ρ) ⊨ Γ ==> (cal(M), ρ) ⊨ A$.\
+  - Si $T$ est une théorie, on note $Γ ⊨_T A$ si $T ∪ Γ ⊨ A$.
 ]
 
-#underline[Attention] : être vraie dans une structure particulière ne signifie pas être valide. Par exemple, $∀ x ∃ y (x + y = 0)$ est vraie dans $ℤ$ avec l'addition usuelle, mais fausse dans $ℕ$.
+#underline[Attention] : $∀ x ∃ y (x + y = 0)$ est vraie dans $ℤ$ avec l'addition usuelle, mais n'est pas valide car fausse dans $ℕ$.
 
 #slides-only[== Exprimer des propriétés]
 // Sources : Lassaigne, Logique du premier ordre, §2 ; Dowek, Les démonstrations et les algorithmes, §2.1.
@@ -211,20 +206,16 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 
 #article-only[== Quantificateurs]
 
-#tableau-regles(conditions-dessus: true, (
+#tableau-regles(conditions-dessus: true, rempli: true, progressif: false, (
   (
     titre: [$∀$],
     condition-introduction: [Si $x$ n'est pas une variable libre de $Γ$ :],
-    intuition-introduction: [si $X$ est vraie sans faire d'hypothèse sur $x$, alors elle est vraie quelle que soit la valeur de cette variable.],
-    intuition-elimination: [si $X$ est vraie pour toute valeur de $x$, alors elle est vraie en remplaçant $x$ par $t$.],
     introduction: (rule(name: [$∀_i$], [$Γ ⊢ X$], [$Γ ⊢ ∀ x X$]),),
     elimination: (rule(name: [$∀_e$], [$Γ ⊢ ∀ x X$], [$Γ ⊢ X[x := t]$]),),
   ),
   (
     titre: [$∃$],
     condition-elimination: [Si $x$ n'est une variable libre ni de $Y$ ni de $Γ$ :],
-    intuition-introduction: [si $X$ est vraie dans un cas particulier, c'est qu'il existe une valeur pour laquelle elle est vraie.],
-    intuition-elimination: [si $Y$ se déduit de $X$ pour un témoin dont on ne suppose rien d'autre et que $x$ n'est libre ni dans $Y$ ni dans $Γ$, alors $Y$ se déduit de l'existence d'un tel témoin.],
     introduction: (rule(name: [$∃_i$], [$Γ ⊢ X[x := t]$], [$Γ ⊢ ∃ x X$]),),
     elimination: (rule(name: [$∃_e$], [$Γ ⊢ ∃ x X$], [$Γ, X ⊢ Y$], [$Γ ⊢ Y$]),),
   ),
@@ -341,10 +332,44 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
   La dernière application de $∀_i$ est valide car $y$ n'est pas libre dans l'hypothèse $I$.
 ]
 
+== Assistants de preuve
+
+Les _assistants de preuve_ comme #link("https://rocq-prover.org/")[Rocq] (anciennement Coq) et #link("https://lean-lang.org/")[Lean] aident à construire des preuves formelles.
+Leur logique est fondée sur les types. On fixe un type $D$ et un prédicat $P$. Les deux scripts prouvent $∀ x (P(x) → ∃ y P(y))$ :
+#taille-presentation(0.7em)[
+  #colonnes-cours(
+    columns: 2,
+    empiler-presentation: false,
+    align: left + top,
+    [
+      ```coq
+      Theorem exemple (D : Type) (P : D -> Prop) :
+        forall x : D, P x -> exists y : D, P y.
+      Proof.
+        intros x h.
+        exists x.
+        exact h.
+      Qed.
+      ```
+    ],
+    [
+      ```lean
+      theorem exemple (D : Type) (P : D → Prop) :
+          ∀ x : D, P x → ∃ y : D, P y := by
+        intro x h
+        exact ⟨x, h⟩
+      ```
+    ],
+  )
+]
+`intros x h` et `intro x h` introduisent $x$ et l'hypothèse $P(x)$ nommée `h`, comme les règles $∀_i$ et $scripts(→)_i$.
+En Rocq, `exists x` applique $∃_i$ et `exact h` utilise l'hypothèse. En Lean, `exact ⟨x, h⟩` combine les deux.
+
 == Démontrabilité dans une théorie
 
 #definition[Démontrabilité][
-  On note $Γ ⊢_T A$ si $T ∪ Γ ⊢ A$ : la formule $A$ est démontrable à partir des axiomes de $T$ et des hypothèses de $Γ$.
+  On note $Γ ⊢_T A$ si $T ∪ Γ scripts(⊢)_c A$, où $scripts(⊢)_c$ désigne la déduction naturelle classique avec les règles des quantificateurs et de l'égalité : $A$ est démontrable à partir des axiomes de $T$ et des hypothèses de $Γ$.
+  Si $Γ$ est vide, on écrit $⊢_T A$.
 
   $T$ est _cohérente_ si $⊬_T ⊥$.
 ]
@@ -399,9 +424,9 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
 
 #slides-only[== Exercice sur PA]
 #exercice[Arithmétique de Peano][
-  On considère l'#link(<pa>)[arithmétique de Peano $upright("PA")$].
-  + Prouver $⊢_upright("PA") ∀ x (0 + x = x)$ en utilisant le schéma de récurrence.
-  + En déduire $⊢_upright("PA") ∀ x (x × 1 = x)$.
+  On considère l'#link(<pa>)[arithmétique de Peano $PA$].
+  + Prouver $⊢_PA ∀ x (0 + x = x)$ en utilisant le schéma de récurrence.
+  + En déduire $⊢_PA ∀ x (x × 1 = x)$.
 ]
 #solution[
   + Notons $P(t)$ la formule $0 + t = t$ et posons $D = ∀ x (P(x) → P(x + 1))$. L'instance du schéma de récurrence pour $P(x)$ est $I = (P(0) ∧ D) → ∀ x P(x)$.
@@ -412,13 +437,13 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
     On obtient donc $P(y + 1)$. Ce calcul justifie le raccourci « calcul » dans l'arbre suivant :
     #arbre[#prooftree(rule(
       name: [$scripts(→)_e$],
-      rule(name: [ax], [$⊢_upright("PA") I$]),
+      rule(name: [ax], [$⊢_PA I$]),
       rule(
         name: [$∧_i$],
         rule(
           name: [$∀_e$],
-          rule(name: [ax], [$⊢_upright("PA") ∀ u (u + 0 = u)$]),
-          [$⊢_upright("PA") P(0)$],
+          rule(name: [ax], [$⊢_PA ∀ u (u + 0 = u)$]),
+          [$⊢_PA P(0)$],
         ),
         rule(
           name: [$∀_i$],
@@ -426,86 +451,72 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
             name: [$scripts(→)_i$],
             rule(
               name: [calcul],
-              rule(name: [ax], [$P(y) ⊢_upright("PA") P(y)$]),
-              [$P(y) ⊢_upright("PA") P(y + 1)$],
+              rule(name: [ax], [$P(y) ⊢_PA P(y)$]),
+              [$P(y) ⊢_PA P(y + 1)$],
             ),
-            [$⊢_upright("PA") P(y) → P(y + 1)$],
+            [$⊢_PA P(y) → P(y + 1)$],
           ),
-          [$⊢_upright("PA") D$],
+          [$⊢_PA D$],
         ),
-        [$⊢_upright("PA") P(0) ∧ D$],
+        [$⊢_PA P(0) ∧ D$],
       ),
-      [$⊢_upright("PA") ∀ x P(x)$],
+      [$⊢_PA ∀ x P(x)$],
     ))]
-    La règle $scripts(→)_i$ décharge l'hypothèse $P(y)$. L'introduction de $∀$ est valide car les axiomes de $upright("PA")$ sont clos et il ne reste aucune autre hypothèse.
+    La règle $scripts(→)_i$ décharge l'hypothèse $P(y)$. L'introduction de $∀$ est valide car les axiomes de $PA$ sont clos et il ne reste aucune autre hypothèse.
 
   + Pour une variable $x$ quelconque, les axiomes de la multiplication et le résultat de la première question donnent :
     $ x × 1 = x × (0 + 1) = x × 0 + x = 0 + x = x. $
-    Les axiomes sont instanciés par $∀_e$, les égalités sont composées avec les règles de l'égalité et le résultat de la première question est instancié en $1$ et en $x$. On conclut par $∀_i$, car les axiomes de $upright("PA")$ sont clos.
+    Les axiomes sont instanciés par $∀_e$, les égalités sont composées avec les règles de l'égalité et le résultat de la première question est instancié en $1$ et en $x$. On conclut par $∀_i$, car les axiomes de $PA$ sont clos.
 ]
 
-== Théorèmes de correction et complétude de Gödel
+#hp[== Théorèmes de correction et complétude de Gödel]
 
 // Sources : Dowek, Les démonstrations et les algorithmes, §2.2–2.4 ; Lassaigne, §3.
-Les théorèmes de correction et de complétude du calcul propositionnel restent valables en logique du premier ordre.
-
-Ici, $scripts(⊢)_c$ désigne la déduction naturelle classique avec les règles des quantificateurs et de l'égalité. La relation $⊨$ porte sur toutes les structures de la signature considérée, de domaine non vide, fini ou infini.
+Les théorèmes de correction et de complétude du calcul propositionnel restent valables en logique du premier ordre :
 
 #colonnes-cours(
   empiler-presentation: false,
   align: left + top,
   [
     #theoreme[Correction][
-      Si $Γ scripts(⊢)_c A$ alors $Γ ⊨ A$.
+      Si $Γ ⊢_T A$ alors $Γ ⊨_T A$.
     ]
   ],
   [
     #theoreme[Complétude][
-      Si $Γ ⊨ A$ alors $Γ scripts(⊢)_c A$.
+      Si $Γ ⊨_T A$ alors $Γ ⊢_T A$.
     ]
   ],
 )
 
 #slides-only[== Application à une théorie]
-Pour toute théorie $T$ du premier ordre, même infinie, on obtient en logique classique :
-$ Γ ⊢_T A quad ⟺ quad T ∪ Γ scripts(⊢)_c A quad ⟺ quad T ∪ Γ ⊨ A. $
-Autrement dit, $A$ est démontrable à partir des axiomes de $T$ et des hypothèses de $Γ$ si et seulement si, dans tout modèle de $T$, toute affectation qui satisfait $Γ$ satisfait aussi $A$.
-
-Pour montrer $Γ ⊬_T A$, il suffit donc de trouver un modèle de $T$ et une affectation qui satisfait $Γ$ mais rend $A$ fausse.
+Il y a donc, comme en logique propositionnelle, équivalence entre prouvable et vrai.
 
 #slides-only[== Exemple : commutativité des groupes]
 
 #paragraphe([Exemple], trait: true)[
-  soit $T$ la théorie des groupes et $A = ∀ x ∀ y (x ⋆ y = y ⋆ x).$ Alors :
+  soit $T$ la théorie des groupes et $A = ∀ x ∀ y (x ⋆ y = y ⋆ x)$ qui exprime la commutativité. Alors :
   - Le groupe $(ℤ, +)$ est un modèle de $T$ dans lequel $A$ est vraie.
-  - Le groupe $S_3$ des permutations de ${1, 2, 3}$, muni de la composition, est un modèle de $T$ dans lequel $A$ est fausse : échanger $1$ et $2$, puis $2$ et $3$, ne donne pas la même permutation que dans l'ordre inverse.
+  - Le groupe $S_3$ (permutations de ${1, 2, 3}$ composées de droite à gauche) est un modèle de $T$ où $A$ est fausse : $ (1 2)(2 3) = (1 2 3) ≠ (2 3)(1 2) = (1 3 2) $
   #v(-0.5em)
   Par correction, une preuve de $A$ à partir de $T$ imposerait que $A$ soit vraie dans $S_3$. Une preuve de $¬ A$ imposerait que $¬ A$ soit vraie dans $(ℤ, +)$. Ainsi :
   $ ⊬_T A quad "et" quad ⊬_T ¬ A. $
   Cet exemple ne contredit pas le tiers exclu. Dans chaque modèle de $T$, $A$ est soit vraie, soit fausse.\
   On a donc simultanément :
-  $ ⊢_T (A ∨ ¬ A), quad ⊬_T A, quad ⊬_T ¬ A. $
+  $ ⊢_T A ∨ ¬ A, quad ⊬_T A, quad ⊬_T ¬ A. $
 ]
 
 #hp[== Incomplétude de l'arithmétique]
 
-On reprend l'#link(<pa>)[arithmétique de Peano $upright("PA")$] définie précédemment. Ses axiomes sont _énumérables_ si un programme peut les produire tous, éventuellement sans s'arrêter.
+Un ensemble d'axiomes est _énumérable_ si un programme peut les produire tous, éventuellement sans s'arrêter.
 
 #slides-only[== Premier théorème d'incomplétude]
 // Sources : Florian Rabe, Logic, § Incompleteness, https://github.com/florian-rabe/Teaching/blob/master/logic/fol-proofs_models.tex ;
 // UniMath, Symmetry Book, Metamathematical remarks, https://github.com/UniMath/SymmetryBook/blob/master/metamath.tex.
-#theoreme(hp: true)[Premier théorème d'incomplétude de Gödel][
-  Soit $T$ une théorie cohérente sur la signature de $upright("PA")$, contenant $upright("PA")$ et dont les axiomes sont énumérables. Il existe une formule close $A$ telle que :
+#theoreme[Premier théorème d'incomplétude de Gödel][
+  Soit $T$ une théorie cohérente contenant l'#link(<pa>)[arithmétique de Peano $PA$] et dont les axiomes sont énumérables. \
+  Il existe une formule close $A$ telle que :
   $ ⊬_T A quad "et" quad ⊬_T ¬ A. $
 ]
 
-En particulier, comme les axiomes de $upright("PA")$ sont vrais dans $ℕ$, on peut choisir une formule $A$ vraie dans $ℕ$ que $upright("PA")$ ne démontre ni ne réfute.
-
-#slides-only[== Cohérence et second théorème]
-Les preuves peuvent être codées par des entiers. On peut ainsi construire une formule arithmétique $upright("Con")(T)$ exprimant, pour le codage usuel des preuves, qu'aucune preuve à partir de $T$ n'aboutit à $0 = 1$.
-
-#theoreme(hp: true)[Second théorème d'incomplétude de Gödel][
-  Si $T$ est une théorie cohérente sur la signature de $upright("PA")$, contenant $upright("PA")$ et dont les axiomes sont énumérables, alors $⊬_T upright("Con")(T)$.
-]
-
-Ce résultat n'exclut pas une preuve de la cohérence de $T$ dans une autre théorie. Il ne contredit pas non plus la complétude de la logique : celle-ci concerne les formules vraies dans *tous* les modèles de $T$, et non celles qui sont vraies dans la seule structure $ℕ$.
+On peut donc trouver une formule close $A$ vraie dans le modèle standard $ℕ$ mais qu'il est impossible de démontrer dans $PA$. Par le théorème de complétude, il existe des modèles non standard de $PA$ où $A$ est fausse.

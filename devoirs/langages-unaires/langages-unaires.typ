@@ -78,7 +78,7 @@
       ],
       question(
         bareme: 2,
-        notation: [50 % au plus pour un automate reconnaissant le bon langage sans respecter la construction de Glushkov. Exiger la linéarisation ou une construction équivalente explicite par positions ; accepter tout renommage des états.],
+        notation: [1/3 pour linéarisation, 1/3 P, S, F, 1/3 pour construction de l'automate],
       )[Construire, par l'algorithme de Berry-Sethi, l'automate de Glushkov de $(a a)^*$.][
         $P(L) = {a_(1)}$, $S(L) = {a_(2)}$ et $F(L) = {a_(1) a_(2), a_(2) a_(1)}$. Après construction de l'automate et retour à l'alphabet de départ :
         #automate-glushkov

@@ -3,6 +3,9 @@
 #import "../presentation.typ": colonnes-cours, formules-reparties, only, pause, uncover
 #import "@preview/curryst:0.6.0": prooftree, rule
 
+/// Notation de l'arithmétique de Peano.
+#let PA = $upright("PA")$
+
 /// Affiche un séquent et le lie au prouveur interactif.
 /// Exemple : `sequent(($A → B, A$, $B$))`.
 ///
@@ -79,6 +82,7 @@
 /// - compact (bool): Réduire la hauteur des schémas et les marges du tableau imprimé.
 /// - rempli (bool): Afficher les séquents ; par défaut, seulement dans le corrigé et la présentation.
 /// - conditions-dessus (bool): Placer les conditions d'introduction et d'élimination au-dessus des règles dans le tableau imprimé.
+/// - progressif (bool): Révéler les règles progressivement dans la présentation.
 /// -> content
 #let tableau-regles(
   lignes,
@@ -87,19 +91,34 @@
   compact: false,
   rempli: est-presentation() or est-corrige(),
   conditions-dessus: false,
+  progressif: true,
 ) = {
   if est-presentation() {
+    let afficher-regles(regles) = {
+      if progressif {
+        only(1, cases-regles(regles, rempli: false))
+        only("2-", cases-regles(regles, rempli: rempli))
+      } else {
+        cases-regles(regles, rempli: rempli)
+      }
+    }
     if axiome != none {
       heading(depth: 2)[Axiome]
-      only(1, cases-regles((axiome,), rempli: false))
-      pause
-      only("2-", cases-regles((axiome,), rempli: rempli))
-      uncover("2-", text(size: 0.75em, condition-axiome))
+      afficher-regles((axiome,))
+      if progressif { pause }
+      if progressif {
+        uncover("2-", text(size: 0.75em, condition-axiome))
+      } else {
+        text(size: 0.75em, condition-axiome)
+      }
     }
     for ligne in lignes {
       let intuition(champ) = {
         let body = ligne.at(champ, default: [])
-        if body != [] { text(size: 0.75em)[#underline[Intuitivement] : #body] }
+        if body != [] {
+          let contenu = text(size: 0.75em)[#underline[Intuitivement] : #body]
+          if progressif { uncover("2-", contenu) } else { contenu }
+        }
       }
       heading(depth: 2, ligne.titre)
       colonnes-cours(
@@ -110,25 +129,19 @@
           *Introduction*
 
           #text(size: 0.75em, ligne.at("condition-introduction", default: []))
-          #only(1, cases-regles(ligne.introduction, rempli: false))
-          #only("2-", cases-regles(ligne.introduction, rempli: rempli))
-          #uncover("2-")[
-            #intuition("intuition-introduction")
-          ]
+          #afficher-regles(ligne.introduction)
+          #intuition("intuition-introduction")
         ],
         [
           *Élimination*
 
           #text(size: 0.75em, ligne.at("condition-elimination", default: []))
-          #only(1, cases-regles(ligne.elimination, rempli: false))
-          #only("2-", cases-regles(ligne.elimination, rempli: rempli))
-          #uncover("2-")[
-            #intuition("intuition-elimination")
-          ]
+          #afficher-regles(ligne.elimination)
+          #intuition("intuition-elimination")
         ],
       )
       // Une seule pause révèle simultanément les deux colonnes.
-      pause
+      if progressif { pause }
       ligne.at("remarque", default: [])
       ligne.at("applications", default: [])
     }

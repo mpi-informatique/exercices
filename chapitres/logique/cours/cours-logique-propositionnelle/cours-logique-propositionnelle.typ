@@ -156,9 +156,9 @@ Pour les exemples OCaml, on se limite aux connecteurs $¬$, $∧$ et $∨$.
 #definition[Conséquence logique][
   Soit $Γ ⊆ cal(F)(V)$ un ensemble de formules.
   - On note $cal(M)(Γ) = ⋂_(φ ∈ Γ) cal(M)(φ)$ l'ensemble des valuations satisfaisant toutes les formules de $Γ$.
-  - On dit qu'une formule $φ$ est une _conséquence logique_ de $Γ$, noté $Γ ⊨ φ$, si $cal(M)(Γ) ⊂ cal(M)(φ)$.
+  - $φ$ est une _conséquence logique_ de $Γ$, noté $Γ ⊨ φ$, si $cal(M)(Γ) ⊂ cal(M)(φ)$.
   - On note $Γ ⊭ φ$ lorsqu'il existe un modèle de $Γ$ qui est un contre-modèle de $φ$.
-  On note simplement $ψ ⊨ φ$ si $Γ = {ψ}$ et $⊨ φ$ si $Γ = ∅$.
+  - On note simplement $ψ ⊨ φ$ si $Γ = {ψ}$ et $⊨ φ$ si $Γ = ∅$.
 ]
 
 #underline[Intuitivement] : $Γ ⊨ φ$ signifie « quand $Γ$ est vrai, $φ$ est vraie ».
