@@ -96,19 +96,20 @@ class ExportPdfTests(unittest.TestCase):
 
 
 class TpExportTests(unittest.TestCase):
-    def test_tp_outside_course_gets_both_pdfs(self):
-        with TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            entries = [{'id': 'tp-test', 'fichier': 'tp-test.typ', 'type': 'tp'}]
-            def compile_pdf(source, output, signature, *inputs, exercice=False):
-                target = root / output
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(b'%PDF-test')
-            with patch('prepare.ROOT', root), patch('prepare.WEB', root / 'web'), patch('prepare.sources', return_value=[('tp-test.typ', 'document')]), patch('prepare.compiler', side_effect=compile_pdf):
-                export_pdfs(entries, root / 'web/public/banque', 'signature', {})
-                self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
-                export_pdfs(entries, root / 'web/public/banque', 'signature', {'tp-test': False})
-                self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
+    def test_tp_and_colle_outside_course_get_both_pdfs(self):
+        for document_type in ('tp', 'colle'):
+            with TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                entries = [{'id': 'tp-test', 'fichier': 'tp-test.typ', 'type': document_type}]
+                def compile_pdf(source, output, signature, *inputs, exercice=False):
+                    target = root / output
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(b'%PDF-test')
+                with patch('prepare.ROOT', root), patch('prepare.WEB', root / 'web'), patch('prepare.sources', return_value=[('tp-test.typ', 'document')]), patch('prepare.compiler', side_effect=compile_pdf):
+                    export_pdfs(entries, root / 'web/public/banque', 'signature', {})
+                    self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
+                    export_pdfs(entries, root / 'web/public/banque', 'signature', {'tp-test': False})
+                    self.assertEqual(set(entries[0]['pdfs']), {'enonce', 'corrige'})
 
     def test_tp_metadata_resources_and_correction_are_published(self):
         with TemporaryDirectory() as temporary:

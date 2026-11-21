@@ -59,7 +59,7 @@ def export_pdfs(entries, bank, signature, pages):
     kinds = dict(sources())
     for entry in entries:
         entry['pdfs'] = {}
-        if entry['id'] not in pages and entry.get('type') != 'tp':
+        if entry['id'] not in pages and entry.get('type') not in {'tp', 'colle'}:
             continue
         source = entry['fichier']
         kind = kinds[source]
