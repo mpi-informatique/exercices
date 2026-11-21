@@ -91,18 +91,16 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 // https://personal.cis.strath.ac.uk/robert.atkey/cs208/induction.html ; les opérations sont ici définies sur le second argument.
 #taille-presentation(0.85em)[
   #definition(hp: true)[Arithmétique de Peano][
-    Sur la signature $Σ = {0, S, +, ×, =}$, on considère la théorie $upright("PA")$ de l'_arithmétique de Peano_ :
-    #formules-reparties($∀ x ¬ (S(x) = 0)$, $∀ x (x + 0 = x)$, $∀ x (x × 0 = 0)$)
+    Sur la signature $Σ = {0, 1, +, ×, =}$, on considère la théorie $upright("PA")$ de l'_arithmétique de Peano_ :
+    #formules-reparties($∀ x ¬ (x + 1 = 0)$, $∀ x (x + 0 = x)$, $∀ x (x × 0 = 0)$)
     #formules-reparties(
-      $∀ x ∀ y (S(x) = S(y) → x = y)$,
-      $∀ x ∀ y (x + S(y) = S(x + y))$,
-      $∀ x ∀ y (x × S(y) = x × y + x)$,
+      $∀ x ∀ y (x + 1 = y + 1 → x = y)$,
+      $∀ x ∀ y (x + (y + 1) = (x + y) + 1)$,
+      $∀ x ∀ y (x × (y + 1) = x × y + x)$,
     )
     et le _schéma de récurrence_ : pour toute formule $A$, on ajoute l'axiome
-    $ (A[x := 0] ∧ ∀ x (A → A[x := S(x)])) → ∀ x A, $
+    $ (A[x := 0] ∧ ∀ x (A → A[x := x + 1])) → ∀ x A, $
     où les autres variables libres sont quantifiées universellement. Il s'agit donc d'une famille infinie d'axiomes, un pour chaque formule $A$.
-
-    On note $1 = S(0)$.
   ] <pa>
 ]
 
@@ -157,9 +155,9 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 // Source : Andrew Marks, Computability theory (2024), §10.1, p. 47.
 // https://math.berkeley.edu/~marks/notes/computability_notes_v1.pdf
 #paragraphe([Exemples], trait: true)[
-  - Le _modèle standard_ $cal(N)$ de #link(<pa>)[$upright("PA")$] a pour domaine $ℕ$, avec $0^cal(N) = 0$, $S^cal(N)(n) = n + 1$ et les opérations usuelles $+$ et $×$. Tous les axiomes de $upright("PA")$, y compris chaque instance de récurrence, y sont vrais.
+  - Le _modèle standard_ $cal(N)$ de #link(<pa>)[$upright("PA")$] a pour domaine $ℕ$, avec $0^cal(N) = 0$, $1^cal(N) = 1$ et les opérations usuelles $+$ et $×$. Tous les axiomes de $upright("PA")$, y compris chaque instance de récurrence, y sont vrais.
   - Sur les entiers pairs $2 ℕ$, on définit la structure $cal(E)$ par :
-    $ 0^cal(E) = 0, quad S^cal(E)(x) = x + 2, quad x +_cal(E) y = x + y, quad x ×_cal(E) y = (x y)/2. $
+    $ 0^cal(E) = 0, quad 1^cal(E) = 2, quad x +_cal(E) y = x + y, quad x ×_cal(E) y = (x y)/2. $
     On peut vérifier que $cal(E)$ est un modèle de $upright("PA")$, isomorphe au modèle standard par la bijection $f : n ↦ 2 n$.
     Par exemple :
     $ f(n m) = 2 n m = ((2 n)(2 m))/2 = f(n) ×_cal(E) f(m). $
@@ -168,8 +166,8 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 #slides-only[== Modèle non standard de PA]
 #paragraphe([Exemple], trait: true)[
   Il existe aussi un _modèle non standard_ $cal(M) ⊨ upright("PA")$ dont le domaine contient un élément $a$ différent de tous les éléments
-  $ 0^cal(M), quad S^cal(M)(0^cal(M)), quad S^cal(M)(S^cal(M)(0^cal(M))), quad … $
-  Autrement dit, $a ≠ overline(n)^cal(M)$ pour tout $n ∈ ℕ$, où $overline(n)$ est le terme obtenu en appliquant $n$ fois $S$ à $0$. L'existence d'un tel modèle est admise ; elle résulte du théorème de compacité du premier ordre.
+  $ 0^cal(M), quad (0 + 1)^cal(M), quad ((0 + 1) + 1)^cal(M), quad … $
+  Autrement dit, $a ≠ overline(n)^cal(M)$ pour tout $n ∈ ℕ$, où $overline(n)$ est le terme obtenu en partant de $0$ et en ajoutant $1$ à droite $n$ fois. L'existence d'un tel modèle est admise ; elle résulte du théorème de compacité du premier ordre.
 ]
 
 #slides-only[== Conséquence logique]
@@ -406,12 +404,12 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
   + En déduire $⊢_upright("PA") ∀ x (x × 1 = x)$.
 ]
 #solution[
-  + Notons $P(t)$ la formule $0 + t = t$ et posons $D = ∀ x (P(x) → P(S(x)))$. L'instance du schéma de récurrence pour $P(x)$ est $I = (P(0) ∧ D) → ∀ x P(x)$.
+  + Notons $P(t)$ la formule $0 + t = t$ et posons $D = ∀ x (P(x) → P(x + 1))$. L'instance du schéma de récurrence pour $P(x)$ est $I = (P(0) ∧ D) → ∀ x P(x)$.
 
     L'axiome $∀ u (u + 0 = u)$, instancié en $0$ par $∀_e$, donne $P(0)$.
-    Pour l'hérédité, supposons $P(y)$. L'axiome de l'addition avec un successeur, instancié en $0$ et $y$, puis la compatibilité de $S$ avec l'égalité donnent :
-    $ 0 + S(y) = S(0 + y) = S(y). $
-    On obtient donc $P(S(y))$. Ce calcul justifie le raccourci « calcul » dans l'arbre suivant :
+    Pour l'hérédité, supposons $P(y)$. Le deuxième axiome de l'addition, instancié en $0$ et $y$, puis la compatibilité de l'addition avec l'égalité donnent :
+    $ 0 + (y + 1) = (0 + y) + 1 = y + 1. $
+    On obtient donc $P(y + 1)$. Ce calcul justifie le raccourci « calcul » dans l'arbre suivant :
     #arbre[#prooftree(rule(
       name: [$scripts(→)_e$],
       rule(name: [ax], [$⊢_upright("PA") I$]),
@@ -429,9 +427,9 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
             rule(
               name: [calcul],
               rule(name: [ax], [$P(y) ⊢_upright("PA") P(y)$]),
-              [$P(y) ⊢_upright("PA") P(S(y))$],
+              [$P(y) ⊢_upright("PA") P(y + 1)$],
             ),
-            [$⊢_upright("PA") P(y) → P(S(y))$],
+            [$⊢_upright("PA") P(y) → P(y + 1)$],
           ),
           [$⊢_upright("PA") D$],
         ),
@@ -442,8 +440,8 @@ L'égalité est une relation qui appartient à la plupart des signatures du prem
     La règle $scripts(→)_i$ décharge l'hypothèse $P(y)$. L'introduction de $∀$ est valide car les axiomes de $upright("PA")$ sont clos et il ne reste aucune autre hypothèse.
 
   + Pour une variable $x$ quelconque, les axiomes de la multiplication et le résultat de la première question donnent :
-    $ x × 1 = x × S(0) = x × 0 + x = 0 + x = x. $
-    Les axiomes sont instanciés par $∀_e$, les égalités sont composées avec les règles de l'égalité et le résultat de la première question est instancié en $x$. On conclut par $∀_i$, car les axiomes de $upright("PA")$ sont clos.
+    $ x × 1 = x × (0 + 1) = x × 0 + x = 0 + x = x. $
+    Les axiomes sont instanciés par $∀_e$, les égalités sont composées avec les règles de l'égalité et le résultat de la première question est instancié en $1$ et en $x$. On conclut par $∀_i$, car les axiomes de $upright("PA")$ sont clos.
 ]
 
 == Théorèmes de correction et complétude de Gödel
