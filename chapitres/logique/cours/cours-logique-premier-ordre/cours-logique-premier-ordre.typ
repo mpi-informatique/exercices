@@ -92,9 +92,13 @@ $ A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z) $
 #taille-presentation(0.85em)[
   #definition(hp: true)[Arithmétique de Peano][
     Sur la signature $Σ = {0, S, +, ×, =}$, on considère la théorie $upright("PA")$ de l'_arithmétique de Peano_ :
-    #formules-reparties($∀ x ¬ (S(x) = 0),$, $∀ x ∀ y (S(x) = S(y) → x = y),$)
-    #formules-reparties($∀ x (x + 0 = x),$, $∀ x ∀ y (x + S(y) = S(x + y)),$)
-    #formules-reparties($∀ x (x × 0 = 0),$, $∀ x ∀ y (x × S(y) = x × y + x),$)
+    #grid(
+      columns: (1fr, 1fr, 1fr),
+      row-gutter: 0.2em,
+      align: center + horizon,
+      $∀ x ¬ (S(x) = 0)$, $∀ x (x + 0 = x)$, $∀ x (x × 0 = 0)$,
+      $∀ x ∀ y (S(x) = S(y) → x = y)$, $∀ x ∀ y (x + S(y) = S(x + y))$, $∀ x ∀ y (x × S(y) = x × y + x)$,
+    )
     et le _schéma de récurrence_ : pour toute formule $A$, on ajoute l'axiome
     $ (A[x := 0] ∧ ∀ x (A → A[x := S(x)])) → ∀ x A, $
     où les autres variables libres sont quantifiées universellement. Il s'agit donc d'une famille infinie d'axiomes, un pour chaque formule $A$.
