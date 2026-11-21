@@ -45,13 +45,13 @@ La logique du premier ordre enrichit la logique propositionnelle avec des symbol
   align: (center + horizon, left + horizon, center + horizon),
   table.header([*Exemple*], [*Signature*], [*Exemple de formule*]),
   [Groupes],
-  [Constante $e$ \ Fonction unaire $attach(#[], tr: -1)$ \ Fonction binaire $⋆$ \ Relation binaire $=$],
+  [Constante $e$, fonction unaire $attach(#[], tr: -1)$, fonction binaire $⋆$, relation binaire $=$],
   [$∀ x ∃ y (x ⋆ y = e)$],
   [Ensembles],
-  [Constante $∅$ \ Fonction unaire $attach(#[], tr: c)$ \ Fonctions binaires $∩$, $∪$ \ Relations binaires $=$, $∈$, $⊂$],
+  [Constante $∅$, fonction unaire $attach(#[], tr: c)$, fonctions binaires $∩$, $∪$, relations binaires $=$, $∈$, $⊂$],
   [$∀ x ∀ y ((x ∪ y)^c = x^c ∩ y^c)$],
   [Listes OCaml],
-  [Constante `[]` (liste vide) \ Fonction binaire `@` (concaténation) \ Relation binaire $=$],
+  [Constante `[]` (liste vide), fonction binaire `@` (concaténation), relation binaire $=$],
   [$∀ l (l #math.class("binary", raw("@")) #raw("[]") = l)$],
 )
 
