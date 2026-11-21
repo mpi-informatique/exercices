@@ -303,7 +303,7 @@
 
     #question(
       bareme: 1.5,
-      notation: [Vérifier que la méthode renvoie l'état d'entrée et le nombre de déplacements depuis l'état initial. Un doublon dans le tableau peut provenir d'états inaccessibles et ne suffit pas à déterminer $μ$. Tenir compte du cas $μ=0$.],
+      notation: [Vérifier que la méthode renvoie l'état d'entrée et le nombre de déplacements depuis l'état initial. Le plus petit numéro d'état dans le cycle ne donne ni l'un ni l'autre en général. Un doublon dans le tableau peut provenir d'états inaccessibles et ne suffit pas à déterminer $μ$. Tenir compte du cas $μ=0$.],
     )[
       À partir de l'état de la première rencontre $q_(k) = q_(2k)$, proposer une méthode pour déterminer $μ$ et l'état d'entrée du cycle $q_(μ)$ en complexité mémoire $O(1)$, sans modifier le tableau de transitions.
     ][
@@ -328,7 +328,7 @@
 
     #question(
       bareme: 2,
-      notation: [Évaluer les trois phases de Floyd et le couple renvoyé, puis les justifications de terminaison et de complexité. Distinguer une erreur propre au programme d'une méthode erronée déjà pénalisée aux questions précédentes. Une boucle sautée dès l'initialisation ou une comparaison des numéros d'états à la place du test de rencontre est une erreur algorithmique, pas une petite erreur de syntaxe.],
+      notation: [Évaluer les trois phases de Floyd et le couple renvoyé, puis les justifications de terminaison et de complexité. Vérifier que le calcul de $λ$ compte le premier déplacement et renvoie $1$ pour un cycle réduit à une boucle. Distinguer une erreur propre au programme d'une méthode erronée déjà pénalisée aux questions précédentes. Une boucle sautée dès l'initialisation ou une comparaison des numéros d'états à la place du test de rencontre est une erreur algorithmique, pas une petite erreur de syntaxe.],
     )[
       En déduire une fonction
       ```ocaml forme : int array -> int * int``` telle que
