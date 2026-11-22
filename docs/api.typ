@@ -10,7 +10,7 @@ Guide utilisateur : `docs/utilisation.md`. Cette référence est générée depu
 #for (titre, fichier) in (
   ("Exercices et feuilles", "/lib/exercice.typ"),
   ("Document A4 et compléments", "/lib/document.typ"),
-  ("Cours et solutions", "/lib/cours.typ"),
+  ("Cours", "/lib/cours.typ"),
   ("Présentations et source commune", "/lib/presentation.typ"),
   ("Cadres de théorèmes", "/lib/theoremes.typ"),
   ("Blocs de solution", "/lib/blocs.typ"),

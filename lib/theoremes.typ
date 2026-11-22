@@ -7,6 +7,8 @@
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
 /// Les appels acceptent un contenu et les options communes `title`, `coeur`, `hp` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
+/// Écrire `#exercice[Titre][Énoncé][Solution]` ou `#exercice(solution: [Solution])[Énoncé]`.
+/// La solution intégrée apparaît uniquement dans le corrigé imprimé.
 /// `hp: true` signale un contenu hors programme dans la marge A4 ou dans le titre en présentation.
 /// En présentation, une pause suit chaque cadre si du contenu reste sur la diapositive ; `pause: false` la désactive.
 /// Les références `@etiquette` affichent le type et le titre s'il existe, sinon
@@ -22,7 +24,7 @@
   set-quaternary-border-color, set-secondary-body-color, set-secondary-border-color, set-tertiary-body-color,
   set-tertiary-border-color,
 )
-#import "blocs.typ": coeur-en-marge, epaisseur-trait, marge as note-en-marge
+#import "blocs.typ": coeur-en-marge, epaisseur-trait, marge as note-en-marge, solution as solution-cours
 #import "options.typ": est-presentation
 
 /// Affiche un commentaire précédé de « // » en gris dans un algorithme.
@@ -273,15 +275,17 @@
 /// - nom (str): Type du cadre.
 /// - body (content): Contenu à résoudre.
 /// - pause (bool): Ajouter une pause après le cadre en présentation.
+/// - solution (content, none): Solution affichée sous le cadre dans le corrigé.
 /// - ..options (arguments): Options de `composer-cadre`.
 /// -> content
-#let rendre-cadre(nom, body, pause: true, ..options) = {
+#let rendre-cadre(nom, body, pause: true, solution: none, ..options) = {
   if est-presentation() and pause { body += pause-automatique }
   if not utils.tree.has-touying-mark(body) {
     composer-cadre(body, nom: nom, ..options)
   } else {
     touying-fn-wrapper-raw(composer-cadre, body, nom: nom, ..options)
   }
+  if solution != none { solution-cours(solution) }
 }
 
 /// Réunit le préfixe et le titre par deux-points lorsque le titre est non vide.
@@ -432,7 +436,17 @@
 #let (compteur-remarque, remarque, remarque-sans-numero, afficher-remarque) = creer-environnement("remark")
 #let (compteur-note, note, note-sans-numero, afficher-note) = creer-environnement("note")
 #let (compteur-exemple, exemple, exemple-sans-numero, afficher-exemple) = creer-environnement("example")
-#let (compteur-exercice, exercice, exercice-sans-numero, afficher-exercice) = creer-environnement("exercise")
+#let (compteur-exercice, cadre-exercice, cadre-exercice-sans-numero, afficher-exercice) = creer-environnement("exercise")
+
+#let avec-solution-exercice(cadre, ..args) = {
+  if args.pos().len() != 3 { return cadre(..args) }
+  assert("solution" not in args.named(), message: "Écrire la solution dans le troisième bloc ou avec solution:")
+  let (titre, enonce, solution) = args.pos()
+  cadre(titre, enonce, ..args.named(), solution: solution)
+}
+
+#let exercice = avec-solution-exercice.with(cadre-exercice)
+#let exercice-sans-numero = avec-solution-exercice.with(cadre-exercice-sans-numero)
 #let (compteur-probleme, probleme, probleme-sans-numero, afficher-probleme) = creer-environnement("problem")
 #let (compteur-algorithme, algorithme, algorithme-sans-numero, afficher-algorithme) = creer-environnement("algorithm")
 

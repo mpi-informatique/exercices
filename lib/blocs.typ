@@ -1,4 +1,6 @@
-#import "options.typ": est-presentation
+#import "@preview/touying:0.8.0": slides-only, touying-fn-wrapper-raw, utils
+#import "animations.typ": pause-automatique
+#import "options.typ": est-corrige, est-presentation
 
 #let epaisseur-trait = 0.4pt
 
@@ -63,5 +65,45 @@
     } else {
       cadre
     }
+  }
+}
+
+/// Résout les marques Touying puis compose le bloc de solution.
+/// Utilitaire de rendu différé, appelé par `solution`.
+/// - body (content): Solution.
+/// - self (dictionary, none): Contexte Touying, s'il existe.
+/// - coeur (bool): Ajouter un cœur dans la marge.
+/// - encadrer (bool): Utiliser le cadre commun ; sinon, conserver seulement le cœur.
+/// -> content
+#let composer-solution(body, self: none, coeur: false, encadrer: true) = {
+  if self != none {
+    let article = self.at("article-mode", default: false)
+    body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
+      if (marque.kind == "touying-article-only") == article { marque.body } else { [] }
+    })
+  }
+  if encadrer { bloc-solution(body, coeur: coeur) } else { coeur-en-marge(body) }
+}
+
+/// Affiche par défaut la solution uniquement dans le cours corrigé, jamais dans les diapositives.
+/// `presentation: true` permet une projection explicitement demandée.
+/// Les marques `article-only` et `slides-only` restent utilisables dans son contenu.
+///
+/// - cours (bool): Afficher dans les deux versions imprimées, même avec `presentation: true`.
+/// - presentation (bool): Afficher dans les diapositives et masquer dans le corrigé, sauf si `cours: true`.
+/// - coeur (bool): Ajouter un cœur à gauche, centré sur la solution.
+/// - pause (bool): Ajouter une pause après la solution en présentation.
+/// - body (content): Solution ou preuve.
+/// -> content, none
+#let solution(cours: false, presentation: false, coeur: false, pause: true, body) = {
+  if est-presentation() and pause { body += pause-automatique }
+  if not est-presentation() and ((est-corrige() and not presentation) or cours) {
+    // Le filtre article de Touying ne descend pas dans les arguments des fonctions différées.
+    body = utils.tree.resolve-marks(body, ("touying-slides-only", "touying-article-only"), marque => {
+      if marque.kind == "touying-slides-only" { [] } else { marque.body }
+    })
+    touying-fn-wrapper-raw(composer-solution, coeur: coeur, body)
+  } else if presentation {
+    slides-only(if coeur { touying-fn-wrapper-raw(composer-solution, coeur: true, encadrer: false, body) } else { body })
   }
 }

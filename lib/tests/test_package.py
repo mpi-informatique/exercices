@@ -104,6 +104,21 @@ with TemporaryDirectory() as dossier:
   assert(query(<solution-test>).len() == if est-corrige() and not est-presentation() { 1 } else { 0 })
   assert((query(<projection-test>).len() > 0) == est-presentation())
 }
+== Exercices de cours
+#theoremes.exercice[Titre][#metadata(none) <enonce-cadre> Énoncé.][#metadata(none) <solution-cadre> Solution.] <exercice-test>
+#theoremes.exercice(solution: [#metadata(none) <solution-sans-titre> Solution.])[Autre énoncé.]
+Voir @exercice-test.
+#context {
+  assert(query(<exercice-test>).first().caption.body == [Titre])
+  assert(query(<enonce-cadre>).len() > 0)
+  let solutions = query(<solution-cadre>)
+  let corrige-imprime = est-corrige() and not est-presentation()
+  assert(solutions.len() == if corrige-imprime { 1 } else { 0 })
+  assert(query(<solution-sans-titre>).len() == solutions.len())
+  if corrige-imprime {
+    assert(query(<enonce-cadre>).first().location().position().y < solutions.first().location().position().y)
+  }
+}
 == Colonnes
 #colonnes-cours(
   [#metadata(none) <colonne-defaut-gauche> Gauche.],
