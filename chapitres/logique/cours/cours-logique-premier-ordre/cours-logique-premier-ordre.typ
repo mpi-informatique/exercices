@@ -104,6 +104,35 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
   ] <pa>
 ]
 
+#slides-only[== Exprimer des propriétés]
+// Sources : Lassaigne, Logique du premier ordre, §2 ; Dowek, Les démonstrations et les algorithmes, §2.1.
+#exercice[Exprimer des propriétés][
+  Exprimer les propriétés suivantes par des formules du premier ordre.
+  + Dans un graphe, avec la relation $R(u, v) <==>$ « $u$ et $v$ sont adjacents » :
+    #enum(
+      numbering: "a)",
+      [« aucun sommet n'est isolé ».],
+      [« un sommet est adjacent à tous les autres ».],
+      [« les sommets $x$ et $y$ sont reliés par un chemin de longueur au plus deux ».],
+    )
+  + Sur $ℕ$, avec $0$, $1$, $+$, $×$ et $=$ : « $p$ est premier ».
+  + Sur une signature d'ensembles, avec seulement $∈$ et $=$ :
+    #enum(numbering: "a)", [« $A ⊂ B$ ».], [« $A$ et $B$ sont disjoints ».])
+]
+#solution[
+  + #enum(
+      numbering: "a)",
+      [$∀ x ∃ y R(x, y)$.],
+      [
+        $∃ x ∀ y (¬ (y = x) → R(x, y))$.
+        L'ordre des quantificateurs distingue un voisin dépendant de $x$ d'un sommet commun à tous les autres.
+      ],
+      [$x = y ∨ R(x, y) ∨ ∃ z (R(x, z) ∧ R(z, y))$.],
+    )
+  + $¬ (p = 0) ∧ ¬ (p = 1) ∧ ∀ a ∀ b (p = a × b → (a = 1 ∨ b = 1))$.
+  + #enum(numbering: "a)", [$∀ z (z ∈ A → z ∈ B)$.], [$¬ ∃ z (z ∈ A ∧ z ∈ B)$.])
+]
+
 #hp[= Sémantique : structures et modèles]
 
 #definition[Structure et interprétation][
@@ -172,35 +201,6 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 ]
 
 #underline[Attention] : $∀ x ∃ y (x + y = 0)$ est vraie dans $ℤ$ avec l'addition usuelle, mais n'est pas valide car fausse dans $ℕ$.
-
-#slides-only[== Exprimer des propriétés]
-// Sources : Lassaigne, Logique du premier ordre, §2 ; Dowek, Les démonstrations et les algorithmes, §2.1.
-#exercice[Exprimer des propriétés][
-  Exprimer les propriétés suivantes par des formules du premier ordre.
-  + Dans un graphe, avec la relation $R(u, v) <==>$ « $u$ et $v$ sont adjacents » :
-    #enum(
-      numbering: "a)",
-      [« aucun sommet n'est isolé ».],
-      [« un sommet est adjacent à tous les autres ».],
-      [« les sommets $x$ et $y$ sont reliés par un chemin de longueur au plus deux ».],
-    )
-  + Sur $ℕ$, avec $0$, $1$, $+$, $×$ et $=$ : « $p$ est premier ».
-  + Sur une signature d'ensembles, avec seulement $∈$ et $=$ :
-    #enum(numbering: "a)", [« $A ⊂ B$ ».], [« $A$ et $B$ sont disjoints ».])
-]
-#solution[
-  + #enum(
-      numbering: "a)",
-      [$∀ x ∃ y R(x, y)$.],
-      [
-        $∃ x ∀ y (¬ (y = x) → R(x, y))$.
-        L'ordre des quantificateurs distingue un voisin dépendant de $x$ d'un sommet commun à tous les autres.
-      ],
-      [$x = y ∨ R(x, y) ∨ ∃ z (R(x, z) ∧ R(z, y))$.],
-    )
-  + $¬ (p = 0) ∧ ¬ (p = 1) ∧ ∀ a ∀ b (p = a × b → (a = 1 ∨ b = 1))$.
-  + #enum(numbering: "a)", [$∀ z (z ∈ A → z ∈ B)$.], [$¬ ∃ z (z ∈ A ∧ z ∈ B)$.])
-]
 
 = Preuves : déduction naturelle du premier ordre
 

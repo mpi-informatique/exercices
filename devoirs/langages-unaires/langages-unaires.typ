@@ -86,7 +86,7 @@
       question(
         bareme: 3,
         label: <q-unaires-locaux>,
-        notation: [1/6 pour chaque langage],
+        notation: [1/6 pour chaque langage, enlever la moitié si la justification est très incomplète ou incorrecte],
       )[Déterminer l'ensemble $Lloc$ des langages unaires locaux.][
         Soit $L$ un langage local.
 
@@ -100,7 +100,6 @@
       ],
       question(
         bareme: 2.5,
-        notation: [1/5 pour chaque opération],
       )[$Lloc$ est-il stable par : $a)$ union, $b)$ concaténation, $c)$ étoile, $d)$ intersection, $e)$ complémentaire dans $Σ^*$ ?][
         $a)$ et $d)$ : oui, en vérifiant toutes les possibilités avec les $6$ langages de $Lloc$.\
         $b)$ : non car ${a} {a} = {a a} in.not Lloc$.\
@@ -371,7 +370,7 @@
       bareme: 1.5,
       label: <q-unaires-ecarts>,
       notation: [Créditer une borne correctement démontrée à partir d'un rang, même si les écarts initiaux sont omis. Pour une preuve par périodicité, vérifier que l'élève relie une taille acceptée suivante à la borne sur l'écart. La croissance stricte seule ne justifie pas cette borne.],
-    )[Soit $(u_(n))_(n ∈ NN)$ une suite strictement croissante d'entiers naturels. Montrer que, si le langage ${a^(u_(n)) | n ∈ NN}$ est régulier, la suite des écarts $u_(n + 1) - u_(n)$ est bornée.][
+    )[Soit $(u_(n))_(n ∈ NN)$ une suite strictement croissante d'entiers naturels. Montrer que, si le langage ${a^(u_(n)) | n ∈ NN}$ est régulier, la suite $u_(n + 1) - u_(n)$ est bornée.][
       La question précédente fournit une progression $r + k p$ entièrement contenue dans l'ensemble des tailles.
       Pour $u_(n) ≥ r$, le premier terme de cette progression strictement supérieur à $u_(n)$ est au plus égal à $u_(n) + p$. Comme $u_(n + 1)$ est la taille acceptée suivante, $u_(n + 1) - u_(n) ≤ p$.
       Il reste seulement un nombre fini d'écarts avant la taille $r$ : la suite des écarts est bornée.
