@@ -74,8 +74,10 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 ]
 
 #slides-only[== Théorie des groupes]
+#article-only[#underline[Exemples] :]
+
 #taille-presentation(0.85em)[
-  #definition(marge: true)[Théorie des groupes][
+  #block[
     Sur la signature $Σ = {⋆, e, i, =}$, avec une constante $e$, une fonction binaire $⋆$ et une fonction unaire $i$ notée $i(x) = x^(-1)$, la _théorie des groupes_ est donnée par les axiomes :
     #formules-reparties(
       $∀ x (x ⋆ e = x)$,
@@ -91,7 +93,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 // Source : Robert Atkey, CS208, Arithmetic and Induction, sections sur les axiomes et la récurrence.
 // https://personal.cis.strath.ac.uk/robert.atkey/cs208/induction.html ; les opérations sont ici définies sur le second argument.
 #taille-presentation(0.8em)[
-  #definition(hp: true)[Arithmétique de Peano][
+  #block[
     Sur la signature $Σ = {0, 1, +, ×, =}$, on considère la théorie $PA$ de l'_arithmétique de Peano_ :
     #formules-reparties($∀ x ¬ (x + 1 = 0)$, $∀ x (x + 0 = x)$, $∀ x (x × 0 = 0)$)
     #formules-reparties(
