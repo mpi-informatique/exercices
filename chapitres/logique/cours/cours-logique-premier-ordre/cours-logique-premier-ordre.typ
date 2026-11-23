@@ -1,5 +1,5 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, article-only, formules-reparties, hp, liste-cours, paragraphe,
+  article-only, colonnes-cours, cours-et-presentation, article-only, est-presentation, formules-reparties, hp, liste-cours, paragraphe,
   pause, slide, slides-only, solution, tableau, taille-presentation, theoremes,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
@@ -77,13 +77,19 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 #taille-presentation(0.85em)[
   #exemple(marge: true)[Théorie des groupes][
     Sur la signature $Σ = {⋆, e, i, =}$, avec une constante $e$, une fonction binaire $⋆$ et une fonction unaire $i$ notée $i(x) = x^(-1)$, la _théorie des groupes_ est donnée par les axiomes :
-    #formules-reparties(
+    #let axiomes = (
       $∀ x (x ⋆ e = x)$,
       $∀ x (e ⋆ x = x)$,
       $∀ x (x ⋆ x^(-1) = e)$,
       $∀ x (x^(-1) ⋆ x = e)$,
       $∀ x ∀ y ∀ z ((x ⋆ y) ⋆ z = x ⋆ (y ⋆ z))$,
     )
+    #if est-presentation() {
+      formules-reparties(..axiomes.slice(0, 4))
+      formules-reparties(axiomes.last())
+    } else {
+      formules-reparties(..axiomes)
+    }
   ] <groupes>
 ]
 
