@@ -1,6 +1,6 @@
 #import "/load.typ": (
-  article-only, colonnes-cours, cours-et-presentation, article-only, est-presentation, formules-reparties, hp, liste-cours, paragraphe,
-  pause, slide, slides-only, solution, tableau, taille-presentation, theoremes,
+  article-only, colonnes-cours, cours-et-presentation, article-only, est-presentation, formules-reparties, hp,
+  liste-cours, paragraphe, pause, slide, slides-only, solution, tableau, taille-presentation, theoremes,
 )
 #import "@preview/curryst:0.6.0": prooftree, rule
 #import "/load.typ": logique
@@ -105,7 +105,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
       $∀ x ∀ y (x + (y + 1) = (x + y) + 1)$,
       $∀ x ∀ y (x × (y + 1) = x × y + x)$,
     )
-    et le _schéma de récurrence_ : pour toute formule $A$, on ajoute l'axiome :
+    et le _schéma de récurrence_, pour toute formule $A$ :
     $ (A[x := 0] ∧ ∀ x (A → A[x := x + 1])) → ∀ x A. $
   ] <pa>
 ]
@@ -121,7 +121,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
       [« un sommet est adjacent à tous les autres ».],
       [« les sommets $x$ et $y$ sont reliés par un chemin de longueur au plus deux ».],
     )
-  + Sur $ℕ$, avec $0$, $1$, $+$, $×$ et $=$ : « $p$ est premier ».
+  + Sur $PA$ : « $p$ est premier ».
   + Sur une signature d'ensembles, avec seulement $∈$ et $=$ :
     #enum(numbering: "a)", [« $A ⊂ B$ ».], [« $A$ et $B$ sont disjoints ».])
 ]
@@ -143,7 +143,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 
 #definition[Structure et interprétation][
   Une _structure_ $cal(M)$ pour une signature $Σ$ est donnée par :
-  - un _domaine_ $D ≠ ∅$
+  - un _domaine_ non vide $D$
   - pour chaque constante $c$, un élément $c^cal(M) ∈ D$
   - pour chaque symbole de fonction $f$ d'arité $n > 0$, une fonction $f^cal(M) : D^n → D$
   - pour chaque symbole de relation $R$ d'arité $n$, une relation $R^cal(M) ⊂ D^n$
@@ -164,7 +164,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 #slides-only[== Valeur de vérité]
 #definition[Valeur de vérité][
   La valeur de vérité $⟦A⟧_(cal(M), ρ) ∈ {0, 1}$ est définie inductivement :
-  #taille-presentation(0.65em)[
+  #taille-presentation(0.7em)[
     #align(center, tableau(
       columns: 6,
       inset: (x: 0.3em, y: 0.4em),
@@ -187,6 +187,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
   - $cal(M)$ est un _modèle_ d'une théorie $T$, noté $cal(M) ⊨ T$, si elle satisfait tous ses axiomes : $∀ A ∈ T, cal(M) ⊨ A.$
 ]
 
+#slides-only[== Exemples de modèles]
 // Source : Andrew Marks, Computability theory (2024), §10.1, p. 47.
 // https://math.berkeley.edu/~marks/notes/computability_notes_v1.pdf
 #paragraphe([Exemples], trait: true)[
