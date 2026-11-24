@@ -14,10 +14,13 @@ import shutil
 import subprocess
 import sys
 
-from sources import ROOT, document_url, pdf_filename, sources, variants
+from ci import references
+from sources import ROOT, ocaml_tests, pdf_filename, sources, typst_command, variants
 
 TYPST = os.environ.get('TYPST', 'typst')
 OCAML = os.environ.get('OCAML', 'ocaml')
+EXCLUDED = {'build', 'tmp', '__pycache__', 'node_modules', 'web', 'shared', 'worker'}
+COMMON_INPUTS = ('lib', 'templates', 'nix', 'load.typ', 'typst.toml')
 
 
 def run(command):
@@ -34,35 +37,67 @@ def test_ocaml(script):
     run([OCAML, '-I', mpi_path(), 'mpi.cma', '-I', script.parent, script])
 
 
-def empreinte():
-    digest = hashlib.sha256(subprocess.check_output([TYPST, '--version']))
-    digest.update(os.environ.get('TYPST_PACKAGE_PATH', '').encode())
-    for file in sorted(ROOT.rglob('*')):
-        if any(part.startswith('.') or part in {'build', 'tmp', '__pycache__', 'node_modules', 'web', 'shared'} for part in file.relative_to(ROOT).parts):
+def _hash_files(digest, paths):
+    for file in sorted(paths):
+        if any(part.startswith('.') or part in EXCLUDED for part in file.relative_to(ROOT).parts):
             continue
         if file.is_file():
             digest.update(file.relative_to(ROOT).as_posix().encode())
             digest.update(file.read_bytes())
+
+
+def empreinte():
+    digest = hashlib.sha256(subprocess.check_output([TYPST, '--version']))
+    digest.update(os.environ.get('TYPST_PACKAGE_PATH', '').encode())
+    _hash_files(digest, ROOT.rglob('*'))
+    return digest.hexdigest()
+
+
+@lru_cache(maxsize=1)
+def empreinte_base():
+    """Empreinte des outils et fichiers communs (lib, templates, load.typ)."""
+    digest = hashlib.sha256(subprocess.check_output([TYPST, '--version']))
+    digest.update(os.environ.get('TYPST_PACKAGE_PATH', '').encode())
+    files = []
+    for entry in COMMON_INPUTS:
+        path = ROOT / entry
+        if path.is_dir():
+            files.extend(path.rglob('*'))
+        elif path.is_file():
+            files.append(path)
+    _hash_files(digest, files)
+    return digest.hexdigest()
+
+
+def empreinte_source(source, base=None):
+    """Empreinte limitée à la base commune et aux dépendances locales de la source."""
+    digest = hashlib.sha256((base or empreinte_base()).encode())
+    pending = [Path(source).as_posix()]
+    visited = set()
+    files = []
+    while pending:
+        current = pending.pop()
+        if current in visited:
+            continue
+        visited.add(current)
+        path = ROOT / current
+        if path.is_file():
+            files.append(path)
+            pending.extend(references(ROOT, current) - visited)
+    _hash_files(digest, files)
     return digest.hexdigest()
 
 
 def compiler(source, output, signature, *inputs, exercice=False):
     output = ROOT / output
     cache = output.with_suffix('.sha256')
-    cle = signature + repr((str(source), inputs, exercice))
+    cle = (signature or empreinte_source(source)) + repr((str(source), inputs, exercice))
     if output.is_file() and cache.is_file() and cache.read_text() == cle:
         return
     output.parent.mkdir(parents=True, exist_ok=True)
-    command = [TYPST, 'compile', '--root', ROOT, '--ignore-system-fonts']
-    command += ['--input', 'url-document=' + document_url(source)]
-    for value in inputs:
-        command += ['--input', value]
-    if exercice:
-        command += ['--input', 'exercice=/' + str(source), ROOT / 'templates/fiche.typ']
-    else:
-        command.append(ROOT / source)
+    command = typst_command(source, output, inputs, exercice=exercice, typst=TYPST)
     try:
-        run(command + [output])
+        run(command)
     except subprocess.CalledProcessError:
         output.unlink(missing_ok=True)
         cache.unlink(missing_ok=True)
@@ -70,7 +105,7 @@ def compiler(source, output, signature, *inputs, exercice=False):
     cache.write_text(cle)
 
 
-def documents(selection, signature, categorie=None):
+def documents(selection, signature=None, categorie=None):
     for source, kind in selection:
         if categorie and (kind == 'exercice') != (categorie == 'exercices'):
             continue
@@ -83,13 +118,13 @@ def tests():
     for script in ('test_package.py', 'test_sources.py', 'test_ci.py', 'test_ocaml.py'):
         run([sys.executable, ROOT / 'lib/tests' / script])
     # Les tests restent à côté du code publié, sans liste de chemins à maintenir.
-    for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('*-cor.ml')):
+    for test in ocaml_tests():
         test_ocaml(test)
     for test in sorted(test for dossier in ('chapitres', 'devoirs') for test in (ROOT / dossier).rglob('*-test.py')):
         run([sys.executable, test])
 
 
-def modeles(signature):
+def modeles(signature=None):
     for nom, source, exercice in (
         ('exercice', 'templates/exercice.typ', True),
         ('feuille', 'templates/feuille.typ', False),
@@ -137,17 +172,16 @@ def main():
             return
     else:
         selection = list(sources())
-    signature = empreinte()
     if args.action in ('all', 'exercices', 'documents', 'c', 'check'):
-        documents(selection, signature, args.action if args.action in ('exercices', 'documents') else None)
+        documents(selection, None, args.action if args.action in ('exercices', 'documents') else None)
     if args.action in ('all', 'catalogue', 'check'):
         run([sys.executable, ROOT / 'scripts/catalogue.py', '--typst', TYPST, '--sortie', 'build/catalogue.json'])
     if args.action in ('docs', 'check'):
-        compiler('docs/api.typ', 'build/docs/api.pdf', signature)
+        compiler('docs/api.typ', 'build/docs/api.pdf', None)
     if args.action in ('test', 'check'):
         tests()
     if args.action == 'check':
-        modeles(signature)
+        modeles(None)
 
 
 if __name__ == '__main__':

@@ -22,7 +22,7 @@
         src = self;
         filter = path: type:
           let name = builtins.baseNameOf path; in
-          !(builtins.elem name [ ".git" ".direnv" ".astro" "dist" "build" "tmp" "__pycache__" "node_modules" ".DS_Store" "web" "shared" ])
+          !(builtins.elem name [ ".git" ".direnv" ".astro" "dist" "build" "tmp" "__pycache__" "node_modules" ".DS_Store" "web" "shared" "worker" ])
           && !(nixpkgs.lib.hasSuffix ".log" name);
       };
       typst = system:

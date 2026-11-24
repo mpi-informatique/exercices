@@ -2,6 +2,7 @@
 """Exporter les métadonnées Typst, sans base de données ni dépendance Python."""
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import subprocess
@@ -12,28 +13,30 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def catalogue(typst):
-    entries = []
-    identifiers = set()
-    for relative, kind in sources():
-        if kind != "exercice":
-            continue
-        source = ROOT / relative
+    exercices = [relative for relative, kind in sources() if kind == "exercice"]
+
+    def evaluer(relative):
         result = subprocess.run(
             [typst, "eval", "--root", str(ROOT), "--ignore-system-fonts",
              "--input", f"exercice=/{relative}", "--in", str(ROOT / "templates/fiche.typ"),
              "query(<exercice-meta>).map(m => m.value).first()"],
             check=True, capture_output=True, text=True,
         )
-        if result.stderr:
-            print(result.stderr, end="", file=sys.stderr)
-        # Le constructeur Typst valide les champs communs ; ici, on contrôle
-        # l'unicité à l'échelle de toute la banque, même en cas de filtrage.
-        meta = json.loads(result.stdout)
-        identifier = source.stem
-        if identifier in identifiers:
-            raise ValueError(f"Identifiant dupliqué : {identifier} ({relative})")
-        identifiers.add(identifier)
-        entries.append({**meta, "fichier": relative})
+        return relative, json.loads(result.stdout), result.stderr
+
+    entries = []
+    identifiers = set()
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        for relative, meta, stderr in executor.map(evaluer, exercices):
+            if stderr:
+                print(stderr, end="", file=sys.stderr)
+            # Le constructeur Typst valide les champs communs ; ici, on contrôle
+            # l'unicité à l'échelle de toute la banque, même en cas de filtrage.
+            identifier = Path(relative).stem
+            if identifier in identifiers:
+                raise ValueError(f"Identifiant dupliqué : {identifier} ({relative})")
+            identifiers.add(identifier)
+            entries.append({**meta, "fichier": relative})
     return entries
 
 

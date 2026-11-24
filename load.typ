@@ -1,7 +1,13 @@
 #import "lib/options.typ": est-corrige, est-presentation
-#import "lib/exercice.typ": *
-#import "lib/document.typ": PP, completer, hp, lien, liste-a-completer, paragraphe, pb, sep, substituer, tableau, telecharger, tp, widetilde
-#import "lib/blocs.typ": coeur-en-marge, epaisseur-trait, marge
+#import "lib/exercice.typ": (
+  afficher-exercice, aplatir, cible-question, donnees, est-partie, exercice, feuille, marge-droite,
+  nombre-questions, partie, question, sujet-colle, texte-concours, titre-concours, titre-exercice, verifier-bareme,
+)
+#import "lib/document.typ": (
+  PP, auteur-par-defaut, completer, document-pedagogique, hp, lien, liste-a-completer, paragraphe, pb, sep,
+  substituer, tableau, telecharger, texte-duree, tp, widetilde,
+)
+#import "lib/blocs.typ": bloc-solution, coeur-en-marge, epaisseur-trait, marge
 #import "lib/meta.typ" as meta
 #import "lib/automate.typ" as automate
 #import "lib/logique/regles.typ" as logique

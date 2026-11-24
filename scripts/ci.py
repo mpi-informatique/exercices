@@ -9,7 +9,7 @@ import re
 import subprocess
 import sys
 
-from sources import ROOT, mask, sources
+from sources import ROOT, mask, ocaml_tests, sources
 
 
 def changed_files(root, base):
@@ -71,7 +71,7 @@ def selection(root, changed, entries):
 
 
 def native(plan, changed, entries):
-    from build import documents, empreinte, run, test_ocaml
+    from build import documents, run, test_ocaml
 
     if plan['native_full']:
         run([sys.executable, ROOT / 'scripts/build.py', 'check'])
@@ -79,17 +79,17 @@ def native(plan, changed, entries):
     selected = [(source, kind) for source, kind in entries if source in plan['resources']]
     print(f'Vérification native ciblée : {len(selected)} ressource(s).', flush=True)
     if selected:
-        documents(selected, empreinte())
+        documents(selected)
     related = [Path(path) for path in changed | set(plan['resources'])]
+    for script in ocaml_tests():
+        folder = script.parent.relative_to(ROOT)
+        if any(folder in path.parents for path in related):
+            test_ocaml(script)
     for directory in ('chapitres', 'devoirs'):
-        for pattern in ('*-cor.ml', '*-test.py'):
-            for script in sorted((ROOT / directory).rglob(pattern)):
-                folder = script.parent.relative_to(ROOT)
-                if any(folder in path.parents for path in related):
-                    if pattern == '*-cor.ml':
-                        test_ocaml(script)
-                    else:
-                        run([sys.executable, script])
+        for script in sorted((ROOT / directory).rglob('*-test.py')):
+            folder = script.parent.relative_to(ROOT)
+            if any(folder in path.parents for path in related):
+                run([sys.executable, script])
 
 
 def main():

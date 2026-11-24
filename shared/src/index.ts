@@ -110,3 +110,59 @@ export interface Resource extends Omit<Exercise, 'difficulte'> {
   difficulte: number | null;
   nombreExercices: number;
 }
+
+export const technicalFolders = new Set(['build', 'lib', 'templates', 'ressources', 'docs', 'scripts', 'tmp', 'node_modules', 'web', 'shared', 'worker']);
+
+/** Conserve les décalages et retours à la ligne en masquant commentaires, chaînes et code brut. */
+export function maskTypst(text: string, strings = true, raw = true): string {
+  const result = text.split('');
+  const blank = (start: number, end: number) => {
+    for (let j = start; j < end; j++) if (text[j] !== '\n') result[j] = ' ';
+  };
+  for (let i = 0; i < text.length;) {
+    const start = i;
+    if (text.startsWith('//', i)) {
+      i = text.indexOf('\n', i);
+      if (i < 0) i = text.length;
+      blank(start, i);
+    } else if (text.startsWith('/*', i)) {
+      i += 2;
+      let depth = 1;
+      while (i < text.length && depth) {
+        if (text.startsWith('/*', i)) { depth++; i += 2; }
+        else if (text.startsWith('*/', i)) { depth--; i += 2; }
+        else i++;
+      }
+      blank(start, i);
+    } else if (text[i] === '"') {
+      i++;
+      while (i < text.length) {
+        if (text[i] === '\\') i += 2;
+        else if (text[i++] === '"') break;
+      }
+      if (strings) blank(start, Math.min(i, text.length));
+    } else if (text[i] === '`') {
+      while (text[i] === '`') i++;
+      const fence = text.slice(start, i);
+      const end = text.indexOf(fence, i);
+      i = end < 0 ? text.length : end + fence.length;
+      if (raw) blank(start, i);
+    } else {
+      i++;
+    }
+  }
+  return result.join('');
+}
+
+export type SourceType = 'exercice' | 'document' | 'cours' | 'presentation' | 'cours-presentation';
+
+/** Repérage du type de source Typst par son contenu, sans classement imposé. */
+export function sourceType(source: string): SourceType | undefined {
+  const code = maskTypst(source);
+  for (const [template, type] of [['cours-et-presentation', 'cours-presentation'], ['cours', 'cours'], ['presentation', 'presentation']] as const) {
+    if (new RegExp(`#show\\s*:\\s*${template}\\.with\\s*\\(`).test(code)) return type;
+  }
+  if (/#show\s*:\s*feuille\.with\s*\(/.test(code)) return 'document';
+  if (/#let\s+ex\s*=/.test(code) || [...code.matchAll(/#import\s+:\s*([^\n]+)/g)].some(match => match[1].split(',').some(member => /^(?:ex|[\w-]+\s+as\s+ex)$/.test(member.trim())))) return 'exercice';
+  return undefined;
+}

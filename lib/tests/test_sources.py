@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
-from sources import classify, document_url, pdf_filename, sources, variants
+from sources import classify, document_url, ocaml_tests, pdf_filename, sources, variants
 
 assert document_url('chapitres/langages/cours/cours-automates.typ') == 'https://mpi-informatique.github.io/exercices/cours-automates/'
 assert document_url('lib/tests/test.typ') == ''
@@ -44,3 +44,13 @@ print('Découverte des sources et variantes : exercices, documents, cours et pr�
 decouvertes = dict(sources())
 assert not any(source.startswith('lib/tests/') for source in decouvertes)
 print('Exclusion des tests de bibliothèque vérifiée.')
+
+from tempfile import TemporaryDirectory
+with TemporaryDirectory() as dossier:
+    racine = Path(dossier)
+    for relatif in ('chapitres/a-cor.ml', 'chapitres/b-cor.ml', 'chapitres/b-test.ml', 'devoirs/c-cor.ml', 'devoirs/c-support.ml'):
+        chemin = racine / relatif
+        chemin.parent.mkdir(parents=True, exist_ok=True)
+        chemin.write_text('')
+    assert [p.relative_to(racine).as_posix() for p in ocaml_tests(racine)] == ['chapitres/a-cor.ml', 'chapitres/b-test.ml']
+print('Sélection des tests OCaml vérifiée.')

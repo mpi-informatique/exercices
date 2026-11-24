@@ -1,4 +1,5 @@
-import type { Resource } from '@mpi-informatique/exercices-core';
+import { sourceType, type Resource } from '@mpi-informatique/exercices-core';
+export { sourceType };
 import { encodeSource, type Contribution } from './github.ts';
 import { isCodeFile } from './source-links.ts';
 
@@ -42,45 +43,6 @@ const ignored = new Set(['node_modules', 'web', 'worker', 'shared', 'build', 'di
 export function bankFile(path: string): boolean {
   return !path.split('/').some(part => !part || part === '..' || part.startsWith('.') || ignored.has(part))
     && !path.includes('\\') && (/\.(typ|json|csv|svg|png|jpe?g|gif|webp|toml|ya?ml|txt|bib)$/i.test(path) || isCodeFile(path));
-}
-
-/** Repérage seulement ; les métadonnées seront évaluées par Typst. */
-export function sourceType(source: string): 'exercice' | 'document' | 'cours' | 'presentation' | 'cours-presentation' | undefined {
-  const chars = source.split('');
-  let position = 0;
-  while (position < source.length) {
-    const start = position;
-    if (source.startsWith('//', position)) {
-      const end = source.indexOf('\n', position);
-      position = end < 0 ? source.length : end;
-    } else if (source.startsWith('/*', position)) {
-      position += 2;
-      let depth = 1;
-      while (position < source.length && depth) {
-        if (source.startsWith('/*', position)) { depth++; position += 2; }
-        else if (source.startsWith('*/', position)) { depth--; position += 2; }
-        else position++;
-      }
-    } else if (source[position] === '"') {
-      position++;
-      while (position < source.length) {
-        if (source[position] === '\\') position += 2;
-        else if (source[position++] === '"') break;
-      }
-    } else if (source[position] === '`') {
-      while (source[position] === '`') position++;
-      const fence = source.slice(start, position);
-      const end = source.indexOf(fence, position);
-      position = end < 0 ? source.length : end + fence.length;
-    } else { position++; continue; }
-    for (let index = start; index < position; index++) if (chars[index] !== '\n') chars[index] = ' ';
-  }
-  const code = chars.join('');
-  for (const [template, type] of [['cours-et-presentation', 'cours-presentation'], ['cours', 'cours'], ['presentation', 'presentation']] as const) {
-    if (new RegExp(`#show\\s*:\\s*${template}\\.with\\s*\\(`).test(code)) return type;
-  }
-  if (/#show\s*:\s*feuille\.with\s*\(/.test(code)) return 'document';
-  if (/#let\s+ex\s*=/.test(code) || [...code.matchAll(/#import\s*:\s*([^\n]+)/g)].some(match => match[1].split(',').some(member => /^(?:ex|[\w-]+\s+as\s+ex)$/.test(member.trim())))) return 'exercice';
 }
 
 export function sourceKind(source: string): 'exercice' | 'document' | undefined {

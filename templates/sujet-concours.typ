@@ -1,5 +1,4 @@
-#import "/load.typ": est-corrige
-#import "/load.typ": exercice, feuille, partie, question
+#import "/load.typ": est-corrige, exercice, feuille, partie, question
 
 #let ex = exercice(
   meta: (

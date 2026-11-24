@@ -1,5 +1,4 @@
-#import "/load.typ": est-corrige
-#import "/load.typ": exercice, feuille, question
+#import "/load.typ": est-corrige, exercice, feuille, question
 
 #let sujet = exercice(meta: (titre: "Titre du TP", chapitres: ("automates-finis",), langages: ("OCaml",), niveaux: ("MPI",), difficulte: 2))[
   #question[Compléter le fichier fourni.][Solution.]

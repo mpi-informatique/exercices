@@ -1,6 +1,5 @@
-#import "/load.typ": est-corrige
 // Aperçu autonome d'un exercice exportant ex, quel que soit son emplacement.
-#import "/load.typ": auteur-par-defaut, feuille
+#import "/load.typ": auteur-par-defaut, est-corrige, feuille
 #let chemin = sys.inputs.at("exercice", default: "/templates/exercice.typ")
 #import chemin: ex
 #show: feuille.with(

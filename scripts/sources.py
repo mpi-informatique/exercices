@@ -8,7 +8,7 @@ import subprocess
 from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
-IGNORED = {"build", "lib", "templates", "ressources", "docs", "scripts", "tmp", "node_modules", "web", "shared"}
+IGNORED = {"build", "lib", "templates", "ressources", "docs", "scripts", "tmp", "node_modules", "web", "shared", "worker"}
 
 
 def mask(text, strings=True):
@@ -113,6 +113,37 @@ def sources():
             yield relative.as_posix(), kind
 
 
+def ocaml_tests(root=ROOT, directories=('chapitres', 'devoirs')):
+    """Lister les tests OCaml : *-test.ml en priorité, sinon les *-cor.ml autonomes."""
+    result = []
+    for directory in directories:
+        base = root / directory
+        if not base.is_dir():
+            continue
+        result.extend(base.rglob('*-test.ml'))
+        for script in base.rglob('*-cor.ml'):
+            prefix = script.name.removesuffix('-cor.ml')
+            if (script.with_name(prefix + '-test.ml').is_file()
+                    or script.with_name(prefix + '-support.ml').is_file()):
+                continue
+            result.append(script)
+    return sorted(result)
+
+
+def typst_command(source, output, inputs=(), *, exercice=False, typst='typst', watch=False, root=ROOT):
+    """Construire la commande Typst commune à la compilation et à la surveillance."""
+    relative = Path(source).as_posix()
+    command = [typst, 'watch' if watch else 'compile', '--root', str(root), '--ignore-system-fonts']
+    command += ['--input', 'url-document=' + document_url(relative)]
+    for value in inputs:
+        command += ['--input', value]
+    if exercice:
+        command += ['--input', 'exercice=/' + relative, str(root / 'templates/fiche.typ')]
+    else:
+        command.append(str(root / relative))
+    return command + [str(output)]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--list', choices=['exercices', 'documents', 'all'])
@@ -130,7 +161,8 @@ def main():
     source = (ROOT / args.source).resolve()
     if not source.is_relative_to(ROOT) or not source.is_file():
         parser.error('La source doit rester dans la banque.')
-    kind = classify(source.read_text(), source.relative_to(ROOT).as_posix())
+    relative = source.relative_to(ROOT).as_posix()
+    kind = classify(source.read_text(), relative)
     if not kind:
         parser.error('Source non reconnue : exporter ex ou utiliser un modèle de document.')
     available = variants(kind)
@@ -139,15 +171,9 @@ def main():
         parser.error('Variantes disponibles : ' + ', '.join(available))
     output = ROOT / args.output
     output.parent.mkdir(parents=True, exist_ok=True)
-    command = [args.typst, 'watch' if args.watch else 'compile', '--root', str(ROOT), '--ignore-system-fonts']
-    command += ['--input', 'url-document=' + document_url(source.relative_to(ROOT))]
-    for value in available[variant]:
-        command += ['--input', value]
-    if kind != 'exercice':
-        command.append(str(source))
-    else:
-        command += ['--input', 'exercice=/' + source.relative_to(ROOT).as_posix(), str(ROOT / 'templates/fiche.typ')]
-    return subprocess.call(command + [str(output)])
+    command = typst_command(relative, output, available[variant], exercice=kind == 'exercice',
+                            typst=args.typst, watch=args.watch)
+    return subprocess.call(command)
 
 
 if __name__ == '__main__':

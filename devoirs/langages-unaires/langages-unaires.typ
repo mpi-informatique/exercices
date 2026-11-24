@@ -1,4 +1,4 @@
-#import "/load.typ": automate, code, exercice, feuille, partie, question, sep
+#import "/load.typ": automate, code, est-corrige, exercice, feuille, partie, question, sep
 #import automate: Lloc, dessiner-automate
 #import automate: cetz, finite, style-automates, unite-automates
 #import code: code-extrait
@@ -563,6 +563,6 @@
   duree: (3, 0),
   exercices: sujet.exercices,
   bareme: sujet.bareme,
-  corrige: sys.inputs.at("corrige", default: "false") == "true",
+  corrige: est-corrige(),
   espacement: 11pt,
 )

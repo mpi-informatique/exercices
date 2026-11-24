@@ -1,5 +1,4 @@
-#import "/load.typ": cours, solution
-#import "/load.typ": theoremes
+#import "/load.typ": cours, solution, theoremes
 #import theoremes: algorithme, definition, exercice, theoreme
 
 #show: cours.with(titre: "Titre du cours", niveau: "MPI")

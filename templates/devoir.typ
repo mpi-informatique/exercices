@@ -1,5 +1,4 @@
-#import "/load.typ": est-corrige
-#import "/load.typ": feuille
+#import "/load.typ": est-corrige, feuille
 #import "/templates/exercice.typ": ex
 
 #show: feuille.with(

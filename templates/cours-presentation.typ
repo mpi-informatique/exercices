@@ -1,5 +1,4 @@
-#import "/load.typ": article-only, cours-et-presentation, pause, slides-only, solution
-#import "/load.typ": theoremes
+#import "/load.typ": article-only, cours-et-presentation, pause, slides-only, solution, theoremes
 #import theoremes: definition, exercice, theoreme
 
 #show: cours-et-presentation.with(titre: "Titre du cours", niveau: "MPI")
