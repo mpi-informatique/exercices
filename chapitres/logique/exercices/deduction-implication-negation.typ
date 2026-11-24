@@ -1,5 +1,5 @@
 #import "/load.typ": exercice, logique, question
-#import logique: arbre
+#import logique: arbre, rappel-regles, regles
 #import "@preview/curryst:0.6.0": prooftree, rule
 
 #let ex = exercice(
@@ -11,6 +11,8 @@
   ),
 )[
   Dans les deux premières questions, $A$ et $B$ désignent deux formules propositionnelles quelconques.
+
+  #rappel-regles(selection: (regles.implication, regles.disjonction, regles.negation, ..regles.constantes.elimination))
 
   #question[
     Prouver en déduction naturelle intuitionniste le séquent $¬ A ∨ B scripts(⊢)_i A → B$.

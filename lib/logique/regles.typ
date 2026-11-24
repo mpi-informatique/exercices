@@ -192,6 +192,10 @@
 
 // Schémas communs au cours et au TP. Le TP omet les constantes.
 #let axiome = rule(name: [ax], [$Γ, X ⊢ X$])
+/// Règle du raisonnement par l'absurde (logique classique).
+#let raa = rule(name: [raa], [$Γ, ¬ X ⊢ ⊥$], [$Γ ⊢ X$])
+/// Règle du tiers exclu (logique classique).
+#let te = rule(name: [te], [$Γ ⊢ X ∨ ¬ X$])
 #let regles = (
   constantes: (
     titre: [Vrai $⊤$ et faux $⊥$],
@@ -233,3 +237,46 @@
     elimination: (rule(name: [$¬_e$], [$Γ ⊢ X$], [$Γ ⊢ ¬ X$], [$Γ ⊢ ⊥$]),),
   ),
 )
+
+/// Affiche de façon compacte un ensemble de règles de déduction naturelle, par exemple en rappel dans une colle ou un exercice.
+///
+/// - selection (array): Liste de groupes de `regles` (comme `regles.implication`) ou de schémas individuels `rule(...)`. Par défaut, toutes les règles intuitionnistes.
+/// - axiome (dictionary, none): Schéma de l'axiome ajouté en tête, ou `none` pour l'omettre.
+/// - classique (bool): Ajouter les règles classiques `raa` et `te`.
+/// - titre (content, none): Libellé facultatif au-dessus des règles.
+/// - taille (length): Taille du texte des règles.
+/// -> content
+#let rappel-regles(
+  selection: (regles.constantes, regles.implication, regles.conjonction, regles.disjonction, regles.negation),
+  axiome: axiome,
+  classique: false,
+  titre: [Rappel des règles],
+  taille: 0.85em,
+) = {
+  let schemas = ()
+  if axiome != none { schemas.push(axiome) }
+  for item in selection {
+    if "introduction" in item or "elimination" in item {
+      schemas += item.at("introduction", default: ()) + item.at("elimination", default: ())
+    } else {
+      schemas.push(item)
+    }
+  }
+  if classique { schemas += (raa, te) }
+  block(
+    width: 100%,
+    breakable: false,
+    fill: luma(250),
+    stroke: 0.4pt + luma(195),
+    radius: 3pt,
+    inset: (x: 0.7em, y: 0.45em),
+    {
+      if titre != none {
+        block(above: 0pt, below: 0.35em, text(size: 0.85em, weight: "bold", fill: luma(60), titre))
+      }
+      set text(size: taille)
+      set par(justify: false, leading: 0.75em)
+      align(center, schemas.map(r => box(prooftree(r))).join(h(1em, weak: true)))
+    },
+  )
+}

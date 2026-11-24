@@ -93,8 +93,11 @@ with TemporaryDirectory() as dossier:
     for corrige in ('false', 'true'):
         compiler('exercice-' + corrige, 'corrige=' + corrige)
 
-    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": est-corrige, exercice, feuille, question, sujet-colle
-#let ex = exercice(meta: (titre: "Test colle", chapitres: (), difficulte: 1))[#question[Énoncé.][Solution.]]
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": est-corrige, exercice, feuille, logique, question, sujet-colle
+#let ex = exercice(meta: (titre: "Test colle", chapitres: (), difficulte: 1))[
+  #logique.rappel-regles(selection: (logique.regles.implication, logique.regles.negation), classique: true)
+  #question[Énoncé.][Solution.]
+]
 #let corrige = est-corrige()
 #show: feuille.with(type: "colle", titre: "Colle", niveau: "MPI", exercices: (ex, ex), corrige: corrige, afficher-exercices: false)
 #sujet-colle(1, (ex,), corrige: corrige)
