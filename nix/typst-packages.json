@@ -80,11 +80,6 @@
     "hash": "sha256-lss2hve/k1X6OTZHLSMS+WiZVy4EIhl77hfeYFj9UwY="
   },
   {
-    "name": "tidy",
-    "version": "0.4.3",
-    "hash": "sha256-3F4nBSvietpAevp+EgZIFoLfv4GRMLjSyGD+7RCYjjg="
-  },
-  {
     "name": "touying",
     "version": "0.8.0",
     "hash": "sha256-wZ6D8oJkXXDK39MInc2VNAiMf2nQxg7I6EinKxTyoaU="

@@ -73,7 +73,7 @@ Partir des modèles [cours A4](../templates/cours.typ), [présentation](../templ
 
 Les titres `=` structurent les parties ; `==` ouvre une diapositive. Réserver les sous-sections du polycopié aux regroupements utiles. `article-only` et `slides-only` isolent les contenus propres à un format.
 
-Consulter [lib/presentation.typ](../lib/presentation.typ) pour les sauts, animations, colonnes et options du thème ; [lib/cours.typ](../lib/cours.typ) pour les solutions et espaces de réponse. Ces fonctions sont aussi décrites dans la référence générée par `just docs`.
+Consulter les commentaires `///` de [lib/presentation.typ](../lib/presentation.typ) pour les sauts, animations, colonnes et options du thème, et [lib/cours.typ](../lib/cours.typ) pour les solutions et espaces de réponse.
 
 ## Algorithmes
 
@@ -101,4 +101,4 @@ Pour une question, passer `label: <q-algorithme>` à `question(...)`, puis écri
 
 ## Références
 
-Les commentaires `///` de [lib/](../lib/) décrivent les fonctions et sont accessibles au survol dans Tinymist. Les valeurs autorisées des métadonnées sont dans [lib/meta.typ](../lib/meta.typ). Les choix pédagogiques et éditoriaux sont dans les [consignes de création](creation-exercices.md).
+Les commentaires `///` de [lib/](../lib/) décrivent les fonctions et sont accessibles au survol dans Tinymist. Les valeurs autorisées des métadonnées sont dans [lib/meta.typ](../lib/meta.typ). Les choix pédagogiques et éditoriaux sont dans les skills [creation-exercice](../.agents/skills/creation-exercice/SKILL.md) et [conversion-cours](../.agents/skills/conversion-cours/SKILL.md).

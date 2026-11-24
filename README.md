@@ -16,7 +16,6 @@ nix develop .
 | `just c chemin.typ` | Compiler les variantes d'une ressource. |
 | `just w chemin.typ corrige` | Surveiller une variante : `enonce`, `corrige`, `cours` ou `presentation`. |
 | `just test` / `just check` | Tester les fonctions essentielles / tout compiler et vérifier. |
-| `just docs` | Générer la référence de l'API dans `build/docs/api.pdf`. |
 | `just web-install` | Installer ou actualiser les dépendances du site. |
 | `just web --open` / `just web-stop` | Lancer / arrêter le site local. |
 | `just --list` | Afficher toutes les commandes. |
@@ -24,9 +23,10 @@ nix develop .
 | Action | Référence |
 | --- | --- |
 | Compiler, surveiller, utiliser le package | [Guide utilisateur](docs/utilisation.md) |
-| Créer ou reformuler un sujet | [Consignes de rédaction](docs/creation-exercices.md) |
+| Créer ou reformuler un sujet | [Skill creation-exercice](.agents/skills/creation-exercice/SKILL.md) |
+| Créer ou convertir un cours | [Skill conversion-cours](.agents/skills/conversion-cours/SKILL.md) |
 | Vérifier le périmètre du programme | [Programme](docs/programme.md) |
-| Consulter les fonctions Typst | Commentaires de [lib/](lib/) ; PDF généré par `just docs` |
+| Consulter les fonctions Typst | Commentaires `///` de [lib/](lib/) |
 | Utiliser les scripts sans Just | [Scripts Python](scripts/README.md) |
 | Développer ou déployer le site | [Site web](web/README.md) |
 | Configurer la connexion GitHub | [Worker OAuth](worker/README.md) |

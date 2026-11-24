@@ -31,10 +31,6 @@ c source:
 w source variante="":
     {{python}} scripts/build.py w "$1" ${2:+--variant "$2"}
 
-# Générer la documentation de l'API.
-docs:
-    {{python}} scripts/build.py docs
-
 # Exécuter les tests de l'API, du package et des programmes.
 test:
     {{python}} scripts/build.py test

@@ -44,7 +44,7 @@ def references(root, source):
 
 
 def selection(root, changed, entries):
-    common = ('lib/', 'templates/', 'scripts/', 'nix/', 'docs/api.typ', 'load.typ', 'typst.toml', 'flake.nix', 'flake.lock', 'justfile', '.github/workflows/')
+    common = ('lib/', 'templates/', 'scripts/', 'nix/', 'load.typ', 'typst.toml', 'flake.nix', 'flake.lock', 'justfile', '.github/workflows/')
     browser = ('web/src/compiler/', 'web/scripts/', 'web/test/', 'web/package.json', 'web/package-lock.json', 'shared/')
     native_full = changed is None or any(path.startswith(common) for path in changed)
     wasm_full = native_full or any(path.startswith(browser) for path in changed)

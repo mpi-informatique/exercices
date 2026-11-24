@@ -145,7 +145,7 @@ def modeles(signature=None):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=('all', 'exercices', 'documents', 'catalogue', 'c', 'w', 'docs', 'test', 'check', 'clean'))
+    parser.add_argument('action', choices=('all', 'exercices', 'documents', 'catalogue', 'c', 'w', 'test', 'check', 'clean'))
     parser.add_argument('source', nargs='?')
     parser.add_argument('--variant', choices=('enonce', 'corrige', 'cours', 'presentation'))
     args = parser.parse_args()
@@ -176,8 +176,6 @@ def main():
         documents(selection, None, args.action if args.action in ('exercices', 'documents') else None)
     if args.action in ('all', 'catalogue', 'check'):
         run([sys.executable, ROOT / 'scripts/catalogue.py', '--typst', TYPST, '--sortie', 'build/catalogue.json'])
-    if args.action in ('docs', 'check'):
-        compiler('docs/api.typ', 'build/docs/api.pdf', None)
     if args.action in ('test', 'check'):
         tests()
     if args.action == 'check':

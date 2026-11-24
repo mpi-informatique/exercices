@@ -8,7 +8,7 @@ nix develop . -c python3 scripts/build.py c chemin.typ
 
 | Script | Rôle |
 | --- | --- |
-| [build.py](build.py) | Compilation, cache, catalogue, documentation et tests. |
+| [build.py](build.py) | Compilation, cache, catalogue et tests. |
 | [sources.py](sources.py) | Découverte des sources, variantes et surveillance. |
 | [ci.py](ci.py) | Sélection des documents affectés par un changement Git et vérification ciblée. |
 | [catalogue.py](catalogue.py) | Évaluation des métadonnées et export JSON. |

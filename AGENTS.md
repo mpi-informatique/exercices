@@ -1,29 +1,33 @@
-# Consignes communes aux deux dépôts
+# Consignes communes (`exercices` et `exercices-prive`)
 
-Ces consignes s'appliquent à `exercices` et `exercices-prive`. Le `AGENTS.md` du dépôt privé les complète pour la correction des copies. Les liens ci-dessous sont relatifs au dépôt public.
+Ces consignes s'appliquent aux deux dépôts (liens relatifs au dépôt public). Le `AGENTS.md` de `exercices-prive` les complète pour la confidentialité, les copies et les colles.
 
-- Pour concevoir ou reformuler un sujet, suivre les [consignes de création](docs/creation-exercices.md). Pour les outils du dépôt public, consulter le [guide utilisateur](docs/utilisation.md).
-- Avant de créer un exercice, consulter les cours existants du thème concerné, par exemple les [cours de langages](chapitres/langages/cours/) pour un exercice sur les langages. S'en inspirer lorsque c'est pertinent pour les notions, les méthodes, les exemples et la progression de l'exercice.
-- Lorsqu'un travail nécessite des sources, chercher systématiquement dans `/Volumes/T7 Shield/ups-mpi` et dans `../rc/` (le dossier `rc/` de l'espace de travail), en plus des cours et des banques locales. Compléter au besoin par une recherche sur Internet, en privilégiant les sources originales ou universitaires. Conserver les nouvelles sources intéressantes dans le sous-dossier thématique de `rc/`, sans doublonner les fichiers existants, et renseigner leur titre, leur auteur, leur URL et les passages utiles dans l'index de liens voisin. Signaler une source locale inaccessible plutôt que supposer son contenu.
-- Garder les Markdown concis : une information à un seul endroit, avec des liens depuis les autres guides. Documenter les fonctions dans les commentaires `///` de `lib/` plutôt que recopier leur fonctionnement dans les consignes. La référence de l'API publique [docs/api.typ](docs/api.typ) exploite ces commentaires.
-- Utiliser les fonctions utilitaires existantes de la bibliothèque dès qu'elles conviennent au besoin, notamment `colonnes-cours`, `formules-reparties` et `liste-cours` pour la mise en page. Consulter la [référence de l'API](docs/api.typ) et tenir compte du comportement dans le cours, le corrigé et la présentation lors du choix de la fonction.
-- Lors de l'ajout d'une commande Typst utile à la rédaction, ajouter aussi son snippet dans `../vscode-mpi-exercices/snippets/typst.json` et le documenter dans le README de l'extension, en suivant ses [consignes de vérification et d'installation](../vscode-mpi-exercices/AGENTS.md).
-- S'inspirer du style d'écriture du professeur pour rédiger ou reformuler un contenu. Lire des passages comparables dans les cours et corrigés existants, puis en reprendre les formulations, les notations, la concision et le niveau de détail, notamment pour les solutions.
-- Poser les questions nécessaires en cas d'ambiguïté. Expliquer brièvement les choix importants et les changements de contenu ou de présentation.
-- Avant toute modification importante du contenu existant (énoncé, définition, résultat, hypothèse, démonstration ou corrigé), présenter précisément le changement proposé, poser explicitement la question à l'utilisateur et attendre son accord avant de modifier le contenu. Une simple annonce du changement ou une demande générale de corriger des erreurs ne vaut pas accord pour remplacer une formulation ou modifier la portée d'un résultat. Cette obligation d'accord préalable ne s'applique pas aux modifications de la bibliothèque.
-- Préférer des noms courts et explicites pour les fonctions et commandes. Éviter les suffixes de contexte inutiles : utiliser `commentaire` plutôt que `commentaire-algorithme`. Appliquer cette règle aux commandes existantes lorsqu'elles sont modifiées, en actualisant leurs usages, snippets et documentation.
-- Ne fixer aucune longueur maximale aux lignes de code. Choisir les retours selon la structure et la lisibilité.
-- Avant toute modification, vérifier que la branche correspond au travail demandé. Prévenir l'utilisateur en cas de décalage, notamment pour du cours, de la bibliothèque ou du site sur une branche d'exercice, et proposer la branche adaptée.
-- Pour travailler sur une branche différente de la branche courante, utiliser un worktree séparé. Conserver la branche et les modifications locales de l'espace de travail initial ; ne pas y changer de branche, sauf demande explicite de l'utilisateur.
+## Skills et documentation
+
+| Besoin | Référence |
+| --- | --- |
+| Créer, adapter, relire ou transférer un exercice, TD, TP ou concours | Skill `creation-exercice` (`.agents/skills/creation-exercice/SKILL.md`) |
+| Créer ou convertir un cours / une présentation | Skill `conversion-cours` (`.agents/skills/conversion-cours/SKILL.md`) |
+| Syntaxe, packages ou compilation Typst générique | Skill `typst` (`.agents/skills/typst/SKILL.md`) |
+| Commandes, Nix, utilisation du package | [Guide utilisateur](docs/utilisation.md) |
+| Périmètre officiel MP2I–MPI | [Programme](docs/programme.md) |
+| API Typst de la banque | Commentaires `///` dans `lib/` et modèles de `templates/` |
+
+## Règles transversales
+
+- **Sources** : avant de créer un contenu, consulter les cours du thème (ex. `chapitres/langages/cours/`), `/Volumes/T7 Shield/ups-mpi` et `../rc/`. Compléter si besoin par des sources originales ou universitaires en ligne. Archiver les nouvelles sources utiles dans le sous-dossier thématique de `rc/` sans doublon et renseigner titre, auteur, URL et passages utiles dans l'index de liens voisin. Signaler une source locale inaccessible plutôt que supposer son contenu.
+- **Style** : s'inspirer du style du professeur en lisant des passages comparables des cours et corrigés existants (formulations, notations, concision, niveau de détail).
+- **Dialogue et accord préalable** : poser les questions nécessaires en cas d'ambiguïté. Expliquer brièvement les choix importants. Avant toute modification importante d'un contenu pédagogique existant (énoncé, définition, résultat, hypothèse, démonstration ou corrigé), présenter le changement, demander explicitement l'accord de l'utilisateur et attendre sa réponse (une demande générale de corriger des erreurs ne vaut pas accord). Cette règle ne s'applique pas aux modifications de la bibliothèque.
+- **Documentation et bibliothèque** : garder les Markdown concis (une information à un seul endroit, avec des liens). Documenter les fonctions Typst dans les commentaires `///` de `lib/` sans recopier leur fonctionnement dans les consignes. Réutiliser les utilitaires existants de `lib/` (`colonnes-cours`, `formules-reparties`, `liste-cours`…) et préférer des noms courts et explicites sans suffixe de contexte inutile (`commentaire` plutôt que `commentaire-algorithme`). Lors de l'ajout ou modification d'une commande Typst utile à la rédaction, actualiser son snippet dans `../vscode-mpi-exercices/snippets/typst.json` et le README de l'extension selon [../vscode-mpi-exercices/AGENTS.md](../vscode-mpi-exercices/AGENTS.md).
+- **Mise en forme** : aucune longueur maximale imposée aux lignes de code, couper selon la structure et la lisibilité.
+- **Git et branches** : vérifier avant toute modification que la branche correspond au travail demandé (prévenir en cas de décalage). Utiliser un worktree séparé pour travailler sur une autre branche sans changer la branche ni toucher aux modifications locales de l'espace initial.
 
 ## Vérification et livraison
 
-- Pour les changements de contenu pédagogique, compiler uniquement les fichiers et variantes concernés et tester le code modifié. Pour la documentation et les consignes seules, contrôler le diff et les liens modifiés. Choisir les vérifications selon le comportement modifié, y compris pour la bibliothèque et l’outillage. Un réglage visuel ponctuel nécessite seulement une compilation représentative. Réserver `just check` aux changements transversaux ou à une demande explicite de vérification complète. Annoncer les vérifications effectuées ; inspecter les PDF seulement si utile.
-- Garder les tests au strict minimum : couvrir les comportements essentiels, sans doublonner les compilations ni dépendre d’un exercice particulier de la banque. Ne pas ajouter de tests de détails visuels pour une simple modification de présentation.
-- Site, export ou compilation dans le navigateur : arrêter puis relancer le serveur avec `just web-stop` et `just web`, puis vérifier le comportement dans le navigateur intégré de Codex, en conservant si possible la ressource et la variante affichées.
-- Fournir les liens vers les PDF générés utiles à la demande.
-- Dans la réponse de livraison, résumer les modifications effectuées, indiquer explicitement s'il reste du code maladroit (« clunky »), fragile ou inutilement complexe, et fournir des liens cliquables vers les lignes de code importantes lorsqu'il y en a.
-- Dans la réponse de livraison, toujours fournir un lien cliquable vers chaque fichier `.typ` créé ou modifié, même si un lien vers le PDF est également fourni.
-- Après les vérifications adaptées, contrôler le diff et faire un commit sur la branche adaptée au travail (`main` par défaut), récupérer et intégrer les commits distants de cette branche, puis pousser sans forcer. Préserver les modifications de l'utilisateur.
+- **Vérifications ciblées** : pour du contenu pédagogique, compiler uniquement les fichiers et variantes concernés et tester le code modifié. Pour de la documentation ou des consignes seules, contrôler le diff et les liens. Adapter les vérifications au comportement modifié pour `lib/` et l'outillage ; réserver `just check` aux changements transversaux ou sur demande explicite. Annoncer les vérifications effectuées et n'inspecter les PDF que si utile.
+- **Tests minimaux** : couvrir les comportements essentiels sans doublonner les compilations ni dépendre d'un exercice précis de la banque. Pas de test de détail visuel pour un simple réglage de présentation.
+- **Site web** : pour tout changement du site, de l'export ou de la compilation navigateur, relancer avec `just web-stop` puis `just web` et vérifier dans le navigateur intégré.
+- **Réponse de livraison** : résumer les modifications, indiquer explicitement s'il reste du code maladroit (« clunky »), fragile ou inutilement complexe, fournir des liens cliquables vers chaque fichier `.typ` créé ou modifié (même si un PDF est fourni), vers les PDF utiles et vers les lignes de code importantes.
+- **Commit et push** : après vérification, contrôler le diff, committer sur la branche adaptée (`main` par défaut), récupérer et intégrer les commits distants puis pousser sans forcer, en préservant les modifications locales de l'utilisateur.
 
-Les commandes se lancent depuis la racine du dépôt. Si Just manque, utiliser `nix develop . -c just …` ; `just --list` décrit les recettes.
+Les commandes se lancent depuis la racine du dépôt (`nix develop . -c just …` si Just manque, `just --list` pour la liste).
