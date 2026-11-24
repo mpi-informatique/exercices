@@ -2,12 +2,19 @@
 #let chapitres-informatique = (
   // § 1–2, p. 5–7
   "methodes-de-programmation", "recursivite-et-induction",
-  // § 3–4, p. 8–12 ; graphes : § 3.4 et 4.5, p. 9 et 11
-  "structures", "algorithmique", "graphes",
+  // § 3, p. 8–9
+  "structures", "arbres",
+  // § 4.1–4.4, p. 10–11
+  "algorithmique", "algorithme-probabiliste", "algorithme-approximation",
+  "algorithmique-du-texte",
+  // § 3.4 et 4.5, p. 9 et 11–12
+  "graphes", "plus-courts-chemins", "arbre-couvrant-minimum", "couplage",
   // § 4.6, p. 12
-  "jeux",
-  // § 5–7, p. 13–17
-  "gestion-des-ressources", "logique", "bases-de-donnees",
+  "intelligence-artificielle", "jeux",
+  // § 5, p. 13–14
+  "gestion-des-ressources", "concurrence",
+  // § 6–7, p. 15–17
+  "logique", "deduction-naturelle", "bases-de-donnees",
   // § 8.1–8.3, p. 18–19 : les mots et expressions relèvent de 8.1
   "langages-reguliers", "automates-finis", "grammaires-non-contextuelles",
   // § 9, p. 20
@@ -54,14 +61,22 @@
     "langages-reguliers", "automates-finis", "grammaires-non-contextuelles",
     "decidabilite-et-classes-de-complexite",
   )
-  let informatique-mp = ("recursivite-et-induction", "algorithmique", "graphes")
+  let informatique-mpi-seule = (
+    "algorithme-probabiliste", "algorithme-approximation",
+    "arbre-couvrant-minimum", "couplage",
+    "intelligence-artificielle", "jeux",
+    "concurrence", "deduction-naturelle",
+  )
+  let informatique-mp = (
+    "recursivite-et-induction", "arbres", "algorithmique", "graphes", "plus-courts-chemins",
+  )
   let resultat = (:)
   for chapitre in premiere-annee-maths { resultat.insert(chapitre, ("MPSI", "MP2I", "MP", "MPI")) }
   for chapitre in seconde-annee-maths { resultat.insert(chapitre, ("MP", "MPI")) }
   for chapitre in chapitres-informatique { resultat.insert(chapitre, ("MP2I", "MPI")) }
   for chapitre in informatique-mpi { resultat.insert(chapitre, ("MP", "MPI")) }
   for chapitre in informatique-mp { resultat.insert(chapitre, ("MP2I", "MP", "MPI")) }
-  resultat.insert("jeux", ("MPI",))
+  for chapitre in informatique-mpi-seule { resultat.insert(chapitre, ("MPI",)) }
   resultat
 }
 
