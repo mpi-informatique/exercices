@@ -5,7 +5,7 @@
   chapitres: ("suites-et-series-de-fonctions",),
   matiere: "mathématiques",
   niveaux: ("MP",),
-  difficulte: 4,
+  difficulte: 5,
 ))[
   Pour tout réel $t$, on note $d(t) = inf_(k ∈ ZZ) abs(t - k)$ la distance de $t$ à $ZZ$, et on pose $f(x) = ∑_(n = 0)^(+∞) d(2^n x) / 2^n$ pour $x ∈ RR$.
 
@@ -22,7 +22,9 @@
     On retrouve aussi ce résultat en intégrant directement l'équation fonctionnelle sur $[0, 1]$.]
 
   #question[Fixons $x ∈ RR$. Pour tout $k ∈ NN$, on pose $m_k = floor(2^k x)$, $a_k = m_k / 2^k$ et $b_k = (m_k + 1) / 2^k$. Montrer que
-    $ (f(b_k) - f(a_k)) / (b_k - a_k) = ∑_(n = 0)^(k - 1) (-1)^(floor(2^(n + 1) x)). $][On a $b_k - a_k = 2^(-k)$ et $a_k ≤ x < b_k$. Pour tout $n ≥ k$, les nombres $2^n a_k = 2^(n - k) m_k$ et $2^n b_k = 2^(n - k) (m_k + 1)$ sont entiers, donc $d(2^n a_k) = d(2^n b_k) = 0$.
+    $
+      (f(b_k) - f(a_k)) / (b_k - a_k) = ∑_(n = 0)^(k - 1) (-1)^(floor(2^(n + 1) x)).
+    $][On a $b_k - a_k = 2^(-k)$ et $a_k ≤ x < b_k$. Pour tout $n ≥ k$, les nombres $2^n a_k = 2^(n - k) m_k$ et $2^n b_k = 2^(n - k) (m_k + 1)$ sont entiers, donc $d(2^n a_k) = d(2^n b_k) = 0$.
 
     Fixons $0 ≤ n ≤ k - 1$ et posons $q = floor(2^(n + 1) x)$. Comme $q ≤ 2^(n + 1) x < q + 1$, en multipliant par l'entier $2^(k - n - 1)$ on obtient $q ⋅ 2^(k - n - 1) ≤ 2^k x < (q + 1) 2^(k - n - 1)$, d'où $q ⋅ 2^(k - n - 1) ≤ m_k < m_k + 1 ≤ (q + 1) 2^(k - n - 1)$. En divisant par $2^(k - n)$, il vient
     $ q / 2 ≤ 2^n a_k < 2^n b_k ≤ (q + 1) / 2. $

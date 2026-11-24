@@ -40,6 +40,7 @@ Appliquer ce skill en complément de [AGENTS.md](../../../AGENTS.md). Consulter 
 - Construire une progression : exemples, résultats intermédiaires, caractérisation, applications. Demander de trouver puis justifier sans donner systématiquement le résultat attendu.
 - Rédiger le corrigé avec l'énoncé. Vérifier hypothèses, cas limites, réciproques, dépendances, renvois, barème et durée. Distinguer les deux sens d'une équivalence et les étapes d'un algorithme.
 - Pour une récurrence ou une induction, expliciter la propriété démontrée, le paramètre ou la structure, l'hypothèse, les cas de base et l'hérédité.
+- **Exercices de mathématiques** : dans les corrigés, détailler les étapes intermédiaires non triviales des calculs et démonstrations sans sauter de grosse étape (par exemple expliciter les manipulations sur sommes partielles avant un passage à la limite ou détailler les transformations algébriques clés).
 - Justifier les complexités sauf évidence. Pour une déterminisation, dessiner l'automate plutôt que donner seulement une table.
 - **Français** : direct, concis, sans points-virgules dans la prose. Infinitif pour les tâches demandées à l'élève (« Donner… », « Montrer… »), verbes conjugués pour introduire objets/hypothèses/notations et rédiger les preuves (« On pose… », « Soit… », « Supposons… »). Nouveaux termes en italique. « si … alors … » sans virgule avant « alors ».
 - Lors d'une relecture, proposer les questions supplémentaires avant de les intégrer. Chercher un nombre pair de pages seulement sans altérer le contenu.

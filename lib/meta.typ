@@ -1,45 +1,78 @@
 // Voir docs/programme.md. Les concepts de langages vont dans chapitres.
 #let chapitres-informatique = (
   // § 1–2, p. 5–7
-  "methodes-de-programmation", "recursivite-et-induction",
+  "methodes-de-programmation",
+  "recursivite-et-induction",
   // § 3, p. 8–9
-  "structures", "arbres",
+  "structures",
+  "arbres",
   // § 4.1–4.4, p. 10–11
-  "algorithmique", "algorithme-probabiliste", "algorithme-approximation",
+  "algorithmique",
+  "algorithme-probabiliste",
+  "algorithme-approximation",
   "algorithmique-du-texte",
   // § 3.4 et 4.5, p. 9 et 11–12
-  "graphes", "plus-courts-chemins", "arbre-couvrant-minimum", "couplage",
+  "graphes",
+  "plus-courts-chemins",
+  "arbre-couvrant-minimum",
+  "couplage",
   // § 4.6, p. 12
-  "intelligence-artificielle", "jeux",
+  "intelligence-artificielle",
+  "jeux",
   // § 5, p. 13–14
-  "gestion-des-ressources", "concurrence",
+  "gestion-des-ressources",
+  "concurrence",
   // § 6–7, p. 15–17
-  "logique", "deduction-naturelle", "bases-de-donnees",
+  "logique",
+  "deduction-naturelle",
+  "bases-de-donnees",
   // § 8.1–8.3, p. 18–19 : les mots et expressions relèvent de 8.1
-  "langages-reguliers", "automates-finis", "grammaires-non-contextuelles",
+  "langages-reguliers",
+  "automates-finis",
+  "grammaires-non-contextuelles",
   // § 9, p. 20
   "decidabilite-et-classes-de-complexite",
 )
 
 #let chapitres-maths = (
   // MPSI–MP2I, premier semestre, p. 6–20
-  "raisonnement-et-vocabulaire-ensembliste", "calcul-algebrique-et-trigonometrie",
-  "nombres-complexes", "calcul-differentiel-et-integral", "equations-differentielles-lineaires",
+  "raisonnement-et-vocabulaire-ensembliste",
+  "calcul-algebrique-et-trigonometrie",
+  "nombres-complexes",
+  "calcul-differentiel-et-integral",
+  "equations-differentielles-lineaires",
   "nombres-reels-et-suites-numeriques",
-  "limites-et-continuite", "derivabilite", "convexite", "arithmetique",
-  "structures-algebriques", "calcul-matriciel-et-systemes-lineaires",
+  "limites-et-continuite",
+  "derivabilite",
+  "convexite",
+  "arithmetique",
+  "structures-algebriques",
+  "calcul-matriciel-et-systemes-lineaires",
   "polynomes-et-fractions-rationnelles",
   // MPSI–MP2I, deuxième semestre, p. 21–36
-  "analyse-asymptotique", "espaces-vectoriels-et-applications-lineaires", "matrices",
-  "groupe-symetrique", "determinants", "integration", "denombrement", "probabilites",
-  "espaces-prehilbertiens-reels", "series-numeriques", "familles-sommables",
+  "analyse-asymptotique",
+  "espaces-vectoriels-et-applications-lineaires",
+  "matrices",
+  "groupe-symetrique",
+  "determinants",
+  "integration",
+  "denombrement",
+  "probabilites",
+  "espaces-prehilbertiens-reels",
+  "series-numeriques",
+  "familles-sommables",
   "fonctions-de-deux-variables",
   // MP–MPI, p. 6–14 : structures-algebriques et series-numeriques déjà ci-dessus
-  "reduction", "endomorphismes-des-espaces-euclidiens",
-  "topologie-des-espaces-vectoriels-normes", "series-vectorielles",
+  "reduction",
+  "endomorphismes-des-espaces-euclidiens",
+  "topologie-des-espaces-vectoriels-normes",
+  "series-vectorielles",
   // MP–MPI, p. 15–28
-  "suites-et-series-de-fonctions", "series-entieres", "fonctions-vectorielles",
-  "integration-sur-un-intervalle-quelconque", "variables-aleatoires-discretes",
+  "suites-et-series-de-fonctions",
+  "series-entieres",
+  "fonctions-vectorielles",
+  "integration-sur-un-intervalle-quelconque",
+  "variables-aleatoires-discretes",
   "calcul-differentiel-et-optimisation",
 )
 
@@ -47,28 +80,55 @@
 
 #let niveaux-par-chapitre = {
   let premiere-annee-maths = (
-    "raisonnement-et-vocabulaire-ensembliste", "calcul-algebrique-et-trigonometrie",
-    "nombres-complexes", "calcul-differentiel-et-integral", "equations-differentielles-lineaires",
-    "nombres-reels-et-suites-numeriques", "limites-et-continuite", "derivabilite", "convexite",
-    "arithmetique", "structures-algebriques", "calcul-matriciel-et-systemes-lineaires",
-    "polynomes-et-fractions-rationnelles", "analyse-asymptotique",
-    "espaces-vectoriels-et-applications-lineaires", "matrices", "groupe-symetrique",
-    "determinants", "integration", "denombrement", "probabilites", "espaces-prehilbertiens-reels",
-    "series-numeriques", "familles-sommables", "fonctions-de-deux-variables",
+    "raisonnement-et-vocabulaire-ensembliste",
+    "calcul-algebrique-et-trigonometrie",
+    "nombres-complexes",
+    "calcul-differentiel-et-integral",
+    "equations-differentielles-lineaires",
+    "nombres-reels-et-suites-numeriques",
+    "limites-et-continuite",
+    "derivabilite",
+    "convexite",
+    "arithmetique",
+    "structures-algebriques",
+    "calcul-matriciel-et-systemes-lineaires",
+    "polynomes-et-fractions-rationnelles",
+    "analyse-asymptotique",
+    "espaces-vectoriels-et-applications-lineaires",
+    "matrices",
+    "groupe-symetrique",
+    "determinants",
+    "integration",
+    "denombrement",
+    "probabilites",
+    "espaces-prehilbertiens-reels",
+    "series-numeriques",
+    "familles-sommables",
+    "fonctions-de-deux-variables",
   )
   let seconde-annee-maths = chapitres-maths.filter(chapitre => chapitre not in premiere-annee-maths)
   let informatique-mpi = (
-    "langages-reguliers", "automates-finis", "grammaires-non-contextuelles",
+    "langages-reguliers",
+    "automates-finis",
+    "grammaires-non-contextuelles",
     "decidabilite-et-classes-de-complexite",
   )
   let informatique-mpi-seule = (
-    "algorithme-probabiliste", "algorithme-approximation",
-    "arbre-couvrant-minimum", "couplage",
-    "intelligence-artificielle", "jeux",
-    "concurrence", "deduction-naturelle",
+    "algorithme-probabiliste",
+    "algorithme-approximation",
+    "arbre-couvrant-minimum",
+    "couplage",
+    "intelligence-artificielle",
+    "jeux",
+    "concurrence",
+    "deduction-naturelle",
   )
   let informatique-mp = (
-    "recursivite-et-induction", "arbres", "algorithmique", "graphes", "plus-courts-chemins",
+    "recursivite-et-induction",
+    "arbres",
+    "algorithmique",
+    "graphes",
+    "plus-courts-chemins",
   )
   let resultat = (:)
   for chapitre in premiere-annee-maths { resultat.insert(chapitre, ("MPSI", "MP2I", "MP", "MPI")) }
@@ -82,27 +142,54 @@
 
 #let structures-programme = (
   // § 3.1–3.2, p. 8
-  "tableau", "liste", "liste-chainee", "pile", "file",
-  "tableau-associatif", "table-de-hachage",
+  "tableau",
+  "liste",
+  "liste-chainee",
+  "pile",
+  "file",
+  "tableau-associatif",
+  "table-de-hachage",
   // § 3.3, p. 9
-  "arbre", "arbre-binaire", "arbre-binaire-de-recherche", "arbre-bicolore",
-  "tas", "file-de-priorite", "unir-et-trouver",
+  "arbre",
+  "arbre-binaire",
+  "arbre-binaire-de-recherche",
+  "arbre-bicolore",
+  "tas",
+  "file-de-priorite",
+  "unir-et-trouver",
   // § 3.4, p. 9
   "graphe",
 )
 #let algorithmes-programme = (
   // § 3.3, p. 9
-  "parcours-prefixe", "parcours-infixe", "parcours-postfixe", "tri-par-tas",
+  "parcours-prefixe",
+  "parcours-infixe",
+  "parcours-postfixe",
+  "tri-par-tas",
   // § 4.2–4.3, p. 10–11 (algorithmes et méthodes algorithmiques)
-  "retour-sur-trace", "separation-et-evaluation",
-  "algorithme-glouton", "diviser-pour-regner", "rencontre-au-milieu",
-  "dichotomie", "programmation-dynamique",
+  "retour-sur-trace",
+  "separation-et-evaluation",
+  "algorithme-glouton",
+  "diviser-pour-regner",
+  "rencontre-au-milieu",
+  "dichotomie",
+  "programmation-dynamique",
   // § 4.4–4.5, p. 11
-  "boyer-moore", "rabin-karp", "huffman", "lempel-ziv-welch",
-  "parcours-en-profondeur", "parcours-en-largeur", "tri-topologique",
-  "kosaraju", "dijkstra", "floyd-warshall", "kruskal",
+  "boyer-moore",
+  "rabin-karp",
+  "huffman",
+  "lempel-ziv-welch",
+  "parcours-en-profondeur",
+  "parcours-en-largeur",
+  "tri-topologique",
+  "kosaraju",
+  "dijkstra",
+  "floyd-warshall",
+  "kruskal",
   // § 8.2, p. 18
-  "determinisation", "berry-sethi", "elimination-des-etats",
+  "determinisation",
+  "berry-sethi",
+  "elimination-des-etats",
 )
 
 // Valeurs autorisées pour les métadonnées de concours.

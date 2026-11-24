@@ -5,7 +5,7 @@
   chapitres: ("suites-et-series-de-fonctions",),
   matiere: "mathématiques",
   niveaux: ("MP",),
-  difficulte: 3,
+  difficulte: 4,
 ))[
   Pour $x > 0$, on pose $η(x) = ∑_(n = 1)^(+∞) (-1)^(n - 1) / n^x$.
 
@@ -18,8 +18,19 @@
     $ abs(∑_(n = N + 1)^(+∞) u_n^((k)) (x)) ≤ (ln(N + 1))^k / (N + 1)^x ≤ (ln(N + 1))^k / (N + 1)^a ⟶ 0. $
     La série $∑ u_n^((k))$ converge donc uniformément sur tout intervalle $[a, +∞[$ avec $a > 0$ (bien qu'elle ne converge pas normalement lorsque $a ≤ 1$). Le théorème de dérivation terme à terme montre par récurrence que $η$ est de classe $C^∞$ sur $]0, +∞[$.]
 
-  #question[Pour $x > 1$, exprimer $η(x)$ en fonction de $ζ(x) = ∑_(n = 1)^(+∞) 1 / n^x$. En déduire un équivalent de $ζ(x)$ lorsque $x ⟶ 1^+$, puis la valeur de $η(1)$.][Pour $x > 1$, la série $∑ 1 / n^x$ converge absolument. En séparant termes pairs et impairs, on obtient
-    $ η(x) = ∑_(n = 1)^(+∞) 1 / n^x - 2 ∑_(k = 1)^(+∞) 1 / (2 k)^x = (1 - 2^(1 - x)) ζ(x). $
+  #question[Pour $x > 1$, exprimer $η(x)$ en fonction de $ζ(x) = ∑_(n = 1)^(+∞) 1 / n^x$. En déduire un équivalent de $ζ(x)$ lorsque $x ⟶ 1^+$, puis la valeur de $η(1)$.][Pour $x > 1$, la série de Riemann $∑_(n ≥ 1) 1 / n^x$ converge. Pour tout $N ≥ 1$, en séparant les indices impairs et pairs dans les sommes partielles d'ordre $2 N$, on a
+    $
+      ∑_(n = 1)^(2 N) (-1)^(n - 1) / n^x &= ∑_(k = 0)^(N - 1) 1 / (2 k + 1)^x - ∑_(k = 1)^N 1 / (2 k)^x, \
+      ∑_(n = 1)^(2 N) 1 / n^x &= ∑_(k = 0)^(N - 1) 1 / (2 k + 1)^x + ∑_(k = 1)^N 1 / (2 k)^x.
+    $
+    En soustrayant la seconde égalité à la première, on obtient
+    $
+      ∑_(n = 1)^(2 N) (-1)^(n - 1) / n^x
+      = ∑_(n = 1)^(2 N) 1 / n^x - 2 ∑_(k = 1)^N 1 / (2 k)^x
+      = ∑_(n = 1)^(2 N) 1 / n^x - 2 / 2^x ∑_(k = 1)^N 1 / k^x.
+    $
+    Les deux séries $∑ (-1)^(n - 1) / n^x$ et $∑ 1 / n^x$ étant convergentes pour $x > 1$, le passage à la limite lorsque $N ⟶ +∞$ donne
+    $ η(x) = ζ(x) - 2^(1 - x) ζ(x) = (1 - 2^(1 - x)) ζ(x). $
     La fonction $t ⟼ t^(-x)$ étant décroissante sur $[1, +∞[$, une comparaison série-intégrale donne
     $ 1 / (x - 1) = ∫_1^(+∞) t^(-x) dif t ≤ ζ(x) ≤ 1 + ∫_1^(+∞) t^(-x) dif t = 1 + 1 / (x - 1). $
     Ainsi $ζ(x) ∼ 1 / (x - 1)$ lorsque $x ⟶ 1^+$. Comme $1 - 2^(1 - x) = 1 - e^(-(x - 1) ln 2) ∼ (x - 1) ln 2$ en $1^+$, il vient $η(x) ⟶ ln 2$ lorsque $x ⟶ 1^+$. Par continuité de $η$ en $1$, on obtient $η(1) = ln 2$.]
