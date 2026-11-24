@@ -18,6 +18,7 @@
   afficher-exercices: false,
 )
 
+// Utiliser `eleve: "Prénom Nom"` dans `sujet-colle` pour un sujet nominatif.
 #for (i, exercices) in sujets.enumerate(start: 1) {
   sujet-colle(i, exercices, corrige: corrige)
 }

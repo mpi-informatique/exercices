@@ -503,11 +503,16 @@
 /// - numero (int, str): Repère du sujet.
 /// - exercices (array): Exercices du sujet.
 /// - corrige (bool): Afficher leurs solutions.
+/// - eleve (str, none): Nom de l'élève affiché dans l'en-tête du sujet.
 /// -> content
-#let sujet-colle(numero, exercices, corrige: false) = {
+#let sujet-colle(numero, exercices, corrige: false, eleve: none) = {
   pagebreak(weak: true)
   counter(heading).update(0)
-  [#metadata((numero: numero, corrige: corrige)) <colle-sujet>]
+  [#metadata((
+    numero: numero,
+    corrige: corrige,
+    ..if eleve == none { (:) } else { (eleve: eleve) },
+  )) <colle-sujet>]
   for (i, ex) in exercices.enumerate(start: 1) {
     afficher-exercice(ex, numero: i, corrige: corrige)
   }
@@ -564,10 +569,14 @@
     context {
       // Inclure le repère du début de page, même s'il suit l'en-tête dans le flux.
       let sujets = query(<colle-sujet>).filter(sujet => sujet.location().page() <= here().page())
-      titre-affiche
       if sujets.len() > 0 {
         let sujet = sujets.last().value
-        [ -- Sujet #sujet.numero#if sujet.corrige [ (corrigé)]]
+        let eleve = sujet.at("eleve", default: none)
+        [#titre -- Sujet #sujet.numero]
+        if eleve != none [ (#eleve)]
+        if corrige or sujet.corrige [ (corrigé)]
+      } else {
+        titre-affiche
       }
     }
   } else { none }

@@ -93,6 +93,22 @@ with TemporaryDirectory() as dossier:
     for corrige in ('false', 'true'):
         compiler('exercice-' + corrige, 'corrige=' + corrige)
 
+    source.write_text('''#import "@mpi-informatique/exercices:0.1.0": est-corrige, exercice, feuille, question, sujet-colle
+#let ex = exercice(meta: (titre: "Test colle", chapitres: (), difficulte: 1))[#question[Énoncé.][Solution.]]
+#let corrige = est-corrige()
+#show: feuille.with(type: "colle", titre: "Colle", niveau: "MPI", exercices: (ex, ex), corrige: corrige, afficher-exercices: false)
+#sujet-colle(1, (ex,), corrige: corrige)
+#sujet-colle(2, (ex,), corrige: corrige, eleve: "Ada Lovelace")
+#context {
+  let sujets = query(<colle-sujet>).map(s => s.value)
+  assert(sujets.len() == 2)
+  assert(sujets.at(0) == (numero: 1, corrige: corrige))
+  assert(sujets.at(1) == (numero: 2, corrige: corrige, eleve: "Ada Lovelace"))
+}
+''', encoding='utf-8')
+    for corrige in ('false', 'true'):
+        compiler('colle-' + corrige, 'corrige=' + corrige)
+
     source.write_text('''#import "@mpi-informatique/exercices:0.1.0": colonnes-cours, cours-et-presentation, est-corrige, est-presentation, solution, theoremes
 #show: cours-et-presentation.with(titre: "Cours de test")
 == Résultat
