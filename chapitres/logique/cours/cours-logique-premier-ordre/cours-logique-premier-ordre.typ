@@ -77,6 +77,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 #taille-presentation(0.85em)[
   #exemple(marge: true)[Théorie des groupes][
     Sur la signature $Σ = {⋆, e, i, =}$, avec une constante $e$, une fonction binaire $⋆$ et une fonction unaire $i$ notée $i(x) = x^(-1)$, la _théorie des groupes_ est donnée par les axiomes :
+    #v(-.5em)
     #let axiomes = (
       $∀ x (x ⋆ e = x)$,
       $∀ x (e ⋆ x = x)$,
@@ -99,21 +100,24 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 #taille-presentation(0.8em)[
   #exemple[Arithmétique de Peano][
     Sur la signature $Σ = {0, 1, +, ×, =}$, on considère la théorie $PA$ de l'_arithmétique de Peano_ :
+    #v(-.5em)
     #formules-reparties($∀ x ¬ (x + 1 = 0)$, $∀ x (x + 0 = x)$, $∀ x (x × 0 = 0)$)
+    #v(-.5em)
     #formules-reparties(
       $∀ x ∀ y (x + 1 = y + 1 → x = y)$,
       $∀ x ∀ y (x + (y + 1) = (x + y) + 1)$,
       $∀ x ∀ y (x × (y + 1) = x × y + x)$,
     )
     et le _schéma de récurrence_, pour toute formule $A$ :
+    #v(-.25em)
     $ (A[x := 0] ∧ ∀ x (A → A[x := x + 1])) → ∀ x A. $
   ] <pa>
 ]
 
 #slides-only[== Théorie des ensembles ZF]
 // Source : Clive Newstead, An Infinite Descent into Pure Mathematics, §B.2, https://www.math.cmu.edu/~cnewstea/teaching/old/teaching/15-151-N17/infdesc.pdf
-#definition[Théorie des ensembles ZF][
-  Sur la signature $Σ = {∈, =}$, la théorie des ensembles de Zermelo–Fraenkel (ZF) est donnée par les axiomes suivants.
+#exemple[Théorie des ensembles ZF][
+  Sur la signature $Σ = {∈, =}$, la théorie des ensembles de Zermelo–Fraenkel (ZF) est donnée par 9 axiomes :
   #grid(
     columns: (3fr, 2fr),
     column-gutter: 1em,
@@ -148,14 +152,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 ]
 
 #slides-only[== Axiome du choix et ZFC]
-#exemple[Axiome du choix et ZFC][
-  ZFC s'obtient en ajoutant à ZF l'_axiome du choix_. Pour toute famille $(A_i)_(i ∈ I)$ d'ensembles non vides, il existe une fonction $f$ de domaine $I$ telle que $f(i) ∈ A_i$ pour tout $i ∈ I$.
-
-  Dans ZF, on obtient une formulation équivalente en se restreignant aux ensembles $a$ dont les éléments sont deux à deux disjoints. On note $D(a)$ cette hypothèse.
-  $ D(a) := ∀ x ∀ y ∀ z ((x ∈ a ∧ y ∈ a ∧ z ∈ x ∧ z ∈ y) → x = y) $
-  Tout ensemble $a$ d'ensembles non vides qui vérifie $D(a)$ admet un ensemble $c$ qui rencontre chaque élément de $a$ en exactement un point.
-  $ ∀ a ((D(a) ∧ ∀ x (x ∈ a → ∃ z (z ∈ x))) → ∃ c ∀ x (x ∈ a → ∃ z ∀ t ((t ∈ x ∧ t ∈ c) ⟺ t = z))) $
-]
+ZFC s'obtient en ajoutant à ZF l'_axiome du choix_ : pour toute famille $(A_i)_(i ∈ I)$ d'ensembles non vides, il existe une fonction $f$ de domaine $I$ telle que $f(i) ∈ A_i$ pour tout $i ∈ I$.
 
 #slides-only[== Exprimer des propriétés]
 // Sources : Lassaigne, Logique du premier ordre, §2 ; Dowek, Les démonstrations et les algorithmes, §2.1.
@@ -251,7 +248,7 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
   Soit $Γ$ un ensemble de formules.
   - On note $(cal(M), ρ) ⊨ Γ$ si $(cal(M), ρ) ⊨ B$ pour toute formule $B ∈ Γ$.\
   - $A$ est une _conséquence_ de $Γ$, noté $Γ ⊨ A$, si, pour toute structure $cal(M)$ et toute affectation $ρ$ : $(cal(M), ρ) ⊨ Γ ==> (cal(M), ρ) ⊨ A$.\
-  - Si $T$ est une théorie, on note $Γ ⊨_T A$ si $T ∪ Γ ⊨ A$.
+  - Si $T$ est une théorie, on note $Γ ⊨_T A$ si $T ∪ Γ ⊨ A$. Si $Γ = ∅$, on note $⊢_T A$ et on dit que $A$ est _valide_ dans $T$.
 ]
 
 #underline[Attention] : $∀ x ∃ y (x + y = 0)$ est vraie dans $ℤ$ avec l'addition usuelle, mais n'est pas valide car fausse dans $ℕ$.
@@ -422,8 +419,7 @@ En Rocq, `exists x` applique $∃_i$ et `exact h` utilise l'hypothèse. En Lean,
 == Démontrabilité dans une théorie
 
 #definition[Démontrabilité][
-  - On note $Γ ⊢_T A$ si $T ∪ Γ scripts(⊢)_c A$.
-  - Si $Γ$ est vide, on écrit $⊢_T A$.
+  - On note $Γ ⊢_T A$ si $T ∪ Γ scripts(⊢)_c A$. Si $Γ = ∅$, on note $⊢_T A$ et on dit que $A$ est _prouvable_ dans $T$.
   - $T$ est _cohérente_ si $⊬_T ⊥$.
 ]
 
@@ -543,14 +539,14 @@ Les théorèmes de correction et de complétude du calcul propositionnel restent
 )
 
 #slides-only[== Application à une théorie]
-Il y a donc, comme en logique propositionnelle, équivalence entre prouvable et vrai.
+Il y a donc, comme en logique propositionnelle, équivalence entre prouvable et valide.
 
 #slides-only[== Exemple : commutativité des groupes]
 
 #paragraphe([Exemple], trait: true)[
   soit $T$ la théorie des groupes et $A = ∀ x ∀ y (x ⋆ y = y ⋆ x)$ qui exprime la commutativité. Alors :
   - Le groupe $(ℤ, +)$ est un modèle de $T$ dans lequel $A$ est vraie.
-  - Le groupe $S_3$ (permutations de ${1, 2, 3}$ composées de droite à gauche) est un modèle de $T$ où $A$ est fausse : $ (1 2)(2 3) = (1 2 3) ≠ (2 3)(1 2) = (1 3 2) $
+  - Le groupe $S_3$ (permutations de ${1, 2, 3}$) est un modèle de $T$ où $A$ est fausse : $ (1 2)(2 3) = (1 2 3) ≠ (2 3)(1 2) = (1 3 2) $
   #v(-0.5em)
   Par correction, une preuve de $A$ à partir de $T$ imposerait que $A$ soit vraie dans $S_3$. Une preuve de $¬ A$ imposerait que $¬ A$ soit vraie dans $(ℤ, +)$. Ainsi :
   $ ⊬_T A quad "et" quad ⊬_T ¬ A. $
