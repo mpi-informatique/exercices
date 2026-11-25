@@ -362,7 +362,6 @@ Certains problèmes indécidables ne parlent pas de programmes, comme le _probl�
 
 #slide()
 #underline[Autres problèmes indécidables] :
-- *10#super[e] problème de Hilbert* (Matiyasevich, 1970) : déterminer si une équation polynomiale à coefficients entiers (équation diophantienne) admet une solution entière.
-- *Grammaires non contextuelles* : déterminer si $cal(L)(G_1) ∩ cal(L)(G_2) = ∅$, si $cal(L)(G) = Σ^*$ (universalité) ou si $cal(L)(G_1) = cal(L)(G_2)$ (équivalence).
-- *Logique du premier ordre* (Church, 1936) : déterminer si une formule close est valide, ou si elle est satisfiable.
-- *Matrices mortelles* : déterminer s'il existe un produit fini (avec répétitions) de matrices carrées d'un ensemble fini donné égal à la matrice nulle.
+- 10#super[e] problème de Hilbert (Matiyasevich, 1970) : déterminer si une équation polynomiale à coefficients entiers (équation diophantienne) admet une solution entière.
+- Grammaires non contextuelles : déterminer si $cal(L)(G_1) ∩ cal(L)(G_2) = ∅$, si $cal(L)(G) = Σ^*$ (universalité) ou si $cal(L)(G_1) = cal(L)(G_2)$ (équivalence).
+- Matrices mortelles : déterminer s'il existe un produit fini (avec répétitions) de matrices carrées d'un ensemble fini donné égal à la matrice nulle.
