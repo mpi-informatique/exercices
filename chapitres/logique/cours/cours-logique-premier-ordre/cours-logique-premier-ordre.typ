@@ -110,14 +110,24 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
   ] <pa>
 ]
 
-#slides-only[== Théories des ensembles ZF et ZFC]
-#exemple[Théories des ensembles ZF et ZFC][
+#slides-only[== Théorie des ensembles ZF]
+#exemple[Théorie des ensembles ZF][
   La théorie des ensembles de Zermelo–Fraenkel (ZF) s'écrit dans la signature $Σ = {∈, =}$. Son _axiome d'extensionnalité_ affirme que deux ensembles qui ont les mêmes éléments sont égaux.
   $ ∀ x ∀ y ((∀ z (z ∈ x ⟺ z ∈ y)) → x = y) $
 
-  Le _schéma de séparation_ donne, pour chaque formule $φ(z)$, un axiome qui permet de former le sous-ensemble des éléments d'un ensemble donné qui vérifient $φ$.
+  Le _schéma de séparation_ contient un axiome pour chaque formule $φ$ dont les variables libres sont parmi $z, p_1, …, p_n$.
+  $ ∀ a ∀ p_1 … ∀ p_n ∃ b ∀ z (z ∈ b ⟺ (z ∈ a ∧ φ(z, p_1, …, p_n))) $
+  Pour chaque valeur des paramètres $p_1, …, p_n$, cet axiome permet de former le sous-ensemble de $a$ défini par $φ$.
+]
 
+#slides-only[== Axiome du choix et ZFC]
+#exemple[Axiome du choix et ZFC][
   ZFC s'obtient en ajoutant à ZF l'_axiome du choix_. Pour toute famille $(A_i)_(i ∈ I)$ d'ensembles non vides, il existe une fonction $f$ de domaine $I$ telle que $f(i) ∈ A_i$ pour tout $i ∈ I$.
+
+  Dans ZF, on obtient une formulation équivalente en se restreignant aux ensembles $a$ dont les éléments sont deux à deux disjoints. On note $D(a)$ cette hypothèse.
+  $ D(a) := ∀ x ∀ y ∀ z ((x ∈ a ∧ y ∈ a ∧ z ∈ x ∧ z ∈ y) → x = y) $
+  Tout ensemble $a$ d'ensembles non vides qui vérifie $D(a)$ admet un ensemble $c$ qui rencontre chaque élément de $a$ en exactement un point.
+  $ ∀ a ((D(a) ∧ ∀ x (x ∈ a → ∃ z (z ∈ x))) → ∃ c ∀ x (x ∈ a → ∃ z ∀ t ((t ∈ x ∧ t ∈ c) ⟺ t = z))) $
 ]
 
 #slides-only[== Exprimer des propriétés]
