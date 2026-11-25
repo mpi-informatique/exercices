@@ -112,40 +112,32 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
 
 #slides-only[== Théorie des ensembles ZF]
 // Source : Clive Newstead, An Infinite Descent into Pure Mathematics, §B.2, https://www.math.cmu.edu/~cnewstea/teaching/old/teaching/15-151-N17/infdesc.pdf
-#exemple[Théorie des ensembles ZF][
+#definition[Théorie des ensembles ZF][
   Sur la signature $Σ = {∈, =}$, la théorie des ensembles de Zermelo–Fraenkel (ZF) est donnée par les axiomes suivants.
-  #enum(
-    $∀ x ∀ y ((∀ z (z ∈ x ⟺ z ∈ y)) → x = y)$,
-    $∃ a ∀ x ¬ (x ∈ a)$,
-    $∀ x ∀ y ∃ a ∀ z (z ∈ a ⟺ (z = x ∨ z = y))$,
-    $∀ a ∃ b ∀ x (x ∈ b ⟺ ∃ y (y ∈ a ∧ x ∈ y))$,
-    $∀ a ∃ b ∀ x (x ∈ b ⟺ ∀ y (y ∈ x → y ∈ a))$,
+  #grid(
+    columns: (3fr, 2fr),
+    column-gutter: 1em,
+    align: left + top,
+    enum(
+      $∀ x ∀ y ((∀ z (z ∈ x ⟺ z ∈ y)) → x = y)$,
+      $∃ a ∀ x ¬ (x ∈ a)$,
+      $∀ x ∀ y ∃ a ∀ z (z ∈ a ⟺ (z = x ∨ z = y))$,
+      $∀ a ∃ b ∀ x (x ∈ b ⟺ ∃ y (y ∈ a ∧ x ∈ y))$,
+      $∀ a ∃ b ∀ x (x ∈ b ⟺ ∀ y (y ∈ x → y ∈ a))$,
+    ),
+    enum(
+      start: 6,
+      [Axiome de l'infini],
+      [Axiome de fondation],
+      [Schéma de séparation],
+      [Schéma de remplacement],
+    ),
   )
 ] <zf>
 
-#slides-only[== Théorie des ensembles ZF (suite)]
-#taille-presentation(0.9em)[
-  #exemple[Axiomes de ZF (suite)][
-    #enum(
-      start: 6,
-      [
-        $ ∃ a ∃ e (& e ∈ a ∧ (∀ z ¬ (z ∈ e)) \
-          & ∧ ∀ x (x ∈ a → ∃ y (y ∈ a ∧ ∀ z (z ∈ y ⟺ (z ∈ x ∨ z = x))))) $
-      ],
-      $∀ a ((∃ x (x ∈ a)) → ∃ x (x ∈ a ∧ ¬ ∃ y (y ∈ a ∧ y ∈ x)))$,
-      $∀ a ∀ p_1 … ∀ p_n ∃ b ∀ z (z ∈ b ⟺ (z ∈ a ∧ φ(z, p_1, …, p_n)))$,
-      [
-        $ ∀ a ∀ p_1 … ∀ p_n (& (∀ x (x ∈ a → ∃ y ∀ z (ψ(x, z, p_1, …, p_n) ⟺ z = y))) \
-          & → ∃ b ∀ y (y ∈ b ⟺ ∃ x (x ∈ a ∧ ψ(x, y, p_1, …, p_n)))) $
-      ],
-    )
-    Les deux derniers schémas donnent un axiome pour chaque formule $φ$ ou $ψ$ dont les variables libres sont parmi les arguments indiqués.
-  ]
-]
-
 #slides-only[== Interpréter les axiomes de ZF]
 #exercice[Interpréter les axiomes de ZF][
-  Donner en français le sens intuitif de chaque axiome et de chaque schéma de la #link(<zf>)[liste des axiomes de ZF].
+  Donner en français le sens intuitif des #link(<zf>)[axiomes 1 à 5 de ZF].
 ]
 #solution[
   + *Extensionnalité.* Deux ensembles qui ont les mêmes éléments sont égaux.
@@ -153,10 +145,6 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
   + *Paire.* Pour deux ensembles $x$ et $y$, il existe un ensemble dont les éléments sont exactement $x$ et $y$.
   + *Réunion.* Pour tout ensemble $a$, il existe un ensemble qui contient exactement les éléments des éléments de $a$.
   + *Ensemble des parties.* Pour tout ensemble $a$, il existe un ensemble dont les éléments sont exactement les sous-ensembles de $a$.
-  + *Infini.* Il existe un ensemble qui contient $∅$ et qui, avec tout élément $x$, contient aussi $x ∪ {x}$.
-  + *Fondation.* Tout ensemble non vide $a$ possède un élément $x$ disjoint de $a$.
-  + *Séparation.* Pour tout ensemble $a$, les éléments de $a$ qui vérifient une propriété exprimée par une formule $φ$, à paramètres fixés, forment un ensemble.
-  + *Remplacement.* Si une formule $ψ$, à paramètres fixés, associe un unique $y$ à chaque élément $x$ d'un ensemble $a$, alors les $y$ ainsi obtenus forment un ensemble.
 ]
 
 #slides-only[== Axiome du choix et ZFC]
