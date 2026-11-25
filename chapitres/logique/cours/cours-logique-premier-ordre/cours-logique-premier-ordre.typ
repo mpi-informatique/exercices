@@ -110,6 +110,16 @@ $A[x := y ⋆ y] = (∀ x (x = x)) ∧ ∃ z (y ⋆ y = z).$
   ] <pa>
 ]
 
+#slides-only[== Théories des ensembles ZF et ZFC]
+#exemple[Théories des ensembles ZF et ZFC][
+  La théorie des ensembles de Zermelo–Fraenkel (ZF) s'écrit dans la signature $Σ = {∈, =}$. Son _axiome d'extensionnalité_ affirme que deux ensembles qui ont les mêmes éléments sont égaux.
+  $ ∀ x ∀ y ((∀ z (z ∈ x ⟺ z ∈ y)) → x = y) $
+
+  Le _schéma de séparation_ donne, pour chaque formule $φ(z)$, un axiome qui permet de former le sous-ensemble des éléments d'un ensemble donné qui vérifient $φ$.
+
+  ZFC s'obtient en ajoutant à ZF l'_axiome du choix_. Pour toute famille $(A_i)_(i ∈ I)$ d'ensembles non vides, il existe une fonction $f$ de domaine $I$ telle que $f(i) ∈ A_i$ pour tout $i ∈ I$.
+]
+
 #slides-only[== Exprimer des propriétés]
 // Sources : Lassaigne, Logique du premier ordre, §2 ; Dowek, Les démonstrations et les algorithmes, §2.1.
 #exercice[Exprimer des propriétés][
