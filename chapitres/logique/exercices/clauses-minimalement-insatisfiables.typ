@@ -10,6 +10,8 @@
 )[
   On représente une formule en forme normale conjonctive (FNC) par un ensemble fini $S$ de clauses, chaque clause étant un ensemble fini de littéraux. Une valuation satisfait $S$ si elle satisfait au moins un littéral dans chaque clause de $S$.
 
+  Par exemple, la formule $(x ∨ z) ∧ (¬ y ∨ z)$ est représentée par l'ensemble de clauses $S = {{x, z}, {¬ y, z}}$.
+
   On dit qu'un littéral $ℓ$ est _pur_ dans $S$ si $ℓ$ appartient à au moins une clause de $S$ et son opposé $overline(ℓ)$ n'appartient à aucune clause de $S$. On dit que $S$ est _minimalement insatisfiable_ si $S$ est insatisfiable et tout sous-ensemble strict $S' ⊊ S$ est satisfiable.
 
   #question[
