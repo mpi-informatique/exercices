@@ -332,6 +332,10 @@ Intuitivement, $Π_1 ≤ Π_2$ ($Π_1$ se réduit à $Π_2$) signifie que $Π_2$
   Si `f x` termine alors `g` a la même sémantique que `autre`, sinon `g` a la même sémantique que `loop`. Ainsi `arret` décide #pb("ARRET"), absurde.
 ]
 
+#underline[Exemples] :
+- « $f$ renvoie-t-il $0$ sur $0$ ? » est une propriété sémantique non triviale (`fun _ -> 0` la vérifie, `fun _ -> 1` non), donc indécidable par le théorème de Rice.
+- « $f$ termine-t-il en au plus $100$ étapes sur $0$ ? » n'est pas sémantique (deux programmes calculant la même fonction peuvent prendre un nombre différent d'étapes) : ce problème est décidable en simulant $f(0)$ pendant au plus $100$ étapes.
+
 #slide()
 Certains problèmes indécidables ne parlent pas de programmes, comme le _problème de correspondance de Post_ :
 #probleme[PCP][
