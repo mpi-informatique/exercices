@@ -359,3 +359,10 @@ Certains problèmes indécidables ne parlent pas de programmes, comme le _probl�
   + Sur $Σ ∪ {a_1, …, a_n}$ (où les $a_i$ sont des lettres fraîches), on pose $S ⟶ U ∣ V$ et, pour chaque $i$, $U ⟶ u_i U a_i ∣ u_i a_i$ et $V ⟶ v_i V a_i ∣ v_i a_i$.
     Une dérivation issue de $U$ engendre $u_(i_1) … u_(i_m) a_(i_m) … a_(i_1)$ et une dérivation issue de $V$ engendre la forme analogue avec les $v_i$. Le suffixe de lettres fraîches fixe la suite d'indices, donc chaque branche admet au plus un arbre par mot. Deux arbres distincts existent exactement lorsqu'un même mot est dérivé par $U$ et par $V$, c'est-à-dire pour une solution de #pb("PCP"). Ainsi $pb("PCP") ≤_m pb("AMBIGUÏTÉ")$, donc #pb("AMBIGUÏTÉ") est indécidable.
 ]
+
+#slide()
+#underline[Autres problèmes indécidables] :
+- *10#super[e] problème de Hilbert* (Matiyasevich, 1970) : déterminer si une équation polynomiale à coefficients entiers (équation diophantienne) admet une solution entière.
+- *Grammaires non contextuelles* : déterminer si $cal(L)(G_1) ∩ cal(L)(G_2) = ∅$, si $cal(L)(G) = Σ^*$ (universalité) ou si $cal(L)(G_1) = cal(L)(G_2)$ (équivalence).
+- *Logique du premier ordre* (Church, 1936) : déterminer si une formule close est valide, ou si elle est satisfiable.
+- *Matrices mortelles* : déterminer s'il existe un produit fini (avec répétitions) de matrices carrées d'un ensemble fini donné égal à la matrice nulle.
