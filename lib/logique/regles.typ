@@ -238,19 +238,19 @@
   ),
 )
 
-/// Affiche de façon compacte un ensemble de règles de déduction naturelle, par exemple en rappel dans une colle ou un exercice.
+/// Répartit les règles de déduction naturelle sur des lignes équilibrées, par exemple dans une colle ou un exercice.
 ///
 /// - selection (array): Liste de groupes de `regles` (comme `regles.implication`) ou de schémas individuels `rule(...)`. Par défaut, toutes les règles intuitionnistes.
 /// - axiome (dictionary, none): Schéma de l'axiome ajouté en tête, ou `none` pour l'omettre.
 /// - classique (bool): Ajouter les règles classiques `raa` et `te`.
-/// - titre (content, none): Libellé facultatif au-dessus des règles.
+/// - titre (content, none): Libellé facultatif au-dessus des règles, omis par défaut.
 /// - taille (length): Taille du texte des règles.
 /// -> content
 #let rappel-regles(
   selection: (regles.constantes, regles.implication, regles.conjonction, regles.disjonction, regles.negation),
   axiome: axiome,
   classique: false,
-  titre: [Rappel des règles],
+  titre: none,
   taille: 0.85em,
 ) = {
   let schemas = ()
@@ -263,20 +263,52 @@
     }
   }
   if classique { schemas += (raa, te) }
-  block(
-    width: 100%,
-    breakable: false,
-    fill: luma(250),
-    stroke: 0.4pt + luma(195),
-    radius: 3pt,
-    inset: (x: 0.7em, y: 0.45em),
-    {
-      if titre != none {
-        block(above: 0pt, below: 0.35em, text(size: 0.85em, weight: "bold", fill: luma(60), titre))
+  if schemas.len() == 0 and titre == none { return [] }
+  block(width: 100%, breakable: false, {
+    if titre != none {
+      block(above: 0pt, below: 0.35em, text(size: 0.85em, weight: "bold", titre))
+    }
+    set text(size: taille)
+    context layout(size => {
+      if schemas.len() == 0 { return [] }
+      let arbres = schemas.map(prooftree)
+      let intervalle = 1em.to-absolute()
+      let maximum = size.width + intervalle
+      let largeurs = arbres.map(schema => calc.min(maximum, measure(schema).width + intervalle))
+
+      let decouper(limite) = {
+        let lignes = ()
+        let debut = 0
+        let largeur = 0pt
+        for (i, ajout) in largeurs.enumerate() {
+          if i > debut and largeur + ajout > limite {
+            lignes.push(arbres.slice(debut, i))
+            debut = i
+            largeur = 0pt
+          }
+          largeur += ajout
+        }
+        lignes + (arbres.slice(debut),)
       }
-      set text(size: taille)
-      set par(justify: false, leading: 0.75em)
-      align(center, schemas.map(r => box(prooftree(r))).join(h(1em, weak: true)))
-    },
-  )
+
+      // Réduire la largeur maximale des lignes en conservant leur nombre minimal.
+      let lignes = decouper(maximum)
+      if lignes.len() > 1 {
+        let minimum = largeurs.sum() / lignes.len()
+        while maximum - minimum > 0.5pt {
+          let milieu = (minimum + maximum) / 2
+          let essai = decouper(milieu)
+          if essai.len() > lignes.len() {
+            minimum = milieu
+          } else {
+            maximum = milieu
+            lignes = essai
+          }
+        }
+      }
+      stack(spacing: 0.75em, ..lignes.map(ligne => {
+        if ligne.len() == 1 { arbre(ligne.first()) } else { formules-reparties(..ligne) }
+      }))
+    })
+  })
 }
