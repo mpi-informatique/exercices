@@ -69,9 +69,9 @@ Appliquer ce skill en complément de [AGENTS.md](../../../AGENTS.md). Consulter 
 | Mot | « taille » (préfixes, suffixes, facteurs inclus). `m` pour un mot seul, `u`, `v` pour plusieurs mots/facteurs (sans collision). |
 | Langage | `cal(L)(A)`, `cal(L)(e)`, « régulier », « non-contextuel », union d'expressions par `\|`. |
 | Composition | `∘`, sans juxtaposition. |
-| Formules | Espaces autour des opérateurs et après les virgules (indices et légendes inclus). Parenthéser les indices et espacer l'argument : `δ_(B) (·, σ)`, `RR_n [X]`. |
+| Formules | Espaces autour des opérateurs et après les virgules (indices et légendes inclus). En mode mathématique, utiliser `thick` (jamais `\;` de LaTeX) pour ajouter un espace après une virgule (ex. `$∃ c ∈ Σ^*, thick V(i, c)$`). Parenthéser les indices et espacer l'argument : `δ_(B) (·, σ)`, `RR_n [X]`. |
 | Conditions successives | `#sep` après la virgule (espacement ordinaire dans arguments, tuples, ensembles, indices). |
-| Flèches | `⟶`, `⟼`, `==>` (implication), `⟺` (équivalence). Préserver la syntaxe des langages de programmation. |
+| Flèches | `⟶`, `⟼`, `==>` (implication), `<==>` (équivalence ; `⇔` réservé au connecteur logique d'une formule dans les cours de logique). Préserver la syntaxe des langages de programmation. |
 | Symboles | Unicode (`Σ`, `ε`, `∀`, `∃`…), `union.big` / `inter.big` (indexés), `∪` / `∩` (binaires). |
 | Automate déterministe complet | ADC, type `adc` en code. |
 | Graphe | `G = (S, A)`. |

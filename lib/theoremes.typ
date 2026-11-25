@@ -7,6 +7,7 @@
 /// `afficher-<nom>`. Utiliser `configurer-theoremes` pour installer leurs rendus.
 /// Les appels acceptent un contenu et les options communes `title`, `coeur`, `hp` et
 /// `marge` ; le suffixe `-sans-numero` désactive la numérotation.
+/// Le titre de `probleme` est automatiquement mis en forme avec `pb`.
 /// Écrire `#exercice[Titre][Énoncé][Solution]` ou `#exercice(solution: [Solution])[Énoncé]`.
 /// La solution intégrée apparaît uniquement dans le corrigé imprimé.
 /// `hp: true` signale un contenu hors programme dans la marge A4 ou dans le titre en présentation.
@@ -191,14 +192,27 @@
           inset: (left: 0.8em, right: 0.5em, y: 0.4em),
           {
             set text(style: "normal", weight: "regular")
-            titre-annote
-            h(0.3em)
+            block(below: 0.4em, titre-annote)
             body
           },
         ),
       )
+    } else if nom == "problem" and palette == none {
+      block(
+        width: 100%,
+        spacing: 0pt,
+        breakable: false,
+        stroke: (left: 1.5pt + black),
+        inset: (left: 10pt, y: 3pt),
+        {
+          if full-title != "" {
+            block(below: 0.6em, text(weight: "semibold", full-title))
+          }
+          body
+        },
+      )
     } else if palette == none {
-      let rendre = if nom in ("exercise", "problem") { rendre-exercice } else { fancy-box }
+      let rendre = if nom == "exercise" { rendre-exercice } else { fancy-box }
       rendre(
         spacing: 0pt,
         get-symbol: loc => none,
@@ -288,6 +302,12 @@
   if solution != none { solution-cours(solution) }
 }
 
+/// Met en forme le nom d'un problème de décision en police sans empattement.
+///
+/// - titre (content, str): Nom du problème.
+/// -> content
+#let pb(titre) = $sans(titre)$
+
 /// Réunit le préfixe et le titre par deux-points lorsque le titre est non vide.
 ///
 /// - prefix (content, str): Nom et numéro du cadre.
@@ -296,6 +316,11 @@
 #let titre-cadre(prefix, title) = {
   let avec-titre = (type(title) == str and title != "") or (type(title) == content and title != [] and title != [#""])
   [#prefix#if avec-titre { [ : #title] }]
+}
+
+#let titre-probleme(prefix, title) = {
+  let avec-titre = (type(title) == str and title != "") or (type(title) == content and title != [] and title != [#""])
+  if avec-titre { pb(title) } else { "" }
 }
 
 /// Rend un renvoi à un cadre en conservant les références natives aux autres éléments.
@@ -330,12 +355,18 @@
     return it
   }
   let sans-titre = it.supplement == [!]
+  let est-probleme = el.kind == "problem"
   let titre-court = if el.caption == none { [] } else { el.caption.body }
   let avec-titre = titre and not sans-titre and titre-court not in ("", [], [#""])
+  let titre-affiche = if est-probleme { pb(titre-court) } else { titre-court }
   let avec-numero = (
-    el.numbering != none and if sans-titre { true } else if numero == auto { not avec-titre } else { numero }
+    not est-probleme
+      and el.numbering != none
+      and if sans-titre { true } else if numero == auto { not avec-titre } else { numero }
   )
-  let supplement = if sans-titre or it.supplement == auto { el.supplement } else { it.supplement }
+  let supplement = if est-probleme and avec-titre { none } else if sans-titre or it.supplement == auto {
+    el.supplement
+  } else { it.supplement }
   link(el.location(), {
     if supplement != none { supplement }
     if avec-numero {
@@ -347,10 +378,10 @@
     }
     if avec-titre {
       if avec-numero {
-        [ (#titre-court)]
+        [ (#titre-affiche)]
       } else {
         if supplement != none { [ : ] }
-        titre-court
+        titre-affiche
       }
     }
   })
@@ -413,10 +444,11 @@
     numbering: "1",
     render: rendre-cadre.with(nom),
   )
+  let composer-titre = if nom == "problem" { titre-probleme } else { titre-cadre }
   (
     compteur,
-    numerote.with(get-full-title: titre-cadre),
-    sans-numero.with(get-full-title: titre-cadre),
+    numerote.with(get-full-title: composer-titre),
+    sans-numero.with(get-full-title: composer-titre),
     afficher,
   )
 }

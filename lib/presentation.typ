@@ -222,24 +222,28 @@
   })
 }
 
-/// Répartit une liste numérotée en colonnes dans le cours et la garde continue en présentation.
+/// Répartit une liste (numérotée ou à puces) en colonnes dans le cours et la garde continue en présentation.
 /// La liste commence à la ligne, sans marge supérieure supplémentaire.
 /// Exemple : `#liste-cours([Premier élément.], [Deuxième élément.], [Troisième élément.])`.
 ///
 /// - columns (int): Nombre de colonnes du cours, de même largeur et remplies de haut en bas.
 /// - column-gutter (length): Espacement entre colonnes.
-/// - start (int): Premier numéro.
+/// - start (int): Premier numéro (ignoré si `numerotee` vaut `false`).
+/// - numerotee (bool): Si `true`, produit une liste numérotée (`enum`), sinon une liste à puces (`list`).
 /// - encadrer (function): Cadre commun autour de la liste.
 /// - ..items (arguments): Contenus des éléments de la liste.
 /// -> content
-#let liste-cours(columns: 2, column-gutter: 1.5em, start: 1, encadrer: body => body, ..items) = {
+#let liste-cours(columns: 2, column-gutter: 1.5em, start: 1, numerotee: true, encadrer: body => body, ..items) = {
   assert(type(columns) == int and columns > 0, message: "columns doit être un entier strictement positif")
   let items = items.pos()
   if est-presentation() {
-    encadrer(enum(start: start, ..items))
+    encadrer(if numerotee { enum(start: start, ..items) } else { list(..items) })
   } else {
     let taille = calc.max(1, calc.ceil(items.len() / columns))
-    let listes = items.chunks(taille).enumerate().map(((i, elements)) => enum(start: start + i * taille, ..elements))
+    let listes = items
+      .chunks(taille)
+      .enumerate()
+      .map(((i, elements)) => if numerotee { enum(start: start + i * taille, ..elements) } else { list(..elements) })
     colonnes-cours(columns: columns, column-gutter: column-gutter, align: left + top, encadrer: encadrer, ..listes)
   }
 }

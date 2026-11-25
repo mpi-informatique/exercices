@@ -1,11 +1,10 @@
-#import "theoremes.typ": configurer-theoremes
+#import "theoremes.typ": configurer-theoremes, pb
 #import "code.typ": configurer-code
 #import "blocs.typ": bloc-solution, epaisseur-trait, marge
 #import "options.typ": est-presentation
 
 #let sep = h(0.5em)
 #let PP = $cal(P)$
-#let pb(titre) = $sans(titre)$
 
 #let couleur-liens = rgb("#233e6a")
 

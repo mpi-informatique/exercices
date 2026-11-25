@@ -18,7 +18,7 @@ Appliquer ce skill avec [AGENTS.md](../../../AGENTS.md) et le skill `creation-ex
 ## Solutions, preuves et trous à compléter
 
 - **Jamais de corrigé projeté** : réserver les corrigés et démonstrations au document corrigé imprimé, y compris lors d'une conversion. N'activer `presentation: true` que sur demande explicite de l'utilisateur, sans créer de fonction qui force la projection des corrections.
-- Dans un cours, intégrer la solution au cadre `exercice` ou utiliser `#solution[...]` pour une démonstration ou une correction autonome, **sans ajouter de titre « Preuve »**.
+- Dans un cours, privilégier `#exercice[Titre][Énoncé][Solution]` (ou `#exercice(solution: [Solution])[Énoncé]` sans titre) plutôt qu'un `#solution[...]` séparé ; réserver `#solution[...]` aux démonstrations de théorèmes ou corrections autonomes, **sans ajouter de titre « Preuve »**.
 - Pour un exercice de cours à plusieurs questions, regrouper les réponses numérotées dans un même bloc de solution.
 - Utiliser `#completer()` uniquement si la réponse tient sur une seule ligne dans le document rendu. Pour une réponse plus longue, utiliser `#solution[...]` sans réserver plusieurs lignes vides.
 
