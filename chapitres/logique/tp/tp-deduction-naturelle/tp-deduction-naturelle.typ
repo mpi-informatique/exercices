@@ -9,7 +9,7 @@
 
 #let sujet = exercice(
   meta: (
-    titre: "TP 5 : Preuve automatique en déduction naturelle",
+    titre: "TP 5 – Preuve automatique en déduction naturelle",
     chapitres: ("logique",),
     algorithmes: ("retour-sur-trace",),
     structures: ("arbre", "liste"),

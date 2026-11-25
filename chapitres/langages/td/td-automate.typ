@@ -66,7 +66,7 @@
 ]
 
 #show: feuille.with(
-  titre: "TD : Automates",
+  titre: "TD – Automates",
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (determinisation, cloture, reconnaissable, reciproque-etoile, algorithmes, taille, distinguant, palindromes),

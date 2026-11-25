@@ -561,7 +561,7 @@
     message: "tp doit être un dictionnaire réservé aux documents de type tp",
   )
   verifier-bareme(bareme, exercices.map(ex => nombre-questions(ex.contenu)).sum(default: 0))
-  let titre-affiche = titre + if corrige { " (corrigé)" } else { "" }
+  let titre-affiche = titre + if corrige { " – Corrigé" } else { "" }
   let duree = if type not in ("devoir", "concours") { none } else if duree != none { duree } else if (
     exercices.len() == 1
   ) { exercices.first().meta.duree } else { none }
@@ -573,8 +573,8 @@
         let sujet = sujets.last().value
         let eleve = sujet.at("eleve", default: none)
         [#titre -- Sujet #sujet.numero]
-        if eleve != none [ (#eleve)]
-        if corrige or sujet.corrige [ (corrigé)]
+        if eleve != none [ -- #eleve]
+        if corrige or sujet.corrige [ -- Corrigé]
       } else {
         titre-affiche
       }

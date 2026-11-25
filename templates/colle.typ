@@ -11,7 +11,7 @@
 
 #show: feuille.with(
   type: "colle",
-  titre: "Colle 1",
+  titre: "Colle – Semaine 1",
   niveau: "MPI",
   exercices: sujets.flatten(),
   corrige: corrige,

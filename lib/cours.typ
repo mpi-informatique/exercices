@@ -14,7 +14,7 @@
 #let cours(titre: "Cours", niveau: none, auteur: auteur-par-defaut, taille: 10pt, body) = {
   let corrige = est-corrige()
   show: document-pedagogique.with(
-    titre: titre + if corrige { " — Corrigé" } else { "" },
+    titre: titre + if corrige { " – Corrigé" } else { "" },
     niveau: niveau,
     auteur: auteur,
     taille: taille,

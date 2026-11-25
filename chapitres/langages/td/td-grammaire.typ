@@ -9,7 +9,7 @@
 #import "/chapitres/langages/exercices/dyck-grammaires-denombrement.typ": ex as dyck
 
 #let sujet = (
-  titre: "TD : Grammaires",
+  titre: "TD – Grammaires",
   exercices: (construire, langages, chomsky, intersections, pile, dyck),
   bareme: none,
 )

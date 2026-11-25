@@ -17,7 +17,7 @@
 
 #let ocaml = read("cours-logique-propositionnelle-cor.ml")
 
-#show: cours-et-presentation.with(titre: "Logique propositionnelle (MP2I)", niveau: "MPI")
+#show: cours-et-presentation.with(titre: "Logique propositionnelle – MP2I", niveau: "MPI")
 #set text(size: 10.5pt) if not est-presentation()
 #show <syntaxe>: set block(above: 0pt) if not est-presentation()
 #show <formes-normales>: set block(below: 0.4em) if not est-presentation()

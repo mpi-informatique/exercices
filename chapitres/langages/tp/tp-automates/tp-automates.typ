@@ -7,7 +7,7 @@
 
 #let sujet = exercice(
   meta: (
-      titre: "TP Automates",
+      titre: "TP – Automates",
       chapitres: ("automates-finis", "langages-reguliers"),
       algorithmes: ("parcours-en-profondeur",),
       langages: ("OCaml",),

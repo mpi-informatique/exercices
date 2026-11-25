@@ -40,7 +40,7 @@
 ]
 
 #show: feuille.with(
-  titre: "TD : Langages réguliers",
+  titre: "TD – Langages réguliers",
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (commutation, fibonacci, regles, exemples, hamming, sur-mots),

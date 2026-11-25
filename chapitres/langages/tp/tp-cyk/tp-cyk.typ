@@ -7,7 +7,7 @@
 
 #let sujet = exercice(
   meta: (
-      titre: "TP 4 : Algorithme CYK",
+      titre: "TP 4 – Algorithme CYK",
       chapitres: ("grammaires-non-contextuelles",),
       algorithmes: ("programmation-dynamique",),
       structures: ("tableau", "arbre-binaire"),

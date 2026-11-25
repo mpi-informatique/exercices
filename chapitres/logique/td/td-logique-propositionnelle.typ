@@ -8,7 +8,7 @@
 
 #show: feuille.with(
   type: "td",
-  titre: "TD : Logique propositionnelle",
+  titre: "TD – Logique propositionnelle",
   niveau: "MPI",
   auteur: "Q. Fortier",
   exercices: (calcul, decision, connecteurs, formes, automates, clauses),
