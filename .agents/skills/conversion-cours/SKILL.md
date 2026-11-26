@@ -5,7 +5,7 @@ description: Créer ou convertir un cours (`cours-<nom>.typ`) et sa présentatio
 
 # Cours et présentations
 
-Appliquer ce skill avec [AGENTS.md](../../../AGENTS.md) et le skill `creation-exercice` pour la rédaction, les notations, le code et les figures. Partir des modèles `templates/cours.typ`, `templates/presentation.typ` ou `templates/cours-presentation.typ`.
+Appliquer ce skill avec [AGENTS.md](../../../AGENTS.md) et le skill commun [redaction-pedagogique](../redaction-pedagogique/SKILL.md) (rédaction, notations, pagination de préférence en multiple de 2 pages — typiquement 4 pages pour un cours —, code et figures). Partir des modèles `templates/cours.typ`, `templates/presentation.typ` ou `templates/cours-presentation.typ`.
 
 ## Source commune cours / présentation
 

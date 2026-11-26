@@ -23,7 +23,9 @@ nix develop .
 | Action | Référence |
 | --- | --- |
 | Compiler, surveiller, utiliser le package | [Guide utilisateur](docs/utilisation.md) |
-| Créer ou reformuler un sujet | [Skill creation-exercice](.agents/skills/creation-exercice/SKILL.md) |
+| Règles communes de rédaction et notations | [Skill redaction-pedagogique](.agents/skills/redaction-pedagogique/SKILL.md) |
+| Créer ou adapter un sujet | [Skill creation-exercice](.agents/skills/creation-exercice/SKILL.md) |
+| Relire ou améliorer un contenu existant | [Skill relecture-contenu](.agents/skills/relecture-contenu/SKILL.md) |
 | Créer ou convertir un cours | [Skill conversion-cours](.agents/skills/conversion-cours/SKILL.md) |
 | Vérifier le périmètre du programme | [Programme](docs/programme.md) |
 | Consulter les fonctions Typst | Commentaires `///` de [lib/](lib/) |

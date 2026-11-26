@@ -6,7 +6,9 @@ Ces consignes s'appliquent aux deux dépôts (liens relatifs au dépôt public).
 
 | Besoin | Référence |
 | --- | --- |
-| Créer, adapter, relire ou transférer un exercice, TD, TP ou concours | Skill `creation-exercice` (`.agents/skills/creation-exercice/SKILL.md`) |
+| Règles communes de rédaction, pédagogie, pagination, code, figures et notations | Skill `redaction-pedagogique` (`.agents/skills/redaction-pedagogique/SKILL.md`) |
+| Créer, adapter ou transférer un exercice, TD, TP ou concours | Skill `creation-exercice` (`.agents/skills/creation-exercice/SKILL.md`) |
+| Relire, corriger ou améliorer un cours, TD, TP ou exercice existant | Skill `relecture-contenu` (`.agents/skills/relecture-contenu/SKILL.md`) |
 | Créer ou convertir un cours / une présentation | Skill `conversion-cours` (`.agents/skills/conversion-cours/SKILL.md`) |
 | Syntaxe, packages ou compilation Typst générique | Skill `typst` (`.agents/skills/typst/SKILL.md`) |
 | Commandes, Nix, utilisation du package | [Guide utilisateur](docs/utilisation.md) |
@@ -17,7 +19,7 @@ Ces consignes s'appliquent aux deux dépôts (liens relatifs au dépôt public).
 
 - **Sources** : avant de créer un contenu, consulter les cours du thème (ex. `chapitres/langages/cours/`), `/Volumes/T7 Shield/ups-mpi` et `../rc/`. Compléter si besoin par des sources originales ou universitaires en ligne. Archiver les nouvelles sources utiles dans le sous-dossier thématique de `rc/` sans doublon et renseigner titre, auteur, URL et passages utiles dans l'index de liens voisin. Signaler une source locale inaccessible plutôt que supposer son contenu.
 - **Style** : s'inspirer du style du professeur en lisant des passages comparables des cours et corrigés existants (formulations, notations, concision, niveau de détail).
-- **Dialogue et accord préalable** : poser les questions nécessaires en cas d'ambiguïté. Expliquer brièvement les choix importants. Avant toute modification importante d'un contenu pédagogique existant (énoncé, définition, résultat, hypothèse, démonstration ou corrigé), présenter le changement, demander explicitement l'accord de l'utilisateur et attendre sa réponse (une demande générale de corriger des erreurs ne vaut pas accord). Cette règle ne s'applique pas aux modifications de la bibliothèque.
+- **Dialogue et accord préalable** : poser les questions nécessaires en cas d'ambiguïté et expliquer brièvement les choix importants. Lors d'une modification d'un contenu pédagogique existant, ne pas demander systématiquement avant d'agir : demander l'accord préalable uniquement s'il y a un doute important (changement de périmètre, suppression de contenu, choix pédagogique structurant ou ambiguïté). Cette règle ne s'applique pas aux modifications de la bibliothèque.
 - **Documentation et bibliothèque** : garder les Markdown concis (une information à un seul endroit, avec des liens). Documenter les fonctions Typst dans les commentaires `///` de `lib/` sans recopier leur fonctionnement dans les consignes. Réutiliser les utilitaires existants de `lib/` (`colonnes-cours`, `formules-reparties`, `liste-cours`…) et préférer des noms courts et explicites sans suffixe de contexte inutile (`commentaire` plutôt que `commentaire-algorithme`). Lors de l'ajout ou modification d'une commande Typst utile à la rédaction, actualiser son snippet dans `../vscode-mpi-exercices/snippets/typst.json` et le README de l'extension selon [../vscode-mpi-exercices/AGENTS.md](../vscode-mpi-exercices/AGENTS.md).
 - **Mise en forme** : aucune longueur maximale imposée aux lignes de code, couper selon la structure et la lisibilité.
 - **Git et branches** : vérifier avant toute modification que la branche correspond au travail demandé (prévenir en cas de décalage). Utiliser un worktree séparé pour travailler sur une autre branche sans changer la branche ni toucher aux modifications locales de l'espace initial.

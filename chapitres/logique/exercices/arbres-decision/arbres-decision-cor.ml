@@ -35,12 +35,12 @@ let rec decision_vers_formule = function
         Et (Var i, decision_vers_formule d))
 
 let compter n arbre =
-  (* prochain est le premier indice qui n'a pas encore reçu de valeur. *)
-  let rec aux prochain = function
+  (* p est le premier indice qui n'a pas encore reçu de valeur ; 1 lsl k vaut 2^k. *)
+  let rec aux p = function
     | Feuille false -> 0
-    | Feuille true -> 1 lsl (n - prochain)
+    | Feuille true -> 1 lsl (n - p)
     | Noeud (i, g, d) ->
-      (1 lsl (i - prochain)) * (aux (i + 1) g + aux (i + 1) d)
+      (1 lsl (i - p)) * (aux (i + 1) g + aux (i + 1) d)
   in
   aux 0 arbre
 

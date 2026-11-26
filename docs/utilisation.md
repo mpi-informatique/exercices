@@ -101,4 +101,4 @@ Pour une question, passer `label: <q-algorithme>` à `question(...)`, puis écri
 
 ## Références
 
-Les commentaires `///` de [lib/](../lib/) décrivent les fonctions et sont accessibles au survol dans Tinymist. Les valeurs autorisées des métadonnées sont dans [lib/meta.typ](../lib/meta.typ). Les choix pédagogiques et éditoriaux sont dans les skills [creation-exercice](../.agents/skills/creation-exercice/SKILL.md) et [conversion-cours](../.agents/skills/conversion-cours/SKILL.md).
+Les commentaires `///` de [lib/](../lib/) décrivent les fonctions et sont accessibles au survol dans Tinymist. Les valeurs autorisées des métadonnées sont dans [lib/meta.typ](../lib/meta.typ). Les choix pédagogiques et éditoriaux sont dans le skill commun [redaction-pedagogique](../.agents/skills/redaction-pedagogique/SKILL.md) et les skills [creation-exercice](../.agents/skills/creation-exercice/SKILL.md), [relecture-contenu](../.agents/skills/relecture-contenu/SKILL.md) et [conversion-cours](../.agents/skills/conversion-cours/SKILL.md).
