@@ -20,24 +20,33 @@
   body
 }
 
-/// Crée un lien vers un fichier à télécharger, avec un petit symbole cliquable en exposant.
+/// Crée un lien bleu avec l’icône de lien externe en exposant.
+///
+/// - url (str): Adresse du lien.
+/// - body (content): Contenu cliquable.
+/// -> content
+#let lien-externe(url, body) = {
+  // Tracé de l’icône ExternalLink de Lucide, utilisée dans l’aperçu web.
+  let symbole = box(image(
+    bytes(
+      "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='"
+        + couleur-liens.to-hex()
+        + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>"
+        + "<path d='M15 3h6v6'/><path d='M10 14 21 3'/><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/></svg>",
+    ),
+    format: "svg",
+    width: 0.7em,
+  ))
+  link(url, text(fill: couleur-liens, [#body#sym.wj#super(symbole)]))
+}
+
+/// Crée un lien vers un fichier à télécharger, avec l’icône de lien externe en exposant.
 /// Exemple : `#telecharger("https://exemple.fr/tp-automates.ml")[Fichier OCaml]`.
 ///
 /// - url (str): Adresse du fichier à télécharger.
 /// - body (content): Texte cliquable.
 /// -> content
-#let telecharger(url, body) = {
-  let symbole = box(image(
-    bytes(
-      "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='"
-        + couleur-liens.to-hex()
-        + "' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M10 13.5a4 4 0 0 0 5.7 0l3.3-3.3a4 4 0 0 0-5.7-5.7l-1.9 1.9'/><path d='M14 10.5a4 4 0 0 0-5.7 0L5 13.8a4 4 0 0 0 5.7 5.7l1.9-1.9'/></svg>",
-    ),
-    format: "svg",
-    width: 0.7em,
-  ))
-  text(fill: couleur-liens, [#link(url, body)#sym.wj#super(link(url, symbole))])
-}
+#let telecharger = lien-externe
 
 /// Signale un complément ou un contenu hors programme par « HP » dans la marge.
 /// Le repère utilise 70 % du corps courant.

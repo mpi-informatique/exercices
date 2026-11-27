@@ -1,12 +1,12 @@
 #import "../options.typ": est-corrige, est-presentation
-#import "../document.typ": tableau
+#import "../document.typ": lien-externe, tableau
 #import "../presentation.typ": colonnes-cours, formules-reparties, only, pause, uncover
 #import "@preview/curryst:0.6.0": prooftree, rule
 
 /// Notation de l'arithmétique de Peano.
 #let PA = $upright("PA")$
 
-/// Affiche un séquent et le lie au prouveur interactif.
+/// Affiche un séquent lié au prouveur interactif, avec l’icône de lien externe en exposant.
 /// Exemple : `sequent(($A → B, A$, $B$))`.
 ///
 /// - couple (array): Couple (hypothèses, conclusion) de contenus mathématiques ; `[]` pour le contexte vide.
@@ -37,7 +37,7 @@
     cible = cible.replace(symbole, ascii)
   }
   cible = cible.replace(regex("\\s+"), "").replace("&", "%26").replace("|", "%7C").replace(">", "%3E")
-  link("https://mpi-informatique.github.io/deduction-naturelle/?sequent=" + cible, body)
+  lien-externe("https://mpi-informatique.github.io/deduction-naturelle/?sequent=" + cible, body)
 }
 
 /// Centre un arbre de preuve et le réduit si sa largeur dépasse la place disponible.
