@@ -222,9 +222,20 @@ function mountViewer(pane, prefix, post) {
   }
   function receiveFrame(event) {
     const data = event.data;
-    if (!['pageProgress', 'pageStep', 'pageBoundary', 'selectVariant'].includes(data?.type)) return;
+    if (!['pageProgress', 'pageStep', 'pageBoundary', 'selectVariant', 'clickContext'].includes(data?.type)) return;
     for (const [variant, frame] of frames) {
       if (event.source !== frame.contentWindow || event.origin !== new URL(frame.src).origin || data.token !== state.tokens?.[variant]) continue;
+      if (data.type === 'clickContext') {
+        if (state.variant === variant && typeof data.line === 'string') {
+          post({
+            type: 'clickContext',
+            line: data.line,
+            before: Array.isArray(data.before) ? data.before.filter(item => typeof item === 'string') : [],
+            after: Array.isArray(data.after) ? data.after.filter(item => typeof item === 'string') : []
+          });
+        }
+        return;
+      }
       if (data.type === 'selectVariant') {
         if (state.variant === variant && variants.includes(data.variant)) post({ type: data.variant });
         return;

@@ -248,7 +248,7 @@ ZFC s'obtient en ajoutant à ZF l'_axiome du choix_ : pour toute famille $(A_i)_
   Soit $Γ$ un ensemble de formules.
   - On note $(cal(M), ρ) ⊨ Γ$ si $(cal(M), ρ) ⊨ B$ pour toute formule $B ∈ Γ$.\
   - $A$ est une _conséquence_ de $Γ$, noté $Γ ⊨ A$, si, pour toute structure $cal(M)$ et toute affectation $ρ$ : $(cal(M), ρ) ⊨ Γ ==> (cal(M), ρ) ⊨ A$.\
-  - Si $T$ est une théorie, on note $Γ ⊨_T A$ si $T ∪ Γ ⊨ A$. Si $Γ = ∅$, on note $⊢_T A$ et on dit que $A$ est _valide_ dans $T$.
+  - Si $T$ est une théorie, on note $Γ ⊨_T A$ si $T ∪ Γ ⊨ A$. Si $Γ = ∅$, on note $⊨_T A$ et on dit que $A$ est _valide_ dans $T$.
 ]
 
 #underline[Attention] : $∀ x ∃ y (x + y = 0)$ est vraie dans $ℤ$ avec l'addition usuelle, mais n'est pas valide car fausse dans $ℕ$.

@@ -16,7 +16,12 @@
 #let regle-fun = rule(name: [Fun], [$Γ, x : t_1 ⊢ e : t_2$], [$Γ ⊢ (kw("fun") x → e) : t_1 → t_2$])
 #let regle-app = rule(name: [App], [$Γ ⊢ e_1 : t' → t$], [$Γ ⊢ e_2 : t'$], [$Γ ⊢ e_1 thick e_2 : t$])
 #let regle-couple = rule(name: [Couple], [$Γ ⊢ e_1 : t_1$], [$Γ ⊢ e_2 : t_2$], [$Γ ⊢ (e_1, e_2) : (t_1 * t_2)$])
-#let regle-let = rule(name: [Let], [$Γ ⊢ e_1 : t_1$], [$Γ, x : t_1 ⊢ e_2 : t_2$], [$Γ ⊢ (kw("let") x = e_1 kw("in") e_2) : t_2$])
+#let regle-let = rule(
+  name: [Let],
+  [$Γ ⊢ e_1 : t_1$],
+  [$Γ, x : t_1 ⊢ e_2 : t_2$],
+  [$Γ ⊢ (kw("let") x = e_1 kw("in") e_2) : t_2$],
+)
 #let regle-let-poly = rule(
   name: [Let],
   [$Γ ⊢ e_1 : t_1$],
@@ -40,7 +45,7 @@
     mots-cles: ("inférence de type", "unification", "algorithme W", "polymorphisme"),
   ),
 )[
-  Dans ce TP (adapté d'un sujet d'oral d'informatique du CCMP 2025), on implémente progressivement un inféreur de types pour un mini-langage fonctionnel à la OCaml.
+  Dans ce TP, on implémente progressivement un inféreur de types pour un mini-langage fonctionnel similaire à OCaml.
 
   Le fichier à compléter est #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-inference-type/tp-inference-type.ml")[`tp-inference-type.ml`]. Il contient les définitions de types ainsi qu'une série de tests commentés à décommenter au fur et à mesure.
 
@@ -261,7 +266,13 @@
     - dans tous les autres cas, échouer
   ][
     On définit des fonctions auxiliaires sur les dictionnaires (`map_dict`), la substitution d'une variable et le test d'occurrence (`variable_libre_dans`), qui empêche de construire un type infini.
-    #code-extrait(corrige, ("map_dict", "remplacer_variable", "variable_libre_dans", "ajouter_substitution", "unification"))
+    #code-extrait(corrige, (
+      "map_dict",
+      "remplacer_variable",
+      "variable_libre_dans",
+      "ajouter_substitution",
+      "unification",
+    ))
   ]
 
   L'_algorithme W_ infère un type le plus général selon le même principe que `typ_expr`, en attribuant une variable fraîche à chaque paramètre de fonction et en mettant à jour la substitution par unification à chaque application.
