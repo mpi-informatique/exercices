@@ -36,6 +36,7 @@
     langages: ("OCaml",),
     niveaux: ("MPI",),
     difficulte: 3,
+    concours: (nom: "Mines-Ponts", annee: 2025, filiere: "MPI", oral: true),
     mots-cles: ("inférence de type", "unification", "algorithme W", "polymorphisme"),
   ),
 )[
@@ -358,6 +359,7 @@
   type: "tp",
   titre: sujet.meta.titre,
   niveau: "MPI",
+  concours: sujet.meta.concours,
   exercices: (sujet,),
   tp: (
     ouvrir: "tp-inference-type.ml",
