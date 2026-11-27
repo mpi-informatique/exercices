@@ -129,19 +129,17 @@
     code-extrait(squelette, "expression1"),
   )
 
-  Une valeur de type `expression1` est un arbre de syntaxe abstraite. Ses feuilles représentent des variables (`Var`), des constantes entières (`Const`) ou des opérateurs (`Op`). Les autres constructeurs assemblent des sous-expressions. Par exemple, `Couple (Var "x", Const 1)` représente le couple `(x, 1)`.
-
   Dans cette première version, le type du paramètre d'une fonction est indiqué explicitement. Le seul type de base est `Int`, correspondant à `int`, et tous les opérateurs `Op` ont le type `(int * int) -> int`.
 
   #question(label: <q-expr1>)[
-    Traduire l'arbre suivant en une expression utilisant `let` et `fun`. Pour chacun des deux nœuds `App`, préciser la fonction appelée et son argument. L'expression est-elle typable et, si oui, quel est son type ?
+    Dans un système de types à la OCaml, l'expression suivante est-elle typable, et si oui de quel type ?
     ```ocaml
     Let ("f",
       Fun ("x", Int, App (Op "+", Couple (Var "x", Const 1))),
       App (Var "f", Const 2))
     ```
   ][
-    L'arbre représente `let f = fun (x : int) -> x + 1 in f 2`. Dans le corps de la fonction, le premier `App` applique l'opérateur `+` au couple `(x, 1)`. Le second applique `f` à l'entier `2`. La fonction `fun (x : int) -> x + 1` a pour type `int -> int`. Son application à un entier a donc pour type `int`, qui est aussi le type de l'expression entière.
+    L'expression correspond à `let f = fun (x : int) -> + (x, 1) in f 2`. La fonction `fun (x : int) -> + (x, 1)` a pour type `int -> int`. On applique ensuite `f` à `2` qui est de type `int`, donc l'expression est typable et de type `int`.
   ]
 
   On donne les règles suivantes pour dériver des jugements de typage ($x$ désigne une variable, $n$ une constante entière et $+$ un opérateur) :
