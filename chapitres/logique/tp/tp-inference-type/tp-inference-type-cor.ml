@@ -1,44 +1,41 @@
 (* Question 2 : dictionnaire persistant *)
 
 type ('a, 'b) dict =
-  | Empty
-  | Node of ('a, 'b) dict * 'a * 'b * ('a, 'b) dict
+  | V (* vide *)
+  | N of ('a, 'b) dict * 'a * 'b * ('a, 'b) dict (* nœud *)
 
-let creer_dictionnaire () = Empty
+let creer_dictionnaire () = V
 
-let rec trouver cle = function
-  | Empty -> None
-  | Node (gauche, cle_noeud, valeur, droite) ->
-    if cle = cle_noeud then Some valeur
-    else if cle < cle_noeud then trouver cle gauche
-    else trouver cle droite
+let rec trouver k = function
+  | V -> None
+  | N (g, k', v, d) ->
+    if k = k' then Some v
+    else if k < k' then trouver k g
+    else trouver k d
 
-let rec inserer cle valeur = function
-  | Empty -> Node (Empty, cle, valeur, Empty)
-  | Node (gauche, cle_noeud, valeur_noeud, droite) ->
-    if cle = cle_noeud then Node (gauche, cle, valeur, droite)
-    else if cle < cle_noeud then
-      Node (inserer cle valeur gauche, cle_noeud, valeur_noeud, droite)
-    else
-      Node (gauche, cle_noeud, valeur_noeud, inserer cle valeur droite)
+let rec inserer k v = function
+  | V -> N (V, k, v, V)
+  | N (g, k', v', d) ->
+    if k = k' then N (g, k, v, d)
+    else if k < k' then N (inserer k v g, k', v', d)
+    else N (g, k', v', inserer k v d)
 
 let rec map_dict f = function
-  | Empty -> Empty
-  | Node (gauche, cle, valeur, droite) ->
-    Node (map_dict f gauche, cle, f valeur, map_dict f droite)
+  | V -> V
+  | N (g, k, v, d) -> N (map_dict f g, k, f v, map_dict f d)
 
-let rec fold_dict f dictionnaire accumulateur =
-  match dictionnaire with
-  | Empty -> accumulateur
-  | Node (gauche, cle, valeur, droite) ->
-    let accumulateur = fold_dict f gauche accumulateur in
-    let accumulateur = f accumulateur cle valeur in
-    fold_dict f droite accumulateur
+let rec fold_dict f d acc =
+  match d with
+  | V -> acc
+  | N (g, k, v, d) ->
+    let acc = fold_dict f g acc in
+    let acc = f acc k v in
+    fold_dict f d acc
 
-let valeur_associee nom dictionnaire =
-  match trouver nom dictionnaire with
-  | Some valeur -> valeur
-  | None -> failwith ("identifiant inconnu : " ^ nom)
+let chercher x d =
+  match trouver x d with
+  | Some v -> v
+  | None -> failwith ("identifiant inconnu : " ^ x)
 
 (* Inférence avec annotation des paramètres *)
 
@@ -59,54 +56,50 @@ type expression1 =
 (* Question 5 *)
 
 let rec print_typ1 = function
-  | Int -> print_string "int"
-  | Product (g, d) -> print_string "("; print_typ1 g; print_string " * "; print_typ1 d; print_string ")"
-  | Arrow (g, d) -> print_string "("; print_typ1 g; print_string " -> "; print_typ1 d; print_string ")"
+  | Int -> Printf.printf "int"
+  | Product (g, d) -> Printf.printf "("; print_typ1 g; Printf.printf " * "; print_typ1 d; Printf.printf ")"
+  | Arrow (g, d) -> Printf.printf "("; print_typ1 g; Printf.printf " -> "; print_typ1 d; Printf.printf ")"
 
 let rec print_expression1 = function
-  | Var nom -> print_string nom
-  | Const n -> print_int n
-  | Op op -> print_string op
-  | Fun (nom, typ, corps) ->
-    Printf.printf "fun %s : " nom;
-    print_typ1 typ;
-    print_string " -> ";
-    print_expression1 corps
-  | App (f, arg) ->
-    print_string "("; print_expression1 f; print_string " "; print_expression1 arg; print_string ")"
-  | Couple (g, d) ->
-    print_string "("; print_expression1 g; print_string ", "; print_expression1 d; print_string ")"
-  | Let (nom, valeur, corps) ->
-    Printf.printf "let %s = " nom;
-    print_expression1 valeur;
-    print_string " in ";
-    print_expression1 corps
+  | Var x -> Printf.printf "%s" x
+  | Const n -> Printf.printf "%d" n
+  | Op op -> Printf.printf "%s" op
+  | Fun (x, t, e) ->
+    Printf.printf "fun %s : " x;
+    print_typ1 t;
+    Printf.printf " -> ";
+    print_expression1 e
+  | App (e1, e2) ->
+    Printf.printf "("; print_expression1 e1; Printf.printf " "; print_expression1 e2; Printf.printf ")"
+  | Couple (e1, e2) ->
+    Printf.printf "("; print_expression1 e1; Printf.printf ", "; print_expression1 e2; Printf.printf ")"
+  | Let (x, e1, e2) ->
+    Printf.printf "let %s = " x;
+    print_expression1 e1;
+    Printf.printf " in ";
+    print_expression1 e2
 
 (* Question 6 *)
 
-let typ_expr expression =
-  let rec aux env = function
-    | Var nom -> valeur_associee nom env
+let typ_expr e =
+  let rec aux env = function (* aux env e renvoie le type de e dans l'environnement env *)
+    | Var x -> chercher x env
     | Const _ -> Int
     | Op _ -> Arrow (Product (Int, Int), Int)
-    | Fun (nom, typ_arg, corps) ->
-      let env = inserer nom typ_arg env in
-      Arrow (typ_arg, aux env corps)
-    | App (fonction, argument) ->
-      let typ_fonction = aux env fonction in
-      let typ_argument = aux env argument in
+    | Fun (x, t, e) -> Arrow (t, aux (inserer x t env) e)
+    | App (e1, e2) ->
+      let t1 = aux env e1 in
+      let t2 = aux env e2 in
       begin
-        match typ_fonction with
-        | Arrow (attendu, resultat) when attendu = typ_argument -> resultat
+        match t1 with
+        | Arrow (arg, res) when arg = t2 -> res
         | Arrow _ -> failwith "argument de type incorrect"
         | _ -> failwith "application d'une expression non fonctionnelle"
       end
-    | Couple (gauche, droite) -> Product (aux env gauche, aux env droite)
-    | Let (nom, valeur, corps) ->
-      let typ_valeur = aux env valeur in
-      aux (inserer nom typ_valeur env) corps
+    | Couple (e1, e2) -> Product (aux env e1, aux env e2)
+    | Let (x, e1, e2) -> aux (inserer x (aux env e1) env) e2
   in
-  aux (creer_dictionnaire ()) expression
+  aux (creer_dictionnaire ()) e
 
 (* Inférence sans annotation *)
 
@@ -128,206 +121,185 @@ type expression2 =
 (* Question 7 *)
 
 let rec print_typ2 = function
-  | Int -> print_string "int"
-  | Tvar n -> print_int n
-  | Product (g, d) -> print_string "("; print_typ2 g; print_string " * "; print_typ2 d; print_string ")"
-  | Arrow (g, d) -> print_string "("; print_typ2 g; print_string " -> "; print_typ2 d; print_string ")"
+  | Int -> Printf.printf "int"
+  | Tvar n -> Printf.printf "%d" n
+  | Product (g, d) -> Printf.printf "("; print_typ2 g; Printf.printf " * "; print_typ2 d; Printf.printf ")"
+  | Arrow (g, d) -> Printf.printf "("; print_typ2 g; Printf.printf " -> "; print_typ2 d; Printf.printf ")"
 
 let rec print_expression2 = function
-  | Var nom -> print_string nom
-  | Const n -> print_int n
-  | Op op -> print_string op
-  | Fun (nom, corps) -> Printf.printf "fun %s -> " nom; print_expression2 corps
-  | App (f, arg) ->
-    print_string "("; print_expression2 f; print_string " "; print_expression2 arg; print_string ")"
-  | Couple (g, d) ->
-    print_string "("; print_expression2 g; print_string ", "; print_expression2 d; print_string ")"
-  | Let (nom, valeur, corps) ->
-    Printf.printf "let %s = " nom;
-    print_expression2 valeur;
-    print_string " in ";
-    print_expression2 corps
+  | Var x -> Printf.printf "%s" x
+  | Const n -> Printf.printf "%d" n
+  | Op op -> Printf.printf "%s" op
+  | Fun (x, e) -> Printf.printf "fun %s -> " x; print_expression2 e
+  | App (e1, e2) ->
+    Printf.printf "("; print_expression2 e1; Printf.printf " "; print_expression2 e2; Printf.printf ")"
+  | Couple (e1, e2) ->
+    Printf.printf "("; print_expression2 e1; Printf.printf ", "; print_expression2 e2; Printf.printf ")"
+  | Let (x, e1, e2) ->
+    Printf.printf "let %s = " x;
+    print_expression2 e1;
+    Printf.printf " in ";
+    print_expression2 e2
 
-let compteur_types = ref 0
+let cpt = ref 0 (* compteur de variables de type *)
 
-let reset_compteur_types () = compteur_types := 0
+let reset_cpt () = cpt := 0
 
-let nouvelle_variable_type () =
-  let resultat = !compteur_types in
-  incr compteur_types;
-  resultat
+let nouv_var () =
+  let n = !cpt in
+  incr cpt;
+  n
 
-let rec remplacer_variable variable remplacement = function
+let rec subst_var v t = function
   | Int -> Int
-  | Tvar numero when numero = variable -> remplacement
-  | Tvar numero -> Tvar numero
-  | Arrow (g, d) ->
-    Arrow (remplacer_variable variable remplacement g, remplacer_variable variable remplacement d)
-  | Product (g, d) ->
-    Product (remplacer_variable variable remplacement g, remplacer_variable variable remplacement d)
+  | Tvar n when n = v -> t
+  | Tvar n -> Tvar n
+  | Arrow (g, d) -> Arrow (subst_var v t g, subst_var v t d)
+  | Product (g, d) -> Product (subst_var v t g, subst_var v t d)
 
 (* Question 9 *)
 
-let rec appliquer substitution = function
+let rec appliquer s = function
   | Int -> Int
-  | Tvar numero ->
+  | Tvar n ->
     begin
-      match trouver numero substitution with
-      | None -> Tvar numero
-      | Some typ -> appliquer substitution typ
+      match trouver n s with
+      | None -> Tvar n
+      | Some t -> appliquer s t
     end
-  | Arrow (gauche, droite) -> Arrow (appliquer substitution gauche, appliquer substitution droite)
-  | Product (gauche, droite) -> Product (appliquer substitution gauche, appliquer substitution droite)
+  | Arrow (g, d) -> Arrow (appliquer s g, appliquer s d)
+  | Product (g, d) -> Product (appliquer s g, appliquer s d)
 
 (* Question 10 *)
 
-let rec variable_libre_dans variable = function
+let rec occ v = function (* occ v t teste si v apparaît dans t *)
   | Int -> false
-  | Tvar numero -> numero = variable
-  | Arrow (gauche, droite) | Product (gauche, droite) ->
-    variable_libre_dans variable gauche || variable_libre_dans variable droite
+  | Tvar n -> n = v
+  | Arrow (g, d) | Product (g, d) -> occ v g || occ v d
 
-let ajouter_substitution substitution variable typ =
-  let typ = appliquer substitution typ in
-  let substitution = map_dict (remplacer_variable variable typ) substitution in
-  inserer variable typ substitution
+let etendre s v t = (* ajoute v -> t à s en propageant le remplacement *)
+  let t = appliquer s t in
+  inserer v t (map_dict (subst_var v t) s)
 
-let rec unification substitution typ_gauche typ_droite =
-  let typ_gauche = appliquer substitution typ_gauche in
-  let typ_droite = appliquer substitution typ_droite in
-  if typ_gauche = typ_droite then substitution
+let rec unification s t1 t2 =
+  let t1 = appliquer s t1 in
+  let t2 = appliquer s t2 in
+  if t1 = t2 then s
   else
-    match (typ_gauche, typ_droite) with
+    match (t1, t2) with
     | Arrow (g1, d1), Arrow (g2, d2) ->
-      let substitution = unification substitution g1 g2 in
-      unification substitution d1 d2
+      let s = unification s g1 g2 in
+      unification s d1 d2
     | Product (g1, d1), Product (g2, d2) ->
-      let substitution = unification substitution g1 g2 in
-      unification substitution d1 d2
-    | Tvar variable, typ | typ, Tvar variable ->
-      if variable_libre_dans variable typ then failwith "types non unifiables"
-      else ajouter_substitution substitution variable typ
+      let s = unification s g1 g2 in
+      unification s d1 d2
+    | Tvar v, t | t, Tvar v ->
+      if occ v t then failwith "types non unifiables"
+      else etendre s v t
     | _ -> failwith "types non unifiables"
 
 (* Question 11 *)
 
-let w_sans_polymorphisme expression =
-  let rec inferer env substitution = function
-    | Var nom -> (substitution, appliquer substitution (valeur_associee nom env))
-    | Const _ -> (substitution, Int)
-    | Op _ -> (substitution, Arrow (Product (Int, Int), Int))
-    | Fun (nom, corps) ->
-      let variable = Tvar (nouvelle_variable_type ()) in
-      let env = inserer nom variable env in
-      let substitution, typ_corps = inferer env substitution corps in
-      (substitution, Arrow (appliquer substitution variable, typ_corps))
-    | App (fonction, argument) ->
-      let substitution, typ_fonction = inferer env substitution fonction in
-      let substitution, typ_argument = inferer env substitution argument in
-      let resultat = Tvar (nouvelle_variable_type ()) in
-      let substitution = unification substitution typ_fonction (Arrow (typ_argument, resultat)) in
-      (substitution, appliquer substitution resultat)
-    | Couple (gauche, droite) ->
-      let substitution, typ_gauche = inferer env substitution gauche in
-      let substitution, typ_droite = inferer env substitution droite in
-      (substitution, Product (appliquer substitution typ_gauche, appliquer substitution typ_droite))
+let w_mono e =
+  let rec infer env s = function
+    | Var x -> (s, appliquer s (chercher x env))
+    | Const _ -> (s, Int)
+    | Op _ -> (s, Arrow (Product (Int, Int), Int))
+    | Fun (x, e) ->
+      let v = Tvar (nouv_var ()) in
+      let s, t = infer (inserer x v env) s e in
+      (s, Arrow (appliquer s v, t))
+    | App (e1, e2) ->
+      let s, t1 = infer env s e1 in
+      let s, t2 = infer env s e2 in
+      let res = Tvar (nouv_var ()) in
+      let s = unification s t1 (Arrow (t2, res)) in
+      (s, appliquer s res)
+    | Couple (e1, e2) ->
+      let s, t1 = infer env s e1 in
+      let s, t2 = infer env s e2 in
+      (s, Product (appliquer s t1, appliquer s t2))
     | Let _ -> failwith "les expressions Let ne sont pas traitées dans cette version"
   in
-  reset_compteur_types ();
-  let _, typ = inferer (creer_dictionnaire ()) (creer_dictionnaire ()) expression in
-  typ
+  reset_cpt ();
+  let _, t = infer (creer_dictionnaire ()) (creer_dictionnaire ()) e in
+  t
 
 (* Question 13 : inférence avec polymorphisme *)
 
 type schema = Schema of int list * typ2
 
-let ajouter_unique element liste =
-  if List.mem element liste then liste else element :: liste
+let ajout x l = if List.mem x l then l else x :: l
 
-let union liste1 liste2 =
-  List.fold_left (fun acc element -> ajouter_unique element acc) liste2 liste1
+let union l1 l2 = List.fold_left (fun acc x -> ajout x acc) l2 l1
 
-let difference liste1 liste2 =
-  List.filter (fun element -> not (List.mem element liste2)) liste1
+let diff l1 l2 = List.filter (fun x -> not (List.mem x l2)) l1
 
-let rec variables_libres_type = function
+let rec fv_typ = function (* fv_typ t renvoie les variables libres de t *)
   | Int -> []
-  | Tvar numero -> [numero]
-  | Arrow (gauche, droite) | Product (gauche, droite) ->
-    union (variables_libres_type gauche) (variables_libres_type droite)
+  | Tvar n -> [n]
+  | Arrow (g, d) | Product (g, d) -> union (fv_typ g) (fv_typ d)
 
-let variables_libres_schema (Schema (variables_quantifiees, typ)) =
-  difference (variables_libres_type typ) variables_quantifiees
+let fv_schema (Schema (vs, t)) = diff (fv_typ t) vs
 
-let variables_libres_env env =
-  fold_dict
-    (fun acc _ schema -> union acc (variables_libres_schema schema))
-    env []
+let fv_env env = fold_dict (fun acc _ sc -> union acc (fv_schema sc)) env []
 
-let rec appliquer_bloquees bloquees substitution = function
+let rec appliquer_sauf liees s = function (* applique s en ignorant les variables de liees *)
   | Int -> Int
-  | Tvar numero when List.mem numero bloquees -> Tvar numero
-  | Tvar numero ->
+  | Tvar n when List.mem n liees -> Tvar n
+  | Tvar n ->
     begin
-      match trouver numero substitution with
-      | None -> Tvar numero
-      | Some typ -> appliquer_bloquees bloquees substitution typ
+      match trouver n s with
+      | None -> Tvar n
+      | Some t -> appliquer_sauf liees s t
     end
-  | Arrow (g, d) ->
-    Arrow (appliquer_bloquees bloquees substitution g, appliquer_bloquees bloquees substitution d)
-  | Product (g, d) ->
-    Product (appliquer_bloquees bloquees substitution g, appliquer_bloquees bloquees substitution d)
+  | Arrow (g, d) -> Arrow (appliquer_sauf liees s g, appliquer_sauf liees s d)
+  | Product (g, d) -> Product (appliquer_sauf liees s g, appliquer_sauf liees s d)
 
-let appliquer_schema substitution (Schema (variables_quantifiees, typ)) =
-  Schema (variables_quantifiees, appliquer_bloquees variables_quantifiees substitution typ)
+let appliquer_schema s (Schema (vs, t)) = Schema (vs, appliquer_sauf vs s t)
 
-let appliquer_env substitution env = map_dict (appliquer_schema substitution) env
+let appliquer_env s env = map_dict (appliquer_schema s) env
 
-let generaliser env typ =
-  let variables = difference (variables_libres_type typ) (variables_libres_env env) in
-  Schema (variables, typ)
+let generaliser env t = Schema (diff (fv_typ t) (fv_env env), t)
 
-let instancier (Schema (variables, typ)) =
-  let substitution =
+let instancier (Schema (vs, t)) =
+  let s =
     List.fold_left
-      (fun acc variable -> inserer variable (Tvar (nouvelle_variable_type ())) acc)
-      (creer_dictionnaire ()) variables
+      (fun acc v -> inserer v (Tvar (nouv_var ())) acc)
+      (creer_dictionnaire ()) vs
   in
-  appliquer substitution typ
+  appliquer s t
 
-let w expression =
-  let rec inferer env substitution = function
-    | Var nom ->
-      let schema = valeur_associee nom env in
-      (substitution, instancier (appliquer_schema substitution schema))
-    | Const _ -> (substitution, Int)
-    | Op _ -> (substitution, Arrow (Product (Int, Int), Int))
-    | Fun (nom, corps) ->
-      let variable = Tvar (nouvelle_variable_type ()) in
-      let env = inserer nom (Schema ([], variable)) env in
-      let substitution, typ_corps = inferer env substitution corps in
-      (substitution, Arrow (appliquer substitution variable, typ_corps))
-    | App (fonction, argument) ->
-      let substitution, typ_fonction = inferer env substitution fonction in
-      let env = appliquer_env substitution env in
-      let substitution, typ_argument = inferer env substitution argument in
-      let resultat = Tvar (nouvelle_variable_type ()) in
-      let substitution = unification substitution typ_fonction (Arrow (typ_argument, resultat)) in
-      (substitution, appliquer substitution resultat)
-    | Couple (gauche, droite) ->
-      let substitution, typ_gauche = inferer env substitution gauche in
-      let env = appliquer_env substitution env in
-      let substitution, typ_droite = inferer env substitution droite in
-      (substitution, Product (appliquer substitution typ_gauche, appliquer substitution typ_droite))
-    | Let (nom, valeur, corps) ->
-      let substitution, typ_valeur = inferer env substitution valeur in
-      let env = appliquer_env substitution env in
-      let schema = generaliser env (appliquer substitution typ_valeur) in
-      inferer (inserer nom schema env) substitution corps
+let w e =
+  let rec infer env s = function
+    | Var x -> (s, instancier (appliquer_schema s (chercher x env)))
+    | Const _ -> (s, Int)
+    | Op _ -> (s, Arrow (Product (Int, Int), Int))
+    | Fun (x, e) ->
+      let v = Tvar (nouv_var ()) in
+      let s, t = infer (inserer x (Schema ([], v)) env) s e in
+      (s, Arrow (appliquer s v, t))
+    | App (e1, e2) ->
+      let s, t1 = infer env s e1 in
+      let env = appliquer_env s env in
+      let s, t2 = infer env s e2 in
+      let res = Tvar (nouv_var ()) in
+      let s = unification s t1 (Arrow (t2, res)) in
+      (s, appliquer s res)
+    | Couple (e1, e2) ->
+      let s, t1 = infer env s e1 in
+      let env = appliquer_env s env in
+      let s, t2 = infer env s e2 in
+      (s, Product (appliquer s t1, appliquer s t2))
+    | Let (x, e1, e2) ->
+      let s, t1 = infer env s e1 in
+      let env = appliquer_env s env in
+      let sc = generaliser env (appliquer s t1) in
+      infer (inserer x sc env) s e2
   in
-  reset_compteur_types ();
-  let _, typ = inferer (creer_dictionnaire ()) (creer_dictionnaire ()) expression in
-  typ
+  reset_cpt ();
+  let _, t = infer (creer_dictionnaire ()) (creer_dictionnaire ()) e in
+  t
 
 module Tests = struct
   let echec f =
@@ -337,19 +309,19 @@ module Tests = struct
     with Failure _ -> true
 
   (* Normalise les numéros de variables de type pour comparer deux types à renommage près. *)
-  let normaliser typ =
-    let table = Hashtbl.create 8 in
-    let prochain = ref 0 in
+  let normaliser t =
+    let tbl = Hashtbl.create 8 in
+    let nxt = ref 0 in
     let rec aux = function
       | Int -> Int
       | Tvar v ->
         let n =
-          match Hashtbl.find_opt table v with
+          match Hashtbl.find_opt tbl v with
           | Some n -> n
           | None ->
-            let n = !prochain in
-            incr prochain;
-            Hashtbl.add table v n;
+            let n = !nxt in
+            incr nxt;
+            Hashtbl.add tbl v n;
             n
         in
         Tvar n
@@ -362,9 +334,9 @@ module Tests = struct
         let d = aux d in
         Product (g, d)
     in
-    aux typ
+    aux t
 
-  let executer () =
+  let exec () =
     (* Dictionnaire *)
     let d0 = creer_dictionnaire () in
     let d1 = inserer "b" 2 (inserer "a" 1 d0) in
@@ -414,14 +386,14 @@ module Tests = struct
     assert (echec (fun () -> unification (creer_dictionnaire ()) (Tvar 0) (Arrow (Tvar 0, Int))));
 
     (* W sans polymorphisme *)
-    assert (normaliser (w_sans_polymorphisme (Fun ("x", App (Var "x", Const 2)))) = Arrow (Arrow (Int, Tvar 0), Tvar 0));
-    assert (w_sans_polymorphisme (Fun ("x", App (Op "+", Couple (Var "x", Var "x")))) = Arrow (Int, Int));
+    assert (normaliser (w_mono (Fun ("x", App (Var "x", Const 2)))) = Arrow (Arrow (Int, Tvar 0), Tvar 0));
+    assert (w_mono (Fun ("x", App (Op "+", Couple (Var "x", Var "x")))) = Arrow (Int, Int));
     let comp = Fun ("f", Fun ("g", Fun ("x", App (Var "f", App (Var "g", Var "x"))))) in
     assert (
-      normaliser (w_sans_polymorphisme comp)
+      normaliser (w_mono comp)
       = Arrow (Arrow (Tvar 0, Tvar 1), Arrow (Arrow (Tvar 2, Tvar 0), Arrow (Tvar 2, Tvar 1))) );
-    assert (echec (fun () -> w_sans_polymorphisme (App (Fun ("f", App (Op "+", App (Var "f", Const 1))), Fun ("x", Var "x")))));
-    assert (echec (fun () -> w_sans_polymorphisme (Fun ("x", Couple (App (Var "x", Const 1), App (Var "x", Couple (Const 1, Const 2)))))));
+    assert (echec (fun () -> w_mono (App (Fun ("f", App (Op "+", App (Var "f", Const 1))), Fun ("x", Var "x")))));
+    assert (echec (fun () -> w_mono (Fun ("x", Couple (App (Var "x", Const 1), App (Var "x", Couple (Const 1, Const 2)))))));
 
     (* W avec polymorphisme *)
     let id = Fun ("x", Var "x") in
@@ -450,4 +422,4 @@ module Tests = struct
     print_endline "Tests d'inférence de type : OK"
 end
 
-let () = Tests.executer ()
+let () = Tests.exec ()

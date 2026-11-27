@@ -15,6 +15,7 @@
   show raw.where(block: true): it => block(
     width: 100%, inset: (x: 0.8em, y: 0.7em),
     stroke: (top: epaisseur-trait, bottom: epaisseur-trait),
+    breakable: it.text.split("\n").len() > 35, // insécable sauf bloc trop long pour une page
     {
       if it.lang != none and it.lang not in ("", "text") {
         place(top + right, dy: -1.1em,

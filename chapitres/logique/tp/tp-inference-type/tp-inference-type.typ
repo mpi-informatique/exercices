@@ -1,6 +1,6 @@
 #import "/load.typ": code, est-corrige, exercice, feuille, logique, question, telecharger
 #import code: code-extrait
-#import logique: arbre, rappel-regles, regles
+#import logique: arbre, rappel-regles, regles, sequent
 #import "@preview/curryst:0.6.0": prooftree, rule
 
 #let squelette = read("tp-inference-type.ml")
@@ -47,11 +47,11 @@
 )[
   Dans ce TP, on implémente progressivement un inféreur de types pour un mini-langage fonctionnel similaire à OCaml.
 
-  Le fichier à compléter est #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-inference-type/tp-inference-type.ml")[`tp-inference-type.ml`]. Il contient les définitions de types ainsi qu'une série de tests commentés à décommenter au fur et à mesure.
+  Le fichier à compléter est #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-inference-type/tp-inference-type.ml")[`tp-inference-type.ml`].
 
-  #if est-corrige() [
-    Le fichier #telecharger("https://mpi-informatique.github.io/exercices/banque/chapitres/logique/tp/tp-inference-type/tp-inference-type-cor.ml")[`tp-inference-type-cor.ml`] contient le corrigé complet.
-  ]
+  Depuis le dossier du TP, lancer `utop`, puis charger le fichier : ```ocaml #use "tp-inference-type.ml";;```
+
+  Pour tester une question, appeler la fonction correspondante, par exemple `test_dict ();;` après la question sur les dictionnaires. Une assertion réussie ne produit aucun message.
 
   = Déduction naturelle
 
@@ -61,7 +61,7 @@
 
   #question[
     Donner sur papier une dérivation en déduction naturelle du séquent :
-    $ ⊢ ((a → b) ∧ (b → c)) → (a ∨ b) → c. $
+    #align(center, sequent(([], $((a → b) ∧ (b → c)) → (a ∨ b) → c$)))
   ][
     On note $P = (a → b) ∧ (b → c)$ et $Γ = {P, thick a ∨ b}$.
     #arbre(
@@ -116,10 +116,18 @@
     La création est en $O(1)$. Les opérations `trouver` et `inserer` sont en $O(h)$ où $h$ est la hauteur de l'arbre, donc en $O(n)$ au pire sans équilibrage (avec $n$ le nombre d'éléments).
   ]
 
+  #code-extrait(squelette, "test_dict")
+
   = Inférence avec annotation des paramètres
 
   On représente d'abord le langage et ses types par `expression1` et `typ1` :
-  #code-extrait(squelette, ("typ1", "expression1"))
+  #grid(
+    columns: (2fr, 3fr),
+    column-gutter: 1.5em,
+    align: left + top,
+    code-extrait(squelette, "typ1"),
+    code-extrait(squelette, "expression1"),
+  )
 
   Dans cette première version, le type du paramètre d'une fonction est indiqué explicitement. Le seul type de base est `Int`, correspondant à `int`, et tous les opérateurs `Op` ont le type `(int * int) -> int`.
 
@@ -177,22 +185,34 @@
 
   #question[
     Écrire une fonction `print_typ1 : typ1 -> unit` et une fonction `print_expression1 : expression1 -> unit` affichant un type et une expression. L'expression précédente peut par exemple être affichée sous la forme `let f = fun x : int -> (+ (x, 1)) in (f 2)`.
+
+    _Indication._ En OCaml, on peut utiliser `Printf.printf` (comme en C, avec `%s` pour une chaîne et `%d` pour un entier).
   ][
     #code-extrait(corrige, ("print_typ1", "print_expression1"))
   ]
+
+  #code-extrait(squelette, "test_print1")
 
   #question[
     Écrire une fonction `typ_expr : expression1 -> typ1` renvoyant le type d'une expression, ou levant une erreur si elle n'est pas typable.
 
     _Indication._ Utiliser une fonction récursive qui suit les règles du système précédent, en encodant l'environnement $Γ$ par un `(string, typ1) dict`.
   ][
-    #code-extrait(corrige, ("valeur_associee", "typ_expr"))
+    #code-extrait(corrige, ("chercher", "typ_expr"))
   ]
+
+  #code-extrait(squelette, "test_typ_expr")
 
   = Inférence sans annotation
 
   On retire désormais les annotations de type sur les paramètres des fonctions et on introduit des _variables de type_, représentées par des entiers :
-  #code-extrait(squelette, ("typ2", "expression2"))
+  #grid(
+    columns: (2fr, 3fr),
+    column-gutter: 1.5em,
+    align: left + top,
+    code-extrait(squelette, "typ2"),
+    code-extrait(squelette, "expression2"),
+  )
 
   #question[
     Écrire les fonctions `print_typ2 : typ2 -> unit` et `print_expression2 : expression2 -> unit` correspondantes.
@@ -200,6 +220,8 @@
     Le principe est identique à la question précédente, avec un cas supplémentaire pour `Tvar`.
     #code-extrait(corrige, ("print_typ2", "print_expression2"))
   ]
+
+  #code-extrait(squelette, "test_print2")
 
   Dans toute la suite de cette partie, on ne considère que des expressions sans `Let`. Les règles du système de typage sont alors :
 
@@ -253,6 +275,8 @@
     #code-extrait(corrige, "appliquer")
   ]
 
+  #code-extrait(squelette, "test_appliquer")
+
   Pour résoudre les contraintes de type, on utilise l'algorithme d'_unification_ : étant donnés deux types, il trouve une substitution la plus générale qui les rend égaux, ou détecte qu'ils ne sont pas unifiables. Par exemple, $0 → tint$ et $1 → 2$ s'unifient par la substitution $0 ⟼ 1, thick 2 ⟼ tint$, alors que $0 → tint$ et $1 * 2$ ne sont pas unifiables.
 
   #question[
@@ -265,24 +289,28 @@
     - sur $α, t$ ou $t, α$, si $α$ apparaît dans $t$ alors échouer, sinon remplacer $α$ par $t$ dans la substitution et y ajouter $α ⟼ t$
     - dans tous les autres cas, échouer
   ][
-    On définit des fonctions auxiliaires sur les dictionnaires (`map_dict`), la substitution d'une variable et le test d'occurrence (`variable_libre_dans`), qui empêche de construire un type infini.
+    On définit des fonctions auxiliaires sur les dictionnaires (`map_dict`), la substitution d'une variable (`subst_var`) et le test d'occurrence (`occ`), qui empêche de construire un type infini.
     #code-extrait(corrige, (
       "map_dict",
-      "remplacer_variable",
-      "variable_libre_dans",
-      "ajouter_substitution",
+      "subst_var",
+      "occ",
+      "etendre",
       "unification",
     ))
   ]
+
+  #code-extrait(squelette, "test_unification")
 
   L'_algorithme W_ infère un type le plus général selon le même principe que `typ_expr`, en attribuant une variable fraîche à chaque paramètre de fonction et en mettant à jour la substitution par unification à chaque application.
 
   #question[
     Écrire une fonction `w : expression2 -> typ2` implémentant cet algorithme pour les expressions sans `Let`.
   ][
-    Dans le corrigé complet, cette première version est nommée `w_sans_polymorphisme` afin de réserver `w` à la version polymorphe finale.
-    #code-extrait(corrige, ("compteur_types", "reset_compteur_types", "nouvelle_variable_type", "w_sans_polymorphisme"))
+    Dans le corrigé complet, cette première version est nommée `w_mono` afin de réserver `w` à la version polymorphe finale.
+    #code-extrait(corrige, ("cpt", "reset_cpt", "nouv_var", "w_mono"))
   ]
+
+  #code-extrait(squelette, "test_w")
 
   = Inférence avec polymorphisme
 
@@ -349,13 +377,13 @@
       (
         "fold_dict",
         "schema",
-        "ajouter_unique",
+        "ajout",
         "union",
-        "difference",
-        "variables_libres_type",
-        "variables_libres_schema",
-        "variables_libres_env",
-        "appliquer_bloquees",
+        "diff",
+        "fv_typ",
+        "fv_schema",
+        "fv_env",
+        "appliquer_sauf",
         "appliquer_schema",
         "appliquer_env",
         "generaliser",
@@ -364,6 +392,8 @@
       ),
     )
   ]
+
+  #code-extrait(squelette, "test_w_poly")
 ]
 
 #show: feuille.with(

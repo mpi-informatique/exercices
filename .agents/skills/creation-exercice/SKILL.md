@@ -33,6 +33,12 @@ Appliquer ce skill en complément de [AGENTS.md](../../../AGENTS.md) et du skill
 - Depuis le dépôt privé, charger les contenus publics avec `public(...)` et les brouillons voisins par import relatif.
 - Lors d'un transfert demandé entre dépôts, déplacer le dossier complet, adapter les imports de contenus et compiler les documents concernés dans les deux dépôts (`/load.typ` reste inchangé).
 
+## TP : squelette et tests
+
+- **Fichier squelette** (`tp-<id>.ml`) : fournir les types, des prototypes typés (`failwith "TODO: ..."`, ou un squelette de `match` sur les questions structurantes) et une fonction `test_<nom> ()` non commentée par question de programmation (à base d'`assert`, sans imposer un détail d'implémentation comme la numérotation interne). Le squelette doit charger sans erreur dans `ocaml` / `utop`.
+- **Énoncé Typst** (`tp-<id>.typ`) : indiquer en tête comment lancer `utop`, charger le fichier (`#use "tp-<id>.ml";;`) et exécuter `test_<nom> ();;`. Afficher la fonction de test juste après chaque question avec `#code-extrait(squelette, "test_<nom>")`.
+- **Corrigé** (`tp-<id>-cor.ml`) : inclure un module `Tests` exécuté en fin de fichier et extrait dans l'énoncé corrigé via `#code-extrait(corrige, ...)`.
+
 ## Métadonnées, concours et barème
 
 - En mathématiques, renseigner `matiere: "mathématiques"`. Les vocabulaires autorisés sont dans `lib/meta.typ`.
