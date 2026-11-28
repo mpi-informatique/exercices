@@ -524,7 +524,7 @@
 /// Chaque fichier déclare `source` relative au `.typ`, `destination` facultative et
 /// `extraire` facultatif pour un ZIP. Ces ressources sont exportées sans modifier le PDF.
 ///
-/// - type (str): Type de document, notamment `td`, `devoir`, `concours`, `colle` ou `tp`.
+/// - type (str): Type de document, notamment `td`, `devoir`, `concours`, `colle` ou `tp`. Le type `tp` ajoute une flèche en exposant aux liens externes du corps.
 /// - titre (str): Titre du document.
 /// - niveau (str, none): Niveau affiché, remplacé par la filière d'un concours.
 /// - auteur (str, none): Auteur et attribution de secours.
@@ -596,6 +596,11 @@
     concours: concours,
     ..if tp == none { (:) } else { (tp: tp) },
   )) <document-meta>]
+  let fleche = super(sym.arrow.tr)
+  // Exclure le lien porté par la flèche pour que la règle ne se réapplique pas à lui.
+  show link: it => if type == "tp" and std.type(it.dest) == str and it.body != fleche {
+    it + [#sym.wj#link(it.dest, fleche)]
+  } else { it }
   body
   let afficher-contexte = type not in ("devoir", "concours") or concours == none or concours.at("oral", default: false)
   let debut-bareme = 0
