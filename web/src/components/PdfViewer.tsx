@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ChevronLeft, ChevronRight, Maximize, Minimize, Minus, Plus } from 'lucide-react';
 import { getDocument, GlobalWorkerOptions, TextLayer, type PDFDocumentProxy, type PDFPageProxy } from 'pdfjs-dist';
 import 'pdfjs-dist/web/pdf_viewer.css';
+import { pdfSource, renderPdfPage } from '../../../shared/src/pdf-canvas';
 import { assetUrl } from '../lib/urls';
 
 GlobalWorkerOptions.workerSrc = assetUrl('pdfjs/pdf.worker.min.mjs');
@@ -25,14 +26,7 @@ function PdfPage({ document, number, width, dark }: { document: PDFDocumentProxy
 
   useEffect(() => {
     if (!page || !visible || !width) return;
-    const viewport = page.getViewport({ scale: width / page.getViewport({ scale: 1 }).width });
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
-    const element = canvas.current!;
-    element.width = Math.ceil(viewport.width * ratio);
-    element.height = Math.ceil(viewport.height * ratio);
-    element.style.width = `${viewport.width}px`;
-    element.style.height = `${viewport.height}px`;
-    const render = page.render({ canvas: element, viewport, pageColors: dark ? { background: '#172129', foreground: '#e2e9ec' } : undefined, transform: ratio === 1 ? undefined : [ratio, 0, 0, ratio, 0, 0] });
+    const { viewport, task: render } = renderPdfPage(page, canvas.current!, width, dark);
     text.current!.replaceChildren();
     const layer = new TextLayer({ textContentSource: page.streamTextContent(), container: text.current!, viewport });
     let cancelled = false;
@@ -86,7 +80,7 @@ export default function PdfViewer({ pdf, pending, dark, toolbar, actions, onRead
     if (!pdf) { setLoaded(undefined); return; }
     let cancelled = false;
     setError('');
-    const loading = getDocument({ data: pdf.slice(), cMapUrl: `${assetUrl('pdfjs/cmaps')}/`, cMapPacked: true, standardFontDataUrl: `${assetUrl('pdfjs/standard_fonts')}/`, wasmUrl: `${assetUrl('pdfjs/wasm')}/` });
+    const loading = getDocument(pdfSource(pdf, assetUrl('pdfjs/')));
     loading.promise.then(document => { if (!cancelled) { setLoaded({ pdf, document }); setCurrent(page => Math.min(page, document.numPages)); } }).catch(error => { if (!cancelled) setError(String(error)); });
     return () => { cancelled = true; void loading.destroy(); };
   }, [pdf]);
